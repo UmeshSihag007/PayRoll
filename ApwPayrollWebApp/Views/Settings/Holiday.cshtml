@@ -1,0 +1,196 @@
+﻿@{
+    ViewBag.Title = "Holiday";
+    ViewBag.pTitle = "Holiday";
+    ViewBag.pageTitle = "Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <style>
+        .btn {
+            box-shadow: 3px 3px 5px 0 rgba(0,0,0,0.3);
+        }
+    </style>
+
+    <!-- plugin css -->
+    <link href="~/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Swiper slider css -->
+    <link href="~/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="card-title mb-0">Holiday</h4>
+                <div>
+                    <a class="btn btn-success btn-rounded btn-fw" data-bs-toggle="modal" data-bs-target="#myModal" asp-controller="Leave" asp-action="holiday"><i class="mdi mdi-plus"></i>Add Holiday</a>
+                </div>
+            </div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table id="scroll-horizontal" class="display table table-bordered nowrap" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>SrNo</th>
+                                <th>Name</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Name</td>
+                                <td>Date</td>
+                                <td>Description</td>
+                                <td>
+                                    <div class="hstack gap-3 flex-wrap">
+                                        @*
+                                        @*<a asp-controller="Leave" asp-action="#" asp-route-id="@data.Id"  class="btn btn-sm btn-info btn-icon waves-effect waves-light" data-toggle="tooltip" title="View Details">
+                                        <i class="ri-eye-line"></i>
+                                        </a> *@
+                                        <a asp-controller="Leave" asp-action="#" class="btn btn-sm btn-success btn-icon waves-effect waves-light" data-toggle="tooltip" title="Click Here To Update This Record">
+                                            <i class="ri-edit-2-line"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-danger btn-icon waves-effect waves-light" data-bs-toggle="modal" @* data-bs-target="#@modalId" *@ data-toggle="tooltip" title="Click Here To Delete This Record"> <i class="ri-delete-bin-line"></i></button>
+                                        <div @* id="@modalId" *@ class="modal zoomIn" tabindex="-1" aria-labelledby="@* @("myModalLabel" + data.Id) *@" aria-hidden="true" style="display: none;">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="@* @(" myModalLabel" + data.Id) *@">Alert!</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <p class="text-center">Are you sure you want to Delete this Company?</p>
+                                                        <form asp-controller="ClientMaster" asp-action="Del" method="post">
+                                                            <input type="hidden" name="Id" @* value="@data.Id" *@ />
+                                                            <div class="d-flex justify-content-end">
+                                                                <button type="submit" class="btn btn-success">Delete Insurer</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="myModal" class="modal modal-lg fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-primary mb-4" id="myModalLabel">Add Holiday</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                    </div>
+                    <form method="post" asp-controller="#" asp-action="#" class="g-3">
+                        <div class="modal-body">
+                            <div class="row mb-2">
+                                <div class="col-md-4">
+                                    <label class="form-label">Name</label>
+
+                                    <div class="input-group ">
+                                        <span class="input-group-text">
+                                            <i class="ri-user-2-fill"></i>
+                                        </span>
+                                        <input type="text" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Date</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="ri-calendar-event-fill"></i>
+                                            </span>
+                                            <input type="text" data-provider="flatpickr" id="datepicker" class="form-control" />
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Restricted</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" class="form-control" />
+                                    </div>
+                            
+
+
+                                </div>
+
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <label class="form-label">Description</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="ri-calendar-event-fill"></i>
+                                        </span>
+                                        <textarea type="text" class="form-control form-control-sm" cols="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-5">
+                                    <label for="reminderDays" class="form-label">Number of day(s) before when the reminder email is to be sent</label>
+                                </div>   <div class="col-md-7">
+
+                                    <input type="number" id="reminderDays" class="form-control" placeholder="Enter number of days">
+                                </div>
+                            </div>
+                             <div class="row mb-2">
+                               
+                                <div class="col-md-7">
+                                    <input class="form-check-input" type="checkbox" />
+                                    <label class="form-label">Notify applicable employees via feed</label>
+                                   
+                                </div>
+                                <div class="col-md-5"></div>
+                            </div>
+                            <div class="row mb-2">
+                             
+                                <div class="col-md-7">
+                                    <input class="form-check-input" type="checkbox"  />
+                                    <label  class="form-label">Reprocess leave applications based on this added holiday</label>
+                                   
+                                </div>
+                                <div class="col-md-5"></div>
+                            </div>
+                            <div class="text-danger" asp-validation-summary="All"></div>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>
+
+@section scripts {
+    <!-- dropzone min -->
+    <script src="~/assets/libs/dropzone/dropzone-min.js"></script>
+
+    <!--crypto-kyc init-->
+    <script src="~/assets/js/pages/crypto-kyc.init.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+}

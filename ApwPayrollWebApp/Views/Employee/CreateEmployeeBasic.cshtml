@@ -1,0 +1,289 @@
+﻿    @using ApwPayrollWebApp.Models
+    @model EmployeeCreateViewModel
+    @{
+        ViewData["Title"] = "CreateEmployeeBasic";
+        Layout = "~/Views/Shared/Registration/_RegistrationLayout.cshtml";
+    }
+
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="basicDetails" role="tabpanel">
+
+            <form asp-action="CreateEmployeeBasic" asp-controller="Employee" method="post">
+                 <div class="row mt-1 mb-2">
+                    <div class="col-lg-6">
+                        <label class="form-label">  First Name</label>
+
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="ri-user-2-fill"></i>
+                            </span>
+                        <select asp-for="Employee.Salutation" class="form-control form-control-sm" style="width: auto;" required>
+                            <option value="" disabled selected>Select title</option>
+                            @foreach (var salutation in ViewBag.SalutationLookup)
+                            {
+                                <option value="@salutation.Id">@salutation.Name</option>
+                            }
+                        </select>
+                        
+                            <input type="text" asp-for="Employee.FirstName" class="form-control form-control-sm" style="flex: 20" placeholder="Enter first name">
+                        </div>
+                    <span asp-validation-for="Employee.Salutation" class="text-danger"></span>
+                        <span asp-validation-for="Employee.FirstName" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label asp-for="Employee.LastName" class="form-label">Last Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="ri-user-2-fill"></i>
+                            </span>
+                            <input asp-for="Employee.LastName" type="text" class="form-control form-control-sm" placeholder="Enter last name">
+                        </div>
+                        <span asp-validation-for="Employee.LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mt-1 mb-2">
+                    <div class="col-lg-6">
+                        <label asp-for="Employee.EmailId" class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class=" ri-mail-unread-fill"></i>
+                            </span>
+                            <input asp-for="Employee.EmailId" type="text" class="form-control form-control-sm" placeholder="Enter Email">
+
+                        </div>
+                        <span asp-validation-for="Employee.EmailId" class="text-danger"></span>
+                    </div>
+                    <div class="col-lg-6">
+                        <label asp-for="Employee.MobileNumber" class="form-label">Contact Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="ri-smartphone-fill"></i>
+                            </span>
+                            <input asp-for="Employee.MobileNumber" class="form-control form-control-sm" placeholder="Enter Contact Number">
+                        </div>
+                        <span asp-validation-for="Employee.MobileNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mt-1 mb-2">
+                    <div class="col-6">
+                        <label class="form-label">Department</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="ri-arrow-down-s-fill"></i>
+                            </span>
+                            <select class="form-control form-control-sm" asp-items="@ViewBag.DepartmentList">
+                                <option value="" disabled selected>Select a Department</option>
+                                @foreach (var department in ViewBag.departments)
+                                {
+                                    <option value="@department.Id">@department.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <span asp-validation-for="Employee.DepartmentId" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="col-lg-6 col-6">
+                        <label class="form-label">Designation</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="ri-arrow-down-s-fill"></i>
+                            </span>
+                            <select class="form-control form-control-sm">
+                                <option value="" disabled selected>Select Designation</option>
+                                @foreach (var designation in ViewBag.designation)
+                                {
+                                    <option value="@designation.Id">@designation.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <span asp-validation-for="Employee.DesignationId" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+
+                <div class="row mt-1 mb-2">
+                    <div class="col-lg-6 col-6">
+                        <label class="form-label">Branch</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="ri-arrow-down-s-fill"></i>
+                            </span>
+                            <select asp-for="Employee.BranchId" class="form-control form-control-sm">
+                                <option value="" disabled selected>Select branch</option>
+                                @foreach (var branch in ViewBag.branches)
+                                {
+                                    <option value="@branch.Id">@branch.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <span asp-validation-for="Employee.BranchId" class="text-danger"></span>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">Date Of Joining</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="ri-calendar-event-fill"></i>
+                            </span>
+                            <input asp-for="Employee.DateOfJoining" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter your Date Of Joining">
+                        </div>
+                        <span asp-validation-for="Employee.DateOfJoining" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+
+                <div class="mt-3">
+                    <input asp-for="Employee.IsLoginAccess" id="enablePortalAccess" />
+                    <label class="ms-2"> Enable Portal Access</label>
+                    <p class="ms-5">
+                        The employee will be able to view payslips, submit their IT declaration and create
+                        <br />
+                        reimbursement claims through the employee portal.
+                    </p>
+                </div>
+                <span asp-validation-for="Employee.IsLoginAccess" class="text-danger"></span>
+                <div>
+
+                    <div class="row mt-1 mb-2">
+                        <div class="col-lg-6">
+                            <label class="form-label">PF Account Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="ri-lock-password-fill"></i>
+                                </span>
+                                <input asp-for="Employee.PfNumber" type="text" class="form-control form-control-sm" placeholder="AA/AAA/0000000/XXX/0000000">
+                            </div>
+                            <span asp-validation-for="Employee.PfNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label">UAN</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="ri-lock-password-fill"></i>
+                                </span>
+                                <input asp-for="Employee.UanNumber" type="text" class="form-control form-control-sm" placeholder="000000000000">
+                            </div>
+                            <span asp-validation-for="Employee.UanNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-1 mb-2">
+                        <div class="col-lg-6">
+                            <label class="form-label">ESI Insurance Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="ri-lock-password-fill"></i>
+                                </span>
+                                <input asp-for="Employee.ESINumber" type="text" class="form-control form-control-sm" placeholder="000000000000">
+                            </div>
+                            <span asp-validation-for="Employee.ESINumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label">Pan Card Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="ri-lock-password-fill"></i>
+                                </span>
+                                <input asp-for="Employee.PanNumber" type="text" class="form-control form-control-sm" placeholder="XXXXX0000X">
+                            </div>
+                            <span asp-validation-for="Employee.PanNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-1 mb-2">
+                        <div class="col-lg-6">
+                            <label class="form-label">Aadhar Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                              
+                                    <i class="bi bi-person-vcard-fill"></i>
+                                </span>
+                                <input asp-for="Employee.AadharNumber" type="text" class="form-control form-control-sm" placeholder="000000000000">
+                            </div>
+                            <span asp-validation-for="Employee.AadharNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label">Ration Card Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="ri-lock-password-fill"></i>
+                                </span>
+                                <input asp-for="Employee.RationCardNumber" type="number" class="form-control form-control-sm" placeholder="000000000000">
+                            </div>
+                            <span asp-validation-for="Employee.RationCardNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-1 mb-2">
+                        <div class="col-lg-6">
+                            <label class="form-label">Passport Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="ri-lock-password-fill"></i>
+                                </span>
+                                <input asp-for="Employee.PassportNumber" type="text" class="form-control form-control-sm" placeholder="X0000000">
+                            </div>
+                            <span asp-validation-for="Employee.PassportNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label">Voter Id Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="ri-lock-password-fill"></i>
+                                </span>
+                                <input asp-for="Employee.VoterId" type="text" class="form-control form-control-sm" placeholder="XXX000000">
+                            </div>
+                            <span asp-validation-for="Employee.VoterId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-1 mb-2">
+                        <div class="col-lg-6">
+                            <label class="form-label">License Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="ri-lock-password-fill"></i>
+                                </span>
+                                <input asp-for="Employee.LicenceNumber" type="text" class="form-control form-control-sm" placeholder="XX00 00000000000">
+                            </div>
+                            <span asp-validation-for="Employee.LicenceNumber" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row mt-1 mb-2">
+                    <div class="col-lg-12">
+                        <div class="hstack gap-2 justify-content-end">
+                            <button type="reset" class="btn btn-outline-danger">
+                                Cancel
+                            </button>
+                            <button type="submit" class="btn btn-secondary">
+                                Save & Next
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    @section scripts {
+
+
+        <partial name="_ValidationScriptsPartial" />
+        <!-- dropzone min -->
+        <script src="~/assets/libs/dropzone/dropzone-min.js"></script>
+
+        <!--crypto-kyc init-->
+        <script src="~/assets/js/pages/crypto-kyc.init.js"></script>
+
+        <!-- App js -->
+        <script src="~/assets/js/app.js"></script>
+
+
+
+
+
+    }

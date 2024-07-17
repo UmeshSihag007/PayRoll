@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Settings";
+    ViewBag.pTitle = "Settings";
+    ViewBag.pageTitle = "Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card">
+    <div class="card-header">
+        <h4>HR & Payroll Setting Master</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+              
+                <table class="table table-bordered">
+                    <caption style="caption-side:top;font-size: 20px; text-align: left; font-weight: bold;">HR Settings</caption>
+
+                    <tr><td><a asp-controller="Leave" asp-action="Holiday">Holiday</a></td></tr>
+                    <tr><td><a asp-controller="Leave" asp-action="LeaveType">Leave Type</a></td></tr>
+                    
+                </table>
+            </div>
+            <div class="col-md-4">
+              
+                <table class="table table-bordered">
+                    <caption style="caption-side:top;font-size: 20px; text-align: left; font-weight: bold;">Employee Settings</caption>
+
+                    <tr><td><a asp-action="Department" asp-controller="EmployeeSettings">Department</a></td></tr>
+                    <tr><td><a asp-action="Role" asp-controller="EmployeeSettings">Role</a></td></tr>
+                    <tr><td><a asp-action="Permission" asp-controller="EmployeeSettings">Permission</a></td></tr>
+                </table>
+            </div>
+            <div class="col-md-4">
+
+                <table class="table table-bordered">
+                    <caption style="caption-side:top;font-size: 20px; text-align: left; font-weight: bold;">Payroll Settings</caption>
+                    <tr><td><a href="#payroll">Payroll</a></td></tr>
+                    <tr><td><a href="#allowances">Allowances</a></td></tr>
+                    <tr><td><a href="#deductions">Deductions</a></td></tr>
+                    <tr><td><a href="#tax-detail">Tax Detail</a></td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

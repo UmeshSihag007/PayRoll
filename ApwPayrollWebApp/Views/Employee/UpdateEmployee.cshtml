@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewData["Title"] = "UpdateEmployee";
+}
+
+<h1>UpdateEmployee</h1>
+
+
+@using ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
+@using ApwPayroll_Application.Features.Employees.Commands.UpdateEmployee
+@model CreateEmployeeCommand
+
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Update">
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">First Name</label>
+                <div class="col-sm-3">
+                    <input class="form-control" asp-for="FirstName" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <label class="col-sm-3 col-form-label">Last Name</label>
+                <div class="col-sm-3">
+                    <input class="form-control" asp-for="LastName" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+        
+                <label class="col-sm-3 col-form-label">Gender</label>
+                <div class="col-sm-3">
+                    @* <input class="form-control" asp-for="Gender" /> *@
+                    @* <span asp-validation-for="Gender" class="text-danger"></span> *@
+                    @Html.DropDownList("Gender", new SelectList(ViewBag.GenderLookup, "Id", "Name"), "Select Gender")
+                    @Html.ValidationMessage("Gender")
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">ESI Number</label>
+                <div class="col-sm-3">
+                    <input class="form-control" asp-for="ESINumber" />
+                    <span asp-validation-for="ESINumber" class="text-danger"></span>
+                </div>
+
+                <label class="col-sm-3 col-form-label">PF Number</label>
+                <div class="col-sm-3">
+                    <input class="form-control" asp-for="PfNumber" />
+                    <span asp-validation-for="PfNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Date of Joining</label>
+                <div class="col-sm-3">
+                    <input class="form-control" asp-for="DateOfJoining" />
+                    <span asp-validation-for="DateOfJoining" class="text-danger"></span>
+                </div>
+
+                <label class="col-sm-3 col-form-label">Insurance Number</label>
+                <div class="col-sm-3">
+                    <input class="form-control" asp-for="InsuranceNumber" />
+                    <span asp-validation-for="InsuranceNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Mobile Number</label>
+                <div class="col-sm-3">
+                    <input class="form-control" asp-for="MobileNumber" />
+                    <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                </div>
+
+                <label class="col-sm-3 col-form-label">Email Id</label>
+                <div class="col-sm-3">
+                    <input class="form-control" asp-for="EmailId" />
+                    <span asp-validation-for="EmailId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+             
+
+                <label class="col-sm-3 col-form-label">User Id</label>
+                <div class="col-sm-3">
+                    <input class="form-control" asp-for="UserId" />
+                    <span asp-validation-for="UserId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Is Broker Exam Pass</label>
+                <div class="col-sm-3">
+                    <input class="form-check-input" type="radio" id="Yes" value="true" checked>
+                    <label class="form-check-label" for="true">Yes</label>
+                    <input class="form-check-input" type="radio" id="No" name="Gender" value="False">
+                    <label class="form-check-label" for="false">No</label>
+                    @*  <input class="form-control" asp-for="IsBrokerExamPass" />
+                    <span asp-validation-for="IsBrokerExamPass" class="text-danger"></span> *@
+                </div>
+
+                <label class="col-sm-3 col-form-label">Started Salary</label>
+                <div class="col-sm-3">
+                    <input class="form-control" asp-for="StartedSalary" />
+                    <span asp-validation-for="StartedSalary" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Salutation</label>
+                <div class="col-sm-3">
+                    @* <input class="form-control" asp-for="Salutation" /> *@
+                    @*  <span asp-validation-for="Salutation" class="text-danger"></span> *@
+                    @Html.DropDownList("Salutation", new SelectList(ViewBag.SalutationLookup, "Id", "Name"), "Select Salutation")
+                    @Html.ValidationMessage("Salutation")
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="offset-sm-3 col-sm-3">
+                    @* <button type="submit" class="btn btn-primary btn-outline-success">Submit</button> *@
+                    <input type="submit" value="Update" class=" btn btn-success btn-sm" />
+                </div>
+                <div class="col-sm-3">
+                    <a class="btn btn-outline-info" asp-controller="Employee" asp-action="">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+

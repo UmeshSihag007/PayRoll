@@ -1,0 +1,300 @@
+﻿@{
+    ViewBag.Title = "Calendar";
+    ViewBag.pTitle = "Calendar";
+    ViewBag.pageTitle = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <style>
+        .table > :not(caption) > * > * {
+            padding: .50rem .3rem !important;
+        }
+    </style>
+
+}
+
+
+<div class="row">
+    <div class="col-6">
+        <div class="card card-h-100">
+            <div class="card-header">
+                <h3 class="text-primary">Welcome, <span id="user-name"></span></h3>
+
+            </div>
+            <div class="card-body">
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <h5 class="text-center mt-3">Mark Attendance  for today (26 June, 2024)</h5>
+                        <p class="text-muted">You can mark your attendance for today. For any other day, please use the edit option below.</p>
+                        <div class="d-flex justify-content-center">
+                            <button for="checkIn" class="btn btn-primary">Check In</button>
+                            <button for="checkOut" class="btn btn-primary ms-3">Check Out</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div id="external-events">
+                        </div>
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="col-6">
+        <div class="card card-h-100">
+            <div class="card-header">
+                <h3 class="text-primary">Attendence</h3>
+            </div>
+            <div class="card-body">
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th>Duration</th>
+                            <th>Remarks</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceTable">
+                        <!-- Rows will be generated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-xl-6">
+    </div><!-- end col -->
+</div>
+<!--end row-->
+
+<div style='clear:both'></div>
+
+<!-- Add New Event MODAL -->
+<div class="modal fade" id="event-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header p-3 bg-info-subtle">
+                <h5 class="modal-title" id="modal-title">Event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form class="needs-validation" name="event-form" id="form-event" novalidate>
+                    <div class="text-end">
+                        <a href="#" class="btn btn-sm btn-soft-primary" id="edit-event-btn" data-id="edit-event" onclick="editEvent(this)" role="button">Edit</a>
+                    </div>
+                    <div class="event-details">
+                        <div class="d-flex mb-2">
+                            <div class="flex-grow-1 d-flex align-items-center">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="ri-calendar-event-line text-muted fs-16"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="d-block fw-semibold mb-0" id="event-start-date-tag"></h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="flex-shrink-0 me-3">
+                                <i class="ri-time-line text-muted fs-16"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="d-block fw-semibold mb-0"><span id="event-timepicker1-tag"></span> - <span id="event-timepicker2-tag"></span></h6>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="flex-shrink-0 me-3">
+                                <i class="ri-map-pin-line text-muted fs-16"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="d-block fw-semibold mb-0"> <span id="event-location-tag"></span></h6>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0 me-3">
+                                <i class="ri-discuss-line text-muted fs-16"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <p class="d-block text-muted mb-0" id="event-description-tag"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row event-form">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label">Type</label>
+                                <select class="form-select d-none" name="category" id="event-category" required>
+                                    <option value="bg-danger-subtle">Danger</option>
+                                    <option value="bg-success-subtle">Success</option>
+                                    <option value="bg-primary-subtle">Primary</option>
+                                    <option value="bg-info-subtle">Info</option>
+                                    <option value="bg-dark-subtle">Dark</option>
+                                    <option value="bg-warning-subtle">Warning</option>
+                                </select>
+                                <div class="invalid-feedback">Please select a valid event category</div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label">Event Name</label>
+                                <input class="form-control d-none" placeholder="Enter event name" type="text" name="title" id="event-title" required value="" />
+                                <div class="invalid-feedback">Please provide a valid event name</div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label>Event Date</label>
+                                <div class="input-group d-none">
+                                    <input type="text" id="event-start-date" class="form-control flatpickr flatpickr-input" placeholder="Select date" readonly required>
+                                    <span class="input-group-text"><i class="ri-calendar-event-line"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                        <div class="col-12" id="event-time">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Start Time</label>
+                                        <div class="input-group d-none">
+                                            <input id="timepicker1" type="text" class="form-control flatpickr flatpickr-input" placeholder="Select start time" readonly>
+                                            <span class="input-group-text"><i class="ri-time-line"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">End Time</label>
+                                        <div class="input-group d-none">
+                                            <input id="timepicker2" type="text" class="form-control flatpickr flatpickr-input" placeholder="Select end time" readonly>
+                                            <span class="input-group-text"><i class="ri-time-line"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="event-location">Location</label>
+                                <div>
+                                    <input type="text" class="form-control d-none" name="event-location" id="event-location" placeholder="Event location">
+                                </div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                        <input type="hidden" id="eventid" name="eventid" value="" />
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control d-none" id="event-description" placeholder="Enter a description" rows="3" spellcheck="false"></textarea>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-soft-danger" id="btn-delete-event"><i class="ri-close-line align-bottom"></i> Delete</button>
+                        <button type="submit" class="btn btn-success" id="btn-save-event">Add Event</button>
+                    </div>
+                </form>
+            </div>
+        </div> <!-- end modal-content-->
+    </div> <!-- end modal dialog-->
+</div> <!-- end modal-->
+<!-- end modal-->
+@section scripts {
+    <!-- calendar min js -->
+    <script src="~/assets/libs/fullcalendar/index.global.min.js"></script>
+
+    <!-- Calendar init -->
+    <script src="~/assets/js/pages/calendar.init.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const month = 5; // June (0-indexed, so 5 means June)
+            const year = 2024;
+            const weekends = ["02/06/2024", "09/06/2024", "16/06/2024", "23/06/2024", "30/06/2024"];
+
+            function daysInMonth(month, year) {
+                return new Date(year, month + 1, 0).getDate();
+            }
+
+            const totalDays = daysInMonth(month, year);
+            const tableBody = document.getElementById("attendanceTable");
+
+            for (let day = 1; day <= totalDays; day++) {
+                const date = new Date(year, month, day);
+                const dateString = date.toLocaleDateString('en-GB'); // Format: DD/MM/YYYY
+
+                const row = document.createElement("tr");
+
+                const dateCell = document.createElement("td");
+                dateCell.textContent = dateString;
+                row.appendChild(dateCell);
+
+                if (weekends.includes(dateString)) {
+                    const weekendCell = document.createElement("td");
+                    weekendCell.textContent = "Weekend";
+                    weekendCell.colSpan = 6; // Merge all 6 columns
+                    weekendCell.className = "text-center bg-success-subtle";
+                    //weekendCell.className = "bg-success-subtle";
+                    row.appendChild(weekendCell);
+                } else {
+                    const statusCell = document.createElement("td");
+                    statusCell.textContent = "";
+                    row.appendChild(statusCell);
+
+                    const checkInCell = document.createElement("td");
+                    checkInCell.textContent = "";
+                    row.appendChild(checkInCell);
+
+                    const checkOutCell = document.createElement("td");
+                    checkOutCell.textContent = "";
+                    row.appendChild(checkOutCell);
+
+                    const durationCell = document.createElement("td");
+                    durationCell.textContent = "";
+                    row.appendChild(durationCell);
+
+                    const remarksCell = document.createElement("td");
+                    remarksCell.textContent = "";
+                    row.appendChild(remarksCell);
+
+                    const editCell = document.createElement("td");
+                    const editButton = document.createElement("button");
+                    editButton.textContent = "Edit";
+                    editButton.className = "btn btn-primary btn-sm";
+                    editCell.appendChild(editButton);
+                    row.appendChild(editCell);
+                }
+
+                tableBody.appendChild(row);
+            }
+        });
+    </script>
+}

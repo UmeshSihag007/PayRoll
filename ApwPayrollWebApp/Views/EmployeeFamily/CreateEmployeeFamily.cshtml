@@ -1,0 +1,143 @@
+﻿@using ApwPayrollWebApp.Models
+
+@model EmployeeCreateViewModel
+@{
+    ViewData["Title"] = "CreateEmployeeFamily";
+    Layout = "~/Views/Shared/Registration/_RegistrationLayout.cshtml";
+}
+
+
+
+<div class="tab-content">
+    <div class="tab-pane active" id="familyDetail" role="tabpanel">
+        <div>
+            <table class="table" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th> DOB</th>
+                        <th>Relation</th>
+                    </tr>
+                </thead>
+                <tbody style="width:100%;">
+                    @if (ViewBag.EmployeeFamilyData != null)
+                    {
+                        @foreach (var item in ViewBag.EmployeeFamilyData)
+                        {
+                            <tr>
+                                <td>@(ViewBag.EmployeeFamilyData.IndexOf(item) + 1)</td>
+                                <td>@item.Name</td>
+                                <td>@item.DOB</td>
+                                <td>@item.RelationType</td>
+
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+        <form asp-action="CreateEmployeeFamily" asp-controller="EmployeeFamily" method="post">
+            <div class="container">
+                <div class="row">
+                        <input asp-for="CreateEmployeeFamily.Id" class="form-control " hidden   />
+                    <div class="col-3">
+                        <label asp-for="CreateEmployeeFamily.Name"> Name </label>
+                        <input asp-for="CreateEmployeeFamily.Name" class="form-control" />
+
+                    </div>
+                    <div class="col-3">
+                        <label asp-for="CreateEmployeeFamily.Gender"> Gender </label>
+                        <select asp-for="CreateEmployeeFamily.Gender" class="form-control form-control-sm">
+                            <option value="" selected disabled>Select Course</option>
+                            @foreach (var gender in ViewBag.GenderLookup)
+                            {
+                                <option value="@gender.Id">@gender.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <label> DOB </label>
+                        <input asp-for="CreateEmployeeFamily.DOB" class="form-control" />
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-success mt-4"> Sumbit</button>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </form>
+        @if (ViewBag.EmployeeChildData != null)
+        {
+
+            <div>
+                <table class="table" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Name</th>
+                            <th> DOB</th>
+                            <th>Relation</th>
+                        </tr>
+                    </thead>
+                    <tbody style="width:100%;">
+                        @if (ViewBag.EmployeeChildData != null)
+                        {
+                            @foreach (var item in ViewBag.EmployeeChildData)
+                            {
+                                <tr>
+                                    <td>@(ViewBag.EmployeeFamilyData.IndexOf(item) + 1)</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.DOB</td>
+                                    <td>@item.RelationType</td>
+                                    <td>
+                                        <a asp-action="Update" asp-all-route asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                   
+
+                                        <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'experience', '@Url.Action("Delete", "EmployeeExperience")') ">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+        }
+        <div class="row mt-3 mb-2">
+            <div class="col-lg-12">
+                <div class="hstack gap-2 justify-content-end">
+
+                    <button class="btn btn-outline-info">
+                        Skip
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <!-- dropzone min -->
+    <script src="~/assets/libs/dropzone/dropzone-min.js"></script>
+
+    <!--crypto-kyc init-->
+    <script src="~/assets/js/pages/crypto-kyc.init.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

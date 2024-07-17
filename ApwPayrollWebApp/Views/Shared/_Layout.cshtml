@@ -1,0 +1,50 @@
+﻿
+<!doctype html>
+<html lang="en" data-theme="corporate" data-layout="vertical" data-sidebar-visibility="show" data-topbar="light" data-sidebar="light" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<head>
+    <!-- For toaster Alert 2   -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+    @Html.Partial("~/Views/Shared/_title_meta.cshtml")
+    @RenderSection("styles", required: false)
+    @Html.Partial("~/Views/Shared/_head_css.cshtml")
+
+</head>
+<body>
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+        @Html.Partial("~/Views/Shared/_menu.cshtml")
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+                    @Html.Partial("~/Views/Shared/_page_title.cshtml")
+
+                    @RenderBody()
+                </div>
+            </div>
+
+            @RenderSection("externalhtml", required: false)
+            @Html.Partial("~/Views/Shared/_footer.cshtml")
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- END layout-wrapper -->
+    @* @Html.Partial("~/Views/Shared/_customizer.cshtml") *@
+    @* @Html.Partial("~/Views/Shared/_customizer.cshtml") *@
+    @* @Html.Partial("~/Views/Shared/_ValidationScriptsPartial") *@
+    @Html.Partial("~/Views/Shared/_vendor_scripts.cshtml")
+
+    @await Html.PartialAsync("_notificationPartial")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

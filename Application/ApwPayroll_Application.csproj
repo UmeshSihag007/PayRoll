@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="CouchbaseNetClient" Version="3.6.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="MediatR" Version="12.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ApwPayroll_Shared\ApwPayroll_Shared.csproj" />
+    <ProjectReference Include="..\Domain\ApwPayroll_Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Branches\Commands\" />
+    <Folder Include="Features\Departments\Commands\" />
+    <Folder Include="Features\Designations\Commands\" />
+    <Folder Include="Features\Employees\EmployeeAddresses\Queries\" />
+    <Folder Include="Features\Employees\EmployeeContact\Queries\" />
+    <Folder Include="Features\Employees\EmployeeLanguages\Queries\" />
+    <Folder Include="Features\Employees\EmployeePersonalDetails\Queries\" />
+    <Folder Include="Features\Employees\EmployeeEducations\Quories\GetByIdEmployeeQualifcation\" />
+    <Folder Include="Features\Menus\Commands\DeleteMenu\" />
+    <Folder Include="Features\Menus\Commands\UpdateMenu\" />
+    <Folder Include="Features\Menus\MenuTypes\Commands\DeleteMenuType\" />
+    <Folder Include="Features\Menus\MenuTypes\Commands\UpdateMenuType\" />
+    <Folder Include="Features\Menus\MenuTypes\Queries\GetMenuTypeById\" />
+    <Folder Include="Features\Menus\Queries\GetMenus\" />
+    <Folder Include="Features\Menus\Queries\GetMenuById\" />
+    <Folder Include="Features\Users\Queries\" />
+    <Folder Include="Interfaces\Repositories\NewFolder\" />
+  </ItemGroup>
+
+</Project>

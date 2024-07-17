@@ -1,0 +1,339 @@
+﻿ @using ApwPayrollWebApp.Models
+
+@model EmployeeCreateViewModel
+@{
+    ViewData["Title"] = "CreateEmployeeEducation";
+    Layout = "~/Views/Shared/Registration/_RegistrationLayout.cshtml";
+}
+
+<div class="tab-content">
+    <div class="tab-pane active" id="EducationQualification" role="tabpanel">
+        <label class="fs-3 text-danger"> Education</label><hr />
+        <div class=" d-flex justify-content-end">
+            <button id="toggleButton" class="btn form-control-sm btn-success"> Add</button>
+        </div>
+        <div id="detailsSection">
+            <form asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" method="post">
+                <div class=" row mt-1 mb-2">
+                    <input type="hidden" asp-for="Qualification.Id" />
+                    <div class="col-lg-3">
+                        <label asp-for="Qualification.CourseId" class="form-label">Course</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="ri-arrow-down-s-fill"></i>
+                            </span>
+                            <select asp-for="Qualification.CourseId" class="form-control form-control-sm">
+                                <option value="" selected disabled>Select Course</option>
+                                @foreach (var course in ViewBag.Course)
+                                {
+                                    <option value="@course.Id">@course.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <span asp-validation-for="Qualification.CourseId" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-lg-3">
+                        <label asp-for="Qualification.UniversityBoard" class="form-label">University/Board</label>
+                        <div class="input-group">
+                            <input asp-for="Qualification.UniversityBoard" type="text" class="form-control form-control " placeholder="Enter University/Board" />
+                        </div>
+                        <span asp-validation-for="Qualification.UniversityBoard" class="text-danger"></span>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Marks</label>
+                        <div class="input-group">
+                            <input asp-for="Qualification.ObtainMarks" type="text" class=" form-control form-control " placeholder="Obtained" />
+                            <span asp-validation-for="Qualification.ObtainMarks" class="text-danger"></span>
+                            <input asp-for="Qualification.TotalMarks" type="text" class=" form-control form-control " placeholder="Total" />
+                            <span asp-validation-for="Qualification.TotalMarks" class="text-danger"></span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label asp-for="Qualification.FromDate" class="form-label">Session</label>
+                            <div class="input-group">
+                                <select asp-for="Qualification.FromDate" data-provider="flatpickr" class="form-control form-control" required>
+                                    <option value="" disabled selected>Start Year</option>
+                                    @foreach (var year in ViewBag.Years)
+                                    {
+                                        <option value="@year">@year</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="Qualification.ToDate" class="text-danger"></span>
+
+                                <select asp-for="Qualification.ToDate" data-provider="flatpickr" class="form-control form-control" required>
+                                    <option value="" disabled selected>End Year</option>
+                                    @foreach (var year in ViewBag.Years)
+                                    {
+                                        <option value="@year">@year</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="Qualification.ToDate" class="text-danger"></span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-1 mb-2">
+
+                    <div class="col">
+                        <label asp-for="Qualification.Specification" class="form-label">Specification</label>
+                        <div class="input-group">
+                            <input asp-for="Qualification.Specification" type="text" class="form-control form-control " placeholder="Enter specification" />
+                        </div>
+                        <span asp-validation-for="Qualification.Specification" class="text-danger"></span>
+
+                    </div>
+                    <button type="submit" class="btn form-control-sm btn-success"> Add</button>
+
+                </div>
+            </form>
+
+
+        </div>
+
+        @if (ViewBag.QualificationList != null || ViewBag == null)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sr.No</th>
+                        <th>Course</th>
+                        <th>University/Board</th>
+                        <th>Marks</th>
+                        <th>Session</th>
+                        <th>Specification</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.QualificationList)
+                    {
+                        <tr>
+                            <td>@(ViewBag.QualificationList.IndexOf(item) + 1)</td>
+                            <td>@item.Course.Name</td>
+                            <td>@item.UniversityBoard</td>
+                            <td>@item.ObtainMarks</td>
+                            <td>@item.FromDate - @item.ToDate</td>
+                            <td>@item.Specification</td>
+                            <td>
+                                <a asp-action="Update" asp-all-route asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a class="btn btn-sm btn-danger" onclick="confirmDelete(@item.Id, 'education')">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+
+        
+                             </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        @* Experience *@
+
+        <label class="fs-3 text-danger"> Experience</label><hr />
+        <div class="d-flex justify-content-end">
+            <button id="toggleButton1" class="btn form-control-sm btn-success  "> Add</button>
+        </div>
+        <div id="detailsSection1" >
+            <form asp-action="CreateEmployeeExperience" asp-controller="EmployeeExperience" method="post">
+             
+                <input type="hidden" asp-for="Experiences.Id" />
+                <div class="row mt-1 mb-2">
+                    <div class="col-lg-4">
+                        <label asp-for="Experiences.ComanyName" class="form-label">Company Name</label>
+                        <div class=" input-group">
+                            <input asp-for="Experiences.ComanyName" type="text" class="form-control form-control " placeholder="Enter company name" />
+                        </div>
+                        <span asp-validation-for="Experiences.ComanyName" class=" text-danger"></span>
+                    </div>
+                    <div class="col-lg-4">
+                        <label asp-for="Experiences.ComanyAddress" class="form-label">Company Address</label>
+                        <div class=" input-group">
+                            <input asp-for="Experiences.ComanyAddress" type="text" class="form-control form-control " placeholder="Enter company address" />
+                        </div>
+                        <span asp-validation-for="Experiences.ComanyAddress" class=" text-danger"></span>
+                    </div>
+                    <div class="col-lg-4">
+                        <label asp-for="Experiences.Designation" class="form-label">Designation</label>
+                        <div class=" input-group">
+                            <input asp-for="Experiences.Designation" type="text" class="form-control form-control " placeholder="Enter designation name" />
+                        </div>
+                        <span asp-validation-for="Experiences.Designation" class=" text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mt-1 mb-2">
+                    <div class="col-lg-4">
+                        <label asp-for="Experiences.Industry" class="form-label">Industry</label>
+                        <div class=" input-group">
+                            <input asp-for="Experiences.Industry" type="text" class="form-control form-control " placeholder="Enter industry name" />
+                        </div>
+                        <span asp-validation-for="Experiences.Industry" class=" text-danger"></span>
+                    </div>
+                    <div class="col-lg-4">
+                        <label asp-for="Experiences.EmployeeCode" class="form-label">Employee Code</label>
+                        <div class=" input-group">
+                            <input asp-for="Experiences.EmployeeCode" type="text" class="form-control form-control " placeholder="Enter employee code" />
+                        </div>
+                        <span asp-validation-for="Experiences.EmployeeCode" class=" text-danger"></span>
+                    </div>
+                    <div class="col-lg-4">
+                        <label asp-for="Experiences.AnnualInCome" class="form-label">Annual Income</label>
+                        <div class=" input-group">
+                            <input asp-for="Experiences.AnnualInCome" type="text" class="form-control form-control" placeholder="Enter annual income" />
+                        </div>
+                        <span asp-validation-for="Experiences.AnnualInCome" class=" text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mt-1 mb-2">
+                    <div class="col-lg-4">
+                        <label asp-for="Experiences.InsuranceNumber" class="form-label">Insurance Number</label>
+                        <div class=" input-group">
+                            <input asp-for="Experiences.InsuranceNumber" type="text" class="form-control form-control" placeholder="Enter insurance number" />
+                        </div>
+                        <span asp-validation-for="Experiences.InsuranceNumber" class=" text-danger"></span>
+                    </div>
+                    <div class="col-lg-4">
+                        <label asp-for="Experiences.StartDate" data-provider="flatpickr" class="form-label">Start Date</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="ri-calendar-event-fill"></i>
+                            </span>
+                            <input asp-for="Experiences.StartDate" data-provider="flatpickr" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter date" />
+                        </div>
+                        <span asp-validation-for="Experiences.StartDate" class=" text-danger"></span>
+                    </div>
+                    <div class="col-lg-4">
+                        <label asp-for="Experiences.CompletedDate" class="form-label">Completed Date</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="ri-calendar-event-fill"></i>
+                            </span>
+                            <input asp-for="Experiences.CompletedDate" data-provider="flatpickr" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter date" />
+                        </div>
+                        <span asp-validation-for="Experiences.CompletedDate" data-provider="flatpickr" class=" text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mt-1 mb-2">
+                    <div class="col-lg-12">
+                        <div class="hstack gap-2 justify-content-end">
+
+                            <button asp-action="CreateEmployeeExperience" asp-controller="EmployeeExperience" type="submit" class="btn btn-secondary">
+                                ADD
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+
+            @if (ViewBag.ExperienceList != null || ViewBag == null)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>CompanyName</th>
+                            <th>CompanyAddress</th>
+                            <th>Designation</th>
+                            <th>Duration</th>
+                            <th>Industry</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in  ViewBag.ExperienceList)
+                        {
+                            <tr>
+                                <td>@(ViewBag.ExperienceList.IndexOf(item) + 1)</td>
+                                <td>@item.ComanyName</td>
+                                <td>@item.ComanyAddress</td>
+                                <td>@item.Designation</td>
+                                <td>@item.StartDate - @item.CompletedDate</td>
+                                <td>@item.Industry</td>
+                                <td>
+                                    <a asp-action="Update" asp-controller="EmployeeExperience" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                      <a class="btn btn-sm btn-danger"  onclick="confirmDelete('@item.Id', 'experience', '@Url.Action("Delete", "EmployeeExperience")') ">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+        </div>        
+        <div class="row mt-1 mb-2">
+            <div class="col-lg-12">
+                <div class="hstack gap-2 justify-content-end">
+                    @*  <button type="reset" class="btn btn-outline-danger">
+                    Cancel
+                    </button> *@
+                    <button type="submit" class="btn btn-secondary">
+                        Next->
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Including jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@Html.Partial("_DeleteConfirmation")
+
+<script>
+    function confirmDelete(id, type) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let url;
+                if (type === 'education') {
+                    url = '@Url.Action("Delete", "EmployeeEducation")/' + id;
+                } else if (type === 'experience') {
+                    url = '@Url.Action("Delete", "EmployeeExperience")/' + id;
+                }
+                window.location.href = url;
+            }
+        })
+    }
+</script>
+
+<script>
+    //to show /hide the education form
+    $(document).ready(function () {
+        $('#toggleButton').click(function () {
+            $('#detailsSection').toggle();
+        });
+    });
+
+
+    //to show /hide the experience form
+    $(document).ready(function () {
+        $('#toggleButton1').click(function () {
+            $('#detailsSection1').toggle();
+        });
+    });
+</script>
+
+
+

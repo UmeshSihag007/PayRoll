@@ -1,0 +1,22 @@
+﻿@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="ladylip" data-sidebar-size="lg">
+<head>
+    @Html.Partial("~/Views/Shared/_title_meta.cshtml")
+    <link href="~/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    @Html.Partial("~/Views/Shared/_head_css.cshtml")
+</head>
+<body>
+    <div class="wrapper">
+
+        @RenderBody()
+    </div>
+    <script src="~/assets/libs/swiper/swiper-bundle.min.js"></script>
+
+    <!-- landing init -->
+    <script src="~/assets/js/pages/landing.init.js"></script>
+</body>
+</html>

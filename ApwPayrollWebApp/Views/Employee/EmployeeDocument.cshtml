@@ -1,0 +1,290 @@
+﻿ @using ApwPayrollWebApp.Models
+@model EmployeeCreateViewModel
+@{
+    ViewData["Title"] = "EmployeeDocument";
+    Layout = "~/Views/Shared/Registration/_RegistrationLayout.cshtml";
+}
+<div class="tab-content">
+    <div class="tab-pane active" id="documents" role="tabpanel" style=" overflow:hidden;">
+
+        <div class="row mb-2">
+
+            <div class="col-lg-4">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="card mb-3 " style="max-width: 400px; box-shadow:rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+
+                        <h5 class="card-title text-success mt-1" style=" text-align:center;">Aadhar Card</h5>
+                        <div class="row g-0">
+                            <div class="col-md-4" style="cursor: pointer;" onclick="document.getElementById('fileInputAadhar').click();">
+                                <img id="imagePreviewAadhar" src="#" class="img-fluid rounded-start" style="max-width:100%; cursor:pointer; display: none;" />
+                                <i id="iconPlaceholderAadhar" class="bi bi-person-vcard position-absolute top-50 start-50 translate-middle text-muted mt-3 ms-2" style="font-size: 5rem;"></i>
+                                <input id="fileInputAadhar" type="file" asp-for="documentCommand.Url" class="form-control-file" style="display: none;" onchange="previewImage(this, 'imagePreviewAadhar', 'iconPlaceholderAadhar');" required />
+                                <span asp-validation-for="documentCommand.Url" class="text-danger"></span>
+                                <input id="fileInputAadhar" value="2" asp-for="documentCommand.TypeId" class="form-control-file" style="display: none;" />
+                                <input id="fileInputAadhar" value="2" asp-for="documentCommand.EmployeeDocumentTypeId" class="form-control-file" style="display: none;" />
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <input asp-for="Employee.AadharNumber" type="text" placeholder="Enter Aadhar number" class="form-control " style="border: 2px solid #28a745; border-radius: 0.5rem;" />
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg">
+                                    <div class="hstack gap-2 justify-content-end mt-5 mb-3">
+                                        <button type="submit" class="btn btn-sm btn-success  ">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="col-lg-4">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="card mb-3" style="max-width: 400px;  box-shadow:rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                        <h5 class="card-title  text-success mt-1" style="text-align:center;">Voter Card</h5>
+                        <div class="row g-0">
+                            <div class="col-md-4" style="cursor: pointer;" onclick="document.getElementById('fileInputVoter').click();">
+                                <img id="imagePreviewVoter" src="#" class="img-fluid rounded-start" style="max-width:100%; cursor:pointer; display: none;" />
+                                <i id="iconPlaceholderVoter" class="bi bi-person-vcard position-absolute top-50 start-50 translate-middle text-muted mt-3 ms-2" style="font-size: 5rem;"></i>
+                                <input id="fileInputVoter" type="file" asp-for="documentCommand.Url" class="form-control-file" style="display: none;" onchange="previewImage(this, 'imagePreviewVoter', 'iconPlaceholderVoter');" required />
+                                <input id="fileInputVoter" value="5" asp-for="documentCommand.TypeId" class="form-control-file" style="display: none;" />
+                                <input id="fileInputVoter" value="4" asp-for="documentCommand.EmployeeDocumentTypeId" class="form-control-file" style="display: none;" />
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <input asp-for="Employee.VoterId" type="text" placeholder="Enter voter card number" class="form-control" style="border: 2px solid #28a745; border-radius: 0.5rem;" />
+                                    <span asp-validation-for="documentCommand.Url" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg">
+                                    <div class="hstack gap-2 justify-content-end mt-5 mb-3">
+                                        <button type="submit" class="btn btn-sm btn-success">Submit</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="col-lg-4">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="card mb-3" style="max-width: 400px;  box-shadow:rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                        <h5 class="card-title text-success mt-1" style="text-align:center;">Pan Card</h5>
+                        <div class="row g-0">
+                            <div class="col-md-4" style="cursor: pointer;" onclick="document.getElementById('fileInputPan').click();">
+                                <img id="imagePreviewPan" src="#" class="img-fluid rounded-start" style="max-width:100%; cursor:pointer; display: none;" />
+                                <i id="iconPlaceholderPan" class="bi bi-person-vcard position-absolute top-50 start-50 translate-middle text-muted mt-3 ms-2" style="font-size: 5rem;"></i>
+                                <input id="fileInputPan" type="file" asp-for="documentCommand.Url" class="form-control-file" style="display: none;" onchange="previewImage(this, 'imagePreviewPan', 'iconPlaceholderPan');" required />
+                                <input id="fileInputPan" value="4" asp-for="documentCommand.TypeId" class="form-control-file" style="display: none;" />
+                                <input id="fileInputPan" value="3" asp-for="documentCommand.EmployeeDocumentTypeId" class="form-control-file" style="display: none;" />
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+
+
+                                    <input asp-for="Employee.PanNumber" type="text" placeholder="Enter pan card number" class="form-control " style="border: 2px solid #28a745; border-radius: 0.5rem;" />
+
+
+                                    <span asp-validation-for="documentCommand.Url" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg">
+                                    <div class="hstack gap-2 justify-content-end mt-5 mb-3">
+                                        <button type="submit" class="btn btn-sm btn-success ">Submit</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+        <div class="row mt-1 mb-2">
+
+            <div class="col-lg-4">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="card mb-3" style="max-width: 400px; box-shadow:rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                        <h5 class="card-title text-success mt-1" style="text-align:center;">Ration Card</h5>
+                        <div class="row g-0">
+                            <div class="col-md-4" style="cursor: pointer;" onclick="document.getElementById('fileInputRation').click();">
+                                <img id="imagePreviewRation" src="#" class="img-fluid rounded-start" style="max-width:100%; cursor:pointer; display: none;" />
+                                <i id="iconPlaceholderRation" class="bi bi-person-vcard position-absolute top-50 start-50 translate-middle text-muted mt-3 ms-2" style="font-size: 5rem;"></i>
+                                <input id="fileInputRation" type="file" asp-for="documentCommand.Url" class="form-control-file" style="display: none;" onchange="previewImage(this, 'imagePreviewRation', 'iconPlaceholderRation');" required />
+                                <input id="fileInputRation" value="6" asp-for="documentCommand.TypeId" class="form-control-file" style="display: none;" />
+                                <input id="fileInputRation" value="5" asp-for="documentCommand.EmployeeDocumentTypeId" class="form-control-file" style="display: none;" />
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+
+
+                                    <input asp-for="Employee.RationCardNumber" type="text" placeholder="Enter ration card number" class="form-control" style="border: 2px solid #28a745; border-radius: 0.5rem;" />
+
+
+                                    <span asp-validation-for="documentCommand.Url" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg">
+                                    <div class="hstack gap-2 justify-content-end mt-5 mb-3">
+                                        <button type="submit" class="btn btn-sm btn-success ">Submit</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="col-lg-4">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="card mb-3" style="max-width: 400px;  box-shadow:rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                        <h5 class="card-title text-success mt-1" style="text-align:center;">License</h5>
+                        <div class="row g-0">
+                            <div class="col-md-4" style="cursor: pointer;" onclick="document.getElementById('fileInputLicense').click();">
+                                <img id="imagePreviewLicense" src="#" class="img-fluid rounded-start" style="max-width:100%; cursor:pointer; display: none;" />
+                                <i id="iconPlaceholderLicense" class="bi bi-person-vcard position-absolute top-50 start-50 translate-middle text-muted mt-3 ms-2" style="font-size: 5rem;"></i>
+                                <input id="fileInputLicense" type="file" asp-for="documentCommand.Url" class="form-control-file" style="display: none;" onchange="previewImage(this, 'imagePreviewLicense', 'iconPlaceholderLicense');" required />
+                                <input id="fileInputLicense" value="7" asp-for="documentCommand.TypeId" class="form-control-file" style="display: none;" />
+                                <input id="fileInputLicense" value="6" asp-for="documentCommand.EmployeeDocumentTypeId" class="form-control-file" style="display: none;" />
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+
+
+                                    <input asp-for="Employee.LicenceNumber" type="text" placeholder="Enter license number" class="form-control " style="border: 2px solid #28a745; border-radius: 0.5rem;" />
+
+
+                                    <span asp-validation-for="documentCommand.Url" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg">
+                                    <div class="hstack gap-2 justify-content-end mt-5 mb-3">
+                                        <button type="submit" class="btn btn-sm btn-success ">Submit</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="col-lg-4">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="card mb-3" style="max-width: 400px; box-shadow:rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                        <h5 class="card-title text-success mt-1" style="text-align:center;">Passport</h5>
+                        <div class="row g-0">
+                            <div class="col-md-4" style="cursor: pointer;" onclick="document.getElementById('fileInputPassport').click();">
+                                <img id="imagePreviewPassport" src="#" class="img-fluid rounded-start" style="max-width:100%; cursor:pointer; display: none;" />
+                                <i id="iconPlaceholderPassport" class="bi bi-person-vcard position-absolute top-50 start-50 translate-middle text-muted mt-3 ms-2" style="font-size: 5rem;"></i>
+                                <input id="fileInputPassport" type="file" asp-for="documentCommand.Url" class="form-control-file" style="display: none;" onchange="previewImage(this, 'imagePreviewPassport', 'iconPlaceholderPassport');" required />
+                                <input id="fileInputPassport" value="8" asp-for="documentCommand.TypeId" class="form-control-file" style="display: none;" />
+                                <input id="fileInputPassport" value="7" asp-for="documentCommand.EmployeeDocumentTypeId" class="form-control-file" style="display: none;" />
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+
+
+                                    <input asp-for="Employee.PassportNumber" type="text" placeholder="Enter passport number" class="form-control    " style="border: 2px solid #28a745; border-radius: 0.5rem;" />
+
+
+                                    <span asp-validation-for="documentCommand.Url" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg">
+                                    <div class="hstack gap-2 justify-content-end mt-5 mb-3">
+                                        <button type="submit" class="btn btn-sm btn-success ">Submit</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+
+        <div class="row mt-1 mb-2">
+            <div class="col-lg-12">
+                <div class="hstack gap-2 justify-content-end">
+                    <button type="button" class="btn btn-outline-success">
+                        Skip
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function previewImage(input, imagePreviewId, iconPlaceholderId) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imagePreview = document.getElementById(imagePreviewId);
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    document.getElementById(iconPlaceholderId).style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                // Revert to the default state if no file is selected
+                const imagePreview = document.getElementById(imagePreviewId);
+                imagePreview.src = "#";
+                imagePreview.style.display = 'none';
+                document.getElementById(iconPlaceholderId).style.display = 'block';
+            }
+        }
+    </script>
+
+    @* <script>
+    //for load the image
+    function previewImage(input, imageId) {
+    if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+    document.getElementById(imageId).src = e.target.result;
+    }
+    reader.readAsDataURL(input.files[0]);
+    }
+    }
+    </script> *@
+
+    @section scripts {
+        <!-- dropzone min -->
+        <script src="~/assets/libs/dropzone/dropzone-min.js"></script>
+
+        <!--crypto-kyc init-->
+        <script src="~/assets/js/pages/crypto-kyc.init.js"></script>
+
+        <!-- App js -->
+        <script src="~/assets/js/app.js"></script>
+
+        <partial name="_ValidationScriptsPartial" />
+    }
