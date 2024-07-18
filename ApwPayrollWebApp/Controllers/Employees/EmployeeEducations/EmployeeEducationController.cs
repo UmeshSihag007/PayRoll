@@ -52,6 +52,8 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                         FromDate = qualification.FromDate,
                         UniversityBoard = qualification.UniversityBoard,
                     };
+               
+             
                 }
 
                 var experience = employeeExperienceData.Data.Find(x => x.Id == id);
@@ -71,12 +73,13 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                         StartDate = experience.StartDate,
                         Industry = experience.Industry,
                     };
+          
                 }
             }
 
             ViewBag.ExperienceList = employeeExperienceData.Data;
             ViewBag.QualificationList = employeeEducationData.Data;
-            return View(model);
+            return View(model); ;
         }
 
 
@@ -109,8 +112,8 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                 }
                 else
                 {
-                    await _mediator.Send(new UpdateEmployeeQualificationCommand((int)commond.Qualification.Id, commond.Qualification));
-                    var data = await _mediator.Send(commond.Qualification);
+                   var data= await _mediator.Send(new UpdateEmployeeQualificationCommand((int)commond.Qualification.Id, commond.Qualification));
+                  //  var data = await _mediator.Send(commond.Qualification);
                 
                     if (data.code == 200)
                     {
@@ -120,8 +123,15 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                     {
                         Notify(data.Messages, null, data.code);
                     }
+                    commond = new EmployeeCreateViewModel();
 
-                    return RedirectToAction("CreateEmployeeEducation");
+                    // Reinitialize view bags if necessary
+                    var employeeEducationData = await _mediator.Send(new GetEmployeeQualificationQuery());
+                    var employeeExperienceData = await _mediator.Send(new GetEmployeeExperienceQuery());
+                    ViewBag.ExperienceList = employeeExperienceData.Data;
+                    ViewBag.QualificationList = employeeEducationData.Data;
+
+                    return View(commond);
                 }
             }
 
