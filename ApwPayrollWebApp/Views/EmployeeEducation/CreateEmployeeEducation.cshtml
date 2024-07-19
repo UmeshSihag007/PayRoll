@@ -10,9 +10,10 @@
     <div class="tab-pane active" id="EducationQualification" role="tabpanel">
         <label class="fs-3 text-danger"> Education</label><hr />
         <div class=" d-flex justify-content-end">
-            <button id="toggleButton" class="btn form-control-sm btn-success"> Add</button>
+             
+            <button id="cancelbtn" class="btn form-control-sm btn-outline-danger" style="display:none;">Cancel</button>
         </div>
-        <div id="detailsSection" style="display:none;">
+        <div id="detailsSection">
             <form asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" method="post">
                 <div class=" row mt-1 mb-2">
                     <input type="hidden" asp-for="Qualification.Id" />
@@ -86,8 +87,8 @@
                         <span asp-validation-for="Qualification.Specification" class="text-danger"></span>
 
                     </div>
-                    <button type="submit" class="btn form-control-sm btn-success" id="addBtn" > Add</button>
-                   <button  class="btn form-control-sm btn-info" id="updatBtn" style=" display:none;"  >Update</button>
+                    <button type="submit" class="btn form-control-sm btn-success" id="addBtn"> Add</button>
+                    <button type="submit" class="btn form-control-sm btn-success" style="display:none;" id="updateBtn">Update</button>
 
                 </div>
             </form>
@@ -120,12 +121,13 @@
                             <td>@item.FromDate - @item.ToDate</td>
                             <td>@item.Specification</td>
                             <td>
-                                <a asp-action="Update" asp-all-route asp-route-id="@item.Id" class="btn btn-sm btn-info batn" onclick="hello(@item.Id)">
-                                    <i class="bi bi-pencil-square"></i>
+                                <a asp-action="Update" asp-all-route asp-route-id="@item.Id" class="btn btn-sm btn-info" id="editBtn">
+                                    <i class="bi bi-pencil-square" ></i>
                                 </a>
-                                <a class="btn btn-sm btn-danger" onclick="confirmDelete(@item.Id, 'education')">
+                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'experience', '@Url.Action("Delete", "EmployeeEducation")')"    >
                                     <i class="bi bi-trash-fill"></i>
                                 </a>
+
         
                              </td>
                         </tr>
@@ -133,13 +135,13 @@
                 </tbody>
             </table>
         }
-        @* Experience *@
+         @* Experience  *@
 
         <label class="fs-3 text-danger"> Experience</label><hr />
-        <div class="d-flex justify-content-end">
+       @*  <div class="d-flex justify-content-end">
             <button id="toggleButton1" class="btn form-control-sm btn-success  "> Add</button>
-        </div>
-        <div id="detailsSection1" style="display:none;" >
+        </div> *@
+        <div id="detailsSection1" >
             <form asp-action="CreateEmployeeExperience" asp-controller="EmployeeExperience" method="post">
              
                 <input type="hidden" asp-for="Experiences.Id" />
@@ -294,83 +296,33 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @Html.Partial("_DeleteConfirmation")
 
-<script>
-    function confirmDelete(id, type) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let url;
-                if (type === 'education') {
-                    url = '@Url.Action("Delete", "EmployeeEducation")/' + id;
-                } else if (type === 'experience') {
-                    url = '@Url.Action("Delete", "EmployeeExperience")/' + id;
-                }
-                window.location.href = url;
-            }
-        })
-    }
-</script>
-
+ 
 <script>
     //to show /hide the education form
     $(document).ready(function () {
         $('#toggleButton').click(function () {
             $('#detailsSection').toggle();
-            $('#addBtn').hide();
-            $('#updatBtn').show();
         });
-
     });
-    // $(document).ready(function () {
-    //     $('.editBtn').click(function () {
-    //         $('#detailsSection').slideDown();
-    //     });
-
-    // });
 
 
     //to show /hide the experience form
     $(document).ready(function () {
         $('#toggleButton1').click(function () {
             $('#detailsSection1').toggle();
-             e.preventDefault();  
-
-        
-            
         });
     });
 
 
-    //to show the update btn
-    $(document).ready(function () {
-        $('.batn').on('click', function (e) {
-            e.preventDefault();  
+    // to show the update btn
+    $(document).ready(function(){
+        $('#editBtn').click(function () {
+            $('#updateBtn').show();
+            $('#addBtn').hide();
+            $('#cancelbtn').show();
+        })
+    })
 
-        
- 
-        });
-    });
-
-    let hello = function (id ,e) {
-        //e.preventDefault();
-        $('#detailsSection').css('display', 'block');
-        $('#addBtn').hide();
-        $('#updatBtn').show();
-        let url = '@Url.Action("CreateEmployeeEducation", "EmployeeEducation", new { id = "__ID__" })';
-        url = url.replace("__ID__", id);
-        window.location.href = url;
-
-
-       
-    }
-    
 </script>
 
 
