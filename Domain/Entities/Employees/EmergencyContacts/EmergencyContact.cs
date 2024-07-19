@@ -13,6 +13,7 @@ namespace ApwPayroll_Domain.Entities.Employees.EmergencyContacts
         public RelationType? RelationType { get; set; }
 
         public string? Email { get; set; }
+         
         public Int64? MobileNumber { get; set; }
         public Int64? WhatsAppNumber { get; set; }
 
