@@ -112,10 +112,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
             var genderLookup = EnumHelper.GetEnumValues<GenderEnum>().ToList();
 
             var employeeFamilyData = await _mediator.Send(new GetByEmployeeIdFamilyDetailQuery(employeeId.Value));
-            if (employeeFamilyData != null)
-            {
-
-            }
+        
 
             var employeeChildData = employeeFamilyData.Data.Where(x => x.RelationTypeId == 4).ToList();
             if (employeeChildData != null )

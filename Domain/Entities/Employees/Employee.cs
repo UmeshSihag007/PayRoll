@@ -100,9 +100,9 @@ namespace ApwPayroll_Domain.Entities.Employees
 
 
         // Document working
-        public void AddDocument(int documentId, int typeId)
+        public void AddDocument(int documentId, int typeId, string? Code)
         {
-            EmployeeDocuments.Add(new EmployeeDocument(documentId, Id, true, typeId));
+            EmployeeDocuments.Add(new EmployeeDocument(documentId, Id, true, typeId,Code));
         }
 
         public void AddIfDocumentNotExists(List<int> documentId, int typeId)
@@ -111,7 +111,7 @@ namespace ApwPayroll_Domain.Entities.Employees
             {
                 if (EmployeeDocuments.All(pu => pu.DocumentId != document))
                 {
-                    EmployeeDocuments.Add(new EmployeeDocument(document, Id, true, typeId));
+                    EmployeeDocuments.Add(new EmployeeDocument(document, Id, true, typeId,null));
                 }
                 RemoveDocumentExists(documentId);
 
