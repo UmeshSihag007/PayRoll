@@ -1,6 +1,8 @@
 ﻿using ApwPayroll_Application.Features.Employees.Commands.CreateEmployee;
 using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Domain.common.Enums.Gender;
+using ApwPayroll_Domain.Entities.Banks.BankDetails;
+using ApwPayroll_Domain.Entities.Employees.EmergencyContacts;
 using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
 using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
@@ -126,9 +128,52 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                 await _unitOfWork.Repository<EmployeeAddress>().AddAsync(residentialAddress);
                 await _unitOfWork.Save(cancellationToken);
             }
+    
+            //Emergency Contact working
+            if (request.CreateEmployeePersonal.Emergency!= null)
+            {
+                var emergencyContact = new EmergencyContact
+                {
+                    Name= request.CreateEmployeePersonal.SpouseName,
+                    RelationTypeId = request.CreateEmployeePersonal.Emergency.RelationTypeId,
+                    Email = request.CreateEmployeePersonal.Emergency.Email,
+                    MobileNumber = request.CreateEmployeePersonal.Emergency.MobileNumber,
+                    WhatsAppNumber = request.CreateEmployeePersonal.Emergency.WhatsAppNumber,
+                    EmployeeId=request.EmployeeId,
+                };
+                await _unitOfWork.Repository<EmergencyContact>().AddAsync(emergencyContact);
+                await _unitOfWork.Save(cancellationToken);
+            }
+
+
+
+            // Bank Detail working
+
+            if (request.CreateEmployeePersonal.CreateEmployeeBank != null)
+            {
+                var bankDetail = new BankDetail
+                {
+                    BankName = request.CreateEmployeePersonal.CreateEmployeeBank.BankName,
+                    IFCCode = request.CreateEmployeePersonal.CreateEmployeeBank.IFCCode,
+                    AccountName = request.CreateEmployeePersonal.CreateEmployeeBank.AccountName,
+                    AccountBranch = request.CreateEmployeePersonal.CreateEmployeeBank.AccountBranch,
+                    BanAccountId = 122,
+                    EmployeeId=request.EmployeeId,
+
+
+                };
+                await _unitOfWork.Repository<BankDetail>().AddAsync(bankDetail);
+                await _unitOfWork.Save(cancellationToken);
+            }
 
             return Result<int>.Success();
 
+            
+            
+           
+           
+
+             
         }
 
 
