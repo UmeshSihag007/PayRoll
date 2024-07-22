@@ -5,6 +5,13 @@
         Layout = "~/Views/Shared/Registration/_RegistrationLayout.cshtml";
     }
 
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/assets/libs/dropzone/dropzone-min.js"></script>
+    <script src="~/assets/js/pages/crypto-kyc.init.js"></script>
+    <script src="~/assets/js/app.js"></script>
+    <script src="~/js/validation.js"></script>
+}
 
     <div class="tab-content">
         <div class="tab-pane active" id="basicDetails" role="tabpanel">
@@ -75,7 +82,7 @@
                             <span class="input-group-text">
                                 <i class="ri-arrow-down-s-fill"></i>
                             </span>
-                            <select class="form-control form-control-sm" asp-items="@ViewBag.DepartmentList">
+                            <select  asp-for="Employee.DepartmentId"  class="form-control form-control-sm" asp-items="@ViewBag.DepartmentList">
                                 <option value="" disabled selected>Select a Department</option>
                                 @foreach (var department in ViewBag.departments)
                                 {
@@ -93,7 +100,7 @@
                             <span class="input-group-text">
                                 <i class="ri-arrow-down-s-fill"></i>
                             </span>
-                            <select class="form-control form-control-sm">
+                            <select asp-for="Employee.DesignationId" class="form-control form-control-sm">
                                 <option value="" disabled selected>Select Designation</option>
                                 @foreach (var designation in ViewBag.designation)
                                 {
@@ -269,21 +276,4 @@
             </form>
         </div>
     </div>
-    @section scripts {
-
-
-        <partial name="_ValidationScriptsPartial" />
-        <!-- dropzone min -->
-        <script src="~/assets/libs/dropzone/dropzone-min.js"></script>
-
-        <!--crypto-kyc init-->
-        <script src="~/assets/js/pages/crypto-kyc.init.js"></script>
-
-        <!-- App js -->
-        <script src="~/assets/js/app.js"></script>
-
-
-
-
-
-    }
+ 

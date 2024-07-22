@@ -70,7 +70,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeExperiences
 
         public async Task<IActionResult> Update(int? id)
         {
-            var data = await _mediator.Send(new GetEmployeeExperienceQuery());
+            var data = await _mediator.Send(new GetEmployeeExperienceQuery(id.Value));
             var getByIdExperience = data.Data.Find(x => x.Id == id);
             if (getByIdExperience == null)
             {

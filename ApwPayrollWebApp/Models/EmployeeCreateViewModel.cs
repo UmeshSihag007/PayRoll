@@ -25,7 +25,7 @@
         public CreateEmployeeFamilyCommand?  CreateEmployeeFamily { get; set; }
 
  
-       public List< CreateEmployeeDocumentDto> EmployeeDocument { get; set; }  
+       public List< CreateEmployeeDocumentDto>? EmployeeDocument { get; set; }  
 
 
     }

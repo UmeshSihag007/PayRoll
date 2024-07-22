@@ -7,7 +7,7 @@ namespace ApwPayroll_Domain.Entities.Employees.EmergencyContacts
     {
         public string Name { get; set; }
         public int? EmployeeId { get; set; }
-        public Employee Employee { get; set; }
+        public Employee? Employee { get; set; }
 
         public int RelationTypeId { get; set; }
         public RelationType? RelationType { get; set; }

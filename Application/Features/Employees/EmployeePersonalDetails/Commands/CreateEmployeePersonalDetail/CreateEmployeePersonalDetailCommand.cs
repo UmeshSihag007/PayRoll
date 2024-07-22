@@ -1,6 +1,8 @@
-﻿using ApwPayroll_Application.Features.Employees.Commands.CreateEmployee;
-using ApwPayroll_Application.Interfaces.Repositories;
+﻿using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Domain.common.Enums.Gender;
+using ApwPayroll_Domain.Entities.Banks;
+using ApwPayroll_Domain.Entities.Banks.BankDetails;
+using ApwPayroll_Domain.Entities.Employees.EmergencyContacts;
 using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
 using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
@@ -48,7 +50,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             {
                 var fatherData = new EmployeeFamily
                 {
-                    Name= request.CreateEmployeePersonal.FatherName,
+                    Name = request.CreateEmployeePersonal.FatherName,
                     EmployeeId = request.EmployeeId,
                     DOB = request.CreateEmployeePersonal.DOB,
                     Gender = GenderEnum.Male,
@@ -62,7 +64,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             {
                 var motherData = new EmployeeFamily
                 {
-                    Name=request.CreateEmployeePersonal.MotherName,
+                    Name = request.CreateEmployeePersonal.MotherName,
                     EmployeeId = request.EmployeeId,
                     DOB = request.CreateEmployeePersonal.DOB,
                     Gender = GenderEnum.Male,
@@ -77,7 +79,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             {
                 var SpouseData = new EmployeeFamily
                 {
-                    Name= request.CreateEmployeePersonal.SpouseName,
+                    Name = request.CreateEmployeePersonal.SpouseName,
                     EmployeeId = request.EmployeeId,
                     DOB = request.CreateEmployeePersonal.DOB,
                     Gender = request.CreateEmployeePersonal.SpouseGender,
@@ -100,7 +102,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                     EmployeeId = request.EmployeeId,
                     Nationality = request.CreateEmployeePersonal.PermanentAddress.Nationality,
                     IsActive = true,
-               
+
                     CityId = request.CreateEmployeePersonal.PermanentAddress.CityId,
                     StateId = request.CreateEmployeePersonal.PermanentAddress.StateId,
                 };
@@ -117,13 +119,54 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                     Address2 = request.CreateEmployeePersonal.ResidentialAddress.Address2,
                     Address3 = request.CreateEmployeePersonal.ResidentialAddress.Address3,
                     AddressTypeId = 2,
-                     EmployeeId = request.EmployeeId,
+                    EmployeeId = request.EmployeeId,
                     Nationality = request.CreateEmployeePersonal.ResidentialAddress.Nationality,
                     IsActive = true,
                     CityId = request.CreateEmployeePersonal.ResidentialAddress.CityId,
                     StateId = request.CreateEmployeePersonal.ResidentialAddress.StateId,
+
                 };
                 await _unitOfWork.Repository<EmployeeAddress>().AddAsync(residentialAddress);
+                await _unitOfWork.Save(cancellationToken);
+            }
+
+
+            //       //Emergency Contact working 
+            if (request.CreateEmployeePersonal.Emergency != null)
+            {
+                var emergencyContact = new EmergencyContact
+                {
+                    Name = request.CreateEmployeePersonal.Name,
+                    RelationTypeId = request.CreateEmployeePersonal.Emergency.RelationTypeId,
+                    Email = request.CreateEmployeePersonal.Emergency.Email,
+                    MobileNumber = request.CreateEmployeePersonal.Emergency.MobileNumber,
+                    WhatsAppNumber = request.CreateEmployeePersonal.Emergency.WhatsAppNumber,
+                    EmployeeId = request.EmployeeId,
+
+                };
+                await _unitOfWork.Repository<EmergencyContact>().AddAsync(emergencyContact);
+                await _unitOfWork.Save(cancellationToken);
+            }
+
+
+
+
+            // Bank Detail working
+
+            if (request.CreateEmployeePersonal.CreateEmployeeBank != null)
+            {
+
+                var bankDetail = new BankDetail
+                {
+                    IFCCode = request.CreateEmployeePersonal.CreateEmployeeBank.IFCCode,
+                    AccountName = request.CreateEmployeePersonal.CreateEmployeeBank.AccountName,
+                    AccountBranch = request.CreateEmployeePersonal.CreateEmployeeBank.AccountBranch,
+                    BanAccountId = request.CreateEmployeePersonal.CreateEmployeeBank.BanAccountId.Value,
+                    AccountType = request.CreateEmployeePersonal.CreateEmployeeBank.AccountType,
+                    EmployeeId = request.EmployeeId,
+                    BankId = request.CreateEmployeePersonal.CreateEmployeeBank.BankId
+                };
+                await _unitOfWork.Repository<BankDetail>().AddAsync(bankDetail);
                 await _unitOfWork.Save(cancellationToken);
             }
 
@@ -131,11 +174,5 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
 
         }
 
-
-        public class EmployeeCreateViewModel
-        {
-            public CreateEmployeeCommand Employee { get; set; }
-            public CreateEmployeePersonalDetailDto EmployeePersonalDetail { get; set; }
-        }
     }
 }

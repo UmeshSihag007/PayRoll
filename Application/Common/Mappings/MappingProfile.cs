@@ -28,7 +28,7 @@ namespace ApwPayroll_Application.Common.Mappings
             CreateMap<CreateDocumentTypeCommand, DocumentType>();
             CreateMap<CreateMenuTypeCommand, MenuType>();
             CreateMap<CreateEmployeeCommand, Employee>();
-            CreateMap<EmployeeCreateViewModel, CreateEmployeeCommand>();
+       
             CreateMap<CreateEmployeeEducationCommand, EmployeeQualification>();
             CreateMap<CreateEmployeeExperiencesCommand, EmployeeExperience>();
             CreateMap<CreateEmployeeFamilyCommand, EmployeeFamily>();
