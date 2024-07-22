@@ -3,6 +3,7 @@ using ApwPayroll_Application.Features.Employees.Commands.CreateEmployee;
 using ApwPayroll_Application.Features.Employees.EmployeeEducations.Commands.CreateEmployeeEducation;
 using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.CreateEmployeeExperiences;
 using ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.CreateEmployeeFamily;
+using ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.CreateEmployeeReferences;
 using ApwPayroll_Application.Features.Menus.MenuTypes.Commands.CreateMenuType;
 using ApwPayroll_Application.Features.Users.Commands.RegisterUsers;
 using ApwPayroll_Domain.Entities.AspUsers;
@@ -12,6 +13,7 @@ using ApwPayroll_Domain.Entities.Employees.EmployeeExperiences;
 using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeeQualifications;
 using ApwPayroll_Domain.Entities.Menus.MenuTypes;
+using ApwPayroll_Domain.Entities.ReferralDetails;
 using AutoMapper;
 using System.Reflection;
 using static ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Commands.CreateEmployeePersonalDetail.CreateEmployeePersonalDetailCommandHandler;
@@ -28,10 +30,11 @@ namespace ApwPayroll_Application.Common.Mappings
             CreateMap<CreateDocumentTypeCommand, DocumentType>();
             CreateMap<CreateMenuTypeCommand, MenuType>();
             CreateMap<CreateEmployeeCommand, Employee>();
-            CreateMap<EmployeeCreateViewModel, CreateEmployeeCommand>();
+       
             CreateMap<CreateEmployeeEducationCommand, EmployeeQualification>();
             CreateMap<CreateEmployeeExperiencesCommand, EmployeeExperience>();
             CreateMap<CreateEmployeeFamilyCommand, EmployeeFamily>();
+            CreateMap<CreateEmployeeReferencesCommand, ReferralDetail>();
 
             CreateMap<RegisterUserCommand, AspUser>()
             .ForMember(u => u.UserName, opt => opt.MapFrom(x => x.Email));

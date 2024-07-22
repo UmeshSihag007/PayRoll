@@ -22,19 +22,19 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-  
+
         [ESINumber]
         public string? ESINumber { get; set; }
         [PFNumber]
         public string? PfNumber { get; set; }
-         public DateTime DateOfJoining { get; set; }
+        public DateTime DateOfJoining { get; set; }
         public int InsuranceNumber { get; set; }
         [MobileNumber]
         public Int64 MobileNumber { get; set; }
         [Email]
         public string EmailId { get; set; }
- 
- 
+
+
         public string? UserId { get; set; }
         public bool? IsBrokerExamPass { get; set; }
         public DateTime StartedSalary { get; set; }
@@ -55,10 +55,11 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
         public string? LicenceNumber { get; set; }
         [UanNumber]
         public string? UanNumber { get; set; }
- 
-        public List<int> DesignationId { get; set; }
-        public List<int> DepartmentId { get; set; }
- 
+        [Required]
+        public int DesignationId { get; set; }
+        [Required]
+        public int DepartmentId { get; set; }
+
     }
     internal class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Result<Employee>>
     {
@@ -74,8 +75,8 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
         }
 
         public async Task<Result<Employee>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
-        { 
-            
+        {
+
             var user = new AspUser()
             {
                 FirstName = request.FirstName,
@@ -90,67 +91,47 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
 
             var password = GeneratePassword(request.EmailId);
             await _userManager.CreateAsync(user, password);
-           
- 
-            if ( request.DesignationId!=null)
- 
-            {
-                foreach (var designation in request.DesignationId)
-                {
-                    var checkDesignation = await _unitOfWork.Repository<Designation>().GetByIdAsync(designation);
-                    if (checkDesignation == null)
-                    {
-                        return Result<Employee>.BadRequest();
-                    }
-                    data.AddDesignation(designation);
-                 }
-            }
-            if ( request.DepartmentId!=null)
-            {
-                foreach (var department in request.DepartmentId)
-                {
-                    var checkDepartment = await _unitOfWork.Repository<Department>().GetByIdAsync(department);
-                    if (checkDepartment == null)
-                    {
-                        return Result<Employee>.BadRequest();
-                    }
-                    data.AddDesignation(department);
-                }
-             }
- 
-             
-           if (request. DepartmentId!=null)
-            {
-                foreach (var department in request.DepartmentId)
-                {
-                    var checkDepartment = await _unitOfWork.Repository<Department>().GetByIdAsync(department);
-                    if (checkDepartment == null)
-                    {
-                        return Result<Employee>.BadRequest();
-                    }
-                    data.AddDesignation(department);
-                }
-            }
- 
 
-             return Result<Employee>.Success(data, "Created SuccessFully");
-           }
-  
+
+            if (request.DesignationId != null)
+
+            {
+                var checkDesignation = await _unitOfWork.Repository<Designation>().GetByIdAsync(request.DesignationId);
+                if (checkDesignation == null)
+                {
+                    return Result<Employee>.BadRequest();
+                }
+                data.AddDesignation(request.DesignationId);
+
+            }
+            if (request.DepartmentId != null)
+            {
+
+                var checkDepartment = await _unitOfWork.Repository<Department>().GetByIdAsync(request.DepartmentId);
+                if (checkDepartment == null)
+                {
+                    return Result<Employee>.BadRequest();
+                }
+                data.AddDesignation(request.DepartmentId);
+            }
+            return Result<Employee>.Success(data, "Created SuccessFully");
+        }
+
         private string GeneratePassword(string email)
         {
             string password = email + "@123";
             return password;
         }
- 
+
         private string GenerateEmployeeCode()
         {
             var random = new Random();
-            var randomNumber = random.Next(100, 1000);  
+            var randomNumber = random.Next(100, 1000);
             var employeeCode = "Emp" + randomNumber.ToString();
             return employeeCode;
         }
 
- 
+
     }
 
 

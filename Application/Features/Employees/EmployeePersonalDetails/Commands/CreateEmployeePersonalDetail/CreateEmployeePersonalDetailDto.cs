@@ -6,6 +6,7 @@ using ApwPayroll_Domain.common.Enums.BloodGroup;
 using ApwPayroll_Domain.common.Enums.Gender;
 using ApwPayroll_Domain.common.Enums.MarriedStatus;
 using ApwPayroll_Domain.Entities.Employees.EmergencyContacts;
+using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
         public string? PlaceOfBirth { get; set; }
         public string? Religion { get; set; }
         public BloodGroupEnum BloodGroup { get; set; }
-        public string? Nationality {  get; set; }
+   
         public string FatherName { get; set; }
         public DateTime? FatherDOB { get; set; }
         public string? MotherName { get; set; }
@@ -36,7 +37,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
         public CreateEmployeeAddressCommand? ResidentialAddress { get; set; }
         public CreateEmployeeAddressCommand? PermanentAddress { get; set; }
 
-        public CreateEmployeeLanguageCommand CreateEmployeeLanguage { get; set; }
+        //public CreateEmployeeLanguageCommand? CreateEmployeeLanguage { get; set; }
         public CreateEmployeeBankDetailCommand CreateEmployeeBank {  get; set; }
     }
 }
