@@ -1,10 +1,14 @@
-﻿ 
+ 
+
+ 
 using ApwPayroll_Application.Features.Employees.EmployeeDocuments.Commands.CreateEmployeeDocuments;
 using ApwPayroll_Application.Features.Employees.EmployeeDocuments.EmployeeDocumentTypes.Queries.GetAllEmployeeDomentTypes;
 using ApwPayroll_Domain.Entities.Documents;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDocuments;
 using ApwPayroll_Persistence.Data;
+ 
 using ApwPayrollWebApp.Controllers.Common;
+ 
 using ApwPayrollWebApp.Models;
 using ApwPayrollWebApp.Views.Documents;
 using MediatR;
@@ -29,7 +33,9 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeDocuments
         public async Task<IActionResult> Create()
         {
             await InitializeViewBags();
+ 
           
+ 
 
             return View();
         }
@@ -44,6 +50,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeDocuments
 
             if (ModelState.IsValid)
             {
+ 
              var data=  await _mediator.Send(new CreateEmployeeDocumentCommand(EmployeeId,model.EmployeeDocument));
                 if (data.code == 200)
                 {
@@ -53,6 +60,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeDocuments
                 {
                     Notify(data.Messages, null, data.code);
                 }
+ 
             }
             await InitializeViewBags();
 

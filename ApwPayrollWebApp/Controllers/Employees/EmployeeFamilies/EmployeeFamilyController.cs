@@ -127,12 +127,14 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
             var employeeId = HttpContext.Session.GetInt32("EmployeeId");
 
             var genderLookup = EnumHelper.GetEnumValues<GenderEnum>().ToList();
+ 
             if (employeeId != null)
             {
 
             var employeeFamilyData = await _mediator.Send(new GetByEmployeeIdFamilyDetailQuery(employeeId.Value));
             
             ViewBag.EmployeeFamilyData = employeeFamilyData.Data;
+ 
             var employeeChildData = employeeFamilyData.Data.Where(x => x.RelationTypeId == 4).ToList();
             ViewBag.EmployeeChildData = employeeChildData;
             }

@@ -2596,7 +2596,9 @@ namespace ApwPayroll_Persistence.Migrations
                     b.HasData(
                         new
                         {
+ 
                             Id = "a0d25dba-97e1-4809-b163-80649bf46e04",
+ 
                             Name = "Admin",
                             NormalizedName = "Admin"
                         });
