@@ -80,7 +80,7 @@ internal class CreateEmployeeDocumentCommandHandler : IRequestHandler<CreateEmpl
 
     public async Task<Result<int>> Handle(CreateEmployeeDocumentCommand request, CancellationToken cancellationToken)
     {
-        request.EmployeeId = 1;
+ 
         var employee = await _unitOfWork.Repository<Employee>().GetByIdAsync(request.EmployeeId);
         if (employee == null)
         {

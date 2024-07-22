@@ -1,5 +1,6 @@
 ﻿using ApwPayroll_Application.Features.Employees.Commands.CreateEmployee;
 using ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.CreateEmployeeFamily;
+using ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.DeleteEmployeeFamily;
 using ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.UpdateEmployeeFamily;
 using ApwPayroll_Application.Features.Employees.EmployeeFamilies.Queries.GetByEmployeeFamilyDetails;
 using ApwPayroll_Application.Features.Employees.EmployeeFamilies.Queries.GetByEmployeeIdFamilyDetail;
@@ -53,13 +54,13 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
         public async Task<IActionResult> CreateEmployeeFamily(EmployeeCreateViewModel model)
         {
             var employeeId = HttpContext.Session.GetInt32("EmployeeId");
+
             if (employeeId != 0 && employeeId != null)
             {
                 model.CreateEmployeeFamily.EmployeeId = employeeId.Value;
             }
-
             await InitializeViewBags();
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && model.CreateEmployeeFamily.EmployeeId!=null)
             {
                 if (model.CreateEmployeeFamily.Id != 0 && model.CreateEmployeeFamily.Id!=null)
                 {
@@ -105,23 +106,41 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
             }
             return RedirectToAction("CreateEmployeeFamily", new { id = data.Data.Id });
         }
+  
+        
+        public async Task<IActionResult>DeleteEmployeeFamily(int id)
+        {
+            var data = await _mediator.Send(new DeleteEmployeeFamilyCommand(id));
+            if (data.code == 200)
+            {
+                  Notify(data.Messages,null, data.code);
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
+            return RedirectToAction("CreateEmployeeFamily");
+        }
+        
         private async Task InitializeViewBags()
         {
             var employeeId = HttpContext.Session.GetInt32("EmployeeId");
 
             var genderLookup = EnumHelper.GetEnumValues<GenderEnum>().ToList();
+            if (employeeId != null)
+            {
 
             var employeeFamilyData = await _mediator.Send(new GetByEmployeeIdFamilyDetailQuery(employeeId.Value));
-        
-
-            var employeeChildData = employeeFamilyData.Data.Where(x => x.RelationTypeId == 4).ToList();
-            if (employeeChildData != null )
-            {
-            ViewBag.EmployeeChildData = employeeChildData;
-
-            }
-            ViewBag.GenderLookup = genderLookup;
+            
             ViewBag.EmployeeFamilyData = employeeFamilyData.Data;
+            var employeeChildData = employeeFamilyData.Data.Where(x => x.RelationTypeId == 4).ToList();
+            ViewBag.EmployeeChildData = employeeChildData;
+            }
+ 
+
+            
+ 
+            ViewBag.GenderLookup = genderLookup;
         }
 
     }

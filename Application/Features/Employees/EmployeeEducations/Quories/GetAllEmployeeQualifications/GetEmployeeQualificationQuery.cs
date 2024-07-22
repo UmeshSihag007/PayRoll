@@ -3,11 +3,18 @@ using ApwPayroll_Domain.Entities.Employees.EmployeeQualifications;
 using ApwPayroll_Shared;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApwPayroll_Application.Features.Employees.EmployeeEducations.Quories.GetAllEmployeeQualifications
 {
     public class GetEmployeeQualificationQuery : IRequest<Result<List<EmployeeQualification>>>
     {
+        public int Id { get; set; }
+
+        public GetEmployeeQualificationQuery(int id)
+        {
+            Id = id;
+        }
     }
     internal class GetEmployeeQualificationQueryHandler : IRequestHandler<GetEmployeeQualificationQuery, Result<List<EmployeeQualification>>>
     {
@@ -21,7 +28,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeEducations.Quories.G
 
         public async Task<Result<List<EmployeeQualification>>> Handle(GetEmployeeQualificationQuery request, CancellationToken cancellationToken)
         {
-            var data = await _unitOfWork.Repository<EmployeeQualification>().GetAllAsync();
+            var data = await _unitOfWork.Repository<EmployeeQualification>().Entities.Where(x=>x.EmployeeId==request.Id &&  x.IsDeleted==false).ToListAsync();
             if (data == null)
             {
                 return Result<List<EmployeeQualification>>.NotFound();

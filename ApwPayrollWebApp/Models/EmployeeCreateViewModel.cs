@@ -29,7 +29,7 @@ using ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.Crea
     public CreateEmployeeReferencesCommand? ReferencesCommand { get; set; }
 
  
-       public List< CreateEmployeeDocumentDto> EmployeeDocument { get; set; }  
+       public List< CreateEmployeeDocumentDto>? EmployeeDocument { get; set; }  
 
 
     }

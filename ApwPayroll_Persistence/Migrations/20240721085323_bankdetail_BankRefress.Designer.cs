@@ -4,6 +4,7 @@ using ApwPayroll_Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApwPayroll_Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDataContext))]
-    partial class ApplicationDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240721085323_bankdetail_BankRefress")]
+    partial class bankdetail_BankRefress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1106,9 +1109,6 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LocationId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nationality")
                         .HasColumnType("nvarchar(max)");
 
@@ -1131,8 +1131,6 @@ namespace ApwPayroll_Persistence.Migrations
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("EmployeeId");
-
-                    b.HasIndex("LocationId");
 
                     b.HasIndex("UpdatedBy");
 
@@ -2596,7 +2594,7 @@ namespace ApwPayroll_Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a0d25dba-97e1-4809-b163-80649bf46e04",
+                            Id = "f5532835-9d2f-4d7a-9bc0-59d03d22814b",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         });
@@ -3119,10 +3117,6 @@ namespace ApwPayroll_Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ApwPayroll_Domain.Entities.Locations.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
-
                     b.HasOne("ApwPayroll_Domain.Entities.AspUsers.AspUser", "UpdatedByUser")
                         .WithMany()
                         .HasForeignKey("UpdatedBy");
@@ -3132,8 +3126,6 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("Employee");
-
-                    b.Navigation("Location");
 
                     b.Navigation("UpdatedByUser");
                 });

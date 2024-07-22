@@ -6,7 +6,8 @@ namespace ApwPayroll_Domain.Entities.Banks.BankDetails
 {
     public class BankDetail : BaseAuditEntity
     {
-        public string BankName { get; set; }
+        public int? BankId { get; set; }
+        public Bank? Bank { get; set; }
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
         public int BanAccountId { get; set; }
