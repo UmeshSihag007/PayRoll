@@ -17,7 +17,7 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetAllEmployees
         public int PfNumber { get; set; }
         public DateTime DateOfJoining { get; set; }
         public int InsuranceNumber { get; set; }
-        public Int64 MobileNumber { get; set; }
+        public long MobileNumber { get; set; }
         public string EmailId { get; set; }
         public string EmployeeCode { get; set; }
         public string UserId { get; set; }

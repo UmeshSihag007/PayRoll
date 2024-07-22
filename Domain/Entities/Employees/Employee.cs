@@ -18,7 +18,7 @@ namespace ApwPayroll_Domain.Entities.Employees
         public string? PfNumber { get; set; }
  
         public DateTime DateOfJoining { get; set; }
-        public int InsuranceNumber { get; set; }
+        public int InsuranceNumber { get; set; } 
         public Int64 MobileNumber { get; set; }
         public string EmailId { get; set; }
         public string? EmployeeCode { get; set; }

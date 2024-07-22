@@ -6,6 +6,7 @@ using ApwPayroll_Application.Features.Designations.Queries.GetAllDesignations;
 using ApwPayroll_Application.Features.Employees.Commands.CreateEmployee;
 using ApwPayroll_Application.Features.Employees.Commands.UpdateEmployee;
 using ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Commands.CreateEmployeePersonalDetail;
+using ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.CreateEmployeeReferences;
 using ApwPayroll_Application.Features.Employees.Queries.GetAllEmployees;
 using ApwPayroll_Application.Features.Employees.Queries.GetByIdEmployee;
 using ApwPayroll_Application.Features.Locations.Queries.GetAllLocations;
@@ -119,10 +120,30 @@ namespace ApwPayrollWebApp.Controllers.Employees
         }
 
 
+ 
+            await _mediator.Send(command.documentCommand);
+            return View();
+        }
+         
+        public async Task<IActionResult> EmployeeReference(int?employeeId)
+        {
+            await InitializeViewBags();
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> EmployeeReference(EmployeeCreateViewModel command)
+        {
+            command.EmployeeId = 1;
+            await _mediator.Send( command.ReferencesCommand);
+            /*await _mediator.Send(command.ReferencesCommand);*/
+            return View();
+        }
 
+
+ 
         #endregion EmployeePersonalDetail Working... comeplete
          
-       
+ 
         [HttpGet]
         public IActionResult CreateEmployeePersonalDetail()
         {

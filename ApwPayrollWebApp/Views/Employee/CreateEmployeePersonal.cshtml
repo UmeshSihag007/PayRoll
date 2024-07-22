@@ -103,6 +103,7 @@
                         <span class="input-group-text">
                             <i class="ri-user-fill"></i>
                         </span>
+ 
                         <select asp-for="EmployeePersonalDetail.Emergency.RelationTypeId" class="form-control form-control-sm">
                             <option value="" selected disabled>select Relation Type</option>
 
@@ -112,6 +113,7 @@
                             }
 
                         </select>
+ 
                     </div>
                     <span asp-validation-for="EmployeePersonalDetail.Emergency.RelationType" class="text-danger"></span>
                 </div>
@@ -465,6 +467,7 @@
                         <span class="input-group-text">
                             <i class="bx bxs-bank"></i>
                         </span>
+ 
                         <select asp-for="EmployeePersonalDetail.CreateEmployeeBank.BankId" class="form-control form-control-sm" required>
                             <option value="" selected disabled>Select a Bank</option>
                             @foreach (var bank in ViewBag.Bank)
@@ -474,6 +477,7 @@
                         </select>
                         <span asp-validation-for="EmployeePersonalDetail.CreateEmployeeBank.BankId" class="text-danger"></span>
                      </div>
+ 
                 </div>
               
             </div>

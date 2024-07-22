@@ -134,6 +134,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
             return RedirectToAction("CreateEmployeeEducation");
         }
 
+ 
         public async Task<IActionResult> Update(int id)
         {
             var employeeId = HttpContext.Session.GetInt32("EmployeeId").Value;
@@ -150,13 +151,29 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                 Notify(data.Messages, null, data.code);
             }
             else
+ 
             {
-                Notify(data.Messages, null, data.code);
-            }
+
+                var data = await _mediator.Send(new GetEmployeeQualificationQuery());
+                var QaulificationDataById = data.Data.Find(x => x.Id == id);
+                if (QaulificationDataById == null)
+                {
+                    return NotFound();
+                }
+                if (data.code == 200)
+                {
+                    Notify(data.Messages, null, data.code);
+                }
+                else
+                {
+                    Notify(data.Messages, null, data.code);
+                }
+       
             HttpContext.Session.SetInt32("EmployeeId", employeeId);
 
             return RedirectToAction("CreateEmployeeEducation", new { id = QaulificationDataById.Id });
         }
+ 
 
 
 
