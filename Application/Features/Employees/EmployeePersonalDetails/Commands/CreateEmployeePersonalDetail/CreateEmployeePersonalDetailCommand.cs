@@ -137,7 +137,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             {
                 var emergencyContact = new EmergencyContact
                 {
-                    Name= request.CreateEmployeePersonal.SpouseName,
+                    Name= request.CreateEmployeePersonal.FatherName??"Testing",
                     RelationTypeId = request.CreateEmployeePersonal.Emergency.RelationTypeId,
                     Email = request.CreateEmployeePersonal.Emergency.Email,
                     MobileNumber = request.CreateEmployeePersonal.Emergency.MobileNumber,
@@ -155,8 +155,8 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             if (request.CreateEmployeePersonal.CreateEmployeeBank != null)
             {
                 var bankDetail = new BankDetail
-                {
-                    BankName = request.CreateEmployeePersonal.CreateEmployeeBank.BankName,
+                { 
+                    BankId = request.CreateEmployeePersonal.CreateEmployeeBank.BankId,
                     IFCCode = request.CreateEmployeePersonal.CreateEmployeeBank.IFCCode,
                     AccountName = request.CreateEmployeePersonal.CreateEmployeeBank.AccountName,
                     AccountBranch = request.CreateEmployeePersonal.CreateEmployeeBank.AccountBranch,
@@ -170,46 +170,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             }
 
 
- 
-            //       //Emergency Contact working 
-            if (request.CreateEmployeePersonal.Emergency != null)
-            {
-                var emergencyContact = new EmergencyContact
-                {
-                    Name = request.CreateEmployeePersonal.Name,
-                    RelationTypeId = request.CreateEmployeePersonal.Emergency.RelationTypeId,
-                    Email = request.CreateEmployeePersonal.Emergency.Email,
-                    MobileNumber = request.CreateEmployeePersonal.Emergency.MobileNumber,
-                    WhatsAppNumber = request.CreateEmployeePersonal.Emergency.WhatsAppNumber,
-                    EmployeeId = request.EmployeeId,
- 
-
-                };
-                await _unitOfWork.Repository<EmergencyContact>().AddAsync(emergencyContact);
-                await _unitOfWork.Save(cancellationToken);
-            }
-
-
-
-
-            // Bank Detail working
-
-            if (request.CreateEmployeePersonal.CreateEmployeeBank != null)
-            {
-
-                var bankDetail = new BankDetail
-                {
-                    IFCCode = request.CreateEmployeePersonal.CreateEmployeeBank.IFCCode,
-                    AccountName = request.CreateEmployeePersonal.CreateEmployeeBank.AccountName,
-                    AccountBranch = request.CreateEmployeePersonal.CreateEmployeeBank.AccountBranch,
-                    BanAccountId = request.CreateEmployeePersonal.CreateEmployeeBank.BanAccountId.Value,
-                    AccountType = request.CreateEmployeePersonal.CreateEmployeeBank.AccountType,
-                    EmployeeId = request.EmployeeId,
-                    BankId = request.CreateEmployeePersonal.CreateEmployeeBank.BankId
-                };
-                await _unitOfWork.Repository<BankDetail>().AddAsync(bankDetail);
-                await _unitOfWork.Save(cancellationToken);
-            }
+  
 
             return Result<int>.Success();
 

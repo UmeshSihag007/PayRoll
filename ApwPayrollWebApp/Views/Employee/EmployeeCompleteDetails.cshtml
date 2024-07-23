@@ -1,0 +1,381 @@
+﻿@{
+    ViewData["Title"] = "EmployeeCompleteDetails";
+}
+
+<div class="container">
+    <div class="container">
+        
+        <div class="row mb-4">
+            <h1 class="fs-3 text-danger" style="font-size: 36px; line-height: 40px; border-bottom: 2px solid #dc3545; padding-bottom: 10px;"> Basic Details  </h1>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5  >First Name:</h5  ></div>
+                            <div class="col-8">@ViewBag.employee.FirstName</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5  >Last Name:</h5  ></div>
+                            <div class="col-8">@ViewBag.employee.LastName</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5  >Mobile Number:</h5  ></div>
+                            <div class="col-8">@ViewBag.employee.MobileNumber</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5  >Email ID:</h5  ></div>
+                            <div class="col-8">@ViewBag.employee.EmailId</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5  >Date of Joining:</h5  ></div>
+                            <div class="col-8">@ViewBag.employee.DateOfJoining.ToString("yyyy-MM-dd")</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5  >Insurance Number:</h5  ></div>
+                            <div class="col-8">@ViewBag.employee.InsuranceNumber</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5  >Employee Code:</h5  ></div>
+                            <div class="col-8">@ViewBag.employee.EmployeeCode</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5  >Broker Exam Pass:</h5  ></div>
+                            <div class="col-8">@ViewBag.employee.IsBrokerExamPass</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5  >Started Salary:</h5  ></div>
+                            <div class="col-8">@ViewBag.employee.StartedSalary </div>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5  >Salutation:</h5  ></div>
+                            <div class="col-8">@ViewBag.employee.Salutation</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5 class="card-title">Pan Number:</h5></div>
+                            <div class="col-8">@ViewBag.employee.PanNumber</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5 class="card-title">Aadhar Number:</h5></div>
+                            <div class="col-8">@ViewBag.employee.AadharNumber</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5 class="card-title">Ration Card Number:</h5></div>
+                            <div class="col-8">@ViewBag.employee.RationCardNumber</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5 class="card-title">Passport Number:</h5></div>
+                            <div class="col-8">@ViewBag.employee.PassportNumber</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5 class="card-title">Voter ID:</h5></div>
+                            <div class="col-8">@ViewBag.employee.VoterId</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5 class="card-title">Licence Number:</h5></div>
+                            <div class="col-8">@ViewBag.employee.LicenceNumber</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4"><h5 class="card-title">UAN Number:</h5></div>
+                            <div class="col-8">@ViewBag.employee.UanNumber</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Personal Details Section -->
+    <div class="row mb-4">
+        <h1 class="fs-3 text-danger" style="font-size: 36px; line-height: 40px; border-bottom: 2px solid #dc3545; padding-bottom: 10px;">Personal Details</h1>
+    </div>
+    <div class="row">
+        @if (ViewBag.employee.EmployeePersonalDetail != null)
+        {
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Date of Birth</h5>
+                            <p class="card-text">@ViewBag.employee.EmployeePersonalDetail.DOB.ToString("yyyy-MM-dd")</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Gender</h5>
+                            <p class="card-text">@ViewBag.employee.EmployeePersonalDetail.Gender</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Place of Birth</h5>
+                            <p class="card-text">@ViewBag.employee.EmployeePersonalDetail.PlaceOfBirth</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Religion</h5>
+                            <p class="card-text">@ViewBag.employee.EmployeePersonalDetail.Religion</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Blood Group</h5>
+                            <p class="card-text">@ViewBag.employee.EmployeePersonalDetail.BloodGroup</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Marital Status</h5>
+                            <p class="card-text">@ViewBag.employee.EmployeePersonalDetail.MarriedStatus</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Date of Wedding</h5>
+                            <p class="card-text">
+                                @ViewBag.employee.EmployeePersonalDetail.DateOfWedding
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Active Status</h5>
+                            <p class="card-text">@ViewBag.employee.EmployeePersonalDetail.IsActive  </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+        <!-- Education Details Section -->
+        <div class="row mb-4">
+            <h1 class="fs-3 text-danger" style="font-size: 36px; line-height: 40px; border-bottom: 2px solid #dc3545; padding-bottom: 10px;">Education Details</h1>
+        </div>
+        <div class="row">
+            <!-- Education Details Cards -->
+            @if (ViewBag.employee.EmployeeQualification != null)
+            {
+                <div class="container">
+                    <div class="row">
+                        @foreach (var qualification in ViewBag.employee.EmployeeQualification)
+                        {
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow-lg border-primary rounded-lg">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-primary mb-2">Course</h5>
+                                        <p class="card-text mb-4"><h5  >@qualification.Course.Name</h5  ></p>
+
+                                        <h5 class="card-title text-secondary mb-2">University/Board</h5>
+                                        <p class="card-text mb-4">@qualification.UniversityBoard</p>
+
+                                        <h5 class="card-title text-secondary mb-2">Specification</h5>
+                                        <p class="card-text mb-4">@qualification.Specification</p>
+
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h5   class="text-muted">Obtain Marks:</h5  >
+                                                <p class="card-text mb-0">@qualification.ObtainMarks</p>
+                                            </div>
+                                            <div>
+                                                <h5   class="text-muted">Total Marks:</h5  >
+                                                <p class="card-text mb-0">@qualification.TotalMarks</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+
+
+
+        </div>
+
+        <!-- Family Details Section -->
+        <div class="row mb-4">
+            <h1 class="fs-3 text-danger" style="font-size: 36px; line-height: 40px; border-bottom: 2px solid #dc3545; padding-bottom: 10px;">Family Details</h1>
+        </div>
+        <div class="row">
+            @foreach (var familyMember in ViewBag.employee.EmployeeFamily)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm border-primary">
+                        <div class="card-body">
+                            <!-- Family Member Information -->
+                            <div class="row mb-2">
+                                <div class="col-4 font-weight-bold">  <h5 class="card-title">Name:</h5></div>
+                                <div class="col-8">@familyMember.Name</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4 font-weight-bold">
+                                    <h5 class="card-title"> Gender:</h5> 
+                                </div>
+                                <div class="col-8">@familyMember.Gender</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 font-weight-bold">
+                                    <h5 class="card-title">Relation:</h5>
+                                </div>
+                                <div class="col-8">@familyMember.RelationType.Name</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Documents Details Section -->
+        <div class="row mb-4">
+            <h1 class="fs-3 text-danger" style="font-size: 36px; line-height: 40px; border-bottom: 2px solid #dc3545; padding-bottom: 10px;">Documents Details</h1>
+
+        </div>
+        <div class="row">
+            <!-- Documents Details Cards -->
+            @if (ViewBag.employee.EmployeeDocuments != null)
+            {
+                foreach (var document in ViewBag.employee.EmployeeDocuments)
+                {
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm border-primary">
+                            <div class="card-body">
+                                <!-- Document Type Heading -->
+                                <h5 class="card-title text-center mb-3">@document.EmployeeDocumentType.Name</h5>
+
+                                <!-- Document Image -->
+                                @if (!string.IsNullOrEmpty(document.Document.Url))
+                                {
+                                    <div class="text-center mb-3">
+                                        <img src="@document.Document.Url" alt="Document Image" class="img-fluid" style="max-height: 200px; width: auto;">
+                                    </div>
+                                }
+
+                                <!-- Document Code -->
+                                <p class="card-text text-center font-weight-bold"> <b> Code :</b>  @document.Code</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+
+         
+    </div>
+</div>

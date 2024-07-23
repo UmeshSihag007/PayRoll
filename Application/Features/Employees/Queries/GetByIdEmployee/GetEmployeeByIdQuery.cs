@@ -27,16 +27,39 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetByIdEmployee
             _repository = repository;
             _mapper = mapper;
         }
-
         public async Task<Result<GetEmployeeDto>> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
         {
-            var data = await _repository.Entities.Include(x => x.AspUser).Include(x => x.Salutation).Where(x => x.IsDeleted == false).FirstOrDefaultAsync();
+            try
+            {
+
+            var data = await _repository.Entities
+              .Include(x => x.AspUser)
+               .Include(x => x.EmployeePersonalDetail)
+              .Include(x => x.EmployeeDocuments). ThenInclude(x=>x.EmployeeDocumentType)
+              .Include(x => x.EmployeeDocuments).ThenInclude(x => x.Document)
+                .Include(x => x.EmployeeQualification).ThenInclude(x=>x.Course)
+             .Include(x => x.EmployeeExperience)
+              .Include(x => x.EmployeeFamily).ThenInclude(x=>x.RelationType)
+        .Include(x => x.ReferralDetail)
+                .FirstOrDefaultAsync(e => e.Id == request.EmployeeId && e.IsDeleted == false);
+
             if (data == null)
             {
-                return Result<GetEmployeeDto>.BadRequest();
+                return Result<GetEmployeeDto>.NotFound();
             }
-            var mapData = _mapper.Map<GetEmployeeDto>(data);
-            return Result<GetEmployeeDto>.Success(mapData);
+ 
+            var employeeDto = _mapper.Map<GetEmployeeDto>(data);
+            return Result<GetEmployeeDto>.Success(employeeDto);
+            }
+            catch (Exception ex)
+            {
+
+                var msg = ex.Message;
+               
+            }
+            return null;
         }
+
+     
     }
 }

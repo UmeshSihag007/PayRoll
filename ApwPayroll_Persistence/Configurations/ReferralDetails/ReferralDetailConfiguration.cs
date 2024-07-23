@@ -10,7 +10,7 @@ namespace ApwPayroll_Domain.Entities.ReferralDetails
         public void Configure(EntityTypeBuilder<ReferralDetail> builder)
         {
             builder.HasOne(e => e.Employee)
-               .WithMany()
+               .WithMany(x=>x.ReferralDetail)
                .HasForeignKey(e => e.EmployeeId);
         }
     }

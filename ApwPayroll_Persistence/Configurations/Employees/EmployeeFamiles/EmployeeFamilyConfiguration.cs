@@ -19,11 +19,13 @@ namespace ApwPayroll_Domain.Entities.Employees.EmployeeFamiles
 
             builder.HasOne(bd => bd.RelationType)
                    .WithMany()
-                   .HasForeignKey(bd => bd.RelationTypeId);
+                   .HasForeignKey(bd => bd.RelationTypeId)
+                   .IsRequired(true);
 
             builder.HasOne(bd => bd.Employee)
-                   .WithMany()
-                   .HasForeignKey(bd => bd.EmployeeId);
+                   .WithMany( x=>x.EmployeeFamily)
+                   .HasForeignKey(bd => bd.EmployeeId)
+                   .IsRequired();
 
             builder.Property(bd => bd.Name).IsRequired();
         }
