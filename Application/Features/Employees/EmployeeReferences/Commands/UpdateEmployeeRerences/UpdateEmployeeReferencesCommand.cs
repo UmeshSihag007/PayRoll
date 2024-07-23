@@ -45,7 +45,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.
             }
 
             var mapData = _mapper.Map(request.references,data);
-            mapData.EmployeeId = 1;
+           
             await _unitOfWork.Repository<ReferralDetail>().UpdateAsync(mapData);
             await _unitOfWork.Save(cancellationToken);
             return Result<int>.Success();
