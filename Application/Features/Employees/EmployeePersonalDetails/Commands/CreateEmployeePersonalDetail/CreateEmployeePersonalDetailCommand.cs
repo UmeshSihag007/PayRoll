@@ -167,12 +167,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             }
 
             return Result<int>.Success();
-
-            
-            
-           
-           
-
+          
              
         }
 
