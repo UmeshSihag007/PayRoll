@@ -14,12 +14,12 @@
             <div class="row mt-1 mb-2">
                 <input type="hidden" asp-for="EmployeeId" name="employeeId" value="@ViewBag.employeeId" />
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.Gender" class="form-label">Gender</label>
+                    <label asp-for=" EmployeePersonalDetail.Gender" class="form-label">Gender</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-parent-fill"></i>
                         </span>
-                        <select asp-for="employee.EmployeePersonalDetail.Gender" class="form-control form-control-sm" required>
+                        <select asp-for=" EmployeePersonalDetail.Gender" class="form-control form-control-sm" required>
                             <option value="" selected disabled>Select a gender</option>
                             @foreach (var gender in ViewBag.GenderLookup)
                             {
@@ -27,40 +27,40 @@
                             }
                         </select>
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.Gender" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.Gender" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.DOB" class="form-label">Date Of Birth</label>
+                    <label asp-for="EmployeePersonalDetail.DOB" class="form-label">Date Of Birth</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-calendar-event-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.DOB" type="datetime-local" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter DOB" />
+                        <input asp-for="EmployeePersonalDetail.DOB" type="datetime-local" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter DOB" />
                         @*<input hid asp-for="Id" ViewBag.EmployeeId type="text" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter DOB" />
                         *@
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.DOB" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.DOB" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.PlaceOfBirth" class="form-label">Place Of Birth</label>
+                    <label asp-for="EmployeePersonalDetail.PlaceOfBirth" class="form-label">Place Of Birth</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="bx bxs-location-plus"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.PlaceOfBirth" type="text" class="form-control form-control-sm" placeholder="Enter Place of Birth" />
+                        <input asp-for="EmployeePersonalDetail.PlaceOfBirth" type="text" class="form-control form-control-sm" placeholder="Enter Place of Birth" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.PlaceOfBirth" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.PlaceOfBirth" class="text-danger"></span>
                 </div>
             </div>
             <div class="row mb-2">
                 <div class="col-lg-4">
 
-                    <label asp-for="employee.EmployeePersonalDetail.BloodGroup" class="form-label">Blood Group</label>
+                    <label asp-for="EmployeePersonalDetail.BloodGroup" class="form-label">Blood Group</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="mdi mdi-blood-bag"></i>
                         </span>
-                        <select asp-for="employee.EmployeePersonalDetail.BloodGroup" class="form-control form-control-sm" required>
+                        <select asp-for="EmployeePersonalDetail.BloodGroup" class="form-control form-control-sm" required>
                             <option value"" disabled selected>Select Blood Group</option>
                             @foreach (var booldgroup in ViewBag.bloodGroup)
                             {
@@ -68,28 +68,28 @@
                             }
                         </select>
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.BloodGroup" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.BloodGroup" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.Religion" class="form-label">Religion</label>
+                    <label asp-for="EmployeePersonalDetail.Religion" class="form-label">Religion</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-pencil-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.Religion" type="text" class="form-control form-control-sm" placeholder="Enter Religion" />
+                        <input asp-for="EmployeePersonalDetail.Religion" type="text" class="form-control form-control-sm" placeholder="Enter Religion" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.Religion" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.Religion" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.PermanentAddress.Nationality" class="form-label">Nationality</label>
+                    <label asp-for="EmployeePersonalDetail.PermanentAddress.Nationality" class="form-label">Nationality</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-edit-circle-fill  "></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.ResidentialAddress.Nationality" type="text" class="form-control form-control-sm" placeholder="Enter Nationality" />
-                        <input asp-for="employee.EmployeePersonalDetail.PermanentAddress.Nationality" hidden value="employee.EmployeePersonalDetail.ResidentialAddress.Nationality" />
+                        <input asp-for="EmployeePersonalDetail.ResidentialAddress.Nationality" type="text" class="form-control form-control-sm" placeholder="Enter Nationality" />
+                        <input asp-for="EmployeePersonalDetail.PermanentAddress.Nationality" hidden value="EmployeePersonalDetail.ResidentialAddress.Nationality" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.PermanentAddress.Nationality" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.PermanentAddress.Nationality" class="text-danger"></span>
                 </div>
             </div>
 
@@ -97,14 +97,14 @@
             <label class="mt-3 fs-3  text-danger">Emergency Contact</label><hr />
             <div class="row mt-1 mb-2">
                 <div class="col-lg-4">
-                    <input hidden asp-for="employee.EmployeePersonalDetail.Emergency.Name" value="Emergency Contact" />
-                    <label asp-for="employee.EmployeePersonalDetail.Emergency.RelationTypeId" class="form-label">Relation Type</label>
+                    <input hidden asp-for="EmployeePersonalDetail.Emergency.Name" value="Emergency Contact" />
+                    <label asp-for="EmployeePersonalDetail.Emergency.RelationTypeId" class="form-label">Relation Type</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-user-fill"></i>
                         </span>
  
-                        <select asp-for="employee.EmployeePersonalDetail.Emergency.RelationTypeId" class="form-control form-control-sm">
+                        <select asp-for="EmployeePersonalDetail.Emergency.RelationTypeId" class="form-control form-control-sm">
                             <option value="" selected disabled>select Relation Type</option>
 
                             @foreach (var relation in ViewBag.relationType)
@@ -115,40 +115,40 @@
                         </select>
  
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.Emergency.RelationType" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.Emergency.RelationType" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.Emergency.Email" class="form-label">Email</label>
+                    <label asp-for="EmployeePersonalDetail.Emergency.Email" class="form-label">Email</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class=" ri-mail-unread-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.Emergency.Email" type="text" class="form-control form-control-sm" placeholder="Enter a valid Email Id">
+                        <input asp-for="EmployeePersonalDetail.Emergency.Email" type="text" class="form-control form-control-sm" placeholder="Enter a valid Email Id">
 
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.Emergency.Email" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.Emergency.Email" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.Emergency.MobileNumber" class="form-label">Mobile Number</label>
+                    <label asp-for="EmployeePersonalDetail.Emergency.MobileNumber" class="form-label">Mobile Number</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-smartphone-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.Emergency.MobileNumber" type="text" class="form-control form-control-sm" placeholder="Enter Emergency Mobile Number" />
+                        <input asp-for="EmployeePersonalDetail.Emergency.MobileNumber" type="text" class="form-control form-control-sm" placeholder="Enter Emergency Mobile Number" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.Emergency.MobileNumber" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.Emergency.MobileNumber" class="text-danger"></span>
                 </div>
             </div>
             <div class="row mt-1 mb-2">
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.Emergency.WhatsAppNumber" class="form-label">Whats App Number</label>
+                    <label asp-for="EmployeePersonalDetail.Emergency.WhatsAppNumber" class="form-label">Whats App Number</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-smartphone-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.Emergency.WhatsAppNumber" type="text" class="form-control form-control-sm" placeholder="Enter WhatsApp Number " />
+                        <input asp-for="EmployeePersonalDetail.Emergency.WhatsAppNumber" type="text" class="form-control form-control-sm" placeholder="Enter WhatsApp Number " />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.Emergency.WhatsAppNumber" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.Emergency.WhatsAppNumber" class="text-danger"></span>
                 </div>
             </div>
 
@@ -158,59 +158,59 @@
 
             <div class="row mt-1 mb-2">
                 <div class="col-lg-6">
-                    <label asp-for="employee.EmployeePersonalDetail.FatherName" class="form-label">Father Name</label>
+                    <label asp-for="EmployeePersonalDetail.FatherName" class="form-label">Father Name</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-user-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.FatherName" type="text" class="form-control form-control-sm" placeholder="Enter Father Name" />
+                        <input asp-for="EmployeePersonalDetail.FatherName" type="text" class="form-control form-control-sm" placeholder="Enter Father Name" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.FatherName" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.FatherName" class="text-danger"></span>
                 </div>
                 <div class="col-lg-6">
-                    <label asp-for="employee.EmployeePersonalDetail.FatherDOB" class="form-label">Father Date Of Birth</label>
+                    <label asp-for="EmployeePersonalDetail.FatherDOB" class="form-label">Father Date Of Birth</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-calendar-event-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.FatherDOB" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter your father DOB">
+                        <input asp-for="EmployeePersonalDetail.FatherDOB" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter your father DOB">
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.FatherDOB" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.FatherDOB" class="text-danger"></span>
                 </div>
             </div>
             <div class="row mt-1 mb-2">
                 <div class="col-lg-6">
-                    <label asp-for="employee.EmployeePersonalDetail.MotherName" class="form-label">Mother Name</label>
+                    <label asp-for="EmployeePersonalDetail.MotherName" class="form-label">Mother Name</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-user-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.MotherName" type="text" class="form-control form-control-sm" placeholder="Enter Mother Name" />
+                        <input asp-for="EmployeePersonalDetail.MotherName" type="text" class="form-control form-control-sm" placeholder="Enter Mother Name" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.MotherName" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.MotherName" class="text-danger"></span>
                 </div>
 
 
                 <div class="col-lg-6">
-                    <label asp-for="employee.EmployeePersonalDetail.MotherDOB" class="form-label">Mother Date Of Birth</label>
+                    <label asp-for="EmployeePersonalDetail.MotherDOB" class="form-label">Mother Date Of Birth</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-calendar-event-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.MotherDOB" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter Mother Date Of Birth">
+                        <input asp-for="EmployeePersonalDetail.MotherDOB" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter Mother Date Of Birth">
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.MotherDOB" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.MotherDOB" class="text-danger"></span>
                 </div>
             </div>
             <div>
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.MarriedStatus" class="form-label">Marital Status</label>
+                    <label asp-for="EmployeePersonalDetail.MarriedStatus" class="form-label">Marital Status</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-arrow-down-s-fill"></i>
                         </span>
 
-                        <select asp-for="employee.EmployeePersonalDetail.MarriedStatus" id="maritalStatusDropdown" class="form-control form-control-sm" required>
+                        <select asp-for="EmployeePersonalDetail.MarriedStatus" id="maritalStatusDropdown" class="form-control form-control-sm" required>
                             <option value="" selected disabled>Select Marital Status</option>
                             @foreach (var marital in ViewBag.martialStatus)
                             {
@@ -219,7 +219,7 @@
                         </select>
 
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.MarriedStatus" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.MarriedStatus" class="text-danger"></span>
 
                 </div>
             </div>
@@ -228,51 +228,51 @@
 
                 <div class="row mb-2">
                     <div class="col-lg-3">
-                        <label asp-for="employee.EmployeePersonalDetail.SpouseName" class="form-label">Spouse Name</label>
+                        <label asp-for="EmployeePersonalDetail.SpouseName" class="form-label">Spouse Name</label>
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="ri-user-fill"></i>
                             </span>
-                            <input asp-for="employee.EmployeePersonalDetail.SpouseName" type="text" class="form-control form-control-sm" placeholder="Enter spouse name" />
+                            <input asp-for="EmployeePersonalDetail.SpouseName" type="text" class="form-control form-control-sm" placeholder="Enter spouse name" />
                         </div>
-                        <span asp-validation-for="employee.EmployeePersonalDetail.SpouseName" class="text-danger"></span>
+                        <span asp-validation-for="EmployeePersonalDetail.SpouseName" class="text-danger"></span>
                     </div>
                     <div class="col-lg-3">
-                        <label asp-for="employee.EmployeePersonalDetail.SpouseDOB" class="form-label">Spouse Date Of Birth</label>
+                        <label asp-for="EmployeePersonalDetail.SpouseDOB" class="form-label">Spouse Date Of Birth</label>
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="ri-calendar-event-fill"></i>
                             </span>
-                            <input asp-for="employee.EmployeePersonalDetail.SpouseDOB" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter spouse date of birth" />
+                            <input asp-for="EmployeePersonalDetail.SpouseDOB" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter spouse date of birth" />
                         </div>
-                        <span asp-validation-for="employee.EmployeePersonalDetail.SpouseDOB" class="text-danger"></span>
+                        <span asp-validation-for="EmployeePersonalDetail.SpouseDOB" class="text-danger"></span>
                     </div>
                     <div class="col-lg-3">
-                        <label asp-for="employee.EmployeePersonalDetail.SpouseGender" class="form-label"> Spouse Gender</label>
+                        <label asp-for="EmployeePersonalDetail.SpouseGender" class="form-label"> Spouse Gender</label>
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="ri-calendar-event-fill"></i>
                             </span>
-                            <select asp-for="employee.EmployeePersonalDetail.Gender" class="form-control form-control-sm" required>
+                            <select asp-for="EmployeePersonalDetail.Gender" class="form-control form-control-sm" required>
                                 <option value="" selected disabled>Select a gender</option>
                                 @foreach (var gender in ViewBag.GenderLookup)
                                 {
                                     <option value="@gender.Id">@gender.Name</option>
                                 }
                             </select>
-                            <span asp-validation-for="employee.EmployeePersonalDetail.Gender" class="text-danger"></span>
+                            <span asp-validation-for="EmployeePersonalDetail.Gender" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <label asp-for="employee.EmployeePersonalDetail.DateOfWedding" class="form-label">Date Of Wedding</label>
+                        <label asp-for="EmployeePersonalDetail.DateOfWedding" class="form-label">Date Of Wedding</label>
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="ri-calendar-event-fill"></i>
                             </span>
-                            <input asp-for="employee.EmployeePersonalDetail.DateOfWedding" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter your wedding date">
+                            <input asp-for="EmployeePersonalDetail.DateOfWedding" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter your wedding date">
                         </div>
 
-                        <span asp-validation-for="employee.EmployeePersonalDetail.DateOfWedding" class="text-danger"></span>
+                        <span asp-validation-for="EmployeePersonalDetail.DateOfWedding" class="text-danger"></span>
                     </div>
                 </div>
 
@@ -284,34 +284,34 @@
             <label class="mt-3 fs-3 text-danger">Residential Address</label><hr />
             <div class="row mt-1 mb-2">
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail. ResidentialAddress.Address1" class="form-label">Address Line 1</label>
+                    <label asp-for="EmployeePersonalDetail. ResidentialAddress.Address1" class="form-label">Address Line 1</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class=" ri-pencil-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail. ResidentialAddress.Address1" type="text" class="form-control form-control-sm" placeholder="Address line 1" />
+                        <input asp-for="EmployeePersonalDetail. ResidentialAddress.Address1" type="text" class="form-control form-control-sm" placeholder="Address line 1" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.ResidentialAddress.Address1" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.ResidentialAddress.Address1" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail. ResidentialAddress.Address2" class="form-label">Address Line 2</label>
+                    <label asp-for="EmployeePersonalDetail. ResidentialAddress.Address2" class="form-label">Address Line 2</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class=" ri-pencil-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail. ResidentialAddress.Address2" type="text" class="form-control form-control-sm" placeholder="Address line 2" />
+                        <input asp-for="EmployeePersonalDetail. ResidentialAddress.Address2" type="text" class="form-control form-control-sm" placeholder="Address line 2" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.ResidentialAddress.Address2" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.ResidentialAddress.Address2" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail. ResidentialAddress.Address3" class="form-label">Address Line 3</label>
+                    <label asp-for="EmployeePersonalDetail. ResidentialAddress.Address3" class="form-label">Address Line 3</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class=" ri-pencil-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail. ResidentialAddress.Address3" type="text" class="form-control form-control-sm" placeholder="Address line 3" />
+                        <input asp-for="EmployeePersonalDetail. ResidentialAddress.Address3" type="text" class="form-control form-control-sm" placeholder="Address line 3" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.ResidentialAddress.Address3" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.ResidentialAddress.Address3" class="text-danger"></span>
                 </div>
             </div>
             <div class="row mt-1 mb-2">
@@ -331,12 +331,12 @@
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <label asp-for="employee.EmployeePersonalDetail.ResidentialAddress.StateId" class="form-label">State</label>
+                    <label asp-for="EmployeePersonalDetail.ResidentialAddress.StateId" class="form-label">State</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-arrow-down-s-fill"></i>
                         </span>
-                        <select class="form-control form-control-sm" id="stateDropdown" asp-for="employee.EmployeePersonalDetail.PermanentAddress.StateId">
+                        <select class="form-control form-control-sm" id="stateDropdown" asp-for="EmployeePersonalDetail.PermanentAddress.StateId">
                
                         </select>
                     </div>
@@ -347,18 +347,18 @@
                         <span class="input-group-text">
                             <i class="ri-arrow-down-s-fill"></i>
                         </span>
-                        <select class="form-control form-control-sm" id="cityDropdown" asp-for="employee.EmployeePersonalDetail.PermanentAddress.LocationId"  >
+                        <select class="form-control form-control-sm" id="cityDropdown" asp-for="EmployeePersonalDetail.PermanentAddress.LocationId"  >
  
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <label asp-for="employee.EmployeePersonalDetail.ResidentialAddress.PinCode" class="form-label">Pin Code</label>
+                    <label asp-for="EmployeePersonalDetail.ResidentialAddress.PinCode" class="form-label">Pin Code</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-pencil-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.ResidentialAddress.PinCode" type="number" class="form-control form-control-sm" placeholder="Enter pin code" />
+                        <input asp-for="EmployeePersonalDetail.ResidentialAddress.PinCode" type="number" class="form-control form-control-sm" placeholder="Enter pin code" />
                     </div>
                 </div>
             </div>
@@ -366,34 +366,34 @@
             <label class="mt-3 fs-3 text-danger">Parmanent Address</label><hr />
             <div class="row mt-1 mb-2">
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.PermanentAddress.Address1" class="form-label">Address Line 1</label>
+                    <label asp-for="EmployeePersonalDetail.PermanentAddress.Address1" class="form-label">Address Line 1</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class=" ri-pencil-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.PermanentAddress.Address1" type="text" class="form-control form-control-sm" placeholder="Address line 1" />
+                        <input asp-for="EmployeePersonalDetail.PermanentAddress.Address1" type="text" class="form-control form-control-sm" placeholder="Address line 1" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.PermanentAddress.Address1" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.PermanentAddress.Address1" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.PermanentAddress.Address2" class="form-label">Address Line 2</label>
+                    <label asp-for="EmployeePersonalDetail.PermanentAddress.Address2" class="form-label">Address Line 2</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class=" ri-pencil-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.PermanentAddress.Address2" type="text" class="form-control form-control-sm" placeholder="Address line 2" />
+                        <input asp-for="EmployeePersonalDetail.PermanentAddress.Address2" type="text" class="form-control form-control-sm" placeholder="Address line 2" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.PermanentAddress.Address2" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.PermanentAddress.Address2" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.PermanentAddress.Address3" class="form-label">Address Line 3</label>
+                    <label asp-for="EmployeePersonalDetail.PermanentAddress.Address3" class="form-label">Address Line 3</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class=" ri-pencil-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.PermanentAddress.Address3" type="text" class="form-control form-control-sm" placeholder="Address line 3" />
+                        <input asp-for="EmployeePersonalDetail.PermanentAddress.Address3" type="text" class="form-control form-control-sm" placeholder="Address line 3" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.PermanentAddress.Address3" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.PermanentAddress.Address3" class="text-danger"></span>
                 </div>
             </div>
             <div class="row mt-1 mb-2">
@@ -414,7 +414,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <label asp-for="employee.EmployeePersonalDetail.ResidentialAddress.StateId" class="form-label">State</label>
+                    <label asp-for="EmployeePersonalDetail.ResidentialAddress.StateId" class="form-label">State</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-arrow-down-s-fill"></i>
@@ -430,21 +430,21 @@
                         <span class="input-group-text">
                             <i class="ri-arrow-down-s-fill"></i>
                         </span>
-                        <select  class="form-control form-control-sm" id="cityDropdown" asp-for="employee.EmployeePersonalDetail.PermanentAddress.LocationId"  >
+                        <select  class="form-control form-control-sm" id="cityDropdown" asp-for="EmployeePersonalDetail.PermanentAddress.LocationId"  >
                             <option value="" selected disabled>Select City</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <label asp-for="employee.EmployeePersonalDetail.PermanentAddress.PinCode" class="form-label">Pin Code</label>
+                    <label asp-for="EmployeePersonalDetail.PermanentAddress.PinCode" class="form-label">Pin Code</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class=" ri-pencil-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.PermanentAddress.PinCode" type="number" class="form-control form-control-sm" placeholder="Enter pin code" />
+                        <input asp-for="EmployeePersonalDetail.PermanentAddress.PinCode" type="number" class="form-control form-control-sm" placeholder="Enter pin code" />
 
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.PermanentAddress.PinCode" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.PermanentAddress.PinCode" class="text-danger"></span>
                 </div>
             </div>
 
@@ -452,30 +452,30 @@
             <label class="mt-3 fs-3 text-danger">Bank Detail</label><hr />
             <div class="row mb-2">
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.CreateEmployeeBank.AccountName" class="form-label">Bank Account Name</label>
+                    <label asp-for="EmployeePersonalDetail.CreateEmployeeBank.AccountName" class="form-label">Bank Account Name</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-pencil-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.CreateEmployeeBank.AccountName" type="text" class="form-control form-control-sm" placeholder="Bank account name" />
+                        <input asp-for="EmployeePersonalDetail.CreateEmployeeBank.AccountName" type="text" class="form-control form-control-sm" placeholder="Bank account name" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.CreateEmployeeBank.AccountName" class="text-danger"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.CreateEmployeeBank.AccountName" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.CreateEmployeeBank.BankId" class="form-label">Bank Name</label>
+                    <label asp-for="EmployeePersonalDetail.CreateEmployeeBank.BankId" class="form-label">Bank Name</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="bx bxs-bank"></i>
                         </span>
  
-                        <select asp-for="employee.EmployeePersonalDetail.CreateEmployeeBank.BankId" class="form-control form-control-sm" required>
+                        <select asp-for="EmployeePersonalDetail.CreateEmployeeBank.BankId" class="form-control form-control-sm" required>
                             <option value="" selected disabled>Select a Bank</option>
                             @foreach (var bank in ViewBag.Bank)
                             {
                                 <option value="@bank.Id">@bank.Name</option>
                             }
                         </select>
-                        <span asp-validation-for="employee.EmployeePersonalDetail.CreateEmployeeBank.BankId" class="text-danger"></span>
+                        <span asp-validation-for="EmployeePersonalDetail.CreateEmployeeBank.BankId" class="text-danger"></span>
                      </div>
  
                 </div>
@@ -484,44 +484,44 @@
              <div class="row mb-2">
 
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.CreateEmployeeBank.BanAccountId" class="form-label">Account Number</label>
+                    <label asp-for="EmployeePersonalDetail.CreateEmployeeBank.BanAccountId" class="form-label">Account Number</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="mdi mdi-account-details"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.CreateEmployeeBank.BanAccountId" type="text" class="form-control form-control-sm" placeholder="Enter account number" />
+                        <input asp-for="EmployeePersonalDetail.CreateEmployeeBank.BanAccountId" type="text" class="form-control form-control-sm" placeholder="Enter account number" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.CreateEmployeeBank.BanAccountId"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.CreateEmployeeBank.BanAccountId"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="employee.EmployeePersonalDetail.CreateEmployeeBank.IFCCode" class="form-label">IFSC Code</label>
+                    <label asp-for="EmployeePersonalDetail.CreateEmployeeBank.IFCCode" class="form-label">IFSC Code</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-pencil-fill"></i>
                         </span>
-                        <input asp-for="employee.EmployeePersonalDetail.CreateEmployeeBank.IFCCode" type="text" class="form-control form-control-sm" placeholder="Enter IFSC code" />
+                        <input asp-for="EmployeePersonalDetail.CreateEmployeeBank.IFCCode" type="text" class="form-control form-control-sm" placeholder="Enter IFSC code" />
                     </div>
-                    <span asp-validation-for="employee.EmployeePersonalDetail.CreateEmployeeBank.IFCCode"></span>
+                    <span asp-validation-for="EmployeePersonalDetail.CreateEmployeeBank.IFCCode"></span>
                 </div>
                 <div class="row mb-2">
 
                     <div class="col-lg-4">
-                        <label asp-for="employee.EmployeePersonalDetail.CreateEmployeeBank.AccountBranch" class="form-label">Account Branch</label>
+                        <label asp-for="EmployeePersonalDetail.CreateEmployeeBank.AccountBranch" class="form-label">Account Branch</label>
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="mdi mdi-account-details"></i>
                             </span>
-                            <input asp-for="employee.EmployeePersonalDetail.CreateEmployeeBank.AccountBranch" type="text" class="form-control form-control-sm" placeholder="Enter account Branch Name" />
+                            <input asp-for="EmployeePersonalDetail.CreateEmployeeBank.AccountBranch" type="text" class="form-control form-control-sm" placeholder="Enter account Branch Name" />
                         </div>
-                        <span asp-validation-for="employee.EmployeePersonalDetail.CreateEmployeeBank.AccountBranch"></span>
+                        <span asp-validation-for="EmployeePersonalDetail.CreateEmployeeBank.AccountBranch"></span>
                     </div>
                     <div class="col-lg-4">
-                        <label asp-for="employee.EmployeePersonalDetail.CreateEmployeeBank.AccountType" class="form-label">Account Type</label>
+                        <label asp-for="EmployeePersonalDetail.CreateEmployeeBank.AccountType" class="form-label">Account Type</label>
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="ri-pencil-fill"></i>
                             </span>
-                            <select asp-for="employee.EmployeePersonalDetail.CreateEmployeeBank.AccountType" class="form-control form-control-sm" required>
+                            <select asp-for="EmployeePersonalDetail.CreateEmployeeBank.AccountType" class="form-control form-control-sm" required>
                                 <option value="" selected disabled>Select a Bank</option>
                                 @foreach (var accountType in ViewBag.AccountType)
                                                     {
@@ -529,7 +529,7 @@
     }
                             </select>
                         </div>
-                        <span asp-validation-for="employee.EmployeePersonalDetail.CreateEmployeeBank.AccountType"></span>
+                        <span asp-validation-for="EmployeePersonalDetail.CreateEmployeeBank.AccountType"></span>
                     </div>
                 </div>
 

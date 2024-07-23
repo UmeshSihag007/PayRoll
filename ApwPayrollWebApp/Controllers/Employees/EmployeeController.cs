@@ -117,8 +117,7 @@ namespace ApwPayrollWebApp.Controllers.Employees
             }
             return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
             }
-            return RedirectToAction("CreateEmployeePersonal",command);
-
+            return View(command);
         }
 
 

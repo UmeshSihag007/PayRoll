@@ -1,6 +1,4 @@
 ﻿using ApwPayroll_Application.Common.Mappings;
-using ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Commands.CreateEmployeePersonalDetail;
-using ApwPayroll_Domain.common.Enums.Gender;
 using ApwPayroll_Domain.common.Enums.Salutation;
 using ApwPayroll_Domain.Entities.AspUsers;
 using ApwPayroll_Domain.Entities.Banks.Branches;

@@ -1,8 +1,6 @@
 ﻿using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Domain.common.Enums.Gender;
- 
-using ApwPayroll_Domain.Entities.Banks;
- 
+
 using ApwPayroll_Domain.Entities.Banks.BankDetails;
 using ApwPayroll_Domain.Entities.Employees.EmergencyContacts;
 using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
@@ -131,18 +129,18 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                 await _unitOfWork.Repository<EmployeeAddress>().AddAsync(residentialAddress);
                 await _unitOfWork.Save(cancellationToken);
             }
-    
+
             //Emergency Contact working
-            if (request.CreateEmployeePersonal.Emergency!= null)
+            if (request.CreateEmployeePersonal.Emergency != null)
             {
                 var emergencyContact = new EmergencyContact
                 {
-                    Name= request.CreateEmployeePersonal.FatherName??"Testing",
+                    Name = request.CreateEmployeePersonal.FatherName ?? "Testing",
                     RelationTypeId = request.CreateEmployeePersonal.Emergency.RelationTypeId,
                     Email = request.CreateEmployeePersonal.Emergency.Email,
                     MobileNumber = request.CreateEmployeePersonal.Emergency.MobileNumber,
                     WhatsAppNumber = request.CreateEmployeePersonal.Emergency.WhatsAppNumber,
-                    EmployeeId=request.EmployeeId,
+                    EmployeeId = request.EmployeeId,
                 };
                 await _unitOfWork.Repository<EmergencyContact>().AddAsync(emergencyContact);
                 await _unitOfWork.Save(cancellationToken);
@@ -155,13 +153,13 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             if (request.CreateEmployeePersonal.CreateEmployeeBank != null)
             {
                 var bankDetail = new BankDetail
-                { 
+                {
                     BankId = request.CreateEmployeePersonal.CreateEmployeeBank.BankId,
                     IFCCode = request.CreateEmployeePersonal.CreateEmployeeBank.IFCCode,
                     AccountName = request.CreateEmployeePersonal.CreateEmployeeBank.AccountName,
                     AccountBranch = request.CreateEmployeePersonal.CreateEmployeeBank.AccountBranch,
                     BanAccountId = 122,
-                    EmployeeId=request.EmployeeId,
+                    EmployeeId = request.EmployeeId,
 
 
                 };
@@ -170,7 +168,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             }
 
 
-  
+
 
             return Result<int>.Success();
 
