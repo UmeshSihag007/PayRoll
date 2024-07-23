@@ -43,7 +43,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeFamilies.Queries.Get
             {
                 return Result<List<GetEmployeeFamilyDetailDto>>.BadRequest();
             }
-            var data=await _unitOfWork.Repository< EmployeeFamily>().Entities.Where(x=>x.EmployeeId == request.EmployeeId && x.IsDeleted==false).ToListAsync();
+            var data=await _unitOfWork.Repository< EmployeeFamily>().Entities.Include(x=>x.RelationType).Where(x=>x.EmployeeId == request.EmployeeId && x.IsDeleted==false).ToListAsync();
             if(data == null)
             {
                 return Result<List<GetEmployeeFamilyDetailDto>>.NotFound();
