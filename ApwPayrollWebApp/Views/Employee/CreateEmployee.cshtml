@@ -329,7 +329,7 @@
                                 <div class="row mt-1 mb-2">
                                     <input type="hidden" id="EmployeeId" name="EmployeeId" value="@ViewBag.EmployeeId" />
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.Gender" class="form-label">Gender</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.Gender" class="form-label">Gender</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-parent-fill"></i>
@@ -342,61 +342,61 @@
                                                 }
                                             </select>
                                         </div>
-                                        <span asp-validation-for="EmployeePersonalDetail.Gender" class="text-danger"></span>
+                                        <span asp-validation-for="employee.EmployeePersonalDetail.Gender" class="text-danger"></span>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.DOB" class="form-label">Date Of Birth</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.DOB" class="form-label">Date Of Birth</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-calendar-event-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.DOB" type="text" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter DOB" />
+                                            <input asp-for="employee.EmployeePersonalDetail.DOB" type="text" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter DOB" />
 @*                                             <input hid asp-for="Id" ViewBag.EmployeeId type="text" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter DOB" />
  *@                                        </div>
-                                        <span asp-validation-for="EmployeePersonalDetail.DOB" class="text-danger"></span>
+                                        <span asp-validation-for="employee.EmployeePersonalDetail.DOB" class="text-danger"></span>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.PlaceOfBirth" class="form-label">Place Of Birth</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.PlaceOfBirth" class="form-label">Place Of Birth</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="bx bxs-location-plus"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.PlaceOfBirth" type="text" class="form-control form-control-sm" placeholder="Enter Place of Birth" />
+                                            <input asp-for="employee.EmployeePersonalDetail.PlaceOfBirth" type="text" class="form-control form-control-sm" placeholder="Enter Place of Birth" />
                                         </div>
-                                        <span asp-validation-for="EmployeePersonalDetail.PlaceOfBirth" class="text-danger"></span>
+                                        <span asp-validation-for="employee.EmployeePersonalDetail.PlaceOfBirth" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-lg-4">
 
-                                        <label asp-for ="EmployeePersonalDetail.BloodGroup" class="form-label">Blood Group</label>
+                                        <label asp-for ="employee.EmployeePersonalDetail.BloodGroup" class="form-label">Blood Group</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="mdi mdi-blood-bag"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.BloodGroup" type="text" class="form-control form-control-sm" placeholder="Enter Blood Group" />
+                                            <input asp-for="employee.EmployeePersonalDetail.BloodGroup" type="text" class="form-control form-control-sm" placeholder="Enter Blood Group" />
                                         </div>
-                                        <span asp-validation-for="EmployeePersonalDetail.BloodGroup" class="text-danger"></span>
+                                        <span asp-validation-for="employee.EmployeePersonalDetail.BloodGroup" class="text-danger"></span>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.Religion" class="form-label">Religion</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.Religion" class="form-label">Religion</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-pencil-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.Religion" type="text" class="form-control form-control-sm" placeholder="Enter Religion" />
+                                            <input asp-for="employee.EmployeePersonalDetail.Religion" type="text" class="form-control form-control-sm" placeholder="Enter Religion" />
                                         </div>
-                                        <span asp-validation-for="EmployeePersonalDetail.Religion" class="text-danger"></span>
+                                        <span asp-validation-for="employee.EmployeePersonalDetail.Religion" class="text-danger"></span>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.Nationality" class="form-label">Nationality</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.Nationality" class="form-label">Nationality</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-edit-circle-fill  "></i>
                                             </span>
-                                            <input asp-for ="EmployeePersonalDetail.Nationality" type="text" class="form-control form-control-sm" placeholder="Enter Nationality" />
+                                            <input asp-for ="employee.EmployeePersonalDetail.Nationality" type="text" class="form-control form-control-sm" placeholder="Enter Nationality" />
                                         </div>
-                                        <span asp-validation-for="EmployeePersonalDetail.Nationality" class="text-danger"></span>
+                                        <span asp-validation-for="employee.EmployeePersonalDetail.Nationality" class="text-danger"></span>
                                     </div>
                                 </div>
 
@@ -404,43 +404,43 @@
                                 <label class="mt-3 fs-3  text-danger">Emergency Contact</label><hr />
                                 <div class="row mt-1 mb-2">
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.Emergency.RelationType" class="form-label">Relation Type</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.Emergency.RelationType" class="form-label">Relation Type</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-user-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.Emergency.RelationType" type="text" class="form-control form-control-sm" placeholder="Enter Name" placeholder="Enter Relation Type" />
+                                            <input asp-for="employee.EmployeePersonalDetail.Emergency.RelationType" type="text" class="form-control form-control-sm" placeholder="Enter Name" placeholder="Enter Relation Type" />
                                         </div>
-                                        <span asp-validation-for="EmployeePersonalDetail.Emergency.RelationType"></span>
+                                        <span asp-validation-for="employee.EmployeePersonalDetail.Emergency.RelationType"></span>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.Emergency.Email" class="form-label">Email</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.Emergency.Email" class="form-label">Email</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class=" ri-mail-unread-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.Emergency.Email" type="text" class="form-control form-control-sm" placeholder="Enter a valid Email Id">
+                                            <input asp-for="employee.EmployeePersonalDetail.Emergency.Email" type="text" class="form-control form-control-sm" placeholder="Enter a valid Email Id">
 
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.Emergency.MobileNumber" class="form-label">Mobile Number</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.Emergency.MobileNumber" class="form-label">Mobile Number</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-smartphone-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.Emergency.MobileNumber" type="text" class="form-control form-control-sm" placeholder="Enter Emergency Mobile Number" />
+                                            <input asp-for="employee.EmployeePersonalDetail.Emergency.MobileNumber" type="text" class="form-control form-control-sm" placeholder="Enter Emergency Mobile Number" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mt-1 mb-2">
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.Emergency.WhatsAppNumber" class="form-label">Whats App Number</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.Emergency.WhatsAppNumber" class="form-label">Whats App Number</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-smartphone-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.Emergency.WhatsAppNumber" type="text" class="form-control form-control-sm" placeholder="Enter WhatsApp Number " />
+                                            <input asp-for="employee.EmployeePersonalDetail.Emergency.WhatsAppNumber" type="text" class="form-control form-control-sm" placeholder="Enter WhatsApp Number " />
                                         </div>
                                     </div>
                                 </div>
@@ -451,49 +451,49 @@
 
                                 <div class="row mt-1 mb-2">
                                     <div class="col-lg-6">
-                                        <label asp-for="EmployeePersonalDetail.FatherName" class="form-label">Father Name</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.FatherName" class="form-label">Father Name</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-user-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.FatherName" type="text" class="form-control form-control-sm" placeholder="Enter Father Name" />
+                                            <input asp-for="employee.EmployeePersonalDetail.FatherName" type="text" class="form-control form-control-sm" placeholder="Enter Father Name" />
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <label asp-for="EmployeePersonalDetail.FatherDOB" class="form-label">Father Date Of Birth</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.FatherDOB" class="form-label">Father Date Of Birth</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-calendar-event-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.FatherDOB" type="text" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter Father date of birth" />
+                                            <input asp-for="employee.EmployeePersonalDetail.FatherDOB" type="text" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter Father date of birth" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mt-1 mb-2">
                                     <div class="col-lg-6">
-                                        <label asp-for="EmployeePersonalDetail.MotherName" class="form-label">Mother Name</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.MotherName" class="form-label">Mother Name</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-user-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.MotherName" type="text" class="form-control form-control-sm" placeholder="Enter Mother Name" />
+                                            <input asp-for="employee.EmployeePersonalDetail.MotherName" type="text" class="form-control form-control-sm" placeholder="Enter Mother Name" />
                                         </div>
                                     </div>
 
 
                                     <div class="col-lg-6">
-                                        <label asp-for="EmployeePersonalDetail.MotherDOB" class="form-label">Mother Date Of Birth</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.MotherDOB" class="form-label">Mother Date Of Birth</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-calendar-event-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.MotherDOB" type="text" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter Mother Date of birth" />
+                                            <input asp-for="employee.EmployeePersonalDetail.MotherDOB" type="text" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter Mother Date of birth" />
                                         </div>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.MarriedStatus" class="form-label">Marital Status</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.MarriedStatus" class="form-label">Marital Status</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-arrow-down-s-fill"></i>
@@ -517,34 +517,34 @@
 
                                     <div class="row mb-2">
                                         <div class="col-lg-3">
-                                            <label asp-for="EmployeePersonalDetail.SpouseName" class="form-label">Spouse Name</label>
+                                            <label asp-for="employee.EmployeePersonalDetail.SpouseName" class="form-label">Spouse Name</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">
                                                     <i class="ri-user-fill"></i>
                                                 </span>
-                                                <input asp-for="EmployeePersonalDetail.SpouseName" type="text" class="form-control form-control-sm" placeholder="Enter spouse name" />
+                                                <input asp-for="employee.EmployeePersonalDetail.SpouseName" type="text" class="form-control form-control-sm" placeholder="Enter spouse name" />
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
-                                            <label asp-for="EmployeePersonalDetail.SpouseDOB" class="form-label">Spouse Date Of Birth</label>
+                                            <label asp-for="employee.EmployeePersonalDetail.SpouseDOB" class="form-label">Spouse Date Of Birth</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">
                                                     <i class="ri-calendar-event-fill"></i>
                                                 </span>
-                                                <input asp-for="EmployeePersonalDetail.SpouseDOB" type="text" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter spouse date of birth" />
+                                                <input asp-for="employee.EmployeePersonalDetail.SpouseDOB" type="text" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter spouse date of birth" />
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
-                                            <label asp-for="EmployeePersonalDetail.SpouseGender" class="form-label"> Spouse Gender</label>
+                                            <label asp-for="employee.EmployeePersonalDetail.SpouseGender" class="form-label"> Spouse Gender</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">
                                                     <i class="ri-calendar-event-fill"></i>
                                                 </span>
-                                                <input asp-for="EmployeePersonalDetail.SpouseGender" type="text" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter spouse gender" />
+                                                <input asp-for="employee.EmployeePersonalDetail.SpouseGender" type="text" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter spouse gender" />
                                             </div>
                                         </div>   
                                         <div class="col-lg-3">
-                                            <label asp-for="EmployeePersonalDetail.DateOfWedding" class="form-label">Date Of Wedding</label>
+                                            <label asp-for="employee.EmployeePersonalDetail.DateOfWedding" class="form-label">Date Of Wedding</label>
                                             <div class="input-group">
                                                 <span class="input-group-text">
                                                     <i class="ri-calendar-event-fill"></i>
@@ -562,37 +562,37 @@
                                 <label class="mt-3 fs-3 text-danger">Residential Address</label><hr />
                                 <div class="row mt-1 mb-2">
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail. ResidentialAddress.Address1" class="form-label">Address Line 1</label>
+                                        <label asp-for="employee.EmployeePersonalDetail. ResidentialAddress.Address1" class="form-label">Address Line 1</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class=" ri-pencil-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail. ResidentialAddress.Address1" type="text" class="form-control form-control-sm" placeholder="Address line 1" />
+                                            <input asp-for="employee.EmployeePersonalDetail. ResidentialAddress.Address1" type="text" class="form-control form-control-sm" placeholder="Address line 1" />
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail. ResidentialAddress.Address2" class="form-label">Address Line 2</label>
+                                        <label asp-for="employee.EmployeePersonalDetail. ResidentialAddress.Address2" class="form-label">Address Line 2</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class=" ri-pencil-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail. ResidentialAddress.Address2" type="text" class="form-control form-control-sm" placeholder="Address line 2" />
+                                            <input asp-for="employee.EmployeePersonalDetail. ResidentialAddress.Address2" type="text" class="form-control form-control-sm" placeholder="Address line 2" />
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail. ResidentialAddress.Address3" class="form-label">Address Line 3</label>
+                                        <label asp-for="employee.EmployeePersonalDetail. ResidentialAddress.Address3" class="form-label">Address Line 3</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class=" ri-pencil-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail. ResidentialAddress.Address3" type="text" class="form-control form-control-sm" placeholder="Address line 3" />
+                                            <input asp-for="employee.EmployeePersonalDetail. ResidentialAddress.Address3" type="text" class="form-control form-control-sm" placeholder="Address line 3" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mt-1 mb-2">
 
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail. ResidentialAddress.StateId" class="form-label">State</label>
+                                        <label asp-for="employee.EmployeePersonalDetail. ResidentialAddress.StateId" class="form-label">State</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-arrow-down-s-fill"></i>
@@ -609,21 +609,21 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail. ResidentialAddress.CountryId" class="form-label">Country</label>
+                                        <label asp-for="employee.EmployeePersonalDetail. ResidentialAddress.CountryId" class="form-label">Country</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class=" ri-pencil-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail. ResidentialAddress.CountryId" type="text" class="form-control form-control-sm" placeholder="Country name" />
+                                            <input asp-for="employee.EmployeePersonalDetail. ResidentialAddress.CountryId" type="text" class="form-control form-control-sm" placeholder="Country name" />
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail. ResidentialAddress.PinCode" class="form-label">Pin Code</label>
+                                        <label asp-for="employee.EmployeePersonalDetail. ResidentialAddress.PinCode" class="form-label">Pin Code</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class=" ri-pencil-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail. ResidentialAddress.PinCode" type="number" class="form-control form-control-sm" placeholder="Enter pin code" />
+                                            <input asp-for="employee.EmployeePersonalDetail. ResidentialAddress.PinCode" type="number" class="form-control form-control-sm" placeholder="Enter pin code" />
 
                                         </div>
                                     </div>
@@ -632,37 +632,37 @@
                                 <label class="mt-3 fs-3 text-danger">Parmanent Address</label><hr />
                                 <div class="row mt-1 mb-2">
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.PermanentAddress.Address1" class="form-label">Address Line 1</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.PermanentAddress.Address1" class="form-label">Address Line 1</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class=" ri-pencil-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.PermanentAddress.Address1" type="text" class="form-control form-control-sm" placeholder="Address line 1" />
+                                            <input asp-for="employee.EmployeePersonalDetail.PermanentAddress.Address1" type="text" class="form-control form-control-sm" placeholder="Address line 1" />
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.PermanentAddress.Address2" class="form-label">Address Line 2</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.PermanentAddress.Address2" class="form-label">Address Line 2</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class=" ri-pencil-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.PermanentAddress.Address2"  type="text" class="form-control form-control-sm" placeholder="Address line 2" />
+                                            <input asp-for="employee.EmployeePersonalDetail.PermanentAddress.Address2"  type="text" class="form-control form-control-sm" placeholder="Address line 2" />
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.PermanentAddress.Address3" class="form-label">Address Line 3</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.PermanentAddress.Address3" class="form-label">Address Line 3</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class=" ri-pencil-fill"></i>
                                             </span>
-                                            <input  asp-for="EmployeePersonalDetail.PermanentAddress.Address3"  type="text" class="form-control form-control-sm" placeholder="Address line 3" />
+                                            <input  asp-for="employee.EmployeePersonalDetail.PermanentAddress.Address3"  type="text" class="form-control form-control-sm" placeholder="Address line 3" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mt-1 mb-2">
 
                                     <div class="col-lg-4">
-                                        <label  asp-for="EmployeePersonalDetail.PermanentAddress.StateId"  class="form-label">State</label>
+                                        <label  asp-for="employee.EmployeePersonalDetail.PermanentAddress.StateId"  class="form-label">State</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="ri-arrow-down-s-fill"></i>
@@ -680,7 +680,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label  asp-for="EmployeePersonalDetail.PermanentAddress.CountryId"  class="form-label">Country</label>
+                                        <label  asp-for="employee.EmployeePersonalDetail.PermanentAddress.CountryId"  class="form-label">Country</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class=" ri-pencil-fill"></i>
@@ -690,12 +690,12 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label asp-for="EmployeePersonalDetail.PermanentAddress.PinCode" class="form-label">Pin Code</label>
+                                        <label asp-for="employee.EmployeePersonalDetail.PermanentAddress.PinCode" class="form-label">Pin Code</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class=" ri-pencil-fill"></i>
                                             </span>
-                                            <input asp-for="EmployeePersonalDetail.PermanentAddress.PinCode"  type="number" class="form-control form-control-sm" placeholder="Enter pin code" />
+                                            <input asp-for="employee.EmployeePersonalDetail.PermanentAddress.PinCode"  type="number" class="form-control form-control-sm" placeholder="Enter pin code" />
 
                                         </div>
                                     </div>

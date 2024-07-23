@@ -1,21 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿    using System.ComponentModel.DataAnnotations;
 
-namespace ApwPayroll_Application.Common.Exceptions
-{
-    public class MobileNumberAttribute : ValidationAttribute
+    namespace ApwPayroll_Application.Common.Exceptions
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        public class MobileNumberAttribute : ValidationAttribute
         {
-            if (value != null)
+            protected override ValidationResult IsValid(object value, ValidationContext validationContext)
             {
-                string phoneNumber = value.ToString();
+                if (value != null)
+                {
+                    string phoneNumber = value.ToString();
 
                 if (phoneNumber.Length != 10)
                 {
+
                     return new ValidationResult("Phone number must be 10 digits.");
+
                 }
+            
             }
-            return ValidationResult.Success;
+                return ValidationResult.Success;
+            }
         }
     }
-}
