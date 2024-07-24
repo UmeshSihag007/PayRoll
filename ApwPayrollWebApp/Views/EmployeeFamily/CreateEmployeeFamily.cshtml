@@ -50,8 +50,8 @@
                     </div>
                     <div class="col-3">
                         <label asp-for="CreateEmployeeFamily.Gender"> Gender </label>
-                        <select asp-for="CreateEmployeeFamily.Gender" class="form-control form-control-sm">
-                            <option value="" selected disabled>Select Course</option>
+                        <select asp-for="CreateEmployeeFamily.Gender" class="form-control form-control  ">
+                            <option value="" selected disabled>Select Gender</option>
                             @foreach (var gender in ViewBag.GenderLookup)
                             {
                                 <option value="@gender.Id">@gender.Name</option>

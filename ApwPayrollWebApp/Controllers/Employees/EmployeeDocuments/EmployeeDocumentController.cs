@@ -138,6 +138,19 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeDocuments
             if (ModelState.IsValid)
             {
                await _mediator.Send(new CreateEmployeeDocumentCommand(EmployeeId,model.EmployeeDocument));
+
+                var data = await _mediator.Send(new CreateEmployeeDocumentCommand(EmployeeId, model.EmployeeDocument));
+                if (data.code == 200)
+                {
+                    Notify(data.Messages, null, data.code);
+                }
+                else
+                {
+                    Notify(data.Messages, null, data.code);
+                }
+
+                return RedirectToAction("EmployeeReferral", "EmployeeReference");
+
             }
             await InitializeViewBags();
 
