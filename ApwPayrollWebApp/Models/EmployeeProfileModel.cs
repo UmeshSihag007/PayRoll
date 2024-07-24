@@ -6,7 +6,7 @@ namespace ApwPayrollWebApp.Models;
 
 public class EmployeeProfileModel
 {
-    public int? EmployeeId { get; set; }
+   /* public int? EmployeeId { get; set; }*/
 
     public CreateEmployeeCoursesCommand createCourses { get; set; }
     public CreateEmployeeDepartmentCommand createDepartment { get; set; }

@@ -2,19 +2,13 @@
 using ApwPayroll_Domain.Entities.Employees.Courses;
 using ApwPayroll_Shared;
 using AutoMapper;
-using Couchbase.Core.Retry;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApwPayroll_Application.Features.Employees.EmployeeCouses.Commands.CreateEmployeeCourses;
 
-public class CreateEmployeeCoursesCommand:IRequest<Result<int>>
+public class CreateEmployeeCoursesCommand : IRequest<Result<int>>
 {
-    public int Id { get; set; }
+    public int? Id { get; set; }
     public string Name { get; set; }
     public bool IsActive { get; set; }
 }

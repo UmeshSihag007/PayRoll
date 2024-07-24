@@ -37,7 +37,7 @@ internal class UpdateEmployeeDesignationCommandHandler : IRequestHandler<UpdateE
         {
             return Result<int>.BadRequest();
         }
-        var mapData = _mapper.Map<Designation>(data);
+        var mapData = _mapper.Map(request.command,data);
         await _unitOfWork.Repository<Designation>().UpdateAsync(mapData);
         await _unitOfWork.Save(cancellationToken);
         return Result<int>.Success();

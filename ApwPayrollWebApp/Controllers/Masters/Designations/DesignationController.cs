@@ -1,8 +1,4 @@
-﻿using ApwPayroll_Application.Features.Employees.EmployeeDepartments.Commands.CreateEmployeeDepartment;
-using ApwPayroll_Application.Features.Employees.EmployeeDepartments.Commands.DeleteEmployeeDepartment;
-using ApwPayroll_Application.Features.Employees.EmployeeDepartments.Commands.UpdateEmployeeDepartment;
-using ApwPayroll_Application.Features.Employees.EmployeeDepartments.Queries.GetAllEmployeeDepartment;
-using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Commands.CreateEmployeeDesignation;
+﻿using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Commands.CreateEmployeeDesignation;
 using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Commands.DeleteEmployeeDesignation;
 using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Commands.UpdateEmployeeDesignation;
 using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Queries.GetAllEmployeeDesignation;
@@ -11,17 +7,19 @@ using ApwPayrollWebApp.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ApwPayrollWebApp.Controllers.Employees.EmployeeDesignations
+namespace ApwPayrollWebApp.Controllers.Masters.Designations
 {
-    public class EmployeeDesignationController : BaseController
+    public class DesignationController : BaseController
     {
+
         private readonly IMediator _mediator;
-        public IActionResult Index()
+
+        public DesignationController(IMediator mediator)
         {
-            return View();
+            _mediator = mediator;
         }
 
-        public async Task<IActionResult> Create(int? id)
+        public async Task<IActionResult> CreateDesignation(int? id)
         {
             await IntializeViewBag();
             var model = new EmployeeProfileModel();
@@ -38,29 +36,26 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeDesignations
                         Description = designation.Description,
                     };
                 }
+                     
             }
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(EmployeeProfileModel employeeProfile)
+        public async Task<IActionResult> CreateDesignation(EmployeeProfileModel employeeProfile)
         {
-            var employeeId = HttpContext.Session.GetInt32("EmployeeId").Value;
-            if (HttpContext.Session.GetInt32("EmployeeId") != null)
+             
+            if (employeeProfile.createDesignation.Id == 0 || employeeProfile.createDesignation.Id == null)
             {
-                employeeId = HttpContext.Session.GetInt32("employeeId").Value;
-            }
-            if (employeeProfile.createCourses.Id == 0 || employeeProfile.createCourses.Id == null)
-            {
-                await _mediator.Send(new CreateEmployeeDesignationCommand());
+                await _mediator.Send(employeeProfile.createDesignation);
 
             }
             else
             {
-                await _mediator.Send(new UpdateEmployeeDesignationCommand((int)employeeProfile.createCourses.Id, employeeProfile.createDesignation));
+                await _mediator.Send(new UpdateEmployeeDesignationCommand((int)employeeProfile.createDesignation.Id, employeeProfile.createDesignation));
             }
 
-            return RedirectToAction("Create");
+            return RedirectToAction("CreateDesignation");
 
         }
         public async Task<IActionResult> Update(int id)
@@ -73,24 +68,27 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeDesignations
                 return NotFound();
             }
 
-            return RedirectToAction("Create", new { id = designationDataById.Id });
+            return RedirectToAction("CreateDesignation", new { id = designationDataById.Id });
         }
         public async Task<IActionResult> Delete(int id)
         {
             var data = await _mediator.Send(new DeleteEmployeeDesignationCommand(id));
-            return RedirectToAction("Create");
+            return RedirectToAction("CreateDesignation");
         }
 
         private async Task IntializeViewBag()
         {
             var designationList = await _mediator.Send(new GetAllEmployeeDesignationQuery());
-            var employeeId = HttpContext.Session.GetInt32("EmployeeId");
-            var employeeDesignation = designationList.Data.ToList();
-            if (employeeId != null)
+            if (designationList.Data != null && designationList.Data.Count != 0)
             {
+            var employeeDesignation = designationList.Data.ToList();
+            
 
                 ViewBag.Designation = employeeDesignation;
+
             }
+             
+            
         }
     }
 }
