@@ -1,8 +1,4 @@
-﻿using ApwPayroll_Application.Features.Employees.EmployeeCouses.Commands.CreateEmployeeCourses;
-using ApwPayroll_Application.Features.Employees.EmployeeCouses.Commands.DeleteEmployeeCourses;
-using ApwPayroll_Application.Features.Employees.EmployeeCouses.Commands.UpdateEmployeeCourses;
-using ApwPayroll_Application.Features.Employees.EmployeeCouses.Queries.GetAllEmployeeCourses;
-using ApwPayroll_Application.Features.Employees.EmployeeDepartments.Commands.CreateEmployeeDepartment;
+﻿using ApwPayroll_Application.Features.Employees.EmployeeDepartments.Commands.CreateEmployeeDepartment;
 using ApwPayroll_Application.Features.Employees.EmployeeDepartments.Commands.DeleteEmployeeDepartment;
 using ApwPayroll_Application.Features.Employees.EmployeeDepartments.Commands.UpdateEmployeeDepartment;
 using ApwPayroll_Application.Features.Employees.EmployeeDepartments.Queries.GetAllEmployeeDepartment;
@@ -11,17 +7,21 @@ using ApwPayrollWebApp.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ApwPayrollWebApp.Controllers.Employees.EmployeeDepartments
+namespace ApwPayrollWebApp.Controllers.Masters.Departments
 {
-    public class EmployeeDepartmentController : BaseController
+    public class DepartmentController : BaseController
     {
+
         private readonly IMediator _mediator;
-        public IActionResult Index()
+
+        public DepartmentController(IMediator mediator)
         {
-            return View();
+            _mediator = mediator;
         }
 
-        public async Task<IActionResult> Create(int? id)
+         
+
+        public async Task<IActionResult> CreateDepartment(int? id)
         {
             await IntializeViewBag();
             var model = new EmployeeProfileModel();
@@ -35,32 +35,31 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeDepartments
                     {
                         Id = department.Id,
                         Name = department.Name,
-                         Description = department.Description,
+                        Description = department.Description,
                     };
                 }
-            }
             return View(model);
+            }
+            return  View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(EmployeeProfileModel employeeProfile)
+        public async Task<IActionResult> CreateDepartment(EmployeeProfileModel employeeProfile)
         {
-            var employeeId = HttpContext.Session.GetInt32("EmployeeId").Value;
-            if (HttpContext.Session.GetInt32("EmployeeId") != null)
+            
+            if (employeeProfile.createDepartment.Id == 0 || employeeProfile.createDepartment.Id == null)
             {
-                employeeId = HttpContext.Session.GetInt32("employeeId").Value;
-            }
-            if (employeeProfile.createCourses.Id == 0 || employeeProfile.createCourses.Id == null)
-            {
-                await _mediator.Send(new CreateEmployeeDepartmentCommand());
+                await _mediator.Send(employeeProfile.createDepartment);
 
             }
             else
             {
-                await _mediator.Send(new UpdateEmployeeDepartmentCommand((int)employeeProfile.createCourses.Id, employeeProfile.createDepartment));
+                await _mediator.Send(new UpdateEmployeeDepartmentCommand((int)employeeProfile.createDepartment.Id, employeeProfile.createDepartment));
+
+                return View();
             }
 
-            return RedirectToAction("Create");
+            return RedirectToAction("CreateDepartment");
 
         }
         public async Task<IActionResult> Update(int id)
@@ -73,24 +72,26 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeDepartments
                 return NotFound();
             }
 
-            return RedirectToAction("Create", new { id = departmetnDataById.Id });
+            return RedirectToAction("CreateDepartment", new { id = departmetnDataById.Id });
         }
         public async Task<IActionResult> Delete(int id)
         {
             var data = await _mediator.Send(new DeleteEmployeeDepartmentCommand(id));
-            return RedirectToAction("Create");
+            return RedirectToAction("CreateDepartment");
         }
 
         private async Task IntializeViewBag()
         {
             var departmentList = await _mediator.Send(new GetAllEmployeeDepartmentQuery());
-            var employeeId = HttpContext.Session.GetInt32("EmployeeId");
-            var employeeDepartment = departmentList.Data.ToList();
-            if (employeeId != null)
+            if(departmentList.Data!=null&& departmentList.Data.Count != 0)
             {
+             
+            var employeeDepartment = departmentList.Data.ToList();
+                 ViewBag.Department = employeeDepartment;
+            
 
-                ViewBag.Department = employeeDepartment;
             }
         }
+
     }
 }

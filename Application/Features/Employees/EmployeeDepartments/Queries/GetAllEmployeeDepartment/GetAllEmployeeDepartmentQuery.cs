@@ -17,15 +17,13 @@ internal class GetAllEmployeeDepartmentQueryHandler :  IRequestHandler<GetAllEmp
         _unitOfWork = unitOfWork;
     }
 
-     
-
-    async Task<Result<List<Department>>> IRequestHandler<GetAllEmployeeDepartmentQuery, Result<List<Department>>>.Handle(GetAllEmployeeDepartmentQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<Department>>> Handle(GetAllEmployeeDepartmentQuery request, CancellationToken cancellationToken)
     {
         var data = await _unitOfWork.Repository<Department>().GetAllAsync();
         if (data == null)
         {
             return Result<List<Department>>.NotFound();
         }
-        return Result<List<Department>>.Success();
+        return Result<List<Department>>.Success(data);
     }
 }

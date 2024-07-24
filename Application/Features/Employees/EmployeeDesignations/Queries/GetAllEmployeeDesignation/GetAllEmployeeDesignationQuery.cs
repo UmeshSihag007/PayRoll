@@ -26,6 +26,6 @@ internal class GetAllEmployeeDesignationQueryHandler : IRequestHandler<GetAllEmp
         {
             return Result<List<Designation>>.NotFound();
         }
-        return Result<List<Designation>>.Success();
+        return Result<List<Designation>>.Success(data);
     }
 }
