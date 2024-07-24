@@ -1,37 +1,46 @@
-﻿ @using ApwPayrollWebApp.Models
-@model EmployeeProfileModel
+﻿
+ @using ApwPayrollWebApp.Models
+@model EmployeeProfileModel 
 @{
-    ViewData["Title"] = "EmployeeDepartment";
-    Layout = "~/Views/Shared/Registration/_RegistrationLayout.cshtml";
+    ViewData["Title"] = "CreateDesignation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<h1>CreateDesignation</h1>
 
- 
+
  
 
 <div class="tab-contant">
     <div class="tab-pane">
-        <form method="post">
+        <form   method="post">
             <div class="row">
-                <div class="col-lg-6">
-                    <label asp-for="createDepartment .Name" class="form-label">Name</label>
-                    <input asp-for="createDepartment.Name" type="text" class="form-control"/>
+                <div class="col-lg-2">
+                    <input asp-for="createDesignation.Id" hidden />
+                    <label asp-for="createDesignation.Name" class="form-label">Name</label>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
+                <div class="col-2">
+                    <input asp-for="createDesignation.Name" type="text" class="form-control form-control-sm" />
+
+                </div>
+
+
+                <div class="col-lg-2">
                     <label class="form-label">Description</label>
-                     
-                        <input asp-for="createDepartment.Description" type="text" class="form-control"/>
-                        
-                     
-                    
                 </div>
+
+                <div class="col-lg-2">
+                    <input asp-for="createDesignation.Description" type="text" class="form-control form-control-sm" />
+                </div>
+
+
+                <div class=" col-2">
+                    <button   type="submit" class="btn btn-secondary btn-sm" Id="addBtn"> Add</button>
+                </div>
+
             </div>
-            <button type="submit"> Add</button>
-            <button type="reset"> Cancel</button>
         </form>
-        @if (ViewBag.Department != null)
+        @if (ViewBag.Designation != null)
         {
             <table class="table">
                 <thead>
@@ -43,17 +52,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in ViewBag.Department)
+                    @foreach (var item in ViewBag.Designation)
                     {
                         <tr>
-                            <td>@(ViewBag.Department.IndexOf(item) + 1)</td>
+                            <td>@(ViewBag.Designation.IndexOf(item) + 1)</td>
                             <td>@item.Name</td>
                             <td>@item.Description</td>
                             <td>
                                 <a asp-action="Update" asp-all-route asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'refernece', '@Url.Action("Delete", "EmployeeDepartment")') ">
+                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'refernece', '@Url.Action("Delete", "Designation")') ">
                                     <i class="bi bi-trash-fill"></i>
                                 </a>
                             </td>
@@ -78,7 +87,7 @@
     <script src="~/assets/js/app.js"></script>
 
     <partial name="_ValidationScriptsPartial" />
-
+     
 
 
 
@@ -101,13 +110,16 @@
                 let url;
 
 
-                url = '@Url.Action("Delete", "EmployeeDepartment")/' + id;
+                url = '@Url.Action("Delete", "Designation")/' + id;
             }
             window.location.href = url;
         }
-                })
-            }
+                        })
+                    }
 </script>
+
+
+
 
 
 

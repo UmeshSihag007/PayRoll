@@ -1,70 +1,77 @@
 ﻿ @using ApwPayrollWebApp.Models
 @model EmployeeProfileModel
+
 @{
     ViewData["Title"] = "CreateCourse";
-    Layout = "~/Views/Shared/Registration/_RegistrationLayout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+ 
 
 <h1>CreateCourse</h1>
 
 <div class="tab-contant">
     <div class="tab-pane">
-        <form  method="post">
+        <form asp-action="CreateCourse" method="post">
             <div class="row">
-                <div class="col-lg-6"> 
-                  <label asp-for="createCourses .Name" class="form-label">Name</label>
-                  <input asp-for="createCourses.Name" type="text" class=" form-control"></>
-                </div> 
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
+                <div class="col-3">
+                    <input asp-for="createCourses.Id" hidden />
+                    <label asp-for="createCourses .Name" class="form-label">Name</label>
+                    </div>
+                <div class="col-3">
+                    <input asp-for="createCourses.Name" type="text" class=" form-control form-control-sm"></>
+                    <span asp-validation-for="createCourses.Name" class="text-danger"></span>
+                </div>
+                <div class="col-3">
                     <label class="form-label">Is Active</label>
-                    <div class="form-check">
-                        <input asp-for="createCourses.IsActive" type="radio" class="form-check-input" value="true" id="isActiveYes">
-                        <label class="form-check-label" for="isActiveYes">Yes</label>
-                    </div>
-                    <div class="form-check">
-                        <input asp-for="createCourses.IsActive" type="radio" class="form-check-input" value="false" id="isActiveNo">
-                        <label class="form-check-label" for="isActiveNo">No</label>
-                    </div>
+                </div>
+                <div class="col-3 ">
+                   
+                    <input asp-for="createCourses.IsActive" type="radio" class="form-check-input" value="true" id="isActiveYes">
+                    <label class="form-check-label" for="isActiveYes">Yes</label>
+                     
+                     
+                    <input asp-for="createCourses.IsActive" type="radio" class="form-check-input" value="false" id="isActiveNo">
+                    <label class="form-check-label" for="isActiveNo">No</label>
+                    <button   type="submit" class="btn btn-secondary" Id="addBtn"> Add</button>
                 </div>
             </div>
-            <button type="submit"> Add</button>
-            <button type="reset"> Cancel</button>
+            
+            
         </form>
         @if (ViewBag.Course != null)
         {
             <table class="table">
                 <thead>
-                     <tr>
-                         <th> Sr.No </th>
-                         <th>Name </th>
-                         <th>Is Active </th>
-                         <th>Action</th>
-                     </tr>
+                    <tr>
+                        <th> Sr.No </th>
+                        <th>Name </th>
+                        <th>Is Active </th>
+                        <th>Action</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    @foreach ( var item in ViewBag.Course)
+                    @foreach (var item in ViewBag.Course)
                     {
                         <tr>
                             <td>@(ViewBag.Course.IndexOf(item) + 1)</td>
                             <td>@item.Name</td>
-                            <td>@item.Isactive</td>
+                            <td>@item.IsActive</td>
                             <td>
                                 <a asp-action="Update" asp-all-route asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'refernece', '@Url.Action("Delete", "EmployeeCourse")') ">
+                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'refernece', '@Url.Action("Delete", "Course")') ">
                                     <i class="bi bi-trash-fill"></i>
                                 </a>
                             </td>
                         </tr>
-                        
+
                     }
                 </tbody>
             </table>
         }
-    </div> 
+    </div>
 </div>
 
 
@@ -102,12 +109,14 @@
                 let url;
 
 
-                url = '@Url.Action("Delete", "EmployeeCourse")/' + id;
+                url = '@Url.Action("Delete", "Course")/' + id;
             }
             window.location.href = url;
         }
-            })
-        }
+                })
+            }
 </script>
+
+
 
 
