@@ -20,14 +20,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Banks\Commands\" />
     <Folder Include="Features\Branches\Commands\" />
     <Folder Include="Features\Departments\Commands\" />
     <Folder Include="Features\Designations\Commands\" />
     <Folder Include="Features\Employees\EmployeeAddresses\Queries\" />
+    <Folder Include="Features\Employees\EmployeeBankDetails\Queries\" />
     <Folder Include="Features\Employees\EmployeeContact\Queries\" />
+    <Folder Include="Features\Employees\EmployeeDocuments\EmployeeDocumentTypes\Commands\" />
     <Folder Include="Features\Employees\EmployeeLanguages\Queries\" />
     <Folder Include="Features\Employees\EmployeePersonalDetails\Queries\" />
-    <Folder Include="Features\Employees\EmployeeEducations\Quories\GetByIdEmployeeQualifcation\" />
+    <Folder Include="Features\Locations\Commands\" />
     <Folder Include="Features\Menus\Commands\DeleteMenu\" />
     <Folder Include="Features\Menus\Commands\UpdateMenu\" />
     <Folder Include="Features\Menus\MenuTypes\Commands\DeleteMenuType\" />

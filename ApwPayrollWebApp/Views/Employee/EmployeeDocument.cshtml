@@ -1,4 +1,4 @@
-﻿ @using ApwPayrollWebApp.Models
+﻿@*  @using ApwPayrollWebApp.Models
 @model EmployeeCreateViewModel
 @{
     ViewData["Title"] = "EmployeeDocument";
@@ -274,9 +274,9 @@
     reader.readAsDataURL(input.files[0]);
     }
     }
-    </script> *@
+    </script> 
 
-    @section scripts {
+ @*    @section scripts {
         <!-- dropzone min -->
         <script src="~/assets/libs/dropzone/dropzone-min.js"></script>
 
@@ -288,3 +288,4 @@
 
         <partial name="_ValidationScriptsPartial" />
     }
+ *@ 

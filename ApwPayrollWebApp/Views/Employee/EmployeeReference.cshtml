@@ -1,4 +1,5 @@
-﻿
+﻿@* @using ApwPayrollWebApp.Models
+@model EmployeeCreateViewModel
 @{
     ViewData["Title"] = "EmployeeReference";
     Layout = "~/Views/Shared/Registration/_RegistrationLayout.cshtml";
@@ -10,36 +11,41 @@
         <form method="post">
             <div class="row mb-2">
                 <div class="col-lg-4">
-                    <label class="form-label">Reference Name</label>
+                    <label asp-for="ReferencesCommand.ReferenceName" class="form-label">Reference Name</label>
                     <div class=" input-group">
-                        <input type="text" class="form-control" placeholder="Enter reference name" />
+                        <input asp-for="ReferencesCommand.ReferenceName" type="text" class="form-control" placeholder="Enter reference name" />
                     </div>
+                    <span asp-validation-for="ReferencesCommand.ReferenceName" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label class="form-label">Designation</label>
+                    <label asp-for="ReferencesCommand.Designation" class="form-label">Designation</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Enter designation" />
+                        <input asp-for="ReferencesCommand.Designation" type="text" class="form-control" placeholder="Enter designation" />
                     </div>
+                    <span asp-validation-for="ReferencesCommand.Designation" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label class=" input-group">Organization Name</label>
+                    <label asp-for ="ReferencesCommand.OrganizationName" class=" input-group">Organization Name</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Enter organization name" />
+                        <input asp-for="ReferencesCommand.OrganizationName" type="text" class="form-control" placeholder="Enter organization name" />
                     </div>
+                    <span asp-validation-for="ReferencesCommand.OrganizationName" class="text-danger"></span>
                 </div>
             </div>
             <div class="row mb-2">
-                <div class="col-lg-4"> 
-                    <label class="form-label">Contact Number</label>
+                <div class="col-lg-4">
+                    <label asp-for="ReferencesCommand.ContactNumber" class="form-label">Contact Number</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Enter contact number" />
+                        <input asp-for="ReferencesCommand.ContactNumber" type="text" class="form-control" placeholder="Enter contact number" />
                     </div>
+                    <span asp-validation-for="ReferencesCommand.ContactNumber" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label class="form-label">Years Of Acquaintance</label>
+                    <label asp-for="ReferencesCommand.YearsOfAcquaintance" class="form-label">Years Of Acquaintance</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Enter years of acquaintance" />
+                        <input asp-for="ReferencesCommand.YearsOfAcquaintance" type="text" class="form-control" placeholder="Enter years of acquaintance" />
                     </div>
+                    <span asp-validation-for="ReferencesCommand.YearsOfAcquaintance" class=" text-danger"></span>
                 </div>
             </div>
             <div class="row mt-1 mb-2">
@@ -73,3 +79,4 @@
 
 
     }
+ *@

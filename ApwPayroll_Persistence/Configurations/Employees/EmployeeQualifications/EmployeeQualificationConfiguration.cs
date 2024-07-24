@@ -18,8 +18,9 @@ namespace ApwPayroll_Domain.Entities.Employees.EmployeeQualifications
         {
              
             builder.HasOne(bd => bd.Employee)
-                   .WithMany()
-                   .HasForeignKey(bd => bd.EmployeeId);
+                   .WithMany(x=>x.EmployeeQualification)
+                   .HasForeignKey(bd => bd.EmployeeId)
+                   .IsRequired();
 
             builder.HasOne(bd => bd.Course)
                    .WithMany()
