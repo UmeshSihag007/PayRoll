@@ -66,9 +66,12 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeReferral
         public async Task<IActionResult> EmployeeReference(EmployeeCreateViewModel command)
         {
 
-            command.EmployeeId = 1;
-            var model = new EmployeeCreateViewModel();
-
+            var employeeId = HttpContext.Session.GetInt32("EmployeeId");
+            if (employeeId != 0 && employeeId != null)
+            {
+                command.ReferencesCommand.EmployeeId = employeeId.Value;
+            }
+             
             if (command.ReferencesCommand.Id == 0 || command.ReferencesCommand.Id == null)
             {
                 await _mediator.Send(command.ReferencesCommand);
@@ -83,8 +86,14 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeReferral
         }
         private async Task IntializeViewBag()
         {
-            var employeeReferral = await _mediator.Send(new GetEmployeeReferalQuery());
-            ViewBag.Referral = employeeReferral.Data;
+            var ReferralList = await _mediator.Send(new GetEmployeeReferalQuery());
+            var employeeId = HttpContext.Session.GetInt32("EmployeeId");
+           var employeeReferral=  ReferralList.Data.Where(x=>x.EmployeeId== employeeId).ToList();
+            if (employeeId != null)
+            {
+
+                ViewBag.Referral = employeeReferral;
+            }
         }
 
 

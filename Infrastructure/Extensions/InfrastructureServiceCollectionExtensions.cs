@@ -67,6 +67,7 @@ namespace ApwPayroll_Infrastructure.Extensions
         options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
         options.SlidingExpiration = true;
     });
+
         }
     }
 }

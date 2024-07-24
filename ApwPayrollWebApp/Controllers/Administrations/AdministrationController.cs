@@ -1,6 +1,7 @@
 ﻿using ApwPayroll_Application.Features.Users.Commands.Login;
 using ApwPayroll_Application.Features.Users.Commands.LogOut;
 using ApwPayroll_Application.Features.Users.Commands.RegisterUsers;
+using ApwPayrollWebApp.Controllers.Common;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApwPayrollWebApp.Controllers.Users
 {
-    public class AdministrationController : Controller
+    public class AdministrationController : BaseController
     {
         private readonly IMediator _mediator;
         private readonly INotyfService _notyf;
@@ -34,17 +35,17 @@ namespace ApwPayrollWebApp.Controllers.Users
             if (data.succeeded == false)
             {
                 ViewBag.ErrorMessages = data.Messages;
-                foreach (var message in data.Messages)
-                {
-                    _notyf.Error(message);
-                }
-                return View(userModel);
+                Notify(data.Messages, null, 200);
+                return RedirectToAction("Index", "Home");
             }
-            foreach (var message in data.Messages)
+            else
             {
-                _notyf.Success(message);
+                Notify(data.Messages, null, 400);
+           return View(userModel);
             }
-            return RedirectToAction("Index", "Home");
+         
+            
+       
         }
         public IActionResult Login()
         {
@@ -63,18 +64,12 @@ namespace ApwPayrollWebApp.Controllers.Users
             var data = await _mediator.Send(userModel);
             if (data.succeeded && User != null && User.Identity.IsAuthenticated)
             {
-                foreach (var message in data.Messages)
-                {
-                    _notyf.Success(message);
-                }
+                Notify(data.Messages, null, data.code);
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                foreach (var message in data.Messages)
-                {
-                    _notyf.Error(message);
-                }
+                Notify(data.Messages, null, 400);
                 ViewBag.ErrorMessages = data.Messages;
                 return View(userModel);
             }

@@ -1,6 +1,6 @@
 ﻿@using ApwPayrollWebApp.Models
- 
- 
+
+
 @model EmployeeCreateViewModel
 @{
     ViewData["Title"] = "Create";
@@ -9,45 +9,49 @@
 
 <div class="tab-content">
     <div class="tab-pane active" id="basicDetails" role="tabpanel">
-<form asp-action="Create" method="post" enctype="multipart/form-data">
-    <div class="row">
-        @for (int i =0; i < ViewBag.EmployeeDocumentTypes.Count; i++)
-        {
-            <input type="hidden" asp-for="EmployeeDocument[i].EmployeeDocumentTypeId" value="@ViewBag.EmployeeDocumentTypes[i].Id" />
- 
-@*             <input type="hidden" asp-for="EmployeeDocument[@i].EmployeeDocumentTypeId" value="@ViewBag.EmployeeDocumentTypes[i].Id" />
- *@            <div class="col-lg-4">
-                <div class="card mb-3" style="max-width: 400px; box-shadow:rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
-                    <h5 class="card-title text-success mt-1" style="text-align:center;">@ViewBag.EmployeeDocumentTypes[i].Name</h5>
-                    <div class="row g-0">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <label for="Documents_@(i)">Upload @ViewBag.EmployeeDocumentTypes[i].Name</label>
-                                <input asp-for="EmployeeDocument[i].Document" type="file" id="Documents_@(i)" class="form-control-file" onchange="previewFile(this, 'imagePreview_@(i)');" />
-                                 <img id="imagePreview_@(i)" src="#" alt="Preview" class="img-fluid mt-2" style="max-width: 100%; display: none;" />
+        <div class="m-3 mt-2">
+
+        <h2>Create Document</h2>
+        </div>
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="row">
+                @for (int i = 0; i < ViewBag.EmployeeDocumentTypes.Count; i++)
+                {
+                    <input type="hidden" asp-for="EmployeeDocument[i].EmployeeDocumentTypeId" value="@ViewBag.EmployeeDocumentTypes[i].Id" />
+
+                    @*             <input type="hidden" asp-for="EmployeeDocument[@i].EmployeeDocumentTypeId" value="@ViewBag.EmployeeDocumentTypes[i].Id" />
+                *@            <div class="col-lg-4">
+                        <div class="card mb-3" style="max-width: 400px; box-shadow:rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                            <h5 class="card-title text-success mt-1" style="text-align:center;">@ViewBag.EmployeeDocumentTypes[i].Name</h5>
+                            <div class="row g-0">
+                                <div class="col-md-12">
+                                    <div class="card-body">
+                                        <label for="Documents_@(i)">Upload @ViewBag.EmployeeDocumentTypes[i].Name</label>
+                                        <input asp-for="EmployeeDocument[i].Document" type="file" id="Documents_@(i)" class="form-control-file" onchange="previewFile(this, 'imagePreview_@(i)');" />
+                                        <img id="imagePreview_@(i)" src="#" alt="Preview" class="img-fluid mt-2" style="max-width: 100%; display: none;" />
                                         <span asp-validation-for="EmployeeDocument[i].Document" class="text-danger"></span>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <label for="Codes_@(i)">@ViewBag.EmployeeDocumentTypes[i].Name Number</label>
+
+                                <input asp-for="EmployeeDocument[i].Code" type="text" id="Codes_@(i)" class="form-control" />
+                                @* <input asp-for="EmployeeDocument[@i].Code" type="text" id="Codes_@(i)" class="form-control" /> *@
+                            </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <label for="Codes_@(i)">@ViewBag.EmployeeDocumentTypes[i].Name Number</label>
-
-                        <input asp-for="EmployeeDocument[i].Code" type="text" id="Codes_@(i)" class="form-control" />
-                         @* <input asp-for="EmployeeDocument[@i].Code" type="text" id="Codes_@(i)" class="form-control" /> *@
+                }
+            </div>
+            <div class="row">
+                <div class="col-lg">
+                    <div class="hstack gap-2 justify-content-end mt-5 mb-3">
+                        <button type="submit" class="btn btn-sm btn-success">Submit</button>
                     </div>
                 </div>
             </div>
-        }
+        </form>
     </div>
-    <div class="row">
-        <div class="col-lg">
-            <div class="hstack gap-2 justify-content-end mt-5 mb-3">
-                <button type="submit" class="btn btn-sm btn-success">Submit</button>
-            </div>
-        </div>
-    </div>
-</form>
-</div>
 </div>
 
 @section Scripts {
@@ -73,57 +77,5 @@
 }
 
 
- 
-@* <form asp-action="Create" method="post" enctype="multipart/form-data">
 
-    <div class="row">
-        @for (int i = 0; i < ViewBag.EmployeeDocumentTypes.Count; i++)
-        {
-    <input type="hidden" asp-for="EmployeeDocument.EmployeeDocumentTypeIds" />
-            <div class="col-lg-4">
-                <div class="card mb-3" style="max-width: 400px; box-shadow:rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
-                    <h5 class="card-title text-success mt-1" style="text-align:center;">@ViewBag.EmployeeDocumentTypes[i].Name</h5>
-                    <div class="row g-0">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <label for="DocumentTypes_@(i)__File">Upload @ViewBag.EmployeeDocumentTypes[i].Name</label>
-                                <input asp-for="EmployeeDocument.Documents" type="file" id="File_@(i)" name="DocumentTypes[@i].File" class="form-control-file" onchange="previewFile(this, 'imagePreview_@(i)');" />
-                                <img id="imagePreview_@(i)" src="#" alt="Preview" class="img-fluid mt-2" style="max-width: 100%; display: none;" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <label for="DocumentTypes_@(i)__Number">  @ViewBag.EmployeeDocumentTypes[i].Name   Number </label>
-                        <input asp-for="EmployeeDocument.Code" type="text" id="Number_@(i)" name="DocumentTypes.Number" class="form-control" />
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-    <div class="row">
-        <div class="col-lg">
-            <div class="hstack gap-2 justify-content-end mt-5 mb-3">
-                <button type="submit" class="btn btn-sm btn-success">Submit</button>
-            </div>
-        </div>
-    </div>
-</form>
-
-@section Scripts {
-    <script>
-        function previewFile(input, imagePreviewId) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                var imagePreview = document.getElementById(imagePreviewId);
-                if (imagePreview) {
-                    imagePreview.src = e.target.result;
-                    imagePreview.style.display = 'block';
-                }
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    </script>
-}
- *@
-<h2>Create Document</h2>
 

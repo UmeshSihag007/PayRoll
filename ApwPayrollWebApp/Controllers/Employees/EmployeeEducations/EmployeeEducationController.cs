@@ -22,7 +22,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
 
         public async Task<IActionResult> Index()
         {
-             return View();
+            return View();
         }
 
         public async Task<IActionResult> CreateEmployeeEducation(int? id)
@@ -31,10 +31,11 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
 
 
             var model = new EmployeeCreateViewModel();
- 
+
 
             if (id.HasValue)
-            { var employeeId = HttpContext.Session.GetInt32("EmployeeId").Value;
+            {
+                var employeeId = HttpContext.Session.GetInt32("EmployeeId").Value;
 
 
                 var employeeEducationData = await _mediator.Send(new GetEmployeeQualificationQuery(employeeId));
@@ -134,13 +135,15 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
             return RedirectToAction("CreateEmployeeEducation");
         }
 
- 
+
         public async Task<IActionResult> Update(int id)
         {
             var employeeId = HttpContext.Session.GetInt32("EmployeeId").Value;
 
 
             var data = await _mediator.Send(new GetEmployeeQualificationQuery(employeeId));
+
+
             var QaulificationDataById = data.Data.Find(x => x.Id == id);
             if (QaulificationDataById == null)
             {
@@ -151,29 +154,15 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                 Notify(data.Messages, null, data.code);
             }
             else
- 
             {
+                Notify(data.Messages, null, data.code);
+            }
 
-                var data = await _mediator.Send(new GetEmployeeQualificationQuery());
-                var QaulificationDataById = data.Data.Find(x => x.Id == id);
-                if (QaulificationDataById == null)
-                {
-                    return NotFound();
-                }
-                if (data.code == 200)
-                {
-                    Notify(data.Messages, null, data.code);
-                }
-                else
-                {
-                    Notify(data.Messages, null, data.code);
-                }
-       
             HttpContext.Session.SetInt32("EmployeeId", employeeId);
 
             return RedirectToAction("CreateEmployeeEducation", new { id = QaulificationDataById.Id });
         }
- 
+
 
 
 
@@ -194,23 +183,24 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
         private async Task InitializeViewBags()
         {
 
-            
+
             var course = await _mediator.Send(new GetAllCoursesQuery());
-        
-            var employeeId= HttpContext.Session.GetInt32("EmployeeId").Value;
-            if(employeeId != 0 && employeeId != null)
+
+            var employeeId = HttpContext.Session.GetInt32("EmployeeId");
+            if (employeeId != 0 && employeeId != null)
 
             {
-            var employeeEducationData = await _mediator.Send(new GetEmployeeQualificationQuery(employeeId));
-            var employeeExperienceData = await _mediator.Send(new GetEmployeeExperienceQuery(employeeId));
+                var employeeEducationData = await _mediator.Send(new GetEmployeeQualificationQuery(employeeId.Value));
+                var employeeExperienceData = await _mediator.Send(new GetEmployeeExperienceQuery(employeeId.Value));
 
-            ViewBag.ExperienceList = employeeExperienceData.Data;
-            ViewBag.QualificationList = employeeEducationData.Data;
-                
+                ViewBag.ExperienceList = employeeExperienceData.Data;
+                ViewBag.QualificationList = employeeEducationData.Data;
+
             }
             ViewBag.Course = course.Data;
             ViewBag.Years = GetYearsList(1980, DateTime.Now.Year);
         }
+
         private List<int> GetYearsList(int startYear, int endYear)
         {
             var years = new List<int>();
