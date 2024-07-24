@@ -26,7 +26,7 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetAllEmployees
         public async Task<Result<List<GetEmployeeDto>>> Handle(GetAllEmployeeQuery request, CancellationToken cancellationToken)
         {
 
-            var data = await _repository.Entities.Include(x => x.AspUser).Include(x => x.Salutation) .Where(x => x.IsDeleted == false).ToListAsync();
+            var data = await _repository.Entities.Include(x => x.AspUser).Where(x => x.IsDeleted == false).ToListAsync();
             if (data == null)
             {
                 return Result<List<GetEmployeeDto>>.NotFound();
