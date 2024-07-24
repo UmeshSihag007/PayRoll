@@ -29,7 +29,7 @@ namespace ApwPayroll_Application.Features.Locations.Queries.GetAllLocations
 
         public async Task<Result<List<GetAllLocationDto>>> Handle(GetAllLocationQuery request, CancellationToken cancellationToken)
         {
-            var data=await _unitOfWork.Repository<Location>().Entities.Include(x=>x.Parent).ToListAsync();  
+            var data=await _unitOfWork.Repository<Location>().Entities.Include(x=>x.Parent).Where(x=>x.IsDeleted==false).ToListAsync();  
             if(data is null)
             {
                 return Result<List<GetAllLocationDto>>.NotFound();

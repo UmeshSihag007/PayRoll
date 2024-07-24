@@ -30,7 +30,6 @@
     <Folder Include="Features\Employees\EmployeeDocuments\EmployeeDocumentTypes\Commands\" />
     <Folder Include="Features\Employees\EmployeeLanguages\Queries\" />
     <Folder Include="Features\Employees\EmployeePersonalDetails\Queries\" />
-    <Folder Include="Features\Locations\Commands\" />
     <Folder Include="Features\Menus\Commands\DeleteMenu\" />
     <Folder Include="Features\Menus\Commands\UpdateMenu\" />
     <Folder Include="Features\Menus\MenuTypes\Commands\DeleteMenuType\" />
