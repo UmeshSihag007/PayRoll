@@ -25,7 +25,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeCourses
             return View();
         }
 
-        public async Task<IActionResult> Create(int? id)
+        public async Task<IActionResult> CreateCourse(int? id)
         {
             await IntializeViewBag();
             var model = new EmployeeProfileModel();
