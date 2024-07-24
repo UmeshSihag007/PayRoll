@@ -39,15 +39,16 @@ namespace ApwPayrollWebApp.Controllers.Employees
         public async Task<IActionResult> Index()
         {
             var data = await _mediator.Send(new GetAllEmployeeQuery());
-            ViewBag.data = data.Data;
+            ViewBag.employee = data.Data;
             return View(data);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get(int id)
+    
+        public async Task<IActionResult> EmployeeCompleteDetails(int id)
         {
+          
             var data = await _mediator.Send(new GetEmployeeByIdQuery(id));
-            ViewBag.data = data.Data;
+            ViewBag.employee = data.Data;
 
             return View(data);
         }
@@ -80,7 +81,8 @@ namespace ApwPayrollWebApp.Controllers.Employees
             return RedirectToAction("CreateEmployeePersonal", new { employeeId = data.Data.Id });
             }
 
-            return RedirectToAction("CreateEmployeeBasic");
+            await InitializeViewBags();
+            return View(command);
 
         }
 
@@ -115,15 +117,11 @@ namespace ApwPayrollWebApp.Controllers.Employees
             }
             return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
             }
-            return RedirectToAction("CreateEmployeePersonal",command);
-
+            return View(command);
         }
 
 
- 
-            await _mediator.Send(command.documentCommand);
-            return View();
-        }
+  
          
         public async Task<IActionResult> EmployeeReference(int?employeeId)
         {

@@ -36,7 +36,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.
 
         public async Task<Result<int>> Handle(CreateEmployeeReferencesCommand request, CancellationToken cancellationToken)
         {
-            request.EmployeeId = 1;
+         
             var mapData = _mapper.Map<ReferralDetail>(request);
             await _unitOfWork.Repository<ReferralDetail>().AddAsync(mapData);
             await _unitOfWork.Save(cancellationToken);

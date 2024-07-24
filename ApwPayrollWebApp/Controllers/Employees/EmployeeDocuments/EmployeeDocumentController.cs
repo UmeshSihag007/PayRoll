@@ -1,20 +1,13 @@
  
-
- 
 using ApwPayroll_Application.Features.Employees.EmployeeDocuments.Commands.CreateEmployeeDocuments;
 using ApwPayroll_Application.Features.Employees.EmployeeDocuments.EmployeeDocumentTypes.Queries.GetAllEmployeeDomentTypes;
-using ApwPayroll_Domain.Entities.Documents;
-using ApwPayroll_Domain.Entities.Employees.EmployeeDocuments;
 using ApwPayroll_Persistence.Data;
- 
 using ApwPayrollWebApp.Controllers.Common;
- 
 using ApwPayrollWebApp.Models;
-using ApwPayrollWebApp.Views.Documents;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ApwPayrollWebApp.Controllers.Employees.EmployeeDocuments
+namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
 {
     public class EmployeeDocumentController : BaseController
     {
@@ -33,15 +26,15 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeDocuments
         public async Task<IActionResult> Create()
         {
             await InitializeViewBags();
- 
-          
- 
+
+
+
 
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(int EmployeeId, [FromForm]  EmployeeCreateViewModel  model)
+        public async Task<IActionResult> Create(int EmployeeId, [FromForm] EmployeeCreateViewModel model)
         {
             if (HttpContext.Session.GetInt32("EmployeeId") != null)
             {
@@ -50,28 +43,18 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeDocuments
 
             if (ModelState.IsValid)
             {
- 
-             var data=  await _mediator.Send(new CreateEmployeeDocumentCommand(EmployeeId,model.EmployeeDocument));
-                if (data.code == 200)
-                {
-                    Notify(data.Messages, null, data.code);
-                }
-                else
-                {
-                    Notify(data.Messages, null, data.code);
-                }
- 
+                await _mediator.Send(new CreateEmployeeDocumentCommand(EmployeeId, model.EmployeeDocument));
             }
             await InitializeViewBags();
 
             return View(model);
         }
 
-    
+
         private async Task InitializeViewBags()
         {
             var employeeDocumentTypes = await _mediator.Send(new GetAllEmployeeDocumentTypesQuery());
-            
+
             ViewBag.EmployeeDocumentTypes = employeeDocumentTypes.Data;
         }
 

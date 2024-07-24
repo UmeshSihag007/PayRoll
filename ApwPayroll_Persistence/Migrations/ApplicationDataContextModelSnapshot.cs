@@ -1669,7 +1669,8 @@ namespace ApwPayroll_Persistence.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
 
                     b.HasIndex("UpdatedBy");
 
@@ -2596,9 +2597,7 @@ namespace ApwPayroll_Persistence.Migrations
                     b.HasData(
                         new
                         {
- 
-                            Id = "a0d25dba-97e1-4809-b163-80649bf46e04",
- 
+                            Id = "9ef5a532-fab0-468e-9a4e-1df9596f10cb",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         });
@@ -3289,7 +3288,7 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasForeignKey("CreatedBy");
 
                     b.HasOne("ApwPayroll_Domain.Entities.Employees.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("EmployeeExperience")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3312,7 +3311,7 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasForeignKey("CreatedBy");
 
                     b.HasOne("ApwPayroll_Domain.Entities.Employees.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("EmployeeFamily")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3389,8 +3388,8 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasForeignKey("CreatedBy");
 
                     b.HasOne("ApwPayroll_Domain.Entities.Employees.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
+                        .WithOne("EmployeePersonalDetail")
+                        .HasForeignKey("ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails.EmployeePersonalDetail", "EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -3418,7 +3417,7 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasForeignKey("CreatedBy");
 
                     b.HasOne("ApwPayroll_Domain.Entities.Employees.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("EmployeeQualification")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3664,7 +3663,7 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasForeignKey("CreatedBy");
 
                     b.HasOne("ApwPayroll_Domain.Entities.Employees.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("ReferralDetail")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3894,6 +3893,17 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Navigation("EmployeeDesignations");
 
                     b.Navigation("EmployeeDocuments");
+
+                    b.Navigation("EmployeeExperience");
+
+                    b.Navigation("EmployeeFamily");
+
+                    b.Navigation("EmployeePersonalDetail")
+                        .IsRequired();
+
+                    b.Navigation("EmployeeQualification");
+
+                    b.Navigation("ReferralDetail");
                 });
 
             modelBuilder.Entity("Domain.Models.Templates.Template", b =>

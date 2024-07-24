@@ -14,12 +14,12 @@
             <div class="row mt-1 mb-2">
                 <input type="hidden" asp-for="EmployeeId" name="employeeId" value="@ViewBag.employeeId" />
                 <div class="col-lg-4">
-                    <label asp-for="EmployeePersonalDetail.Gender" class="form-label">Gender</label>
+                    <label asp-for=" EmployeePersonalDetail.Gender" class="form-label">Gender</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-parent-fill"></i>
                         </span>
-                        <select asp-for="EmployeePersonalDetail.Gender" class="form-control form-control-sm" required>
+                        <select asp-for=" EmployeePersonalDetail.Gender" class="form-control form-control-sm" required>
                             <option value="" selected disabled>Select a gender</option>
                             @foreach (var gender in ViewBag.GenderLookup)
                             {

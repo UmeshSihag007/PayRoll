@@ -8,9 +8,7 @@ namespace ApwPayroll_Persistence.Configurations.Employees.EmployeePersonalDetail
     {
         public void Configure(EntityTypeBuilder<EmployeePersonalDetail> builder)
         {
-            builder.HasOne(bd => bd.Employee)
-                   .WithMany()
-                   .HasForeignKey(bd => bd.EmployeeId);
+            builder.Property(bd => bd.EmployeeId);
 
         }
     }

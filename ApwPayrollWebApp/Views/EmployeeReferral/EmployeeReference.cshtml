@@ -56,10 +56,12 @@
                         <button type="reset" class="btn btn-outline-danger">
                             Cancel
                         </button>
-                        <button type="submit" class="btn btn-secondary">
+                        <button type="submit" class="btn btn-secondary" Id="addBtn">
                             Save Details
                         </button>
-                         
+                        <button type="submit" class="btn btn-secondary" style="display:none;" id="updateBtn">
+                            Update Details
+                        </button>
                     </div>
                 </div>
             </div>
@@ -90,7 +92,7 @@
                             <td>@item.ContactNumber</td>
                             <td>@item.YearsOfAcquaintance</td>
                             <td>
-                                <a asp-action="Update" asp-all-route asp-route-id="@item.Id" class="btn btn-sm btn-info" id="editBtn">
+                                <a asp-action="Update" asp-all-route asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn"  >
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'refernece', '@Url.Action("Delete", "EmployeeReferral")') ">
@@ -98,11 +100,13 @@
                                 </a>
                             </td>
                         </tr>
+                       
                     }
                     
                 </tbody>
             </table>
         }
+       
     </div>
 </div>
 @section scripts {
@@ -148,30 +152,18 @@
 </script>
 
 
+<script>
+    $(document).ready(function () {
+        $('.editBtn').click(function(){
+            $('#updateBtn').show();
+            $('#addBtn').hide();
+        })
+    })
+
+</script>
 
 
 
-
-  <script>
-        $(document).ready(function() {
-            $('#updateButton').click(function() {
-                var form = $('#qualificationForm');
-                $.ajax({
-                    url: '@Url.Action("UpdateQualification")',
-                    type: 'POST',
-                    data: form.serialize(),
-                    success: function(response) {
-                        if (response.success) {
-                            // Clear the form fields
-                            form[0].reset();
-                        } else {
-                            // Display validation errors
-                            alert(response.errors.join("\n"));
-                        }
-                    }
-                });
-            });
-        });
-    </script>
+  
 
 
