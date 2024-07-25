@@ -33,7 +33,7 @@
                 <div class=" col-2">
 
                     <button type="submit" class="btn btn-success btn-sm"> 
-                        @(Model.createDepartment!=null && Model.createDepartment.Id.HasValue && Model.createDepartment.Id.Value!=0? "Update":"Add") 
+                        @(Model?.createDepartment!=null && Model.createDepartment.Id.HasValue && Model.createDepartment.Id.Value!=0? "Update":"Add") 
                     </button>
                     
 
