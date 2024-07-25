@@ -16,7 +16,7 @@ public class CourseController : BaseController
 
     public CourseController(IMediator mediator)
     {
-        _mediator = mediator;
+        _mediator = mediator; 
     }
 
 
