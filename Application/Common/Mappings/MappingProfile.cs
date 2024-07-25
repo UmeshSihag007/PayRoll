@@ -1,8 +1,8 @@
-﻿using ApwPayroll_Application.Features.DocumentTypes.Commands.CreateDocumentType;
+﻿using ApwPayroll_Application.Features.Courses.Commands.CreateCourses;
+using ApwPayroll_Application.Features.Departments.Commands.CreateDepartment;
+using ApwPayroll_Application.Features.Designations.Commands.CreateDesignation;
+using ApwPayroll_Application.Features.DocumentTypes.Commands.CreateDocumentType;
 using ApwPayroll_Application.Features.Employees.Commands.CreateEmployee;
-using ApwPayroll_Application.Features.Employees.EmployeeCouses.Commands.CreateEmployeeCourses;
-using ApwPayroll_Application.Features.Employees.EmployeeDepartments.Commands.CreateEmployeeDepartment;
-using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Commands.CreateEmployeeDesignation;
 using ApwPayroll_Application.Features.Employees.EmployeeEducations.Commands.CreateEmployeeEducation;
 using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.CreateEmployeeExperiences;
 using ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.CreateEmployeeFamily;
@@ -22,7 +22,6 @@ using ApwPayroll_Domain.Entities.Menus.MenuTypes;
 using ApwPayroll_Domain.Entities.ReferralDetails;
 using AutoMapper;
 using System.Reflection;
-using static ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Commands.CreateEmployeePersonalDetail.CreateEmployeePersonalDetailCommandHandler;
 
 namespace ApwPayroll_Application.Common.Mappings
 {
@@ -36,14 +35,14 @@ namespace ApwPayroll_Application.Common.Mappings
             CreateMap<CreateDocumentTypeCommand, DocumentType>();
             CreateMap<CreateMenuTypeCommand, MenuType>();
             CreateMap<CreateEmployeeCommand, Employee>();
-       
+
             CreateMap<CreateEmployeeEducationCommand, EmployeeQualification>();
             CreateMap<CreateEmployeeExperiencesCommand, EmployeeExperience>();
             CreateMap<CreateEmployeeFamilyCommand, EmployeeFamily>();
             CreateMap<CreateEmployeeReferencesCommand, ReferralDetail>();
-            CreateMap<CreateEmployeeCoursesCommand, Course>();
-            CreateMap<CreateEmployeeDepartmentCommand, Department>();
-            CreateMap<CreateEmployeeDesignationCommand, Designation>();
+            CreateMap<CreateCoursesCommand, Course>();
+            CreateMap<CreateDepartmentCommand, Department>();
+            CreateMap<CreateDesignationCommand, Designation>();
 
             CreateMap<RegisterUserCommand, AspUser>()
             .ForMember(u => u.UserName, opt => opt.MapFrom(x => x.Email));

@@ -1,7 +1,7 @@
-﻿ using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Commands.CreateEmployeeDesignation;
-using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Commands.DeleteEmployeeDesignation;
-using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Commands.UpdateEmployeeDesignation;
-using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Queries.GetAllEmployeeDesignation;
+﻿using ApwPayroll_Application.Features.Designations.Commands.CreateDesignation;
+using ApwPayroll_Application.Features.Designations.Commands.DeleteDesignation;
+using ApwPayroll_Application.Features.Designations.Commands.UpdateDesignation;
+using ApwPayroll_Application.Features.Designations.Queries.GetAllDesignation;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.Models;
 using MediatR;
@@ -22,29 +22,29 @@ namespace ApwPayrollWebApp.Controllers.Masters.Designations
         public async Task<IActionResult> DesignationView(int? id)
         {
             await IntializeViewBag();
-            var model = new EmployeeProfileModel();
+            var model = new MasterModel();
             if (id.HasValue)
             {
-                var designationData = await _mediator.Send(new GetAllEmployeeDesignationQuery());
+                var designationData = await _mediator.Send(new GetAllDesignationQuery());
                 var designation = designationData.Data.FirstOrDefault(x => x.Id == id.Value);
                 if (designation != null)
                 {
-                    model.createDesignation = new CreateEmployeeDesignationCommand
+                    model.createDesignation = new CreateDesignationCommand
                     {
                         Id = designation.Id,
                         Name = designation.Name,
                         Description = designation.Description,
                     };
                 }
-                     
+
             }
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateDesignation(EmployeeProfileModel employeeProfile)
+        public async Task<IActionResult> CreateDesignation(MasterModel employeeProfile)
         {
-             
+
             if (employeeProfile.createDesignation.Id == 0 || employeeProfile.createDesignation.Id == null)
             {
                 await _mediator.Send(employeeProfile.createDesignation);
@@ -52,32 +52,32 @@ namespace ApwPayrollWebApp.Controllers.Masters.Designations
             }
             else
             {
-                await _mediator.Send(new UpdateEmployeeDesignationCommand((int)employeeProfile.createDesignation.Id, employeeProfile.createDesignation));
+                await _mediator.Send(new UpdateDesignationCommand((int)employeeProfile.createDesignation.Id, employeeProfile.createDesignation));
             }
 
             return RedirectToAction("DesignationView");
 
         }
-     
+
         public async Task<IActionResult> Delete(int id)
         {
-            var data = await _mediator.Send(new DeleteEmployeeDesignationCommand(id));
+            var data = await _mediator.Send(new DeleteDesignationCommand(id));
             return RedirectToAction("DesignationView");
         }
 
         private async Task IntializeViewBag()
         {
-            var designationList = await _mediator.Send(new GetAllEmployeeDesignationQuery());
+            var designationList = await _mediator.Send(new GetAllDesignationQuery());
             if (designationList.Data != null && designationList.Data.Count != 0)
             {
-            var employeeDesignation = designationList.Data.ToList();
-            
+                var employeeDesignation = designationList.Data.ToList();
+
 
                 ViewBag.Designation = employeeDesignation;
 
             }
-             
-            
+
+
         }
     }
 }

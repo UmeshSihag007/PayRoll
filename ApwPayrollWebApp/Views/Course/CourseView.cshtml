@@ -1,5 +1,5 @@
 ﻿ @using ApwPayrollWebApp.Models
-@model EmployeeProfileModel
+@model MasterModel
 
 @{
     ViewData["Title"] = "CourseView";
@@ -67,7 +67,7 @@
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
 
-                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'refernece', '@Url.Action("Delete", "Course")') ">
+                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id','course' ,'@Url.Action("Delete", "Course")') ">
                                     <i class="bi bi-trash-fill"></i>
                                 </a>
                             </td>

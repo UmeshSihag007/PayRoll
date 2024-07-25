@@ -1,4 +1,4 @@
-﻿using ApwPayroll_Application.Features.Courses.Queries.GetAllDepartments;
+﻿using ApwPayroll_Application.Features.Courses.Queries.GetAllCourses;
 using ApwPayroll_Application.Features.Employees.EmployeeEducations.Commands.CreateEmployeeEducation;
 using ApwPayroll_Application.Features.Employees.EmployeeEducations.Commands.DeleteEmployeeEducation;
 using ApwPayroll_Application.Features.Employees.EmployeeEducations.Quories.GetAllEmployeeQualifications;
@@ -184,7 +184,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
         {
 
 
-            var course = await _mediator.Send(new GetAllCoursesQuery());
+            var course = await _mediator.Send(new GetCoursesQuery());
 
             var employeeId = HttpContext.Session.GetInt32("EmployeeId");
             if (employeeId != 0 && employeeId != null)
