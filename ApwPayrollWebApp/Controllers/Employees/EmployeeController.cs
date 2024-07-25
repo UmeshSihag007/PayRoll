@@ -1,12 +1,11 @@
 ﻿using ApwPayroll_Application.Features.Banks.Queries.GetAllBanks;
 using ApwPayroll_Application.Features.Branches.Queries.GetAllBranches;
-using ApwPayroll_Application.Features.Courses.Queries.GetAllDepartments;
-using ApwPayroll_Application.Features.Departments.Queries.GetAllDepartments;
-using ApwPayroll_Application.Features.Designations.Queries.GetAllDesignations;
+using ApwPayroll_Application.Features.Courses.Queries.GetAllCourses;
+using ApwPayroll_Application.Features.Departments.Queries.GetAllDepartment;
+using ApwPayroll_Application.Features.Designations.Queries.GetAllDesignation;
 using ApwPayroll_Application.Features.Employees.Commands.CreateEmployee;
 using ApwPayroll_Application.Features.Employees.Commands.UpdateEmployee;
 using ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Commands.CreateEmployeePersonalDetail;
-using ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.CreateEmployeeReferences;
 using ApwPayroll_Application.Features.Employees.Queries.GetAllEmployees;
 using ApwPayroll_Application.Features.Employees.Queries.GetByIdEmployee;
 using ApwPayroll_Application.Features.Locations.Queries.GetAllLocations;
@@ -42,19 +41,14 @@ namespace ApwPayrollWebApp.Controllers.Employees
             ViewBag.employee = data.Data;
             return View(data);
         }
-
-    
         public async Task<IActionResult> EmployeeCompleteDetails(int id)
         {
-          
+
             var data = await _mediator.Send(new GetEmployeeByIdQuery(id));
             ViewBag.employee = data.Data;
 
             return View(data);
         }
-
-
-
         public async Task<IActionResult> CreateEmployeeBasic()
         {
             await InitializeViewBags();
@@ -63,22 +57,22 @@ namespace ApwPayrollWebApp.Controllers.Employees
         [HttpPost]
         public async Task<IActionResult> CreateEmployeeBasic(EmployeeCreateViewModel command)
         {
- 
+
             ModelState.Remove("Employee.DesignationId, ");
-   
+
             if (ModelState.IsValid)
             {
- 
-            var data = await _mediator.Send(command.Employee);
-            TempData["EmployeeId"] = data.Data.Id;
 
-            if (data.code == 200)
-            {
-                Notify(data.Messages, null, data.code);
-            }
+                var data = await _mediator.Send(command.Employee);
+                TempData["EmployeeId"] = data.Data.Id;
 
-            HttpContext.Session.SetInt32("EmployeeId", data.Data.Id);
-            return RedirectToAction("CreateEmployeePersonal", new { employeeId = data.Data.Id });
+                if (data.code == 200)
+                {
+                    Notify(data.Messages, null, data.code);
+                }
+
+                HttpContext.Session.SetInt32("EmployeeId", data.Data.Id);
+                return RedirectToAction("CreateEmployeePersonal", new { employeeId = data.Data.Id });
             }
 
             await InitializeViewBags();
@@ -93,9 +87,8 @@ namespace ApwPayrollWebApp.Controllers.Employees
         public async Task<IActionResult> CreateEmployeePersonal(int? employeeId)
         {
             await InitializeViewBags();
-           return View();
+            return View();
         }
-
 
         [HttpPost]
         public async Task<IActionResult> CreateEmployeePersonal(int? employeeId, EmployeeCreateViewModel command)
@@ -104,26 +97,26 @@ namespace ApwPayrollWebApp.Controllers.Employees
             ModelState.Remove("EmployeePersonalDetail.ResidentialAddress.Nationality ");
             if (ModelState.IsValid)
             {
-            if (HttpContext.Session.GetInt32("EmployeeId") != null)
-            {
-                employeeId= HttpContext.Session.GetInt32("EmployeeId");
-            }
+                if (HttpContext.Session.GetInt32("EmployeeId") != null)
+                {
+                    employeeId = HttpContext.Session.GetInt32("EmployeeId");
+                }
 
-            var data = await _mediator.Send(new CreateEmployeePersonalDetailCommand(employeeId.Value, command.EmployeePersonalDetail));
+                var data = await _mediator.Send(new CreateEmployeePersonalDetailCommand(employeeId.Value, command.EmployeePersonalDetail));
 
-            if (data.code == 200)
-            {
-                Notify(data.Messages, null, data.code);
-            }
-            return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
+                if (data.code == 200)
+                {
+                    Notify(data.Messages, null, data.code);
+                }
+                return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
             }
             return View(command);
         }
 
 
-  
-         
-        public async Task<IActionResult> EmployeeReference(int?employeeId)
+
+
+        public async Task<IActionResult> EmployeeReference(int? employeeId)
         {
             await InitializeViewBags();
             return View();
@@ -132,16 +125,16 @@ namespace ApwPayrollWebApp.Controllers.Employees
         public async Task<IActionResult> EmployeeReference(EmployeeCreateViewModel command)
         {
             command.EmployeeId = 1;
-            await _mediator.Send( command.ReferencesCommand);
+            await _mediator.Send(command.ReferencesCommand);
             /*await _mediator.Send(command.ReferencesCommand);*/
             return View();
         }
 
 
- 
+
         #endregion EmployeePersonalDetail Working... comeplete
-         
- 
+
+
         [HttpGet]
         public IActionResult CreateEmployeePersonalDetail()
         {
@@ -164,7 +157,7 @@ namespace ApwPayrollWebApp.Controllers.Employees
             var branches = await _mediator.Send(new GetAllBranchQuery());
             var designation = await _mediator.Send(new GetAllDesignationQuery());
             var departments = await _mediator.Send(new GetAllDepartmentQuery());
-            var course = await _mediator.Send(new GetAllCoursesQuery());
+            var course = await _mediator.Send(new GetCoursesQuery());
             var relationType = await _relationRepository.GetAllAsync();
             var genderLookup = EnumHelper.GetEnumValues<GenderEnum>().ToList();
             var bloodGroup = EnumHelper.GetEnumValues<BloodGroupEnum>().ToList();
@@ -174,10 +167,10 @@ namespace ApwPayrollWebApp.Controllers.Employees
             var locations = await _mediator.Send(new GetAllLocationQuery());
             var country = locations.Data.Where(x => x.LocationType == LocationTypeEnum.Country).ToList();
             var bank = await _mediator.Send(new GetBankLookUpQuery());
-            
 
-            ViewBag.Country=country;
- 
+
+            ViewBag.Country = country;
+
             ViewBag.relationType = relationType;
             ViewBag.Bank = bank.Data;
             ViewBag.designation = designation.Data;
