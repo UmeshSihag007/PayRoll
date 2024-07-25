@@ -1,8 +1,8 @@
 ﻿using ApwPayroll_Application.Features.Banks.Queries.GetAllBanks;
 using ApwPayroll_Application.Features.Branches.Queries.GetAllBranches;
-using ApwPayroll_Application.Features.Courses.Queries.GetAllDepartments;
-using ApwPayroll_Application.Features.Departments.Queries.GetAllDepartments;
-using ApwPayroll_Application.Features.Designations.Queries.GetAllDesignations;
+using ApwPayroll_Application.Features.Courses.Queries.GetAllCourses;
+using ApwPayroll_Application.Features.Departments.Queries.GetAllDepartment;
+using ApwPayroll_Application.Features.Designations.Queries.GetAllDesignation;
 using ApwPayroll_Application.Features.Employees.Commands.CreateEmployee;
 using ApwPayroll_Application.Features.Employees.Commands.UpdateEmployee;
 using ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Commands.CreateEmployeePersonalDetail;
@@ -157,7 +157,7 @@ namespace ApwPayrollWebApp.Controllers.Employees
             var branches = await _mediator.Send(new GetAllBranchQuery());
             var designation = await _mediator.Send(new GetAllDesignationQuery());
             var departments = await _mediator.Send(new GetAllDepartmentQuery());
-            var course = await _mediator.Send(new GetAllCoursesQuery());
+            var course = await _mediator.Send(new GetCoursesQuery());
             var relationType = await _relationRepository.GetAllAsync();
             var genderLookup = EnumHelper.GetEnumValues<GenderEnum>().ToList();
             var bloodGroup = EnumHelper.GetEnumValues<BloodGroupEnum>().ToList();
