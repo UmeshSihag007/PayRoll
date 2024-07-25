@@ -2,7 +2,7 @@
  @using ApwPayrollWebApp.Models
 @model EmployeeCreateViewModel
 @{
-    ViewData["Title"] = "EmployeeReference";
+    ViewData["Title"] = "ReferenceView";
     Layout = "~/Views/Shared/Registration/_RegistrationLayout.cshtml";
 }
 
@@ -57,11 +57,10 @@
                             Cancel
                         </button>
                         <button type="submit" class="btn btn-secondary" Id="addBtn">
+                            @(Model.ReferencesCommand!=null && Model.ReferencesCommand.Id.HasValue && Model.ReferencesCommand.Id.Value!=0?"Update":"Add")
                             Save Details
                         </button>
-                        <button type="submit" class="btn btn-secondary" style="display:none;" id="updateBtn">
-                            Update Details
-                        </button>
+                         
                     </div>
                 </div>
             </div>

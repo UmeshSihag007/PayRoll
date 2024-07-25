@@ -17,7 +17,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeReferral
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> EmployeeReference(int? id)
+        public async Task<IActionResult> ReferenceView(int? id)
         {
             await IntializeViewBag();
             var model = new EmployeeCreateViewModel();
@@ -43,23 +43,12 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeReferral
             return View(model);
         }
 
-        public async Task<IActionResult> Update(int id)
-        {
-
-            var data = await _mediator.Send(new GetEmployeeReferalQuery());
-            var referalDataById = data.Data.Find(x => x.Id == id);
-            if (referalDataById == null)
-            {
-                return NotFound();
-            }
-
-            return RedirectToAction("EmployeeReference", new { id = referalDataById.Id });
-        }
+       
 
         public async Task<IActionResult> Delete(int id)
         {
             var data = await _mediator.Send(new DeleteEmployeeReferenceCommand(id));
-            return RedirectToAction("EmployeeReference");
+            return RedirectToAction("ReferenceView");
         }
 
         [HttpPost]
@@ -81,7 +70,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeReferral
                 await _mediator.Send(new UpdateEmployeeReferencesCommand((int)command.ReferencesCommand.Id, command.ReferencesCommand));
             }
 
-            return RedirectToAction("EmployeeReference");
+            return RedirectToAction("ReferenceView");
 
         }
         private async Task IntializeViewBag()
