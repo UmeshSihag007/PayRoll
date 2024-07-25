@@ -21,7 +21,7 @@ namespace ApwPayrollWebApp.Controllers.Masters.Departments
 
          
 
-        public async Task<IActionResult> CreateDepartment(int? id)
+        public async Task<IActionResult> DepartmentView(int? id)
         {
             await IntializeViewBag();
             var model = new EmployeeProfileModel();
@@ -59,25 +59,14 @@ namespace ApwPayrollWebApp.Controllers.Masters.Departments
                 return View();
             }
 
-            return RedirectToAction("CreateDepartment");
+            return RedirectToAction("DepartmentView");
 
         }
-        public async Task<IActionResult> Update(int id)
-        {
-
-            var data = await _mediator.Send(new GetAllEmployeeDepartmentQuery());
-            var departmetnDataById = data.Data.Find(x => x.Id == id);
-            if (departmetnDataById == null)
-            {
-                return NotFound();
-            }
-
-            return RedirectToAction("CreateDepartment", new { id = departmetnDataById.Id });
-        }
+        
         public async Task<IActionResult> Delete(int id)
         {
             var data = await _mediator.Send(new DeleteEmployeeDepartmentCommand(id));
-            return RedirectToAction("CreateDepartment");
+            return RedirectToAction("DepartmentView");
         }
 
         private async Task IntializeViewBag()

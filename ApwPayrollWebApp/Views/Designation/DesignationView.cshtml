@@ -13,9 +13,9 @@
 
 <div class="tab-contant">
     <div class="tab-pane">
-        <form   method="post">
+        <form asp-action="CreateDesignation" method="post">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-2">
                     <input asp-for="createDesignation.Id" hidden />
                     <label asp-for="createDesignation.Name" class="form-label">Name</label>
                 </div>
@@ -25,17 +25,24 @@
                 </div>
 
 
-                <div class="col-lg-2">
+                <div class="col-2">
                     <label class="form-label">Description</label>
                 </div>
 
-                <div class="col-lg-2">
+                <div class="col-2">
                     <input asp-for="createDesignation.Description" type="text" class="form-control form-control-sm" />
                 </div>
 
 
                 <div class=" col-2">
-                    <button   type="submit" class="btn btn-secondary btn-sm" Id="addBtn"> Add</button>
+                  
+                    
+                        
+                    <button   type="submit" class="btn btn-secondary btn-sm" Id="addBtn">  
+                        @(Model.createDesignation!=null && Model.createDesignation.Id.HasValue && Model.createDesignation.Id.Value!=0?" Update":"Add")
+                    </button>
+                    
+                      
                 </div>
 
             </div>
@@ -59,7 +66,7 @@
                             <td>@item.Name</td>
                             <td>@item.Description</td>
                             <td>
-                                <a asp-action="Update" asp-all-route asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
+                                <a asp-action="DesignationView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'refernece', '@Url.Action("Delete", "Designation")') ">
