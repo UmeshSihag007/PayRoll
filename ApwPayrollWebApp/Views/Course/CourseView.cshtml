@@ -5,7 +5,7 @@
     ViewData["Title"] = "CourseView";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
- 
+
 
 <div class="tab-contant">
     <div class="tab-pane">
@@ -14,7 +14,7 @@
                 <div class="col-3">
                     <input asp-for="createCourses.Id" hidden />
                     <label asp-for="createCourses .Name" class="form-label">Name</label>
-                    </div>
+                </div>
                 <div class="col-3">
                     <input asp-for="createCourses.Name" type="text" class=" form-control form-control-sm"></>
                     <span asp-validation-for="createCourses.Name" class="text-danger"></span>
@@ -34,8 +34,8 @@
                     </button>
                 </div>
             </div>
-            
-            
+
+
         </form>
         @if (ViewBag.Course != null)
         {
@@ -58,13 +58,12 @@
                             <td>
                                 <div class="form-check form-switch">
                                     <input type="checkbox" class="form-check-input"
-                                           id="isActiveToggle_@item.Id" style="width: 3rem; height: 1.5rem;"
-                                  />
+                                           id="isActiveToggle_@item.Id" style="width: 3rem; height: 1.5rem;" />
                                     <label class="form-check-label" for="isActiveToggle_@item.Id">Active</label>
                                 </div>
                             </td>
                             <td>
-                                <a asp-action="CreateCourse" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
+                                <a asp-action="CourseView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
 
@@ -120,8 +119,8 @@
             }
             window.location.href = url;
         }
-                })
-            }
+                    })
+                }
 </script>
 
 

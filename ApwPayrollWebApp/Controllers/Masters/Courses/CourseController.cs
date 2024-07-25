@@ -20,11 +20,11 @@ public class CourseController : BaseController
     }
 
 
-    public async Task<IActionResult> CreateCourse(int? id)
+    public async Task<IActionResult> CourseView(int? id)
     {
         await IntializeViewBag();
         var model = new EmployeeProfileModel();
-        if (id.HasValue)
+        if (id.HasValue && id!=0)
         {
             var courseData = await _mediator.Send(new GetEmployeeCoursesQuery());
             var course = courseData.Data.FirstOrDefault(x => x.Id == id.Value);
@@ -53,23 +53,15 @@ public class CourseController : BaseController
         else
         {
             await _mediator.Send(new UpdateEmployeeCourseCommand((int)employeeProfile.createCourses.Id, employeeProfile.createCourses));
+
+
+          
         }
 
-        return RedirectToAction("CreateCourse");
+        return RedirectToAction("CourseView");
 
     }
-    public async Task<IActionResult> Update(int id)
-    {
-
-        var data = await _mediator.Send(new GetEmployeeCoursesQuery());
-        var courseDataById = data.Data.Find(x => x.Id == id);
-        if (courseDataById == null)
-        {
-            return NotFound();
-        }
-
-        return RedirectToAction("CreateCourse", new { id = courseDataById.Id });
-    }
+    
     public async Task<IActionResult> Delete(int id)
     {
         var data = await _mediator.Send(new DeleteEmployeeCourseCommand(id));
