@@ -1,12 +1,10 @@
-﻿using ApwPayroll_Application.Common.Exceptions;
-using ApwPayroll_Application.Interfaces.Repositories;
+﻿using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Domain.common;
 using ApwPayroll_Persistence.Data;
 using ApwPayroll_Shared;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 namespace ApwPayroll_Persistence.Repositories
 {
@@ -52,7 +50,7 @@ namespace ApwPayroll_Persistence.Repositories
               .Set<T>()
                  .Where(e => !e.IsDeleted)
               .ToListAsync();
- 
+
 
             return data;
         }
@@ -62,7 +60,7 @@ namespace ApwPayroll_Persistence.Repositories
               .Set<T>()
                  .Where(e => !e.IsDeleted && e.Id == id)
                  .FirstOrDefaultAsync();
-      
+
             return data;
         }
 
