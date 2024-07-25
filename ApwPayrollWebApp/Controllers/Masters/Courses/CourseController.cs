@@ -1,7 +1,7 @@
-﻿using ApwPayroll_Application.Features.Employees.EmployeeCouses.Commands.CreateEmployeeCourses;
-using ApwPayroll_Application.Features.Employees.EmployeeCouses.Commands.DeleteEmployeeCourses;
-using ApwPayroll_Application.Features.Employees.EmployeeCouses.Commands.UpdateEmployeeCourses;
-using ApwPayroll_Application.Features.Employees.EmployeeCouses.Queries.GetAllEmployeeCourses;
+﻿using ApwPayroll_Application.Features.Courses.Commands.CreateCourses;
+using ApwPayroll_Application.Features.Courses.Commands.DeleteCourses;
+using ApwPayroll_Application.Features.Courses.Commands.UpdateCourses;
+using ApwPayroll_Application.Features.Courses.Queries.GetAllCourses;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.Models;
 using MediatR;
@@ -23,14 +23,14 @@ public class CourseController : BaseController
     public async Task<IActionResult> CourseView(int? id)
     {
         await IntializeViewBag();
-        var model = new EmployeeProfileModel();
-        if (id.HasValue && id!=0)
+        var model = new MasterModel();
+        if (id.HasValue && id != 0)
         {
-            var courseData = await _mediator.Send(new GetEmployeeCoursesQuery());
+            var courseData = await _mediator.Send(new GetCoursesQuery());
             var course = courseData.Data.FirstOrDefault(x => x.Id == id.Value);
             if (course != null)
             {
-                model.createCourses = new CreateEmployeeCoursesCommand
+                model.createCourses = new CreateCoursesCommand
                 {
                     Id = course.Id,
                     Name = course.Name,
@@ -42,42 +42,43 @@ public class CourseController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCourse(EmployeeProfileModel employeeProfile)
+    public async Task<IActionResult> CreateCourse(MasterModel employeeProfile)
     {
-         
+
         if (employeeProfile.createCourses.Id == 0 || employeeProfile.createCourses.Id == null)
         {
-            await _mediator.Send( employeeProfile.createCourses);
+            await _mediator.Send(employeeProfile.createCourses);
 
         }
         else
         {
-            await _mediator.Send(new UpdateEmployeeCourseCommand((int)employeeProfile.createCourses.Id, employeeProfile.createCourses));
+            await _mediator.Send(new UpdateCourseCommand((int)employeeProfile.createCourses.Id, employeeProfile.createCourses));
 
 
-          
+
         }
 
         return RedirectToAction("CourseView");
 
     }
-    
+
     public async Task<IActionResult> Delete(int id)
     {
-        var data = await _mediator.Send(new DeleteEmployeeCourseCommand(id));
-        return RedirectToAction("CreateCourse");
+        var data = await _mediator.Send(new DeleteCourseCommand(id));
+
+        return RedirectToAction("CourseView");
     }
 
-    private async Task  IntializeViewBag()
+    private async Task IntializeViewBag()
     {
-        var courseList = await _mediator.Send(new GetEmployeeCoursesQuery());
+        var courseList = await _mediator.Send(new GetCoursesQuery());
 
-         
-        if(courseList.Data!=null  && courseList.Data.Count != 0)
+
+        if (courseList.Data != null && courseList.Data.Count != 0)
         {
             var employeeCourse = courseList.Data.ToList();
             ViewBag.Course = employeeCourse;
-        }   
+        }
 
 
 

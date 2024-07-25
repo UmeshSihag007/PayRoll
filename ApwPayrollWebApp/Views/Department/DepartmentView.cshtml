@@ -1,15 +1,15 @@
 ﻿ @using ApwPayrollWebApp.Models
-@model EmployeeProfileModel
+@model MasterModel
 
 @{
-    ViewData["Title"] = "CreateDepartment";
+    ViewData["Title"] = "DepartmentView";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>CreateDepartment</h1>
 <div class="tab-contant">
     <div class="tab-pane">
-        <form method="post">
+        <form asp-action="CreateDepartment" asp-controller="Department" method="post">
             <div class="row">
                 <div class="col-lg-2">
                     <input asp-for="createDepartment.Id" hidden />
@@ -32,8 +32,9 @@
 
                 <div class=" col-2">
 
-                    <button type="submit" class="btn btn-success btn-sm"> 
-                        @(Model.createDepartment!=null && Model.createDepartment.Id.HasValue && Model.createDepartment.Id.Value!=0? "Update":"Add") 
+                    <button type="submit" class="btn btn-success btn-sm">
+                        @(Model?.createDepartment?.Id.HasValue == true && Model.createDepartment.Id.Value != 0 ? "Update" : "Add")
+
                     </button>
                     
 
@@ -59,7 +60,7 @@
                             <td>@item.Name</td>
                             <td>@item.Description</td>
                             <td>
-                                <a asp-action="Update" asp-all-route asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
+                                <a asp-action="DepartmentView" asp-all-route asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'refernece', '@Url.Action("Delete", "Department")') ">
