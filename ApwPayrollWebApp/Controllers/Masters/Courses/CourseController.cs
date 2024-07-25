@@ -1,6 +1,7 @@
 ﻿using ApwPayroll_Application.Features.Courses.Commands.CreateCourses;
 using ApwPayroll_Application.Features.Courses.Commands.DeleteCourses;
 using ApwPayroll_Application.Features.Courses.Commands.UpdateCourses;
+using ApwPayroll_Application.Features.Courses.Commands.UpdateStatus;
 using ApwPayroll_Application.Features.Courses.Queries.GetAllCourses;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.Models;
@@ -23,7 +24,7 @@ public class CourseController : BaseController
     public async Task<IActionResult> CourseView(int? id)
     {
         await IntializeViewBag();
-        var model = new EmployeeProfileModel();
+        var model = new MasterModel();
         if (id.HasValue && id != 0)
         {
             var courseData = await _mediator.Send(new GetCoursesQuery());
@@ -62,19 +63,31 @@ public class CourseController : BaseController
 
     }
     [HttpPost]
-    public IActionResult UpdateStatus(int id, bool isActive)
+    public async Task< IActionResult> UpdateStatus(int id, bool isActive)
     {
         try
         {
+            var data = await _mediator.Send(new UpdateCourseStatusCommand(id, isActive));
+            if(data.succeeded)
+            {
+                Notify(data.Messages, null, data.code);
+                
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
+
+            return RedirectToAction("CourseView");
 
 
-            return Json(new { success = false });
         }
         catch (Exception ex)
         {
-            // Log the exception
-            return Json(new { success = false, message = ex.Message });
+            Notify(["Error"], null,400);
+            return RedirectToAction("CourseView");
         }
+ 
     }
 
 
