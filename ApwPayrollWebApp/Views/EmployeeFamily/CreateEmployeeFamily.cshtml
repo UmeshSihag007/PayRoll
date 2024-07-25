@@ -63,7 +63,9 @@
                         <input asp-for="CreateEmployeeFamily.DOB" class="form-control" />
                     </div>
                     <div class="col-3">
-                        <button class="btn btn-success mt-4"> Sumbit</button>
+                        <button class="btn btn-success mt-4">
+                            @(Model.CreateEmployeeFamily!=null && Model.CreateEmployeeFamily.Id.HasValue && Model.CreateEmployeeFamily.Id.Value!=0?"Update":"Add")
+                        </button>
                     </div>
 
 
@@ -95,7 +97,7 @@
                                     <td>@item.DOB</td>
                                     <td>@item.RelationType</td>
                                     <td>
-                                        <a asp-action="Update" asp-all-route asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                        <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-sm btn-info">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
 

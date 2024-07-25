@@ -1,4 +1,4 @@
-﻿using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Commands.CreateEmployeeDesignation;
+﻿ using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Commands.CreateEmployeeDesignation;
 using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Commands.DeleteEmployeeDesignation;
 using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Commands.UpdateEmployeeDesignation;
 using ApwPayroll_Application.Features.Employees.EmployeeDesignations.Queries.GetAllEmployeeDesignation;
@@ -19,7 +19,7 @@ namespace ApwPayrollWebApp.Controllers.Masters.Designations
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> CreateDesignation(int? id)
+        public async Task<IActionResult> DesignationView(int? id)
         {
             await IntializeViewBag();
             var model = new EmployeeProfileModel();
@@ -55,25 +55,14 @@ namespace ApwPayrollWebApp.Controllers.Masters.Designations
                 await _mediator.Send(new UpdateEmployeeDesignationCommand((int)employeeProfile.createDesignation.Id, employeeProfile.createDesignation));
             }
 
-            return RedirectToAction("CreateDesignation");
+            return RedirectToAction("DesignationView");
 
         }
-        public async Task<IActionResult> Update(int id)
-        {
-
-            var data = await _mediator.Send(new GetAllEmployeeDesignationQuery());
-            var designationDataById = data.Data.Find(x => x.Id == id);
-            if (designationDataById == null)
-            {
-                return NotFound();
-            }
-
-            return RedirectToAction("CreateDesignation", new { id = designationDataById.Id });
-        }
+     
         public async Task<IActionResult> Delete(int id)
         {
             var data = await _mediator.Send(new DeleteEmployeeDesignationCommand(id));
-            return RedirectToAction("CreateDesignation");
+            return RedirectToAction("DesignationView");
         }
 
         private async Task IntializeViewBag()

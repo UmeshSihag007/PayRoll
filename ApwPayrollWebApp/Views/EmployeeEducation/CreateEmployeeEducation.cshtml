@@ -87,8 +87,10 @@
                         <span asp-validation-for="Qualification.Specification" class="text-danger"></span>
 
                     </div>
-                    <button type="submit" class="btn form-control-sm btn-success" id="addBtn"> Add</button>
-                    <button type="submit" class="btn form-control-sm btn-success" style="display:none;" id="updateBtn">Update</button>
+                    <button type="submit" class="btn form-control-sm btn-success" id="addBtn"> 
+                        @(Model.Qualification!=null && Model.Qualification.Id.HasValue && Model.Qualification.Id.Value!=0?"Update":"Add")
+                    </button>
+                     
 
                 </div>
             </form>
@@ -225,7 +227,7 @@
                         <div class="hstack gap-2 justify-content-end">
 
                             <button asp-action="CreateEmployeeExperience" asp-controller="EmployeeExperience" type="submit" class="btn btn-secondary">
-                                ADD
+                                @(Model.Experiences!=null &&Model.Experiences.Id.HasValue && Model.Experiences.Id.Value!=0 ?"Update":"Add")
                             </button>
 
                         </div>
