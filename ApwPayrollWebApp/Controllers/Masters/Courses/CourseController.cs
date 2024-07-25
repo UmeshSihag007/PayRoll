@@ -1,6 +1,7 @@
 ﻿using ApwPayroll_Application.Features.Courses.Commands.CreateCourses;
 using ApwPayroll_Application.Features.Courses.Commands.DeleteCourses;
 using ApwPayroll_Application.Features.Courses.Commands.UpdateCourses;
+using ApwPayroll_Application.Features.Courses.Commands.UpdateStatus;
 using ApwPayroll_Application.Features.Courses.Queries.GetAllCourses;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.Models;
@@ -61,6 +62,34 @@ public class CourseController : BaseController
         return RedirectToAction("CourseView");
 
     }
+    [HttpPost]
+    public async Task< IActionResult> UpdateStatus(int id, bool isActive)
+    {
+        try
+        {
+            var data = await _mediator.Send(new UpdateCourseStatusCommand(id, isActive));
+            if(data.succeeded)
+            {
+                Notify(data.Messages, null, data.code);
+                
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
+
+            return RedirectToAction("CourseView");
+
+
+        }
+        catch (Exception ex)
+        {
+            Notify(["Error"], null,400);
+            return RedirectToAction("CourseView");
+        }
+ 
+    }
+
 
     public async Task<IActionResult> Delete(int id)
     {

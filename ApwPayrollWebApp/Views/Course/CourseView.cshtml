@@ -54,14 +54,14 @@
                         <tr>
                             <td>@(ViewBag.Course.IndexOf(item) + 1)</td>
                             <td>@item.Name</td>
-                            @* <td>@item.IsActive</td> *@
                             <td>
                                 <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input"
-                                           id="isActiveToggle_@item.Id" style="width: 3rem; height: 1.5rem;" />
+                                    <input type="checkbox" class="form-check-input" id="isActiveToggle_@item.Id" style="width: 3rem; height: 1.5rem;"
+                                    @(item.IsActive ? "checked" : "") />
                                     <label class="form-check-label" for="isActiveToggle_@item.Id">Active</label>
                                 </div>
                             </td>
+
                             <td>
                                 <a asp-action="CourseView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
                                     <i class="bi bi-pencil-square"></i>
@@ -99,30 +99,25 @@
 }
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @Html.Partial("_DeleteConfirmation")
+ 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    function confirmDelete(id) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let url;
-
-
-                url = '@Url.Action("Delete", "Course")/' + id;
-            }
-            window.location.href = url;
-        }
-                    })
-                }
+    $(document).ready(function () {
+        $('.form-check-input').on('change', function () {
+            var itemId = $(this).attr('id').split('_')[1];
+            var isActive = $(this).is(':checked');
+            $.ajax({
+                url: '@Url.Action("UpdateStatus", "Course")', // Replace with your action and controller
+                type: 'POST',
+                data: {
+                    id: itemId,
+                    isActive: isActive
+                },
+               
+            });
+        });
+    });
 </script>
-
-
 
 
