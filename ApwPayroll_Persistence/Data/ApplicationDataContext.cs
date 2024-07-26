@@ -32,6 +32,12 @@ using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
 using ApwPayroll_Domain.Entities.Employees.EmployeeQualifications;
 using ApwPayroll_Domain.Entities.Employees.EmployeeSocials;
 using ApwPayroll_Domain.Entities.Employees.Trainings;
+using ApwPayroll_Domain.Entities.Holidays;
+using ApwPayroll_Domain.Entities.Holidays.HolidayTypes;
+using ApwPayroll_Domain.Entities.Leaves;
+using ApwPayroll_Domain.Entities.Leaves.LeaveResponseStatues;
+using ApwPayroll_Domain.Entities.Leaves.LeaveTypeRoles;
+using ApwPayroll_Domain.Entities.Leaves.LeaveTypes;
 using ApwPayroll_Domain.Entities.Menus;
 using ApwPayroll_Domain.Entities.Menus.MenuTypes;
 using ApwPayroll_Domain.Entities.Notifications;
@@ -76,8 +82,6 @@ namespace ApwPayroll_Persistence.Data
         public DbSet<TemplateTag> TemplateTags => Set<TemplateTag>();
         public DbSet<TemplateTagType> TemplateTagTypes => Set<TemplateTagType>();
         public DbSet<TemplateType> TemplateTypes => Set<TemplateType>();
-
-
         public DbSet<Bank> Banks => Set<Bank>();
         public DbSet<Branch> Branches => Set<Branch>();
         public DbSet<BranchAddress> BranchesAddresses => Set<BranchAddress>();
@@ -112,6 +116,12 @@ namespace ApwPayroll_Persistence.Data
         public DbSet<EmployeeExperience> EmployeeExperiences => Set<EmployeeExperience>();
         public DbSet<EmployeeContact> EmployeeContacts => Set<EmployeeContact>();
         public DbSet<Training> Training => Set<Training>();
+        public DbSet<Holiday> Holidays => Set<Holiday>();
+        public DbSet<HolidayType> HolidayTypes => Set<HolidayType>();
+        public DbSet<Leave> Leaves => Set<Leave>();
+        public DbSet<LeaveType> LeaveTypes => Set<LeaveType>();
+        public DbSet<LeaveResponseStatus>LeaveResponseStatuses => Set<LeaveResponseStatus>();
+        public DbSet<LeaveTypeRole> LeaveTypeRoles => Set<LeaveTypeRole>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
