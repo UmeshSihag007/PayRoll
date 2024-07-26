@@ -1,4 +1,9 @@
-﻿using ApwPayroll_Application.Features.Courses.Commands.CreateCourses;
+﻿using ApwPayroll_Application.Contracts.Dtos;
+using ApwPayroll_Application.Features.Banks.Commands.CreateBankCommands;
+using ApwPayroll_Application.Features.Banks.Queries.GetAllBanks;
+using ApwPayroll_Application.Features.Branches.Commands.CreateBranchCommands;
+using ApwPayroll_Application.Features.Branches.Queries.GetAllBranches;
+using ApwPayroll_Application.Features.Courses.Commands.CreateCourses;
 using ApwPayroll_Application.Features.Departments.Commands.CreateDepartment;
 using ApwPayroll_Application.Features.Designations.Commands.CreateDesignation;
 using ApwPayroll_Application.Features.DocumentTypes.Commands.CreateDocumentType;
@@ -8,9 +13,12 @@ using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.Cre
 using ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.CreateEmployeeFamily;
 using ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.CreateEmployeeReferences;
 using ApwPayroll_Application.Features.Locations.Commands.CreateLocations;
+using ApwPayroll_Application.Features.Locations.Queries.GetAllLocations;
 using ApwPayroll_Application.Features.Menus.MenuTypes.Commands.CreateMenuType;
 using ApwPayroll_Application.Features.Users.Commands.RegisterUsers;
 using ApwPayroll_Domain.Entities.AspUsers;
+using ApwPayroll_Domain.Entities.Banks;
+using ApwPayroll_Domain.Entities.Banks.Branches;
 using ApwPayroll_Domain.Entities.Departments;
 using ApwPayroll_Domain.Entities.Designations;
 using ApwPayroll_Domain.Entities.Documents.DocumentTypes;
@@ -36,7 +44,12 @@ public class MappingProfile : Profile
 
         //---Location---
         CreateMap<CreateLcoationCommand, Location>();
-
+        CreateMap< Location,GetAllLocationDto> ();
+        CreateMap<CreateBranchCommand, Branch>();
+        CreateMap< Branch,GetBranchDto > ();
+        CreateMap< Bank,GetBankDto> ();
+        CreateMap< Branch,LookUpDto > ();
+        CreateMap<CreateBankCommand, Bank> ();
         CreateMap<CreateDocumentTypeCommand, DocumentType>();
         CreateMap<CreateMenuTypeCommand, MenuType>();
         CreateMap<CreateEmployeeCommand, Employee>();

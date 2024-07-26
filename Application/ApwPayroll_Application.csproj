@@ -20,8 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Banks\Commands\" />
-    <Folder Include="Features\Branches\Commands\" />
     <Folder Include="Features\Employees\EmployeeAddresses\Queries\" />
     <Folder Include="Features\Employees\EmployeeBankDetails\Queries\" />
     <Folder Include="Features\Employees\EmployeeContact\Queries\" />

@@ -1,0 +1,213 @@
+﻿@using ApwPayrollWebApp.Models
+@using ApwPayroll_Application.Features.Banks.Commands.CreateBankCommands;
+
+@model MasterModel
+
+@{
+    ViewData["Title"] = "BankView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="tab-content">
+    
+    <div class="tab-pane active" id="basicDetails" role="tabpanel">
+        <form asp-action="CreateBank" asp-controller="Bank" method="post">
+            <input type="hidden" asp-for="createBank.Id" />
+            <div class="container">
+                <div class="row g-3 align-items-center">
+                    <div class="col-sm-3">
+                        <label class="form-label">Name</label>
+                        <input asp-for="createBank.Name" class="form-control form-control-sm" />
+                        <span asp-validation-for="createBank.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label class="form-label">Employee ID</label>
+                        <input asp-for="createBank.EmployeeId" type="number" class="form-control form-control-sm" />
+                        <span asp-validation-for="createBank.EmployeeId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label class="form-label">Account Number</label>
+                        <input asp-for="createBank.AccountNumber" type="number" class="form-control form-control-sm" />
+                        <span asp-validation-for="createBank.AccountNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label class="form-label">IFSC Code</label>
+                        <input asp-for="createBank.IFCCode" class="form-control form-control-sm" />
+                        <span asp-validation-for="createBank.IFCCode" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label class="form-label">Account Name</label>
+                        <input asp-for="createBank.AccountName" class="form-control form-control-sm" />
+                        <span asp-validation-for="createBank.AccountName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label class="form-label">Account Type</label>
+                        <select asp-for="createBank.AccountType" class="form-control form-control-sm">
+                            <option value="" selected disabled>Select an account type</option>
+                            @foreach(var item in ViewBag.AccountType)
+                            {    
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="createBank.AccountType" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label class="form-label">Branch</label>
+                        <select asp-for="createBank.BranchId" class="form-control form-control-sm">
+                            <option value="" selected disabled>Select a branch</option>
+                            @if (ViewBag.BranchList != null)
+                            {
+                                @foreach (var branch in ViewBag.BranchList)
+                                {
+                                    <option value="@branch.Id">@branch.Name</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="" disabled>No branches available</option>
+                            }
+                        </select>
+                        <span asp-validation-for="createBank.BranchId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-check form-switch mt-md-4">
+                            <input asp-for="createBank.IsBankAccountVerified" type="checkbox" class="form-check-input" id="isVerifiedToggle" />
+                            <label class="form-check-label" for="isVerifiedToggle">Verified</label>
+                        </div> 
+                      
+                      
+                        <span asp-validation-for="createBank.IsBankAccountVerified" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="">
+                        <div class="d-flex justify-content-end" >   
+                            <button type="submit" class="btn btn-secondary btn-sm" id="addBtn">
+                                @(Model.createBank.Id != null && Model.createBank.Id.HasValue && Model.createBank.Id.Value != 0 ? "Update" : "Add")
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="tab-pane active" id="bankList" role="tabpanel">
+        <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th class="text-nowrap">Employee ID</th>
+                        <th class="text-nowrap">Account Number</th>
+                        <th class="text-nowrap">IFC Code</th>
+                        <th class="text-nowrap">Account Name</th>
+                        <th class="text-nowrap">Account Type</th>
+                        <th class="text-nowrap">Branch ID</th> 
+                    <th>Verified</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.BankList != null && ViewBag.BankList.Count > 0)
+                {
+                    @foreach (var item in ViewBag.BankList)
+                    {
+                        <tr>
+                            <td>@(ViewBag.BankList.IndexOf(item) + 1)</td>
+                            <td>@item.Name</td>
+                            <td>@item.EmployeeId</td>
+                            <td>@item.AccountNumber</td>
+                            <td>@item.IFCCode</td>
+                            <td>@item.AccountName</td>
+                            <td>@item.AccountType</td>
+                            <td>@item.BranchId</td> 
+                            <td>
+                                @if (item.IsBankAccountVerified)
+                                {
+                                    <i class="bi bi-check-circle fs-5 fw-bold text-success"></i>
+                                }
+                                else
+                                {
+                                        <i class="bi bi-x-circle fs-5 fw-bold text-danger"></i>
+                                }
+                            </td>
+                            <td>
+                                <span class="d-flex">                              
+                                    <a asp-action="BankView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn me-2">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <button class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', '@Url.Action("Delete", "Bank")')">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                                </span>
+
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="10" class="text-center">No banks available</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <!-- Dropzone, Crypto-KYC, and App js -->
+    <script src="~/assets/libs/dropzone/dropzone-min.js"></script>
+    <script src="~/assets/js/pages/crypto-kyc.init.js"></script>
+    <script src="~/assets/js/app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Delete Confirmation Script -->
+    <script>
+        function confirmDelete(id, url) {
+            if (confirm("Are you sure you want to delete this item?")) {
+                window.location.href = url + '?id=' + id;
+            }
+        }
+    </script>
+
+    <!-- Edit Button Script -->
+    <script>
+        $(document).ready(function () {
+            $('.editBtn').click(function () {
+                $('#updateBtn').show();
+                $('#addBtn').hide();
+                // Load data into form if needed, e.g., populate fields for update
+                var bankId = $(this).attr('asp-route-id');
+                // Fetch and populate form with data based on bankId
+                $.ajax({
+                    url: '@Url.Action("GetBankDetails", "Bank")',
+                    type: 'GET',
+                    data: { id: bankId },
+                    success: function (data) {
+                        $('input[name="Id"]').val(data.Id);
+                        $('input[name="Name"]').val(data.Name);
+                        $('input[name="EmployeeId"]').val(data.EmployeeId);
+                        $('input[name="AccountNumber"]').val(data.AccountNumber);
+                        $('input[name="IFCCode"]').val(data.IFCCode);
+                        $('input[name="AccountName"]').val(data.AccountName);
+                        $('select[name="AccountType"]').val(data.AccountType);
+                        $('select[name="BranchId"]').val(data.BranchId);
+                        $('#isVerifiedToggle').prop('checked', data.IsBankAccountVerified);
+                    }
+                });
+            });
+        });
+    </script>
+}
