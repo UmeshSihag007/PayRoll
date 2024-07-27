@@ -83,7 +83,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeExperiences
         public async Task<IActionResult> Delete(int id)
         {
             var data = await _mediator.Send(new DeleteEmployeeExperienceCommand(id));
-            if (data.code == 200)
+            if (data.succeeded)
             {
                 Notify(data.Messages, null, data.code);
             }

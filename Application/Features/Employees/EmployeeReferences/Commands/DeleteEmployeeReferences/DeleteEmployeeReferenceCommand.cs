@@ -38,7 +38,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.
             }
             await _unitOfWork.Repository<ReferralDetail>().DeleteAsync(data);
             await _unitOfWork.Save(cancellationToken);
-            return Result<int>.Success();
+            return Result<int>.BadRequest("Deleted Successfully");
         }
     }
 }

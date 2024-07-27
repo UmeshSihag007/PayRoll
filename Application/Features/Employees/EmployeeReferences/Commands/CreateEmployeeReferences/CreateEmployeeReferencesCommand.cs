@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.CreateEmployeeReferences
 {
-    public class CreateEmployeeReferencesCommand:IRequest<Result<int>>
+    public class CreateEmployeeReferencesCommand:IRequest<Result<ReferralDetail>>
     {
         public int? Id { get; set; }
         public int EmployeeId { get; set; } 
@@ -23,7 +23,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.
         public long ContactNumber { get; set; }
         public int YearsOfAcquaintance { get; set; }
     }
-    internal class CreateEmployeeReferencesCommandHandler : IRequestHandler<CreateEmployeeReferencesCommand, Result<int>>
+    internal class CreateEmployeeReferencesCommandHandler : IRequestHandler<CreateEmployeeReferencesCommand, Result<ReferralDetail>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -34,13 +34,13 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> Handle(CreateEmployeeReferencesCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ReferralDetail>> Handle(CreateEmployeeReferencesCommand request, CancellationToken cancellationToken)
         {
          
             var mapData = _mapper.Map<ReferralDetail>(request);
-            await _unitOfWork.Repository<ReferralDetail>().AddAsync(mapData);
+            var data= await _unitOfWork.Repository<ReferralDetail>().AddAsync(mapData);
             await _unitOfWork.Save(cancellationToken);
-            return Result<int>.Success();
+            return Result<ReferralDetail>.Success(data,"Create Successfully");
         }
     }
 }

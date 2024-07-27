@@ -114,7 +114,7 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
                 }
                 data.AddDesignation(request.DepartmentId);
             }
-            return Result<Employee>.Success(data, "Created SuccessFully");
+            return Result<Employee>.Success(data, "Created Successfully");
         }
 
         private string GeneratePassword(string email)

@@ -14,6 +14,12 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeReferences.Queries.G
 {
     public class GetEmployeeReferalQuery:IRequest<Result<List<ReferralDetail>>>
     {
+        public int Id { get; set; }
+
+        public GetEmployeeReferalQuery(int id)
+        {
+            Id = id;
+        }
     }
     internal class GetEmployeeReferalQueryHandler : IRequestHandler<GetEmployeeReferalQuery, Result<List<ReferralDetail>>>
     {
