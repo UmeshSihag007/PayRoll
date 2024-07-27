@@ -87,9 +87,18 @@
                         <span asp-validation-for="Qualification.Specification" class="text-danger"></span>
 
                     </div>
-                    <button type="submit" class="btn form-control-sm btn-success" id="addBtn"> 
-                        @(Model.Qualification!=null && Model.Qualification.Id.HasValue && Model.Qualification.Id.Value!=0?"Update":"Add")
-                    </button>
+                    <div class="row mt-1 mb-2">
+                        <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+
+                                <button asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" type="submit" class="btn btn-secondary">
+                                    @(Model.Qualification != null && Model.Qualification.Id.HasValue && Model.Qualification.Id.Value != 0 ? "Update" : "Add")
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                    
                      
 
                 </div>

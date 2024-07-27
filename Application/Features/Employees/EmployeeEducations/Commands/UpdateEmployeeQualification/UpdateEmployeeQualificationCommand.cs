@@ -49,7 +49,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeQualifications.Comma
             var mapData = _mapper.Map(request.Qualification, data);
             await _unitOfWork.Repository<EmployeeQualification>().UpdateAsync(mapData);
             await _unitOfWork.Save(cancellationToken);
-            return Result<int>.Success();
+            return Result<int>.Success(1,"Update Successfully");
         }
     }
 }

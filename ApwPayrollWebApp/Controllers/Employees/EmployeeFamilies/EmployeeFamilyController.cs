@@ -111,7 +111,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
         public async Task<IActionResult>DeleteEmployeeFamily(int id)
         {
             var data = await _mediator.Send(new DeleteEmployeeFamilyCommand(id));
-            if (data.code == 200)
+            if (data.succeeded)
             {
                   Notify(data.Messages,null, data.code);
             }

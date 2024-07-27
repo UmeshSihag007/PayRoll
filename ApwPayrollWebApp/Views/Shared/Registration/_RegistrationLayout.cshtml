@@ -64,6 +64,12 @@
                                 References
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a id="checklist-tab" class="nav-link" asp-action="Index" asp-controller="CheckList">
+                                <i class="fas fa-address-book"></i>
+                                CheckList
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-body">
@@ -94,8 +100,10 @@
                 activeTabId = "family-tab";
             } else if (currentUrl.includes("Create")) {
                 activeTabId = "documents-tab";
-            } else if (currentUrl.includes("EmployeeReference")) {
+            } else if (currentUrl.includes("ReferenceView")) {
                 activeTabId = "references-tab";
+            } else if (currentUrl.includes("CheckList")) {
+                activeTabId = "checklist-tab";
             }
 
             setActiveTab(activeTabId);
