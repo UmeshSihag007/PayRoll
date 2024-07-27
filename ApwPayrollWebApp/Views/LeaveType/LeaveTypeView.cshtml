@@ -1,0 +1,96 @@
+﻿@using ApwPayrollWebApp.Models
+@using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.CreateLeaveTypes;
+@model MasterModel
+
+@{
+    ViewData["Title"] = "LeaveTypeView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <div class="tab-pane">
+        <form asp-action="CreateLeaveType" method="post">
+            <div class="row">
+                <div class="col-3">
+                    <input asp-for="createLeaveType.Id" hidden />
+                    <label asp-for="createLeaveType.Name" class="form-label">Name</label>
+                </div>
+                <div class="col-3">
+                    <input asp-for="createLeaveType.Name" type="text" class="form-control form-control-sm" />
+                    <span asp-validation-for="createLeaveType.Name" class="text-danger"></span>
+                </div>
+                <div class="col-3">
+                    <label class="form-label">Is Active</label>
+                </div>
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input asp-for="createLeaveType.IsActive" type="checkbox" class="form-check-input" id="isActiveToggle" />
+                        <label class="form-check-label" for="isActiveToggle">Active</label>
+                    </div>
+                    <button type="submit" class="btn btn-secondary" id="addBtn">
+                        @(Model.createLeaveType != null && Model.createLeaveType.Id.HasValue && Model.createLeaveType.Id.Value != 0 ? "Update" : "Add")
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        @if (ViewBag.LeaveType != null)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sr.No</th>
+                        <th>Name</th>
+                        <th>Is Active</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.LeaveType)
+                    {
+                        <tr>
+                            <td>@(ViewBag.LeaveType.IndexOf(item) + 1)</td>
+                            <td>@item.Name</td>
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input" id="isActiveToggle_@item.Id" @(item.IsActive ? "checked" : "") />
+                                    <label class="form-check-label" for="isActiveToggle_@item.Id">Active</label>
+                                </div>
+                            </td>
+                            <td>
+                                <a asp-action="LeaveTypeView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'leaveType', '@Url.Action("Delete", "LeaveType")')">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+@Html.Partial("_DeleteConfirmation")
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.form-check-input').on('change', function () {
+            var itemId = $(this).attr('id').split('_')[1];
+            var isActive = $(this).is(':checked');
+            $.ajax({
+                url: '@Url.Action("UpdateStatus", "LeaveType")',
+                type: 'POST',
+                data: {
+                    id: itemId,
+                    isActive: isActive
+                },
+            });
+        });
+    });
+</script>

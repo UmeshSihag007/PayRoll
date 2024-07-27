@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace ApwPayroll_Application.Features.Menus.MenuTypes.Commands.CreateMenuType
 {
-    public class CreateMenuTypeCommand:IRequest<Result<int>>
+    public class CreateMenuTypeCommand:IRequest<Result<MenuType>>
     {
         public string Name { get; set; }
         public bool IsActive { get; set; }
     }
-    internal class CreateMenuTypeCommandHandler : IRequestHandler<CreateMenuTypeCommand, Result<int>>
+    internal class CreateMenuTypeCommandHandler : IRequestHandler<CreateMenuTypeCommand, Result<MenuType>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -27,11 +27,11 @@ namespace ApwPayroll_Application.Features.Menus.MenuTypes.Commands.CreateMenuTyp
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> Handle(CreateMenuTypeCommand request, CancellationToken cancellationToken)
+        public async Task<Result<MenuType>> Handle(CreateMenuTypeCommand request, CancellationToken cancellationToken)
         {
             var mapData= _mapper.Map<MenuType>(request);
             var data = await _unitOfWork.Repository<MenuType>().AddAsync(mapData);
-            return Result<int>.Success();
+            return Result<MenuType>.Success(data, "Create Successfully");
         }
     }
 }

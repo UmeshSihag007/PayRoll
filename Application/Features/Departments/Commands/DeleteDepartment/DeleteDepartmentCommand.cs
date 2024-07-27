@@ -33,6 +33,6 @@ internal class DeleteDepartmentCommandHandler : IRequestHandler<DeleteDepartment
         }
         await _unitOfWork.Repository<Department>().DeleteAsync(data);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<int>.BadRequest("Deleted Successfully");
     }
 }
