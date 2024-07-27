@@ -7,7 +7,6 @@ using ApwPayroll_Application.Features.Employees.EmployeeEducations.Commands.Crea
 using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.CreateEmployeeExperiences;
 using ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.CreateEmployeeFamily;
 using ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.CreateEmployeeReferences;
-using ApwPayroll_Application.Features.Locations.Commands.CreateLocations;
 using ApwPayroll_Application.Features.Menus.MenuTypes.Commands.CreateMenuType;
 using ApwPayroll_Application.Features.Users.Commands.RegisterUsers;
 using ApwPayroll_Domain.Entities.AspUsers;
@@ -19,73 +18,74 @@ using ApwPayroll_Domain.Entities.Employees.Courses;
 using ApwPayroll_Domain.Entities.Employees.EmployeeExperiences;
 using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeeQualifications;
-using ApwPayroll_Domain.Entities.Locations;
 using ApwPayroll_Domain.Entities.Menus.MenuTypes;
 using ApwPayroll_Domain.Entities.ReferralDetails;
 using AutoMapper;
 using System.Reflection;
 
-namespace ApwPayroll_Application.Common.Mappings;
-
-public class MappingProfile : Profile
+namespace ApwPayroll_Application.Common.Mappings
 {
-    public MappingProfile()
+    public class MappingProfile : Profile
     {
- 
-        //  custome  mapping work 
-
-        //---Location---
-        CreateMap<CreateLcoationCommand, Location>();
-
-        CreateMap<CreateDocumentTypeCommand, DocumentType>();
-        CreateMap<CreateMenuTypeCommand, MenuType>();
-        CreateMap<CreateEmployeeCommand, Employee>();
-
-        CreateMap<CreateEmployeeEducationCommand, EmployeeQualification>();
-        CreateMap<CreateEmployeeExperiencesCommand, EmployeeExperience>();
-        CreateMap<CreateEmployeeFamilyCommand, EmployeeFamily>();
-        CreateMap<CreateEmployeeReferencesCommand, ReferralDetail>();
-
-        CreateMap<RegisterUserCommand, AspUser>()
-        .ForMember(u => u.UserName, opt => opt.MapFrom(x => x.Email));
-    }
-    private void ApplyMappingsFromAssembly(Assembly assembly)
-    {
-        var mapFromType = typeof(IMapFrom<>);
-
-        var mappingMethodName = nameof(IMapFrom<object>.Mapping);
-
-        bool HasInterface(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == mapFromType;
-
-        var types = assembly.GetExportedTypes().Where(t => t.GetInterfaces().Any(HasInterface)).ToList();
-
-        var argumentTypes = new Type[] { typeof(Profile) };
-
-        foreach (var type in types)
+        public MappingProfile()
         {
-            var instance = Activator.CreateInstance(type);
+            ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
 
-            var methodInfo = type.GetMethod(mappingMethodName);
+            //  custome  mapping work 
+            CreateMap<CreateDocumentTypeCommand, DocumentType>();
+            CreateMap<CreateMenuTypeCommand, MenuType>();
+            CreateMap<CreateEmployeeCommand, Employee>();
 
-            if (methodInfo != null)
+            CreateMap<CreateEmployeeEducationCommand, EmployeeQualification>();
+            CreateMap<CreateEmployeeExperiencesCommand, EmployeeExperience>();
+            CreateMap<CreateEmployeeFamilyCommand, EmployeeFamily>();
+            CreateMap<CreateEmployeeReferencesCommand, ReferralDetail>();
+            CreateMap<CreateCoursesCommand, Course>();
+            CreateMap<CreateDepartmentCommand, Department>();
+            CreateMap<CreateDesignationCommand, Designation>();
+
+            CreateMap<RegisterUserCommand, AspUser>()
+            .ForMember(u => u.UserName, opt => opt.MapFrom(x => x.Email));
+        }
+        private void ApplyMappingsFromAssembly(Assembly assembly)
+        {
+            var mapFromType = typeof(IMapFrom<>);
+
+            var mappingMethodName = nameof(IMapFrom<object>.Mapping);
+
+            bool HasInterface(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == mapFromType;
+
+            var types = assembly.GetExportedTypes().Where(t => t.GetInterfaces().Any(HasInterface)).ToList();
+
+            var argumentTypes = new Type[] { typeof(Profile) };
+
+            foreach (var type in types)
             {
-                methodInfo.Invoke(instance, new object[] { this });
-            }
-            else
-            {
-                var interfaces = type.GetInterfaces().Where(HasInterface).ToList();
+                var instance = Activator.CreateInstance(type);
 
-                if (interfaces.Count > 0)
+                var methodInfo = type.GetMethod(mappingMethodName);
+
+                if (methodInfo != null)
                 {
-                    foreach (var @interface in interfaces)
-                    {
-                        var interfaceMethodInfo = @interface.GetMethod(mappingMethodName, argumentTypes);
+                    methodInfo.Invoke(instance, new object[] { this });
+                }
+                else
+                {
+                    var interfaces = type.GetInterfaces().Where(HasInterface).ToList();
 
-                        interfaceMethodInfo.Invoke(instance, new object[] { this });
+                    if (interfaces.Count > 0)
+                    {
+                        foreach (var @interface in interfaces)
+                        {
+                            var interfaceMethodInfo = @interface.GetMethod(mappingMethodName, argumentTypes);
+
+                            interfaceMethodInfo.Invoke(instance, new object[] { this });
+                        }
                     }
                 }
             }
         }
     }
+
 }
 

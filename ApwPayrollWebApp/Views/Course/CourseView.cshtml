@@ -10,26 +10,29 @@
 <div class="tab-contant">
     <div class="tab-pane">
         <form asp-action="CreateCourse" method="post">
-            <div class="row">
-                <div class="col-3">
+            <div class="row ">
+                <div class="col-auto">
                     <input asp-for="createCourses.Id" hidden />
-                    <label asp-for="createCourses .Name" class="form-label">Name</label>
+                    <label asp-for="createCourses .Name" class="form-label ms-5">Name</label>
                 </div>
-                <div class="col-3">
+                <div class="col-auto">
                     <input asp-for="createCourses.Name" type="text" class=" form-control form-control-sm"></>
                     <span asp-validation-for="createCourses.Name" class="text-danger"></span>
                 </div>
-                <div class="col-3">
-                    <label class="form-label">Is Active</label>
+                <div class="col-auto">
+                    <label class="form-label ms-5 ">Is Active</label>
                 </div>
-                <div class="col-3">
-                    <div class="form-check form-switch">
+                <div class="col-auto">
+                    <div class="form-check form-switch me-4">
                         <input asp-for="createCourses.IsActive" type="checkbox" class="form-check-input"
                                id="isActiveToggle" style="width: 3rem; height: 1.5rem;   " />
-                        <label class="form-check-label" for="isActiveToggle">Active</label>
+
                     </div>
 
-                    <button type="submit" class="btn btn-secondary" id="addBtn">
+                </div>
+                <div class="col-2 ms-5">
+
+                    <button type="submit" class="btn btn-secondary btn-sm" id="addBtn">
                         @(Model.createCourses != null && Model.createCourses.Id.HasValue && Model.createCourses.Id.Value != 0 ? "Update" : "Add")
                     </button>
                 </div>
@@ -99,7 +102,7 @@
 }
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @Html.Partial("_DeleteConfirmation")
- 
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -108,13 +111,13 @@
             var itemId = $(this).attr('id').split('_')[1];
             var isActive = $(this).is(':checked');
             $.ajax({
-                url: '@Url.Action("UpdateStatus", "Course")', // Replace with your action and controller
+                url: '@Url.Action("UpdateStatus", "Course")', 
                 type: 'POST',
                 data: {
                     id: itemId,
                     isActive: isActive
                 },
-               
+
             });
         });
     });
