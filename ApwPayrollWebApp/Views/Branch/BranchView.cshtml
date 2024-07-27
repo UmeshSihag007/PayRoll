@@ -1,0 +1,121 @@
+﻿ @using ApwPayrollWebApp.Models
+@model MasterModel
+@{
+    ViewData["Title"] = "BranchView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="tab-contant">
+    <div class="tab-pane">
+        <form asp-action="CreateBranch" method="post">
+            <div class="row">
+                <div class="col-3">
+                    <input asp-for="createBranch.Id" hidden />
+                    <label asp-for="createBranch .Name" class="form-label">Name</label>
+                </div>
+                <div class="col-3">
+                    <input asp-for="createBranch.Name" type="text" class=" form-control form-control-sm"></>
+                    <span asp-validation-for="createBranch.Name" class="text-danger"></span>
+                </div>
+                <div class="col-3">
+                    <label class="form-label">Is Active</label>
+                </div>
+                <div class="col-3">
+                    <div class="form-check form-switch">
+                        <input asp-for="createBranch.IsActive" type="checkbox" class="form-check-input"
+                               id="isActiveToggle" style="width: 3rem; height: 1.5rem;   " />
+                        <label class="form-check-label" for="isActiveToggle">Active</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary" id="addBtn">
+                        @(Model.createBranch != null && Model.createBranch.Id.HasValue && Model.createBranch.Id.Value != 0 ? "Update" : "Add")
+                    </button>
+                </div>
+            </div>
+
+
+        </form>
+        @if (ViewBag.Branch != null)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th> Sr.No </th>
+                        <th>Name </th>
+                        <th>Is Active </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Branch)
+                    {
+                        <tr>
+                            <td>@(ViewBag.Branch.IndexOf(item) + 1)</td>
+                            <td>@item.Name</td>
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input" id="isActiveToggle_@item.Id" style="width: 3rem; height: 1.5rem;"
+                                    @(item.IsActive ? "checked" : "") />
+                                    <label class="form-check-label" for="isActiveToggle_@item.Id">Active</label>
+                                </div>
+                            </td>
+
+                            <td>
+                                <a asp-action="BranchView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+
+                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id','branch' ,'@Url.Action("Delete", "Branch")') ">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+
+@section scripts {
+    <!-- dropzone min -->
+    <script src="~/assets/libs/dropzone/dropzone-min.js"></script>
+
+    <!--crypto-kyc init-->
+    <script src="~/assets/js/pages/crypto-kyc.init.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <partial name="_ValidationScriptsPartial" />
+
+
+
+
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@Html.Partial("_DeleteConfirmation")
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.form-check-input').on('change', function () {
+            var itemId = $(this).attr('id').split('_')[1];
+            var isActive = $(this).is(':checked');
+            $.ajax({
+                url: '@Url.Action("UpdateStatus", "Course")', // Replace with your action and controller
+                type: 'POST',
+                data: {
+                    id: itemId,
+                    isActive: isActive
+                },
+
+            });
+        });
+    });
+</script>

@@ -7,7 +7,7 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Designations.Commands.UpdateDesignation;
 
-public class UpdateDesignationCommand : IRequest<Result<int>>
+public class UpdateDesignationCommand : IRequest<Result<Designation>>
 {
     public UpdateDesignationCommand(int id, CreateDesignationCommand command)
     {
@@ -19,7 +19,7 @@ public class UpdateDesignationCommand : IRequest<Result<int>>
     public CreateDesignationCommand command { get; set; }
 
 }
-internal class UpdateDesignationCommandHandler : IRequestHandler<UpdateDesignationCommand, Result<int>>
+internal class UpdateDesignationCommandHandler : IRequestHandler<UpdateDesignationCommand, Result<Designation>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -30,16 +30,16 @@ internal class UpdateDesignationCommandHandler : IRequestHandler<UpdateDesignati
         _mapper = mapper;
     }
 
-    public async Task<Result<int>> Handle(UpdateDesignationCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Designation>> Handle(UpdateDesignationCommand request, CancellationToken cancellationToken)
     {
         var data = await _unitOfWork.Repository<Designation>().GetByIdAsync(request.Id);
         if (data == null)
         {
-            return Result<int>.BadRequest();
+            return Result<Designation>.BadRequest();
         }
         var mapData = _mapper.Map(request.command, data);
         await _unitOfWork.Repository<Designation>().UpdateAsync(mapData);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<Designation>.Success(data, "Update Successfully");
     }
 }

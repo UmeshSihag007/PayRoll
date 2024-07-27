@@ -25,7 +25,7 @@ namespace ApwPayroll_Application.Features.DocumentTypes.Commands.CreateDocumentT
             var mapData = _mapper.Map<DocumentType>(request);
             var data = await _unitOfWork.Repository<DocumentType>().AddAsync(mapData);
             await _unitOfWork.Save(cancellationToken);
-            return Result<DocumentType>.Success(data);
+            return Result<DocumentType>.Success(data, "Create Successfully");
         }
     }
 }

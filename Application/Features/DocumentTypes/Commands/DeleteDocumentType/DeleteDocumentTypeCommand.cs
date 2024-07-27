@@ -36,7 +36,7 @@ namespace ApwPayroll_Application.Features.DocumentTypes.Commands.DeleteDocumentT
             }
             await _unitOfWork.Repository<DocumentType>().DeleteAsync(data);
             await _unitOfWork.Save(cancellationToken);
-            return  Result<int>.Success();  
+            return  Result<int>.BadRequest("Deleted Successfully");  
         }
     }
 }
