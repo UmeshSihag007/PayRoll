@@ -79,7 +79,7 @@
                        aria-expanded="false" aria-controls="sidebarPolicys">
                         <i class=" ri-stack-line"></i> <span data-key="t-maps"> Mater Tables</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarMaterTables">
+                    <div class="collapse menu-dropdown overflow-auto " id="sidebarMaterTables">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="@Url.Action("CourseView", "Course")" class="nav-link" data-key="t-google">
@@ -109,6 +109,17 @@
                             <li class="nav-item">
                                 <a href="@Url.Action("BankView", "Bank")" class="nav-link" data-key="t-google">
                                     Bank
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("HolidayTypeView", "HolidayType")" class="nav-link" data-key="t-google">
+                                    HolidayType
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="@Url.Action("LeaveTypeView", "LeaveType")" class="nav-link" data-key="t-google">
+                                    LeaveType
                                 </a>
                             </li>
                         </ul>

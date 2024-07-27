@@ -11,12 +11,14 @@ namespace ApwPayrollWebApp.Controllers.Masters.Branches;
 
 public class BranchController : BaseController
 {
+
     private readonly IMediator _mediator;
 
     public BranchController(IMediator mediator)
     {
         _mediator = mediator;
     }
+
 
     public async Task<IActionResult> BranchView(int? id)
     {
@@ -57,35 +59,6 @@ public class BranchController : BaseController
         return RedirectToAction("BranchView");
 
     }
-    /*    [HttpPost]
-        public async Task<IActionResult> UpdateStatus(int id, bool isActive)
-        {
-            try
-            {
-                var data = await _mediator.Send(new UpdateCourseStatusCommand(id, isActive));
-                if (data.succeeded)
-                {
-                    Notify(data.Messages, null, data.code);
-
-                }
-                else
-                {
-                    Notify(data.Messages, null, data.code);
-                }
-
-                return RedirectToAction("CourseView");
-
-
-            }
-            catch (Exception ex)
-            {
-                Notify(["Error"], null, 400);
-                return RedirectToAction("CourseView");
-            }
-
-        }*/
-
-
     public async Task<IActionResult> Delete(int id)
     {
         var data = await _mediator.Send(new DeleteBranchCommand(id));
@@ -100,14 +73,8 @@ public class BranchController : BaseController
 
         if (branchList.Data != null && branchList.Data.Count != 0)
         {
-            var branch = branchList.Data.ToList();
-            ViewBag.Branch = branch;
+            var employeeCourse = branchList.Data.ToList();
+            ViewBag.Branch = employeeCourse;
         }
-
-
-
     }
-
-
 }
-

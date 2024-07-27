@@ -23,7 +23,7 @@ namespace ApwPayrollWebApp.Controllers.Locations
         public async Task<IActionResult> LocationView(int? id)
         {
             await InitializeViewBag();
-            var model = new CreateLcoationCommand();
+            var model = new CreateLocationCommand();
             var locationType = EnumHelper.GetEnumValues<LocationTypeEnum>().ToList();
             ViewBag.LocationType = locationType;
             if (id.HasValue)
@@ -32,7 +32,7 @@ namespace ApwPayrollWebApp.Controllers.Locations
 
                 if (data.Data != null)
                 {
-                    model = new CreateLcoationCommand
+                    model = new CreateLocationCommand
                     {
                         Id = data.Data.Id,
                         LocationType = data.Data.LocationType,
@@ -47,7 +47,7 @@ namespace ApwPayrollWebApp.Controllers.Locations
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateLocation(CreateLcoationCommand command)
+        public async Task<IActionResult> CreateLocation(CreateLocationCommand command)
         {
             if (command.Id.HasValue && command.Id.Value != 0)
             {

@@ -1,4 +1,4 @@
-﻿@using ApwPayrollWebApp.Models
+﻿ @using ApwPayrollWebApp.Models
 @using ApwPayroll_Application.Features.Banks.Commands.CreateBankCommands;
 
 @model MasterModel
@@ -9,7 +9,7 @@
 }
 
 <div class="tab-content">
-    
+
     <div class="tab-pane active" id="basicDetails" role="tabpanel">
         <form asp-action="CreateBank" asp-controller="Bank" method="post">
             <input type="hidden" asp-for="createBank.Id" />
@@ -50,7 +50,7 @@
                         <select asp-for="createBank.AccountType" class="form-control form-control-sm">
                             <option value="" selected disabled>Select an account type</option>
                             @foreach(var item in ViewBag.AccountType)
-                            {    
+                            {
                                 <option value="@item.Id">@item.Name</option>
                             }
                         </select>
@@ -80,18 +80,19 @@
                         <div class="form-check form-switch mt-md-4">
                             <input asp-for="createBank.IsBankAccountVerified" type="checkbox" class="form-check-input" id="isVerifiedToggle" />
                             <label class="form-check-label" for="isVerifiedToggle">Verified</label>
-                        </div> 
-                      
-                      
+                        </div>
+
+
                         <span asp-validation-for="createBank.IsBankAccountVerified" class="text-danger"></span>
 
                     </div>
 
                     <div class="">
-                        <div class="d-flex justify-content-end" >   
+                        <div class="d-flex justify-content-end" >
                             <button type="submit" class="btn btn-secondary btn-sm" id="addBtn">
-                                @(Model.createBank.Id != null && Model.createBank.Id.HasValue && Model.createBank.Id.Value != 0 ? "Update" : "Add")
+                                @(Model.createBank != null && Model.createBank.Id != null && Model.createBank.Id.HasValue && Model.createBank.Id.Value != 0 ? "Update" : "Add")
                             </button>
+
                         </div>
                     </div>
                 </div>
@@ -111,7 +112,7 @@
                         <th class="text-nowrap">IFC Code</th>
                         <th class="text-nowrap">Account Name</th>
                         <th class="text-nowrap">Account Type</th>
-                        <th class="text-nowrap">Branch ID</th> 
+                        <th class="text-nowrap">Branch ID</th>
                     <th>Verified</th>
                     <th>Action</th>
                 </tr>
@@ -129,7 +130,7 @@
                             <td>@item.IFCCode</td>
                             <td>@item.AccountName</td>
                             <td>@item.AccountType</td>
-                            <td>@item.BranchId</td> 
+                            <td>@item.BranchId</td>
                             <td>
                                 @if (item.IsBankAccountVerified)
                                 {
@@ -141,7 +142,7 @@
                                 }
                             </td>
                             <td>
-                                <span class="d-flex">                              
+                                <span class="d-flex">
                                     <a asp-action="BankView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn me-2">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
@@ -211,3 +212,4 @@
         });
     </script>
 }
+ 

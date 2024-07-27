@@ -8,7 +8,7 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Locations.Commands.CreateLocations;
 
-public class CreateLcoationCommand : IRequest<Result<Location>>
+public class CreateLocationCommand : IRequest<Result<Location>>
 {
     public int? Id { get; set; }
     public string Name { get; set; }
@@ -17,17 +17,17 @@ public class CreateLcoationCommand : IRequest<Result<Location>>
   
 }
 
-internal class CreateLcoationCommandHandler : IRequestHandler<CreateLcoationCommand, Result<Location>>
+internal class CreateLocationCommandHandler : IRequestHandler<CreateLocationCommand, Result<Location>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public CreateLcoationCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateLocationCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-    public async Task<Result<Location>> Handle(CreateLcoationCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Location>> Handle(CreateLocationCommand request, CancellationToken cancellationToken)
     {
 
            var location = _mapper.Map<Location>(request);
