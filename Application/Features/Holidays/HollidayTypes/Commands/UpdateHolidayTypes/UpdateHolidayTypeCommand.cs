@@ -7,7 +7,7 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Holidays.HollidayTypes.Commands.UpdateHolidayTypes;
 
-public class UpdateHolidayTypeCommand : IRequest<Result<int>>
+public class UpdateHolidayTypeCommand : IRequest<Result<HolidayType>>
 {
     public UpdateHolidayTypeCommand(int id, CreateHolidayTypeCommand command)
     {
@@ -19,7 +19,7 @@ public class UpdateHolidayTypeCommand : IRequest<Result<int>>
     public CreateHolidayTypeCommand command { get; set; }
 
 }
-internal class UpdateHolidayTypeCommandHandler : IRequestHandler<UpdateHolidayTypeCommand, Result<int>>
+internal class UpdateHolidayTypeCommandHandler : IRequestHandler<UpdateHolidayTypeCommand, Result<HolidayType>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -30,17 +30,17 @@ internal class UpdateHolidayTypeCommandHandler : IRequestHandler<UpdateHolidayTy
         _mapper = mapper;
     }
 
-    public async Task<Result<int>> Handle(UpdateHolidayTypeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<HolidayType>> Handle(UpdateHolidayTypeCommand request, CancellationToken cancellationToken)
     {
         var data = await _unitOfWork.Repository<HolidayType>().GetByIdAsync(request.Id);
         if (data == null)
         {
-            return Result<int>.BadRequest();
+            return Result<HolidayType>.BadRequest();
         }
 
         var mapData = _mapper.Map(request.command, data);
         await _unitOfWork.Repository<HolidayType>().UpdateAsync(mapData);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<HolidayType>.Success(data, "Update Successfully");
     }
 }

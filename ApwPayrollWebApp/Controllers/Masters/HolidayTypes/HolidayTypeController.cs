@@ -47,12 +47,27 @@ public class HolidayTypeController : BaseController
 
         if (employeeProfile.createHolidayType.Id == 0 || employeeProfile.createHolidayType.Id == null)
         {
-            await _mediator.Send(employeeProfile.createHolidayType);
-
+           var data= await _mediator.Send(employeeProfile.createHolidayType);
+            if (data.code == 200)
+            {
+                Notify(data.Messages, null, data.code);
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
         }
         else
         {
-            await _mediator.Send(new UpdateHolidayTypeCommand((int)employeeProfile.createHolidayType.Id, employeeProfile.createHolidayType));
+          var updatedata=  await _mediator.Send(new UpdateHolidayTypeCommand((int)employeeProfile.createHolidayType.Id, employeeProfile.createHolidayType));
+            if(updatedata.code == 200)
+            {
+                Notify(updatedata.Messages, null, updatedata.code);
+            }
+            else
+            {
+                Notify(updatedata.Messages, null, updatedata.code);
+            }
         }
 
         return RedirectToAction("HolidayTypeView");
@@ -88,6 +103,14 @@ public class HolidayTypeController : BaseController
     public async Task<IActionResult> Delete(int id)
     {
         var data = await _mediator.Send(new DeleteHolidayTypeCommand(id));
+        if (data.succeeded) 
+        {
+            Notify(data.Messages,null, data.code);
+        }
+        else
+        {
+            Notify(data.Messages, null, data.code);
+        }
         return RedirectToAction("HolidayTypeView");
     }
 

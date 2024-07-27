@@ -9,7 +9,7 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Locations.Commands.UpdateLocations;
 
-public class UpdateLocationCommand : IRequest<Result<int>>
+public class UpdateLocationCommand : IRequest<Result<Location>>
 {
     public int Id { get; set; }
     public CreateLocationCommand CreateLcoationCommand { get; set; }
@@ -20,7 +20,7 @@ public class UpdateLocationCommand : IRequest<Result<int>>
         CreateLcoationCommand = createLcoationCommand;
     }
 }
-internal class UpdateLocationCommandHandler : IRequestHandler<UpdateLocationCommand, Result<int>>
+internal class UpdateLocationCommandHandler : IRequestHandler<UpdateLocationCommand, Result<Location>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -31,12 +31,12 @@ internal class UpdateLocationCommandHandler : IRequestHandler<UpdateLocationComm
         _mapper = mapper;
     }
 
-    public async Task<Result<int>> Handle(UpdateLocationCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Location>> Handle(UpdateLocationCommand request, CancellationToken cancellationToken)
     {
         var existingLocation = await _unitOfWork.Repository<Location>().GetByIdAsync(request.Id);
         if (existingLocation == null)
         {
-            return Result<int>.BadRequest();
+            return Result<Location>.BadRequest();
         }
 
       var mapdata=  _mapper.Map(request.CreateLcoationCommand, existingLocation);
@@ -44,7 +44,7 @@ internal class UpdateLocationCommandHandler : IRequestHandler<UpdateLocationComm
         await _unitOfWork.Repository<Location>().UpdateAsync(mapdata);
         await _unitOfWork.Save(cancellationToken);
 
-        return Result<int>.Success();
+        return Result<Location>.Success(existingLocation, "Update Successfully");
     }
 }
 

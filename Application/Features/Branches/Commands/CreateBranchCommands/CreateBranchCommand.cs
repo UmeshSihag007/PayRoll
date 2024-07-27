@@ -6,13 +6,13 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Branches.Commands.CreateBranchCommands;
 
-public class CreateBranchCommand : IRequest<Result<int>>
+public class CreateBranchCommand : IRequest<Result<Branch>>
 {
     public int? Id { get; set; }
     public string Name { get; set; }
     public bool IsActive { get; set; }
 }
-internal class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, Result<int>>
+internal class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, Result<Branch>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -23,12 +23,12 @@ internal class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand,
         _mapper = mapper;
     }
 
-    public async Task<Result<int>> Handle(CreateBranchCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Branch>> Handle(CreateBranchCommand request, CancellationToken cancellationToken)
     {
         var mapData = _mapper.Map<Branch>(request);
-        await _unitOfWork.Repository<Branch>().AddAsync(mapData);
+        var data = await _unitOfWork.Repository<Branch>().AddAsync(mapData);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<Branch>.Success(data, "Create Successfully");
     }
 
 }

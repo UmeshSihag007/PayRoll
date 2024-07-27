@@ -46,12 +46,29 @@ public class LeaveTypeController : BaseController
 
         if (employeeProfile.createLeaveType.Id == 0 || employeeProfile.createLeaveType.Id == null)
         {
-            await _mediator.Send(employeeProfile.createLeaveType);
+         var data=   await _mediator.Send(employeeProfile.createLeaveType);
+            if (data.succeeded)
+            {
+                Notify(data.Messages, null, data.code);
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
 
         }
         else
         {
-            await _mediator.Send(new UpdateLeaveTypeCommand((int)employeeProfile.createLeaveType.Id, employeeProfile.createLeaveType));
+            
+           var data= await _mediator.Send(new UpdateLeaveTypeCommand((int)employeeProfile.createLeaveType.Id, employeeProfile.createLeaveType));
+            if (data.succeeded)
+            {
+                Notify(data.Messages, null, data.code);
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
 
         }
 
@@ -62,6 +79,14 @@ public class LeaveTypeController : BaseController
     public async Task<IActionResult> Delete(int id)
     {
         var data = await _mediator.Send(new DeleteLeaveTypeCommand(id));
+        if (data.succeeded)
+        {
+            Notify(data.Messages, null, data.code);
+        }
+        else
+        {
+            Notify(data.Messages, null, data.code);
+        }
 
         return RedirectToAction("LeaveTypeView");
     }

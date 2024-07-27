@@ -2,6 +2,7 @@
 using ApwPayroll_Application.Features.Banks.Commands.DeleteBankCommands;
 using ApwPayroll_Application.Features.Banks.Commands.UpdateBankCommands;
 using ApwPayroll_Application.Features.Banks.Queries.GetAllBanks;
+using ApwPayroll_Application.Features.Branches.Commands.UpdateBranchCommands;
 using ApwPayroll_Application.Features.Branches.Queries.GetBranchLookUpQuery;
 using ApwPayroll_Domain.common.Enums.AccountType;
 using ApwPayrollWebApp.Controllers.Common;
@@ -58,21 +59,45 @@ public class BankController : BaseController
     [HttpPost]
     public async Task<IActionResult> CreateBank(MasterModel commad)
     {
-        if (commad.createBank.Id.HasValue && commad.createBank.Id.Value != 0)
+        if (commad.createBank.Id == 0 || commad.createBank.Id == null)
         {
-            await _mediator.Send(new UpdateBankCommand((int)commad.createBank.Id.Value, commad.createBank));
+            var data = await _mediator.Send(commad.createBank);
+            if (data.succeeded)
+            {
+                Notify(data.Messages, null, data.code);
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
+
         }
         else
         {
-            await _mediator.Send(commad.createBank);
+            var data = await _mediator.Send(new UpdateBankCommand((int)commad.createBank.Id, commad.createBank));
+            if (data.succeeded)
+            {
+                Notify(data.Messages, null, data.code);
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
         }
-
         return RedirectToAction("BankView");
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        await _mediator.Send(new DeleteBankCommand(id));
+       var data= await _mediator.Send(new DeleteBankCommand(id));
+        if (data.succeeded)
+        {
+            Notify(data.Messages, null, data.code);
+        }
+        else
+        {
+            Notify(data.Messages, null, data.code);
+        }
         return RedirectToAction("BankView");
     }
 

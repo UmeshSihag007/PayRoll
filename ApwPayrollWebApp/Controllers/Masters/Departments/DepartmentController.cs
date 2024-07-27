@@ -49,14 +49,29 @@ namespace ApwPayrollWebApp.Controllers.Masters.Departments
 
             if (employeeProfile.createDepartment.Id == 0 || employeeProfile.createDepartment.Id == null)
             {
-                await _mediator.Send(employeeProfile.createDepartment);
+              var data=  await _mediator.Send(employeeProfile.createDepartment);
+                if (data.succeeded)
+                {
+                    Notify(data.Messages, null, data.code);
+                }
+                else
+                {
+                    Notify(data.Messages, null, data.code);
+                }
 
             }
             else
             {
-                await _mediator.Send(new UpdateDepartmentCommand((int)employeeProfile.createDepartment.Id, employeeProfile.createDepartment));
+              var data=  await _mediator.Send(new UpdateDepartmentCommand((int)employeeProfile.createDepartment.Id, employeeProfile.createDepartment));
 
-
+                if (data.succeeded)
+                {
+                    Notify(data.Messages, null, data.code);
+                }
+                else
+                {
+                    Notify(data.Messages, null, data.code);
+                }
             }
 
             return RedirectToAction("DepartmentView");
@@ -66,6 +81,14 @@ namespace ApwPayrollWebApp.Controllers.Masters.Departments
         public async Task<IActionResult> Delete(int id)
         {
             var data = await _mediator.Send(new DeleteDepartmentCommand(id));
+            if (data.succeeded)
+            {
+                Notify(data.Messages, null, data.code);
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
             return RedirectToAction("DepartmentView");
         }
 

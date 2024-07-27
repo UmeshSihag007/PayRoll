@@ -38,6 +38,6 @@ internal class DeleteDesignationCommandHandler : IRequestHandler<DeleteDesignati
         }
         await _unitOfWork.Repository<Designation>().DeleteAsync(data);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<int>.BadRequest("Deleted Successfully");
     }
 }

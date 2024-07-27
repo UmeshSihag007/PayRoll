@@ -1,13 +1,11 @@
-﻿using ApwPayroll_Application.Features.Branches.Commands.DeleteBranchCommands;
-using ApwPayroll_Application.Interfaces.Repositories;
+﻿using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Domain.Entities.Banks;
-using ApwPayroll_Domain.Entities.Banks.Branches;
 using ApwPayroll_Shared;
 using MediatR;
 
 namespace ApwPayroll_Application.Features.Banks.Commands.DeleteBankCommands;
 
-public class DeleteBankCommand : IRequest<Result<int>>
+public class DeleteBankCommand : IRequest<Result<Bank>>
 {
     public DeleteBankCommand(int id)
     {
@@ -17,7 +15,7 @@ public class DeleteBankCommand : IRequest<Result<int>>
     public int Id { get; set; }
 
 }
-internal class DeleteBankCommandHandler : IRequestHandler<DeleteBankCommand, Result<int>>
+internal class DeleteBankCommandHandler : IRequestHandler<DeleteBankCommand, Result<Bank>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -26,16 +24,16 @@ internal class DeleteBankCommandHandler : IRequestHandler<DeleteBankCommand, Res
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<int>> Handle(DeleteBankCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Bank>> Handle(DeleteBankCommand request, CancellationToken cancellationToken)
     {
         var data = await _unitOfWork.Repository<Bank>().GetByIdAsync(request.Id);
         if (data == null)
         {
-            return Result<int>.NotFound();
+            return Result<Bank>.NotFound();
         }
         await _unitOfWork.Repository<Bank>().DeleteAsync(data);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<Bank>.BadRequest("Delete Successfully");
 
     }
 }

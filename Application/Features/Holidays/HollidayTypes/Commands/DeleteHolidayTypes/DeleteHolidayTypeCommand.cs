@@ -5,7 +5,7 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Holidays.HollidayTypes.Commands.DeleteHolidayTypes;
 
-public class DeleteHolidayTypeCommand : IRequest<Result<int>>
+public class DeleteHolidayTypeCommand : IRequest<Result<HolidayType>>
 {
     public DeleteHolidayTypeCommand(int id)
     {
@@ -15,7 +15,7 @@ public class DeleteHolidayTypeCommand : IRequest<Result<int>>
     public int Id { get; set; }
 
 }
-internal class DeleteHolidayTypeCommandHandler : IRequestHandler<DeleteHolidayTypeCommand, Result<int>>
+internal class DeleteHolidayTypeCommandHandler : IRequestHandler<DeleteHolidayTypeCommand, Result<HolidayType>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -24,16 +24,16 @@ internal class DeleteHolidayTypeCommandHandler : IRequestHandler<DeleteHolidayTy
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<int>> Handle(DeleteHolidayTypeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<HolidayType>> Handle(DeleteHolidayTypeCommand request, CancellationToken cancellationToken)
     {
         var data = await _unitOfWork.Repository<HolidayType>().GetByIdAsync(request.Id);
         if (data == null)
         {
-            return Result<int>.NotFound();
+            return Result<HolidayType>.NotFound();
         }
         await _unitOfWork.Repository<HolidayType>().DeleteAsync(data);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<HolidayType>.BadRequest("Deleted Successfully");
 
     }
 }

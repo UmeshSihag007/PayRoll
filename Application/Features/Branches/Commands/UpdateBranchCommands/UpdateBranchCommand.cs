@@ -7,7 +7,7 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Branches.Commands.UpdateBranchCommands;
 
-public class UpdateBranchCommand : IRequest<Result<int>>
+public class UpdateBranchCommand : IRequest<Result<Branch>>
 {
     public UpdateBranchCommand(int id, CreateBranchCommand command)
     {
@@ -19,7 +19,7 @@ public class UpdateBranchCommand : IRequest<Result<int>>
     public CreateBranchCommand command { get; set; }
 
 }
-internal class UpdateBranchCommandHandler : IRequestHandler<UpdateBranchCommand, Result<int>>
+internal class UpdateBranchCommandHandler : IRequestHandler<UpdateBranchCommand, Result<Branch>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -30,18 +30,18 @@ internal class UpdateBranchCommandHandler : IRequestHandler<UpdateBranchCommand,
         _mapper = mapper;
     }
 
-    public async Task<Result<int>> Handle(UpdateBranchCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Branch>> Handle(UpdateBranchCommand request, CancellationToken cancellationToken)
     {
         var data = await _unitOfWork.Repository<Branch>().GetByIdAsync(request.Id);
         if (data == null)
         {
-            return Result<int>.BadRequest();
+            return Result<Branch>.BadRequest();
         }
 
         var mapData = _mapper.Map(request.command, data);
         await _unitOfWork.Repository<Branch>().UpdateAsync(mapData);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<Branch>.Success(data, "Update Successfully");
     }
 
 }

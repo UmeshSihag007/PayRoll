@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace ApwPayroll_Application.Features.Departments.Commands.CreateDepartment;
 
-public class CreateDepartmentCommand : IRequest<Result<int>>
+public class CreateDepartmentCommand : IRequest<Result<Department>>
 {
     public int? Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
 
 }
-internal class CreateDepartmentCommandHandler : IRequestHandler<CreateDepartmentCommand, Result<int>>
+internal class CreateDepartmentCommandHandler : IRequestHandler<CreateDepartmentCommand, Result<Department>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -30,11 +30,11 @@ internal class CreateDepartmentCommandHandler : IRequestHandler<CreateDepartment
         _mapper = mapper;
     }
 
-    public async Task<Result<int>> Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Department>> Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
     {
         var mapData = _mapper.Map<Department>(request);
-        await _unitOfWork.Repository<Department>().AddAsync(mapData);
+       var data= await _unitOfWork.Repository<Department>().AddAsync(mapData);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<Department>.Success(data, "Create Successfully");
     }
 }

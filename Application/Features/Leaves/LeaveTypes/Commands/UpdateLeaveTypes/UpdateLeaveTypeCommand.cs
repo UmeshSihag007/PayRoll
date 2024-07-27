@@ -7,7 +7,7 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.UpdateLeaveTypes;
 
-public class UpdateLeaveTypeCommand : IRequest<Result<int>>
+public class UpdateLeaveTypeCommand : IRequest<Result<LeaveType>>
 {
     public UpdateLeaveTypeCommand(int id, CreateLeaveTypeCommand command)
     {
@@ -22,7 +22,7 @@ public class UpdateLeaveTypeCommand : IRequest<Result<int>>
 
 
 }
-internal class UpdateLeaveTypeCommandHandler : IRequestHandler<UpdateLeaveTypeCommand, Result<int>>
+internal class UpdateLeaveTypeCommandHandler : IRequestHandler<UpdateLeaveTypeCommand, Result<LeaveType>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -33,17 +33,17 @@ internal class UpdateLeaveTypeCommandHandler : IRequestHandler<UpdateLeaveTypeCo
         _mapper = mapper;
     }
 
-    public async Task<Result<int>> Handle(UpdateLeaveTypeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<LeaveType>> Handle(UpdateLeaveTypeCommand request, CancellationToken cancellationToken)
     {
         var data = await _unitOfWork.Repository<LeaveType>().GetByIdAsync(request.Id);
         if (data == null)
         {
-            return Result<int>.BadRequest();
+            return Result<LeaveType>.BadRequest();
         }
 
         var mapData = _mapper.Map(request.command, data);
         await _unitOfWork.Repository<LeaveType>().UpdateAsync(mapData);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<LeaveType>.Success(data, "Update Successfully");
     }
 }

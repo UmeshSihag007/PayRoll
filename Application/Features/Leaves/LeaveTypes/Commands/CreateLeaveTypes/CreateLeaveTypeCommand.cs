@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 
 namespace ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.CreateLeaveTypes
 {
-    public class CreateLeaveTypeCommand : IRequest<Result<int>>
+    public class CreateLeaveTypeCommand : IRequest<Result<LeaveType>>
     {
         public int? Id { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
     }
-    internal class CreateLeaveTypeCommandHandler : IRequestHandler<CreateLeaveTypeCommand, Result<int>>
+    internal class CreateLeaveTypeCommandHandler : IRequestHandler<CreateLeaveTypeCommand, Result<LeaveType>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -30,12 +30,12 @@ namespace ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.CreateLeave
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> Handle(CreateLeaveTypeCommand request, CancellationToken cancellationToken)
+        public async Task<Result<LeaveType>> Handle(CreateLeaveTypeCommand request, CancellationToken cancellationToken)
         {
             var mapData = _mapper.Map<LeaveType>(request);
-            await _unitOfWork.Repository<LeaveType>().AddAsync(mapData);
+         var data=   await _unitOfWork.Repository<LeaveType>().AddAsync(mapData);
             await _unitOfWork.Save(cancellationToken);
-            return Result<int>.Success();
+            return Result<LeaveType>.Success(data, "Create Successfully");
         }
     }
 }

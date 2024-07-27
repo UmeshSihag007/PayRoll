@@ -1,7 +1,6 @@
 ﻿using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Domain.common.Enums.LocationTypes;
 using ApwPayroll_Domain.Entities.Locations;
-using ApwPayroll_Domain.Entities.Menus.MenuTypes;
 using ApwPayroll_Shared;
 using AutoMapper;
 using MediatR;
@@ -14,7 +13,7 @@ public class CreateLocationCommand : IRequest<Result<Location>>
     public string Name { get; set; }
     public LocationTypeEnum LocationType { get; set; }
     public int? ParentId { get; set; }
-  
+
 }
 
 internal class CreateLocationCommandHandler : IRequestHandler<CreateLocationCommand, Result<Location>>
@@ -30,10 +29,10 @@ internal class CreateLocationCommandHandler : IRequestHandler<CreateLocationComm
     public async Task<Result<Location>> Handle(CreateLocationCommand request, CancellationToken cancellationToken)
     {
 
-           var location = _mapper.Map<Location>(request);
-            await _unitOfWork.Repository<Location>().AddAsync(location);
-            await _unitOfWork.Save(cancellationToken);
+        var location = _mapper.Map<Location>(request);
+        var data = await _unitOfWork.Repository<Location>().AddAsync(location);
+        await _unitOfWork.Save(cancellationToken);
 
-        return Result<Location>.Success(location);
+        return Result<Location>.Success(data, "Create Successfully");
     }
 }

@@ -47,13 +47,27 @@ public class BranchController : BaseController
 
         if (employeeProfile.createBranch.Id == 0 || employeeProfile.createBranch.Id == null)
         {
-            await _mediator.Send(employeeProfile.createBranch);
-
+          var data=  await _mediator.Send(employeeProfile.createBranch);
+            if (data.succeeded)
+            {
+                Notify(data.Messages, null, data.code);
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
         }
         else
         {
-            await _mediator.Send(new UpdateBranchCommand((int)employeeProfile.createBranch.Id, employeeProfile.createBranch));
-
+        var data=    await _mediator.Send(new UpdateBranchCommand((int)employeeProfile.createBranch.Id, employeeProfile.createBranch));
+            if (data.succeeded)
+            {
+                Notify(data.Messages, null, data.code);
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
         }
 
         return RedirectToAction("BranchView");
@@ -62,6 +76,14 @@ public class BranchController : BaseController
     public async Task<IActionResult> Delete(int id)
     {
         var data = await _mediator.Send(new DeleteBranchCommand(id));
+        if (data.succeeded)
+        {
+            Notify(data.Messages, null, data.code);
+        }
+        else
+        {
+            Notify(data.Messages, null, data.code);
+        }
 
         return RedirectToAction("BranchView");
     }

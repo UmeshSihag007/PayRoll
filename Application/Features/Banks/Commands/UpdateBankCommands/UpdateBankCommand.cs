@@ -8,7 +8,7 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Banks.Commands.UpdateBankCommands;
 
-public class UpdateBankCommand : IRequest<Result<int>>
+public class UpdateBankCommand : IRequest<Result<Bank>>
 {
     public int? Id { get; set; }
     public CreateBankCommand CreateBankCommand { get; set; }
@@ -18,7 +18,7 @@ public class UpdateBankCommand : IRequest<Result<int>>
         CreateBankCommand = createBankCommand;
     }
 }
-internal class UpdateBankCommandHandler : IRequestHandler<UpdateBankCommand, Result<int>>
+internal class UpdateBankCommandHandler : IRequestHandler<UpdateBankCommand, Result<Bank>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -29,24 +29,24 @@ internal class UpdateBankCommandHandler : IRequestHandler<UpdateBankCommand, Res
         _mapper = mapper;
     }
 
-    public async Task<Result<int>> Handle(UpdateBankCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Bank>> Handle(UpdateBankCommand request, CancellationToken cancellationToken)
     {
         var data = await _unitOfWork.Repository<Bank>().GetByIdAsync(request.Id.Value);
         if (data == null)
         {
-            return Result<int>.BadRequest();
+            return Result<Bank>.BadRequest();
         }
 
         var branchExits = await _unitOfWork.Repository<Branch>().GetByIdAsync(request.CreateBankCommand.BranchId);
 
         if (branchExits == null)
         {
-            return Result<int>.BadRequest();
+            return Result<Bank>.BadRequest();
         }
         var mapData = _mapper.Map(request.CreateBankCommand, data);
-        await _unitOfWork.Repository<Bank>().UpdateAsync(mapData);
+        await  _unitOfWork.Repository<Bank>().UpdateAsync(mapData);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<Bank>.Success(data, "Update Successfully");
     }
 
 }

@@ -7,7 +7,7 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Courses.Commands.UpdateCourses;
 
-public class UpdateCourseCommand : IRequest<Result<int>>
+public class UpdateCourseCommand : IRequest<Result<Course>>
 {
     public UpdateCourseCommand(int id, CreateCoursesCommand command)
     {
@@ -19,7 +19,7 @@ public class UpdateCourseCommand : IRequest<Result<int>>
     public CreateCoursesCommand command { get; set; }
 
 }
-internal class UpdateCourseCommandHandler : IRequestHandler<UpdateCourseCommand, Result<int>>
+internal class UpdateCourseCommandHandler : IRequestHandler<UpdateCourseCommand, Result<Course>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -30,17 +30,17 @@ internal class UpdateCourseCommandHandler : IRequestHandler<UpdateCourseCommand,
         _mapper = mapper;
     }
 
-    public async Task<Result<int>> Handle(UpdateCourseCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Course>> Handle(UpdateCourseCommand request, CancellationToken cancellationToken)
     {
         var data = await _unitOfWork.Repository<Course>().GetByIdAsync(request.Id);
         if (data == null)
         {
-            return Result<int>.BadRequest();
+            return Result<Course>.BadRequest();
         }
 
         var mapData = _mapper.Map(request.command, data);
         await _unitOfWork.Repository<Course>().UpdateAsync(mapData);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<Course>.Success(data,"Update Successfully");
     }
 }

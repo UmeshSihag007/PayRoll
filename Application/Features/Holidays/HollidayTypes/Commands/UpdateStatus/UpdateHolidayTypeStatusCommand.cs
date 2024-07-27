@@ -5,7 +5,7 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Holidays.HollidayTypes.Commands.UpdateStatus;
 
-public class UpdateHolidayTypeStatusCommand : IRequest<Result<int>>
+public class UpdateHolidayTypeStatusCommand : IRequest<Result<HolidayType>>
 {
     public UpdateHolidayTypeStatusCommand(int id, bool isActive)
     {
@@ -17,7 +17,7 @@ public class UpdateHolidayTypeStatusCommand : IRequest<Result<int>>
     public bool IsActive { get; set; }
 }
 
-internal class UpdateHolidayTypeStatusCommandHandler : IRequestHandler<UpdateHolidayTypeStatusCommand, Result<int>>
+internal class UpdateHolidayTypeStatusCommandHandler : IRequestHandler<UpdateHolidayTypeStatusCommand, Result<HolidayType>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -26,12 +26,12 @@ internal class UpdateHolidayTypeStatusCommandHandler : IRequestHandler<UpdateHol
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<int>> Handle(UpdateHolidayTypeStatusCommand request, CancellationToken cancellationToken)
+    public async Task<Result<HolidayType>> Handle(UpdateHolidayTypeStatusCommand request, CancellationToken cancellationToken)
     {
         var data = await _unitOfWork.Repository<HolidayType>().GetByIdAsync(request.Id);
         if (data == null)
         {
-            return Result<int>.BadRequest("HolidayType not found.");
+            return Result<HolidayType>.BadRequest("HolidayType not found.");
         }
 
         data.IsActive = request.IsActive;
@@ -39,7 +39,7 @@ internal class UpdateHolidayTypeStatusCommandHandler : IRequestHandler<UpdateHol
         await _unitOfWork.Repository<HolidayType>().UpdateAsync(data);
         await _unitOfWork.Save(cancellationToken);
 
-        return Result<int>.Success();
+        return Result<HolidayType>.Success(data, "Update SuccessfullyS");
     }
 
 }
