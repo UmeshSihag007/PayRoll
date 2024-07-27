@@ -39,6 +39,7 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetByIdEmployee
               .Include(x => x.EmployeeDocuments).ThenInclude(x => x.Document)
                 .Include(x => x.EmployeeQualification).ThenInclude(x=>x.Course)
              .Include(x => x.EmployeeExperience)
+             .Include(x=>x.Branch)
               .Include(x => x.EmployeeFamily).ThenInclude(x=>x.RelationType)
         .Include(x => x.ReferralDetail)
                 .FirstOrDefaultAsync(e => e.Id == request.EmployeeId && e.IsDeleted == false);
