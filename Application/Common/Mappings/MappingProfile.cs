@@ -12,6 +12,9 @@ using ApwPayroll_Application.Features.Employees.EmployeeEducations.Commands.Crea
 using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.CreateEmployeeExperiences;
 using ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.CreateEmployeeFamily;
 using ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.CreateEmployeeReferences;
+using ApwPayroll_Application.Features.Holidays.HollidayTypes.Commands.CreateHolidayTypes;
+using ApwPayroll_Application.Features.Holidays.HollidayTypes.Queries.GetAllHolidayTypes;
+using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.CreateLeaveTypes;
 using ApwPayroll_Application.Features.Locations.Commands.CreateLocations;
 using ApwPayroll_Application.Features.Locations.Queries.GetAllLocations;
 using ApwPayroll_Application.Features.Menus.MenuTypes.Commands.CreateMenuType;
@@ -27,6 +30,8 @@ using ApwPayroll_Domain.Entities.Employees.Courses;
 using ApwPayroll_Domain.Entities.Employees.EmployeeExperiences;
 using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeeQualifications;
+using ApwPayroll_Domain.Entities.Holidays.HolidayTypes;
+using ApwPayroll_Domain.Entities.Leaves.LeaveTypes;
 using ApwPayroll_Domain.Entities.Locations;
 using ApwPayroll_Domain.Entities.Menus.MenuTypes;
 using ApwPayroll_Domain.Entities.ReferralDetails;
@@ -41,15 +46,15 @@ public class MappingProfile : Profile
     {
  
         //  custome  mapping work 
-
-        //---Location---
-        CreateMap<CreateLcoationCommand, Location>();
+        CreateMap<CreateLocationCommand, Location>();
         CreateMap< Location,GetAllLocationDto> ();
         CreateMap<CreateBranchCommand, Branch>();
-        CreateMap< Branch,GetBranchDto > ();
-        CreateMap< Bank,GetBankDto> ();
+        CreateMap< Branch,GetBranchDto>();
+        CreateMap< CreateHolidayTypeCommand,HolidayType>();
+        CreateMap< Bank,GetBankDto>();
         CreateMap< Branch,LookUpDto > ();
-        CreateMap<CreateBankCommand, Bank> ();
+        CreateMap<CreateBankCommand, Bank>();
+        CreateMap< CreateLeaveTypeCommand,LeaveType > ();
         CreateMap<CreateDocumentTypeCommand, DocumentType>();
         CreateMap<CreateMenuTypeCommand, MenuType>();
         CreateMap<CreateEmployeeCommand, Employee>();

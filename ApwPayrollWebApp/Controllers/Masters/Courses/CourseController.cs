@@ -26,7 +26,7 @@ public class CourseController : BaseController
         await IntializeViewBag();
         var model = new MasterModel();
         if (id.HasValue && id != 0)
-        {
+        {   
             var courseData = await _mediator.Send(new GetCoursesQuery());
             var course = courseData.Data.FirstOrDefault(x => x.Id == id.Value);
             if (course != null)

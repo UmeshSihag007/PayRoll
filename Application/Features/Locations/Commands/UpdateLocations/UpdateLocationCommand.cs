@@ -12,9 +12,9 @@ namespace ApwPayroll_Application.Features.Locations.Commands.UpdateLocations;
 public class UpdateLocationCommand : IRequest<Result<int>>
 {
     public int Id { get; set; }
-    public CreateLcoationCommand CreateLcoationCommand { get; set; }
+    public CreateLocationCommand CreateLcoationCommand { get; set; }
 
-    public UpdateLocationCommand(int id, CreateLcoationCommand createLcoationCommand)
+    public UpdateLocationCommand(int id, CreateLocationCommand createLcoationCommand)
     {
         Id = id;
         CreateLcoationCommand = createLcoationCommand;

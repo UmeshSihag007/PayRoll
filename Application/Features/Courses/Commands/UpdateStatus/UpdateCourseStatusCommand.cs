@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ApwPayroll_Application.Features.Courses.Commands.UpdateStatus
 {
-    public class UpdateCourseStatusCommand:IRequest<Result< int>>
+    public class UpdateCourseStatusCommand : IRequest<Result< int>>
     {
         public UpdateCourseStatusCommand(int id, bool isActive)
         {
