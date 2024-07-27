@@ -9,7 +9,7 @@
 
 <div class="tab-content">
     <div class="tab-pane active" id="references" role="tabpanel">
-        <form method="post">
+        <form asp-action="EmployeeReference" asp-controller="EmployeeReferral" method="post">
             <div class="row mb-2">
                 <div class="col-lg-4">
                     <input asp-for="ReferencesCommand.Id" hidden />
@@ -57,8 +57,8 @@
                             Cancel
                         </button>
                         <button type="submit" class="btn btn-secondary" Id="addBtn">
-                            @(Model.ReferencesCommand!=null && Model.ReferencesCommand.Id.HasValue && Model.ReferencesCommand.Id.Value!=0?"Update":"Add")
-                            Save Details
+                            @(Model?.ReferencesCommand!=null && Model.ReferencesCommand.Id.HasValue && Model?.ReferencesCommand.Id.Value!=0?"Update":"Add")
+                            
                         </button>
                          
                     </div>

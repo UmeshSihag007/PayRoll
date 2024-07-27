@@ -8,7 +8,7 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Employees.EmployeeEducations.Commands.CreateEmployeeEducation
 {
-    public class CreateEmployeeEducationCommand : IRequest<Result<int>>
+    public class CreateEmployeeEducationCommand : IRequest<Result<EmployeeQualification>>
     {
         public int? Id { get; set; }
         public int EmployeeId { get; set; }
@@ -22,7 +22,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeEducations.Commands.
         public int FromDate { get; set; }
         public int ToDate { get; set; }
     }
-    internal class CreateEmployeeEducationCommandHandler : IRequestHandler<CreateEmployeeEducationCommand, Result<int>>
+    internal class CreateEmployeeEducationCommandHandler : IRequestHandler<CreateEmployeeEducationCommand, Result<EmployeeQualification>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -33,19 +33,19 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeEducations.Commands.
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> Handle(CreateEmployeeEducationCommand request, CancellationToken cancellationToken)
+        public async Task<Result<EmployeeQualification>> Handle(CreateEmployeeEducationCommand request, CancellationToken cancellationToken)
         {
    
             var checkEmplyee = await _unitOfWork.Repository<Employee>().GetByIdAsync(request.EmployeeId);
             if (checkEmplyee == null)
             {
-                return Result<int>.BadRequest($"Invalid Employee Id :{request.EmployeeId}");
+                return Result<EmployeeQualification>.BadRequest($"Invalid Employee Id :{request.EmployeeId}");
             }
             var mapData = _mapper.Map<EmployeeQualification>(request);
             mapData.GradeType = GradeTypeEnum.A;
             var data = await _unitOfWork.Repository<EmployeeQualification>().AddAsync(mapData);
             await _unitOfWork.Save(cancellationToken);
-            return Result<int>.Success();
+            return Result<EmployeeQualification>.Success(data,"Created Successfully");
 
         }
     }

@@ -64,7 +64,7 @@
                     </div>
                     <div class="col-3">
                         <button class="btn btn-success mt-4">
-                            @(Model.CreateEmployeeFamily!=null && Model.CreateEmployeeFamily.Id.HasValue && Model.CreateEmployeeFamily.Id.Value!=0?"Update":"Add")
+                            @(Model?.CreateEmployeeFamily!=null && Model.CreateEmployeeFamily.Id.HasValue && Model?.CreateEmployeeFamily.Id.Value!=0?"Update":"Add")
                         </button>
                     </div>
 
