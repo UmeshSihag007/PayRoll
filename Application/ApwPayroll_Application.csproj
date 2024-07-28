@@ -26,10 +26,6 @@
     <Folder Include="Features\Employees\EmployeeDocuments\EmployeeDocumentTypes\Commands\" />
     <Folder Include="Features\Employees\EmployeeLanguages\Queries\" />
     <Folder Include="Features\Employees\EmployeePersonalDetails\Queries\" />
-    <Folder Include="Features\Holidays\Commands\CreateHolidays\" />
-    <Folder Include="Features\Holidays\Commands\DeleteHolidays\" />
-    <Folder Include="Features\Holidays\Commands\UpdateHolidays\" />
-    <Folder Include="Features\Holidays\Queries\GetAllHolidays\" />
     <Folder Include="Features\Leaves\Commands\DeleteLeaves\" />
     <Folder Include="Features\Leaves\Commands\UpdateLeaves\" />
     <Folder Include="Features\Leaves\Commands\CreateLeaves\" />

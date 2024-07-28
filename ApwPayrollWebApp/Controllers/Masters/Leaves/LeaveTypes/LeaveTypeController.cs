@@ -1,105 +1,87 @@
-﻿using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.CreateLeaveTypes;
+﻿using ApwPayroll_Application.Features.Courses.Commands.UpdateStatus;
+using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.CreateLeaveTypes;
 using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.DeleteLeaveTypes;
 using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.UpdateLeaveTypes;
+using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.UpdateStatus;
 using ApwPayroll_Application.Features.Leaves.LeaveTypes.Queries.GetAllLeaveTypes;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ApwPayrollWebApp.Controllers.Masters.Leaves.LeaveTypes;
-
-public class LeaveTypeController : BaseController
+namespace ApwPayrollWebApp.Controllers.Masters.Leaves.LeaveTypes
 {
-
-    private readonly IMediator _mediator;
-
-    public LeaveTypeController(IMediator mediator)
+    public class LeaveTypeController : BaseController
     {
-        _mediator = mediator;
-    }
+        private readonly IMediator _mediator;
 
-    public async Task<IActionResult> LeaveTypeView(int? id)
-    {
-        await IntializeViewBag();
-        var model = new MasterModel();
-        if (id.HasValue && id != 0)
+        public LeaveTypeController(IMediator mediator)
         {
-            var leaveTypeData = await _mediator.Send(new GetAllLeaveTypeQuery());
-            var leaveType = leaveTypeData.Data.FirstOrDefault(x => x.Id == id.Value);
-            if (leaveType != null)
+            _mediator = mediator;
+        }
+
+        public async Task<IActionResult> LeaveTypeView(int? id)
+        {
+            await InitializeViewBag();
+            var model = new MasterModel();
+            if (id.HasValue && id != 0)
             {
-                model.createLeaveType = new CreateLeaveTypeCommand
+                var leaveTypeData = await _mediator.Send(new GetAllLeaveTypeQuery());
+                var leaveType = leaveTypeData.Data.FirstOrDefault(x => x.Id == id.Value);
+                if (leaveType != null)
                 {
-                    Id = leaveType.Id,
-                    Name = leaveType.Name,
-                    IsActive = leaveType.IsActive,
-                };
+                    model.createLeaveType = new CreateLeaveTypeCommand
+                    {
+                        Id = leaveType.Id,
+                        Name = leaveType.Name,
+                        IsActive = leaveType.IsActive,
+                    };
+                }
             }
+            return View(model);
         }
-        return View(model);
-    }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateLeaveType(MasterModel employeeProfile)
-    {
-
-        if (employeeProfile.createLeaveType.Id == 0 || employeeProfile.createLeaveType.Id == null)
+        [HttpPost]
+        public async Task<IActionResult> CreateLeaveType(MasterModel model)
         {
-         var data=   await _mediator.Send(employeeProfile.createLeaveType);
-            if (data.succeeded)
+            if (model.createLeaveType.Id == 0 || model.createLeaveType.Id == null)
             {
+                var data = await _mediator.Send(model.createLeaveType);
                 Notify(data.Messages, null, data.code);
             }
             else
             {
+                var data = await _mediator.Send(new UpdateLeaveTypeCommand((int)model.createLeaveType.Id, model.createLeaveType));
                 Notify(data.Messages, null, data.code);
             }
 
-        }
-        else
-        {
-            
-           var data= await _mediator.Send(new UpdateLeaveTypeCommand((int)employeeProfile.createLeaveType.Id, employeeProfile.createLeaveType));
-            if (data.succeeded)
-            {
-                Notify(data.Messages, null, data.code);
-            }
-            else
-            {
-                Notify(data.Messages, null, data.code);
-            }
-
+            return RedirectToAction("LeaveTypeView");
         }
 
-        return RedirectToAction("LeaveTypeView");
-
-    }
-
-    public async Task<IActionResult> Delete(int id)
-    {
-        var data = await _mediator.Send(new DeleteLeaveTypeCommand(id));
-        if (data.succeeded)
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(int id, bool isActive)
         {
+            var data = await _mediator.Send(new UpdateLeaveTypeStatus(id, isActive));
             Notify(data.Messages, null, data.code);
+            return RedirectToAction("LeaveTypeView");
         }
-        else
+
+        public async Task<IActionResult> Delete(int id)
         {
+            var data = await _mediator.Send(new DeleteLeaveTypeCommand(id));
             Notify(data.Messages, null, data.code);
+            return RedirectToAction("LeaveTypeView");
         }
 
-        return RedirectToAction("LeaveTypeView");
-    }
-
-    private async Task IntializeViewBag()
-    {
-        var leaveTypeList = await _mediator.Send(new GetAllLeaveTypeQuery());
-
-
-        if (leaveTypeList.Data != null && leaveTypeList.Data.Count != 0)
+        private async Task InitializeViewBag()
         {
-            var leaveType = leaveTypeList.Data.ToList();
-            ViewBag.LeaveType = leaveType;
+            var leaveTypeList = await _mediator.Send(new GetAllLeaveTypeQuery());
+            if (leaveTypeList.Data != null && leaveTypeList.Data.Count != 0)
+            {
+                ViewBag.LeaveType = leaveTypeList.Data.ToList();
+            }
         }
     }
 }

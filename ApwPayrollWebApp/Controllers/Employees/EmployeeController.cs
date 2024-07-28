@@ -113,9 +113,6 @@ namespace ApwPayrollWebApp.Controllers.Employees
             return View(command);
         }
 
-
-
-
         public async Task<IActionResult> EmployeeReference(int? employeeId)
         {
             await InitializeViewBags();

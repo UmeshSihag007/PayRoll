@@ -13,6 +13,7 @@ using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.Cre
 using ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.CreateEmployeeFamily;
 using ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.CreateEmployeeReferences;
 using ApwPayroll_Application.Features.Employees.Queries.GetAllEmployees;
+using ApwPayroll_Application.Features.Holidays.Commands.CreateHolidays;
 using ApwPayroll_Application.Features.Holidays.HollidayTypes.Commands.CreateHolidayTypes;
 using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.CreateLeaveTypes;
 using ApwPayroll_Application.Features.Locations.Commands.CreateLocations;
@@ -30,6 +31,7 @@ using ApwPayroll_Domain.Entities.Employees.Courses;
 using ApwPayroll_Domain.Entities.Employees.EmployeeExperiences;
 using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeeQualifications;
+using ApwPayroll_Domain.Entities.Holidays;
 using ApwPayroll_Domain.Entities.Holidays.HolidayTypes;
 using ApwPayroll_Domain.Entities.Leaves.LeaveTypes;
 using ApwPayroll_Domain.Entities.Locations;
@@ -51,7 +53,12 @@ public class MappingProfile : Profile
         CreateMap<CreateBranchCommand, Branch>();
         CreateMap<Branch, GetBranchDto>();
         CreateMap<CreateHolidayTypeCommand, HolidayType>();
-        CreateMap<Bank, GetBankDto>();
+
+            CreateMap<CreateHolidayCommand, Holiday>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore()); // Ignore Id if you do not want to map it
+        
+    
+    CreateMap<Bank, GetBankDto>();
         CreateMap<Bank, LookUpDto>();
         CreateMap<Branch, LookUpDto>();
         CreateMap<CreateBankCommand, Bank>();

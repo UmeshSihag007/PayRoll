@@ -77,16 +77,16 @@ public class CourseController : BaseController
         return RedirectToAction("CourseView");
 
     }
+    
     [HttpPost]
-    public async Task< IActionResult> UpdateStatus(int id, bool isActive)
+    public async Task<IActionResult> UpdateStatus(int id, bool isActive)
     {
         try
         {
             var data = await _mediator.Send(new UpdateCourseStatusCommand(id, isActive));
-            if(data.succeeded)
+            if (data.succeeded)
             {
                 Notify(data.Messages, null, data.code);
-                
             }
             else
             {
@@ -94,15 +94,12 @@ public class CourseController : BaseController
             }
 
             return RedirectToAction("CourseView");
-
-
         }
         catch (Exception ex)
         {
-            Notify(["Error"], null,400);
+            Notify(new List<string> { "Error: " + ex.Message }, null, 400);
             return RedirectToAction("CourseView");
         }
- 
     }
 
 
