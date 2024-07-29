@@ -18,6 +18,8 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
 {
     public class CreateEmployeeCommand : IRequest<Result<Employee>>
     {
+        public int? Id { get; set; }
+        
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -102,7 +104,7 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
                     return Result<Employee>.BadRequest();
                 }
                 data.AddDesignation(request.DesignationId);
-
+                await _unitOfWork.Save(cancellationToken);
             }
             if (request.DepartmentId != null)
             {
@@ -112,7 +114,8 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
                 {
                     return Result<Employee>.BadRequest();
                 }
-                data.AddDesignation(request.DepartmentId);
+                data.AddDepartment(request.DepartmentId);
+            await _unitOfWork.Save(cancellationToken);
             }
             return Result<Employee>.Success(data, "Created Successfully");
         }

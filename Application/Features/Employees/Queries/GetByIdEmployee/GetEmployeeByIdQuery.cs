@@ -31,19 +31,26 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetByIdEmployee
         {
             try
             {
-
-            var data = await _repository.Entities
-              .Include(x => x.AspUser)
-               .Include(x => x.EmployeePersonalDetail)
-              .Include(x => x.EmployeeDocuments). ThenInclude(x=>x.EmployeeDocumentType)
-              .Include(x => x.EmployeeDocuments).ThenInclude(x => x.Document)
-                .Include(x => x.EmployeeQualification).ThenInclude(x=>x.Course)
-             .Include(x => x.EmployeeExperience)
-             .Include(x=>x.Branch)
-              .Include(x => x.EmployeeFamily).ThenInclude(x=>x.RelationType)
-        .Include(x => x.ReferralDetail)
-                .FirstOrDefaultAsync(e => e.Id == request.EmployeeId && e.IsDeleted == false);
-
+ 
+                var data = await _repository.Entities
+                  .Include(x => x.AspUser)
+                   .Include(x => x.EmployeePersonalDetail)
+                  .Include(x => x.EmployeeDocuments).ThenInclude(x => x.EmployeeDocumentType)
+                  .Include(x => x.EmployeeDocuments).ThenInclude(x => x.Document)
+                    .Include(x => x.EmployeeQualification).ThenInclude(x => x.Course)
+                 .Include(x => x.EmployeeExperience)
+                 .Include(x => x.Branch)
+                  .Include(x => x.EmployeeFamily).ThenInclude(x => x.RelationType)
+            .Include(x => x.ReferralDetail)
+         .Include(x=>x.EmployeeDesignations)
+        
+          .Include(x=>x.EmergencyContact)
+          .Include(x=>x.BankDetails)
+          .Include(X=>X.EmployeeAddresses).ThenInclude(X=>X.AddressType)
+        
+         .Include(x=>x.EmployeeDepartments)
+                .FirstOrDefaultAsync(e => e.Id == request.EmployeeId && e.IsDeleted == false, cancellationToken: cancellationToken);
+ 
             if (data == null)
             {
                 return Result<GetEmployeeDto>.NotFound();

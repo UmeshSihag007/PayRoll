@@ -10,6 +10,8 @@ public class LeaveResponseStatus : BaseAuditEntity
     public int ResponseById { get; set; }
     public Employee Employee { get; set; }
     public string ResponseRemark { get; set; }
+
+    // lead  status 
     public DateTime ResponseDate { get; set; }
     public int? ForwordId { get; set; }
     public Employee Forword { get; set; }
