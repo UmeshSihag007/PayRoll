@@ -132,7 +132,7 @@ namespace ApwPayrollWebApp.Controllers.Employees
                 }
 
                 HttpContext.Session.SetInt32("EmployeeId", data.Data.Id);
-                return RedirectToAction("CreateEmployeePersonal", "EmployeePersonal", new { employeeId = data.Data.Id });
+                return RedirectToAction("CreateEmployeePersonal", "EmployeePersonalDetail", new { employeeId = data.Data.Id });
                 }
 
             }
