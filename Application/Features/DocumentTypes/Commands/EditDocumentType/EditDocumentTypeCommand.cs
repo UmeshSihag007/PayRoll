@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ApwPayroll_Application.Features.DocumentTypes.Commands.EditDocumentType
 {
-    public class EditDocumentTypeCommand:IRequest<Result<int>>
+    public class EditDocumentTypeCommand:IRequest<Result<DocumentType>>
     {
         public int Id { get; set; } 
          public   CreateDocumentTypeCommand command;
@@ -23,7 +23,7 @@ namespace ApwPayroll_Application.Features.DocumentTypes.Commands.EditDocumentTyp
             this.command = command;
         }
     }
-    internal class EditDocumentTypeCommandHandler : IRequestHandler<EditDocumentTypeCommand, Result<int>>
+    internal class EditDocumentTypeCommandHandler : IRequestHandler<EditDocumentTypeCommand, Result<DocumentType>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -34,19 +34,19 @@ namespace ApwPayroll_Application.Features.DocumentTypes.Commands.EditDocumentTyp
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> Handle(EditDocumentTypeCommand request, CancellationToken cancellationToken)
+        public async Task<Result<DocumentType>> Handle(EditDocumentTypeCommand request, CancellationToken cancellationToken)
         {
           var data =await _unitOfWork.Repository<DocumentType>().GetByIdAsync (request.Id);
             if(data == null)
             {
-                return Result<int>.BadRequest ();
+                return Result<DocumentType>.BadRequest ();
             }
             var mapData = _mapper.Map(request.command, data);
           
 
             await _unitOfWork.Repository<DocumentType>().UpdateAsync(mapData);
             await _unitOfWork.Save(cancellationToken);
-            return Result<int>.Success();
+            return Result<DocumentType>.Success(data, "Update Successfully");
         }
     }
 }

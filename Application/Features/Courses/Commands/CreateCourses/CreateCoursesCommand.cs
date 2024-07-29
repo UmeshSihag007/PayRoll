@@ -6,13 +6,13 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Courses.Commands.CreateCourses;
 
-public class CreateCoursesCommand : IRequest<Result<int>>
+public class CreateCoursesCommand : IRequest<Result<Course>>
 {
     public int? Id { get; set; }
     public string Name { get; set; }
     public bool IsActive { get; set; }
 }
-internal class CreateCoursesCommandHandler : IRequestHandler<CreateCoursesCommand, Result<int>>
+internal class CreateCoursesCommandHandler : IRequestHandler<CreateCoursesCommand, Result<Course>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -23,11 +23,11 @@ internal class CreateCoursesCommandHandler : IRequestHandler<CreateCoursesComman
         _mapper = mapper;
     }
 
-    public async Task<Result<int>> Handle(CreateCoursesCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Course>> Handle(CreateCoursesCommand request, CancellationToken cancellationToken)
     {
         var mapData = _mapper.Map<Course>(request);
-        await _unitOfWork.Repository<Course>().AddAsync(mapData);
+       var data =await _unitOfWork.Repository<Course>().AddAsync(mapData);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<Course>.Success(data, "Create Successfully");
     }
 }

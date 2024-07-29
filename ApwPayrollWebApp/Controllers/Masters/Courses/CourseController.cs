@@ -26,7 +26,7 @@ public class CourseController : BaseController
         await IntializeViewBag();
         var model = new MasterModel();
         if (id.HasValue && id != 0)
-        {
+        {   
             var courseData = await _mediator.Send(new GetCoursesQuery());
             var course = courseData.Data.FirstOrDefault(x => x.Id == id.Value);
             if (course != null)
@@ -48,13 +48,28 @@ public class CourseController : BaseController
 
         if (employeeProfile.createCourses.Id == 0 || employeeProfile.createCourses.Id == null)
         {
-            await _mediator.Send(employeeProfile.createCourses);
+          var data=  await _mediator.Send(employeeProfile.createCourses);
+            if (data.succeeded)
+            {
+                Notify(data.Messages, null, data.code);
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
 
         }
         else
         {
-            await _mediator.Send(new UpdateCourseCommand((int)employeeProfile.createCourses.Id, employeeProfile.createCourses));
-
+         var data=   await _mediator.Send(new UpdateCourseCommand((int)employeeProfile.createCourses.Id, employeeProfile.createCourses));
+            if (data.succeeded)
+            {
+                Notify(data.Messages, null, data.code);
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
 
 
         }
@@ -94,6 +109,15 @@ public class CourseController : BaseController
     public async Task<IActionResult> Delete(int id)
     {
         var data = await _mediator.Send(new DeleteCourseCommand(id));
+
+        if (data.succeeded)
+        {
+            Notify(data.Messages, null, data.code);
+        }
+        else
+        {
+            Notify(data.Messages, null, data.code);
+        }
 
         return RedirectToAction("CourseView");
     }

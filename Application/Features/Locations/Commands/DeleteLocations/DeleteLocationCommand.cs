@@ -33,10 +33,8 @@ internal class DeleteLocationCommandHandler : IRequestHandler<DeleteLocationComm
         }
         await _unitOfWork.Repository<Location>().DeleteAsync(data);
         await _unitOfWork.Save(cancellationToken);
-        return Result<int>.Success();
+        return Result<int>.BadRequest ("Deleted Successfully");
     }
-
-
 }
 
 

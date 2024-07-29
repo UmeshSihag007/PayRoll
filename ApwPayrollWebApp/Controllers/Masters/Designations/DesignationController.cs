@@ -47,12 +47,27 @@ namespace ApwPayrollWebApp.Controllers.Masters.Designations
 
             if (employeeProfile.createDesignation.Id == 0 || employeeProfile.createDesignation.Id == null)
             {
-                await _mediator.Send(employeeProfile.createDesignation);
-
+              var data=   await _mediator.Send(employeeProfile.createDesignation);
+                if (data.succeeded)
+                {
+                    Notify(data.Messages, null, data.code);
+                }
+                else
+                {
+                    Notify(data.Messages, null, data.code);
+                }
             }
             else
             {
-                await _mediator.Send(new UpdateDesignationCommand((int)employeeProfile.createDesignation.Id, employeeProfile.createDesignation));
+              var data=  await _mediator.Send(new UpdateDesignationCommand((int)employeeProfile.createDesignation.Id, employeeProfile.createDesignation));
+                if (data.succeeded)
+                {
+                    Notify(data.Messages, null, data.code);
+                }
+                else
+                {
+                    Notify(data.Messages, null, data.code);
+                }
             }
 
             return RedirectToAction("DesignationView");
@@ -62,6 +77,14 @@ namespace ApwPayrollWebApp.Controllers.Masters.Designations
         public async Task<IActionResult> Delete(int id)
         {
             var data = await _mediator.Send(new DeleteDesignationCommand(id));
+            if (data.succeeded)
+            {
+                Notify(data.Messages, null, data.code);
+            }
+            else
+            {
+                Notify(data.Messages, null, data.code);
+            }
             return RedirectToAction("DesignationView");
         }
 
@@ -71,13 +94,9 @@ namespace ApwPayrollWebApp.Controllers.Masters.Designations
             if (designationList.Data != null && designationList.Data.Count != 0)
             {
                 var employeeDesignation = designationList.Data.ToList();
-
-
                 ViewBag.Designation = employeeDesignation;
 
             }
-
-
         }
     }
 }

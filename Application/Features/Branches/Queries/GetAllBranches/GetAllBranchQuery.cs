@@ -11,16 +11,16 @@ namespace ApwPayroll_Application.Features.Branches.Queries.GetAllBranches
     }
     internal class GetAllBranchQueryHandler : IRequestHandler<GetAllBranchQuery, Result<List<GetBranchDto>>>
     {
-        private readonly IGenericRepository<Branch> _repository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public GetAllBranchQueryHandler(IGenericRepository<Branch> repository, IMapper mapper)
+        public GetAllBranchQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
         public async Task<Result<List<GetBranchDto>>> Handle(GetAllBranchQuery request, CancellationToken cancellationToken)
         {
-            var data = await _repository.GetAllAsync();
+            var data = await _unitOfWork.Repository<Branch>().GetAllAsync();
             var mapData = _mapper.Map<List<GetBranchDto>>(data);
             return Result<List<GetBranchDto>>.Success(mapData);
         }
