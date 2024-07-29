@@ -9,7 +9,9 @@
 <div class="container">
 
     <div class="row">
+ 
         <input  hidden asp-for="EmployeePersonalDetail.Id"/>
+ 
         <div class="card ribbon-box ">
             <div class="card-header">
                 <div class="row mb-3">
@@ -17,9 +19,11 @@
                         <div class="ribbon ribbon-success round-shape"><span>Is Login Access </span></div>
                     </div>
                     <div class="col-5 form-switch">
+ 
                          <input type="checkbox" class="form-check-input" id="isActiveToggle_@ViewBag.employee.Id" style="width: 3rem; height: 1.5rem;"
                         @(ViewBag.employee.IsLoginAccess ? "checked" : "") />
                      </div>
+ 
                 </div>
             </div>
         </div>
@@ -33,7 +37,9 @@
 
                             </div>
                             <div class="col-5 text-end">
+ 
                                 <a asp-action="CreateEmployeeBasic" asp-all-route asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+ 
                                     <i class="bi bi-pencil-square"></i>
                                     Edit
                                 </a>
@@ -50,10 +56,10 @@
                                     </tr>
                                     <tr>
                                         <td class="fw-medium"> Name</td>
+ 
                                         <td>  <b> @(ViewBag.employee.Salutation.ToString() ?? "------")</b> @(ViewBag.employee.FirstName.ToUpper() ?? "------")  @(ViewBag.employee.LastName.ToUpper() ?? "------")</td>
                                     </tr>
-                                
-                                 
+ 
                                     <tr>
                                         <td class="fw-medium">Email</td>
                                         <td>@(ViewBag.employee.EmailId ?? "------")</td>
@@ -148,7 +154,9 @@
                             </div>
 
                             <div class="col-5 text-end">
+ 
                                 <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail"  asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+ 
                                     <i class="bi bi-pencil-square"></i>
                                     Edit
                                 </a>
@@ -249,9 +257,11 @@
 
 
                                         <td>@qualification.TotalMarks</td>
+ 
 
                                         <td>
 
+ 
                                             <a asp-action="Update" asp-all-route asp-route-id="" class="btn btn-sm btn-info" id="editBtn">
 
                                                 <i class="bi bi-pencil-square"></i>
@@ -388,9 +398,10 @@
                     </div>
                     @if (@ViewBag.employee.ReferralDetail.Count != 0)
                     {
+ 
+  
 
                         <div class="table-responsive">
-
 
                             <table class="table  table-bordered align-middle mb-0">
                                 <tbody>
@@ -405,6 +416,7 @@
                                     </tr>
                                 </tbody>
 
+ 
                                 <tbody>
                                     @foreach (var familyMember in ViewBag.employee.ReferralDetail)
                                     {
@@ -414,12 +426,13 @@
                                                 @(ViewBag.employee.ReferralDetail.IndexOf(familyMember) + 1)
                                             </td>
                                             <td>@familyMember.ReferenceName</td>
-
+ 
                                             <td>@familyMember.Designation</td>
 
                                             <td>@familyMember.OrganizationName</td>
 
                                             <td>@familyMember.ContactNumber</td>
+ 
 
                                             <td>@familyMember.YearsOfAcquaintance</td>
                                             <td>
@@ -427,7 +440,15 @@
                                                 <a asp-action="Update" asp-all-route asp-route-id="" class="btn btn-sm btn-info" id="editBtn">
 
                                                     <i class="bi bi-pencil-square"></i>
+ 
+                                            <td>@familyMember.YearsOfAcquaintance</td>
+                                            <td>
 
+                                                <a asp-action="Update" asp-all-route asp-route-id="" class="btn btn-sm btn-info" id="editBtn">
+
+                                                    <i class="bi bi-pencil-square"></i>
+
+ 
                                                 </a>
                                             </td>
                                         </tr>
@@ -535,42 +556,4 @@
             imageModal.show();
         }
     </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('.form-check-input').on('change', function () {
-            var $checkbox = $(this);
-            var itemId = $checkbox.attr('id').split('_')[1];
-            var isActive = $checkbox.is(':checked');
-
-            // Disable the checkbox
-            $checkbox.prop('disabled', true);
-
-            $.ajax({
-                url: '@Url.Action("UpdateLoginAccess", "Employee")',
-                type: 'POST',
-                data: {
-                    id: itemId,
-                    isActive: isActive
-                },
-                success: function (response) {
-                    // Handle success
-                    // Re-enable the checkbox
-                    window.location.reload(true);
-                    $checkbox.prop('disabled', false);
-                },
-                error: function (xhr, status, error) {
-                    // Handle error
-                    console.log(xhr.responseText);
-                    window.location.reload(true);
-                    // Re-enable the checkbox
-                    $checkbox.prop('disabled', false);
-                }
-            });
-        });
-    });
-</script>
-
-
-
-    
+ 
