@@ -11,6 +11,7 @@
 
             <form asp-action="CreateEmployeeBasic" asp-controller="Employee" method="post">
                  <div class="row mt-1 mb-2">
+                <input asp-for="Employee.Id" hidden />
                     <div class="col-lg-6">
                         <label class="form-label">  First Name</label>
 
@@ -259,9 +260,23 @@
                             <button type="reset" class="btn btn-outline-danger">
                                 Cancel
                             </button>
+
+                        @if (Model != null && Model.Employee != null)
+                        {
+                            if (Model.Employee.Id != 0)
+                            {
+                                <button type="submit" class="btn btn-secondary">
+                                    Update
+                                </button>
+                            }
+                           
+                        }
+                        else
+                        {
                             <button type="submit" class="btn btn-secondary">
                                 Save & Next
                             </button>
+                        }
 
                         </div>
                     </div>

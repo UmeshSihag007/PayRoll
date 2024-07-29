@@ -9,8 +9,10 @@ namespace ApwPayroll_Persistence.Configurations.Employees.EmergencyContacts
         public void Configure(EntityTypeBuilder<EmergencyContact> builder)
         {
             builder.HasOne(bd => bd.Employee)
-    .WithMany()
+    .WithMany(x=>x.EmergencyContact)
     .HasForeignKey(bd => bd.EmployeeId);
+
+
             builder.HasOne(bd => bd.RelationType)
    .WithMany()
    .HasForeignKey(bd => bd.RelationTypeId);
