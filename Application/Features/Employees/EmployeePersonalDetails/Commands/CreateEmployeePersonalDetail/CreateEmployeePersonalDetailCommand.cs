@@ -13,13 +13,15 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
 {
     public class CreateEmployeePersonalDetailCommand : IRequest<Result<int>>
     {
-        public int EmployeeId { get; set; }
-        public CreateEmployeePersonalDetailDto CreateEmployeePersonal { get; set; }
-        public CreateEmployeePersonalDetailCommand(int employeeId, CreateEmployeePersonalDetailDto createEmployeePersonal)
+        public CreateEmployeePersonalDetailCommand(int employeeId, CreateEmployeePersonalDetailDto createEmployeePersonals)
         {
             EmployeeId = employeeId;
-            CreateEmployeePersonal = createEmployeePersonal;
+            CreateEmployeePersonals = createEmployeePersonals;
         }
+
+        public int EmployeeId { get; set; }
+        public CreateEmployeePersonalDetailDto CreateEmployeePersonals { get; set; }
+     
 
     }
     internal class CreateEmployeePersonalDetailCommandHandler : IRequestHandler<CreateEmployeePersonalDetailCommand, Result<int>>
@@ -34,25 +36,25 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             var personalData = new EmployeePersonalDetail
             {
                 EmployeeId = request.EmployeeId,
-                BloodGroup = request.CreateEmployeePersonal.BloodGroup,
-                DateOfWedding = request.CreateEmployeePersonal.DateOfWedding,
-                DOB = request.CreateEmployeePersonal.DOB,
-                Gender = request.CreateEmployeePersonal.Gender,
-                MarriedStatus = request.CreateEmployeePersonal.MarriedStatus,
-                PlaceOfBirth = request.CreateEmployeePersonal.PlaceOfBirth,
-                Religion = request.CreateEmployeePersonal.Religion,
+                BloodGroup = request.CreateEmployeePersonals.BloodGroup,
+                DateOfWedding = request.CreateEmployeePersonals.DateOfWedding,
+                DOB = request.CreateEmployeePersonals.DOB,
+                Gender = request.CreateEmployeePersonals.Gender,
+                MarriedStatus = request.CreateEmployeePersonals.MarriedStatus,
+                PlaceOfBirth = request.CreateEmployeePersonals.PlaceOfBirth,
+                Religion = request.CreateEmployeePersonals.Religion,
                 IsActive = true
             };
             await _unitOfWork.Repository<EmployeePersonalDetail>().AddAsync(personalData);
             await _unitOfWork.Save(cancellationToken);
             //family
-            if (request.CreateEmployeePersonal.FatherName != null || request.CreateEmployeePersonal.FatherDOB != null)
+            if (request.CreateEmployeePersonals.FatherName != null || request.CreateEmployeePersonals.FatherDOB != null)
             {
                 var fatherData = new EmployeeFamily
                 {
-                    Name = request.CreateEmployeePersonal.FatherName,
+                    Name = request.CreateEmployeePersonals.FatherName,
                     EmployeeId = request.EmployeeId,
-                    DOB = request.CreateEmployeePersonal.DOB,
+                    DOB = request.CreateEmployeePersonals.DOB,
                     Gender = GenderEnum.Male,
                     RelationTypeId = 1,
                     IsActive = true,
@@ -60,13 +62,13 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                 await _unitOfWork.Repository<EmployeeFamily>().AddAsync(fatherData);
                 await _unitOfWork.Save(cancellationToken);
             }
-            if (request.CreateEmployeePersonal.MotherName != null || request.CreateEmployeePersonal.MotherDOB != null)
+            if (request.CreateEmployeePersonals.MotherName != null || request.CreateEmployeePersonals.MotherDOB != null)
             {
                 var motherData = new EmployeeFamily
                 {
-                    Name = request.CreateEmployeePersonal.MotherName,
+                    Name = request.CreateEmployeePersonals.MotherName,
                     EmployeeId = request.EmployeeId,
-                    DOB = request.CreateEmployeePersonal.DOB,
+                    DOB = request.CreateEmployeePersonals.DOB,
                     Gender = GenderEnum.Male,
                     RelationTypeId = 2,
                     IsActive = true,
@@ -75,14 +77,14 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                 await _unitOfWork.Save(cancellationToken);
 
             }
-            if (request.CreateEmployeePersonal.SpouseName != null || request.CreateEmployeePersonal.SpouseDOB != null)
+            if (request.CreateEmployeePersonals.SpouseName != null || request.CreateEmployeePersonals.SpouseDOB != null)
             {
                 var SpouseData = new EmployeeFamily
                 {
-                    Name = request.CreateEmployeePersonal.SpouseName,
+                    Name = request.CreateEmployeePersonals.SpouseName,
                     EmployeeId = request.EmployeeId,
-                    DOB = request.CreateEmployeePersonal.DOB,
-                    Gender = request.CreateEmployeePersonal.SpouseGender,
+                    DOB = request.CreateEmployeePersonals.DOB,
+                    Gender = request.CreateEmployeePersonals.SpouseGender,
                     RelationTypeId = 1,
                     IsActive = true,
                 };
@@ -91,39 +93,39 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             }
 
             // address  working 
-            if (request.CreateEmployeePersonal.PermanentAddress != null)
+            if (request.CreateEmployeePersonals.PermanentAddress != null)
             {
                 var permanentAddress = new EmployeeAddress
                 {
-                    Address1 = request.CreateEmployeePersonal.PermanentAddress.Address1,
-                    Address2 = request.CreateEmployeePersonal.PermanentAddress.Address2,
-                    Address3 = request.CreateEmployeePersonal.PermanentAddress.Address3,
+                    Address1 = request.CreateEmployeePersonals.PermanentAddress.Address1,
+                    Address2 = request.CreateEmployeePersonals.PermanentAddress.Address2,
+                    Address3 = request.CreateEmployeePersonals.PermanentAddress.Address3,
                     AddressTypeId = 1,
                     EmployeeId = request.EmployeeId,
-                    Nationality = request.CreateEmployeePersonal.PermanentAddress.Nationality,
+                    Nationality = request.CreateEmployeePersonals.PermanentAddress.Nationality,
                     IsActive = true,
 
-                    CityId = request.CreateEmployeePersonal.PermanentAddress.CityId,
-                    StateId = request.CreateEmployeePersonal.PermanentAddress.StateId,
+                    CityId = request.CreateEmployeePersonals.PermanentAddress.CityId,
+                    StateId = request.CreateEmployeePersonals.PermanentAddress.StateId,
                 };
                 await _unitOfWork.Repository<EmployeeAddress>().AddAsync(permanentAddress);
                 await _unitOfWork.Save(cancellationToken);
             }
 
             // address  working 
-            if (request.CreateEmployeePersonal.ResidentialAddress != null)
+            if (request.CreateEmployeePersonals.ResidentialAddress != null)
             {
                 var residentialAddress = new EmployeeAddress
                 {
-                    Address1 = request.CreateEmployeePersonal.ResidentialAddress.Address1,
-                    Address2 = request.CreateEmployeePersonal.ResidentialAddress.Address2,
-                    Address3 = request.CreateEmployeePersonal.ResidentialAddress.Address3,
+                    Address1 = request.CreateEmployeePersonals.ResidentialAddress.Address1,
+                    Address2 = request.CreateEmployeePersonals.ResidentialAddress.Address2,
+                    Address3 = request.CreateEmployeePersonals.ResidentialAddress.Address3,
                     AddressTypeId = 2,
                     EmployeeId = request.EmployeeId,
-                    Nationality = request.CreateEmployeePersonal.ResidentialAddress.Nationality,
+                    Nationality = request.CreateEmployeePersonals.ResidentialAddress.Nationality,
                     IsActive = true,
-                    CityId = request.CreateEmployeePersonal.ResidentialAddress.CityId,
-                    StateId = request.CreateEmployeePersonal.ResidentialAddress.StateId,
+                    CityId = request.CreateEmployeePersonals.ResidentialAddress.CityId,
+                    StateId = request.CreateEmployeePersonals.ResidentialAddress.StateId,
 
                 };
                 await _unitOfWork.Repository<EmployeeAddress>().AddAsync(residentialAddress);
@@ -131,15 +133,15 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             }
 
             //Emergency Contact working
-            if (request.CreateEmployeePersonal.Emergency != null)
+            if (request.CreateEmployeePersonals.Emergency != null)
             {
                 var emergencyContact = new EmergencyContact
                 {
-                    Name = request.CreateEmployeePersonal.FatherName ?? "Testing",
-                    RelationTypeId = request.CreateEmployeePersonal.Emergency.RelationTypeId,
-                    Email = request.CreateEmployeePersonal.Emergency.Email,
-                    MobileNumber = request.CreateEmployeePersonal.Emergency.MobileNumber,
-                    WhatsAppNumber = request.CreateEmployeePersonal.Emergency.WhatsAppNumber,
+                    Name = request.CreateEmployeePersonals.FatherName ?? "Testing",
+                    RelationTypeId = request.CreateEmployeePersonals.Emergency.RelationTypeId,
+                    Email = request.CreateEmployeePersonals.Emergency.Email,
+                    MobileNumber = request.CreateEmployeePersonals.Emergency.MobileNumber,
+                    WhatsAppNumber = request.CreateEmployeePersonals.Emergency.WhatsAppNumber,
                     EmployeeId = request.EmployeeId,
                 };
                 await _unitOfWork.Repository<EmergencyContact>().AddAsync(emergencyContact);
@@ -150,14 +152,14 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
 
             // Bank Detail working
 
-            if (request.CreateEmployeePersonal.CreateEmployeeBank != null)
+            if (request.CreateEmployeePersonals.CreateEmployeeBank != null)
             {
                 var bankDetail = new BankDetail
                 {
-                    BankId = request.CreateEmployeePersonal.CreateEmployeeBank.BankId,
-                    IFCCode = request.CreateEmployeePersonal.CreateEmployeeBank.IFCCode,
-                    AccountName = request.CreateEmployeePersonal.CreateEmployeeBank.AccountName,
-                    AccountBranch = request.CreateEmployeePersonal.CreateEmployeeBank.AccountBranch,
+                    BankId = request.CreateEmployeePersonals.CreateEmployeeBank.BankId,
+                    IFCCode = request.CreateEmployeePersonals.CreateEmployeeBank.IFCCode,
+                    AccountName = request.CreateEmployeePersonals.CreateEmployeeBank.AccountName,
+                    AccountBranch = request.CreateEmployeePersonals.CreateEmployeeBank.AccountBranch,
                     BanAccountId = 122,
                     EmployeeId = request.EmployeeId,
 

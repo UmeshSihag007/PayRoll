@@ -52,6 +52,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
                 {
                     Notify(data.Messages, null, data.code);
                 }
+                return RedirectToAction("ReferenceView", "EmployeeReferral");
             }
             await InitializeViewBags();
 

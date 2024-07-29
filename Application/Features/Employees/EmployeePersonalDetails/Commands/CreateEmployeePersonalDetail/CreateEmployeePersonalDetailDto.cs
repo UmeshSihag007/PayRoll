@@ -17,6 +17,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
 {
     public class CreateEmployeePersonalDetailDto
     {
+        public int? Id { get;set; }
         public string Name { get; set; } = "Ram";
         public GenderEnum Gender { get; set; }
         public DateTime DOB { get; set; }

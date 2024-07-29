@@ -2,7 +2,10 @@
 using ApwPayroll_Domain.common.Enums.Gender;
 using ApwPayroll_Domain.common.Enums.Salutation;
 using ApwPayroll_Domain.Entities.AspUsers;
+using ApwPayroll_Domain.Entities.Banks.BankDetails;
 using ApwPayroll_Domain.Entities.Banks.Branches;
+using ApwPayroll_Domain.Entities.Employees.EmergencyContacts;
+using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDepartments;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDesignations;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDocuments;
@@ -43,16 +46,19 @@ namespace ApwPayroll_Domain.Entities.Employees
         public string? VoterId { get; set; }
         public string? LicenceNumber { get; set; }
         public string? UanNumber { get; set; }
-        public List<EmployeeDesignation> EmployeeDesignations { get; set; } = new List<EmployeeDesignation>();
-        public List<EmployeeDepartment> EmployeeDepartments { get; set; } = new List<EmployeeDepartment>();
+        public List<EmployeeDesignation>? EmployeeDesignations { get; set; } = new List<EmployeeDesignation>();
+        public List<EmployeeDepartment>? EmployeeDepartments { get; set; } = new List<EmployeeDepartment>();
 
-        public List<EmployeeDocument> EmployeeDocuments { get; set; } = new List<EmployeeDocument>();
+        public List<BankDetail> BankDetails { get; set; }
+        public List<EmployeeDocument>? EmployeeDocuments { get; set; } = new List<EmployeeDocument>();
 
        public  EmployeePersonalDetail EmployeePersonalDetail { get; set; }
-        public List<EmployeeFamily> EmployeeFamily { get; set; } = new List<EmployeeFamily>();
-        public List<EmployeeExperience> EmployeeExperience { get; set; } = new List<EmployeeExperience>();
+        public List<EmployeeFamily>? EmployeeFamily { get; set; } = new List<EmployeeFamily>();
+        public List<EmployeeExperience>? EmployeeExperience { get; set; } = new List<EmployeeExperience>();
         public List<EmployeeQualification> EmployeeQualification { get; set; } = new List<EmployeeQualification>();
         public List<ReferralDetail> ReferralDetail { get; set; } = new List<ReferralDetail>();
+        public List<EmergencyContact>? EmergencyContact { get; set; } = new List<EmergencyContact>();
+        public List<EmployeeAddress>? EmployeeAddresses { get; set; } = new List<EmployeeAddress>();
 
         // degisnation working
         public void AddDesignation(int designationId)
@@ -86,31 +92,31 @@ namespace ApwPayroll_Domain.Entities.Employees
         {
             EmployeeDepartments.Add(new EmployeeDepartment(departmentId, Id, true));
         }
-        public void AddIfNotDepartmentExists(List<int> departmentId)
+        public void AddIfNotDepartmentExists(List<int> departmentIds)
         {
-            foreach (var department in departmentId)
+            // Add or reactivate departments in the new list
+            foreach (var departmentId in departmentIds)
             {
-                if (EmployeeDepartments.All(pu => pu.DepartmentId != department))
+                var existingDepartment = EmployeeDepartments.FirstOrDefault(pu => pu.DepartmentId == departmentId && pu.EmployeeId == Id);
+                if (existingDepartment == null)
                 {
-                    EmployeeDepartments.Add(new EmployeeDepartment(department, Id, true));
+                    EmployeeDepartments.Add(new EmployeeDepartment(departmentId, Id, true));
+                }
+                else
+                {
+                    existingDepartment.IsActive = true;
                 }
             }
-            RemoveDepartmentExists(departmentId);
-        }
-        private void RemoveDepartmentExists(List<int> departmentId)
-        {
+
+            // Deactivate departments not in the new list
             foreach (var department in EmployeeDepartments)
             {
-                if (!departmentId.Contains(department.DepartmentId))
+                if (!departmentIds.Contains(department.DepartmentId))
                 {
-                    department.IActive = false;
+                    department.IsActive = false;
                 }
             }
         }
-
-
-
-
         // Document working
         public void AddDocument(int documentId, int typeId, string? Code)
         {

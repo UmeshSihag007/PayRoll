@@ -1,8 +1,12 @@
 ﻿using ApwPayroll_Application.Common.Mappings;
+using ApwPayroll_Application.Features.Employees.EmployeeBankDetails.Commands.CreateEmployeeBankDetails;
 using ApwPayroll_Domain.common.Enums.Salutation;
 using ApwPayroll_Domain.Entities.AspUsers;
+using ApwPayroll_Domain.Entities.Banks.BankDetails;
 using ApwPayroll_Domain.Entities.Banks.Branches;
 using ApwPayroll_Domain.Entities.Employees;
+using ApwPayroll_Domain.Entities.Employees.EmergencyContacts;
+using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDepartments;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDesignations;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDocuments;
@@ -45,16 +49,19 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetAllEmployees
         public string? UanNumber { get; set; }
 
 
-        public List<EmployeeDesignation> EmployeeDesignations { get; set; } = new List<EmployeeDesignation>();
-        public List<EmployeeDepartment> EmployeeDepartments { get; set; } = new List<EmployeeDepartment>();
+        public List<EmployeeDesignation>? EmployeeDesignations { get; set; } = new List<EmployeeDesignation>();
+        public List<EmployeeDepartment>? EmployeeDepartments { get; set; } = new List<EmployeeDepartment>();
 
         public List<EmployeeDocument> EmployeeDocuments { get; set; } = new List<EmployeeDocument>();
-
+        public CreateEmployeeBankDetailCommand CreateEmployeeBank { get; set; }
         public EmployeePersonalDetail EmployeePersonalDetail { get; set; }
+        public List< EmployeeAddress>  EmployeeAddress { get; set; }
+        public List<EmergencyContact>? EmergencyContact { get; set; } = new List<EmergencyContact>();
         public List<EmployeeFamily> EmployeeFamily { get; set; } = new List<EmployeeFamily>();
         public List<EmployeeExperience> EmployeeExperience { get; set; } = new List<EmployeeExperience>();
         public List<EmployeeQualification> EmployeeQualification { get; set; } = new List<EmployeeQualification>();
         public List<ReferralDetail> ReferralDetail { get; set; } = new List<ReferralDetail>();
-
+        public List<EmployeeAddress>? EmployeeAddresses { get; set; }
+        public List<BankDetail> BankDetails { get; set; }=new List<BankDetail>();
     }
 }

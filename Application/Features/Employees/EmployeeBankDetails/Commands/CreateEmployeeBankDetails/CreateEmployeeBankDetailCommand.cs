@@ -5,7 +5,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeBankDetails.Commands
     public class CreateEmployeeBankDetailCommand
     {
 
-
+        public int? Id { get; set; }
         public int EmployeeId { get; set; }
   //      public string? BankName { get; set; } 
         public int BankId { get; set; } 

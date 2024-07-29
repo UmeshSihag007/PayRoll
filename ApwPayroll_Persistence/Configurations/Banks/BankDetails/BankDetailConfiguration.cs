@@ -12,7 +12,7 @@ namespace ApwPayroll_Persistence.Configurations.Banks.BankDetails
 
 
             builder.HasOne(bd => bd.Employee)
-                   .WithMany()
+                   .WithMany(x=>x.BankDetails)
                    .HasForeignKey(bd => bd.EmployeeId);
 
             builder.HasOne(bd => bd.Bank)
