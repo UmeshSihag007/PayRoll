@@ -1,6 +1,6 @@
- 
 using ApwPayroll_Application.Features.Employees.EmployeeDocuments.Commands.CreateEmployeeDocuments;
-using ApwPayroll_Application.Features.Employees.EmployeeDocuments.EmployeeDocumentTypes.Queries.GetAllEmployeeDomentTypes;
+using ApwPayroll_Application.Features.Employees.EmployeeDocuments.EmployeeDocumentTypes.Queries.GetAllEmployeeDocumentTypes;
+using ApwPayroll_Application.Features.Employees.EmployeeDocuments.Queries.GetDocumentById;
 using ApwPayroll_Persistence.Data;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.Models;
@@ -23,14 +23,39 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
         {
             return View();
         }
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int? employeeId, int? id)
         {
             await InitializeViewBags();
+            var model = new EmployeeCreateViewModel();
+            if (id.HasValue)
+            {
+                var employee = HttpContext.Session.GetInt32("EmployeeId") ?? employeeId.Value;
+                if (employee == default)
+                {
+                    return NotFound();
+                }
+                var document = await _mediator.Send(new GetDocumentByDocumentIdQuery(employee, id.Value));
+
+                if (document != null)
+                {
+                    var employeeDocument = new CreateEmployeeDocumentDto
+                    {
+                        Code = document.Data.Code,
+                        Document = (IFormFile)document.Data.Document,
+                        EmployeeDocumentTypeId = document.Data.EmployeeDocumentTypeId,
+                    };
+                    model.documentCommand = new CreateEmployeeDocumentCommand
+                    {
+                        EmployeeId = document.Data.EmployeeId, 
+                        EmployeeDocuments = new List<CreateEmployeeDocumentDto> { employeeDocument }
+                    };
+                }
+
+            }
 
 
 
-
-            return View();
+            return View(model);
         }
 
         [HttpPost]
@@ -43,17 +68,23 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
 
             if (ModelState.IsValid)
             {
-                var data=await _mediator.Send(new CreateEmployeeDocumentCommand(EmployeeId, model.EmployeeDocument));
-                if (data.code == 200)
+                if (model.documentCommand.EmployeeDocuments.Count == 0 || model.documentCommand.EmployeeDocuments.Count == null)
                 {
-                    Notify(data.Messages, null, data.code);
+                    var data = await _mediator.Send(new CreateEmployeeDocumentCommand(EmployeeId, model.EmployeeDocument));
+                    if (data.code == 200)
+                    {
+                        Notify(data.Messages, null, data.code);
+                    }
+                    else
+                    {
+                        Notify(data.Messages, null, data.code);
+                    }
+
+                    return RedirectToAction("ReferenceView", "EmployeeReferral");
+
                 }
-                else
-                {
-                    Notify(data.Messages, null, data.code);
-                }
- 
-                return RedirectToAction("ReferenceView", "EmployeeReferral");
+
+
             }
             await InitializeViewBags();
 
