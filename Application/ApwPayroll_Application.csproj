@@ -23,6 +23,7 @@
     <Folder Include="Features\Employees\EmployeeAddresses\Queries\" />
     <Folder Include="Features\Employees\EmployeeBankDetails\Queries\" />
     <Folder Include="Features\Employees\EmployeeContact\Queries\" />
+    <Folder Include="Features\Employees\EmployeeDocuments\Commands\UpdateEmployeeDocuments\" />
     <Folder Include="Features\Employees\EmployeeDocuments\EmployeeDocumentTypes\Commands\" />
     <Folder Include="Features\Employees\EmployeeLanguages\Queries\" />
     <Folder Include="Features\Holidays\Commands\CreateHolidays\" />

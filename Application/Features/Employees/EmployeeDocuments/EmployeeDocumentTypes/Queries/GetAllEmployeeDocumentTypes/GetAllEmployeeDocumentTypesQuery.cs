@@ -11,10 +11,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApwPayroll_Application.Features.Employees.EmployeeDocuments.EmployeeDocumentTypes.Queries.GetAllEmployeeDomentTypes
+namespace ApwPayroll_Application.Features.Employees.EmployeeDocuments.EmployeeDocumentTypes.Queries.GetAllEmployeeDocumentTypes
 {
     public class GetAllEmployeeDocumentTypesQuery:IRequest<Result<List<LookUpDto>>>
     {
+ 
     }
     internal class GetAllEmployeeDocumentTypesQueryHandler : IRequestHandler<GetAllEmployeeDocumentTypesQuery, Result<List<LookUpDto>>>
     {
