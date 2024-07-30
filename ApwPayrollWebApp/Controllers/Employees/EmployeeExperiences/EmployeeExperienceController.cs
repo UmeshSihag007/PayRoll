@@ -27,13 +27,10 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeExperiences
         {
             if (ModelState.IsValid)
             {
-
-                var employeeId = HttpContext.Session.GetInt32("EmployeeId");
-                if (employeeId != 0 && employeeId != null)
+                if (HttpContext.Session.GetInt32("EmployeeId") != null)
                 {
-                    model.Experiences.EmployeeId = employeeId.Value;
+                    model.Experiences.EmployeeId = HttpContext.Session.GetInt32("EmployeeId").Value;
                 }
-
                 if (model.Experiences.Id == 0 || model.Experiences.Id == null)
                 {
 
@@ -62,7 +59,13 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeExperiences
                     {
                         Notify(data.Messages, null, data.code);
                     }
-                    return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
+                    model = new EmployeeCreateViewModel();
+                    if (HttpContext.Session.GetInt32("EmployeeId") != null)
+                    {
+
+                        return View(model);
+                    }
+                    return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = data.Data.EmployeeId });
                 }
             }
             return View();

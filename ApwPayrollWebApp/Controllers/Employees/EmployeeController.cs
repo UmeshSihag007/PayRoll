@@ -41,10 +41,12 @@ namespace ApwPayrollWebApp.Controllers.Employees
         {
             var data = await _mediator.Send(new GetAllEmployeeQuery());
             ViewBag.employee = data.Data;
-            return View(data);
+            return View();
         }
         public async Task<IActionResult> EmployeeCompleteDetails(int id)
         {
+            var model = new EmployeeCreateViewModel();
+
 
             var data = await _mediator.Send(new GetEmployeeByIdQuery(id));
             if (data.succeeded)
@@ -52,8 +54,8 @@ namespace ApwPayrollWebApp.Controllers.Employees
 
             ViewBag.employee = data.Data;
             }
-
-            return View(data);
+             
+            return View(model);
         }
         public async Task<IActionResult> CreateEmployeeBasic(int? id)
         {
@@ -132,7 +134,7 @@ namespace ApwPayrollWebApp.Controllers.Employees
                 }
 
                 HttpContext.Session.SetInt32("EmployeeId", data.Data.Id);
-                return RedirectToAction("CreateEmployeePersonal", "EmployeePersonal", new { employeeId = data.Data.Id });
+                return RedirectToAction("CreateEmployeePersonal", "EmployeePersonalDetail", new { employeeId = data.Data.Id });
                 }
 
             }
@@ -154,10 +156,7 @@ namespace ApwPayrollWebApp.Controllers.Employees
             ViewBag.EmployeeId = employeeId;
             return View();
         }
-
-
    
-
 
         #region UPDATE  LOGIN ACCESS   
         [HttpPost]

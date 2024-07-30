@@ -52,6 +52,7 @@ using ApwPayroll_Application.Interfaces.Repositories.Documents;
 using ApwPayroll_Domain.Entities.Employees;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDocumentTypes;
 using ApwPayroll_Shared;
+using Google.Rpc;
 using MediatR;
 
 namespace ApwPayroll_Application.Features.Employees.EmployeeDocuments.Commands.CreateEmployeeDocuments;
@@ -80,8 +81,9 @@ internal class CreateEmployeeDocumentCommandHandler : IRequestHandler<CreateEmpl
 
     public async Task<Result<int>> Handle(CreateEmployeeDocumentCommand request, CancellationToken cancellationToken)
     {
- 
- 
+        try
+        {
+
         var employee = await _unitOfWork.Repository<Employee>().GetByIdAsync(request.EmployeeId);
         if (employee == null)
         {
@@ -101,6 +103,13 @@ internal class CreateEmployeeDocumentCommandHandler : IRequestHandler<CreateEmpl
 
             await _unitOfWork.Save(cancellationToken);
         }
+        }
+        catch (Exception ex)
+        {
+
+            return Result<int >.BadRequest(ex.Message);
+        }
+ 
         //for(int i = 0; i<= request.EmployeeDocumentTypeIds.Count; i++)
         //{
         //    var document = request.Documents[i];

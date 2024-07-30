@@ -54,7 +54,7 @@ namespace ApwPayroll_Domain.Entities.Employees
 
        public  EmployeePersonalDetail EmployeePersonalDetail { get; set; }
         public List<EmployeeFamily> EmployeeFamily { get; set; } = new List<EmployeeFamily>();
-        public List<EmployeeExperience> EmployeeExperience { get; set; } = new List<EmployeeExperience>();
+        public List<EmployeeExperience>? EmployeeExperience { get; set; } = new List<EmployeeExperience>();
         public List<EmployeeQualification> EmployeeQualification { get; set; } = new List<EmployeeQualification>();
         public List<ReferralDetail> ReferralDetail { get; set; } = new List<ReferralDetail>();
         public List<EmergencyContact>? EmergencyContact { get; set; } = new List<EmergencyContact>();

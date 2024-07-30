@@ -10,6 +10,9 @@
 
     <div class="row">
         <input  hidden asp-for="EmployeePersonalDetail.Id"/>
+        <input  hidden asp-for="Experiences.Id"/>
+        <input  hidden asp-for="CreateEmployeeFamily.Id"/>
+        <input  hidden asp-for="ReferencesCommand.Id"/>
         <div class="card ribbon-box ">
             <div class="card-header">
                 <div class="row mb-3">
@@ -17,8 +20,9 @@
                         <div class="ribbon ribbon-success round-shape"><span>Is Login Access </span></div>
                     </div>
                     <div class="col-5 form-switch">
-                         <input type="checkbox" class="form-check-input" id="isActiveToggle_@ViewBag.employee.Id" style="width: 3rem; height: 1.5rem;"
-                        @(ViewBag.employee.IsLoginAccess ? "checked" : "") />
+ 
+
+                         <input type="checkbox" class="form-check-input" id="isActiveToggle_@ViewBag.employee.Id" style="width: 3rem; height: 1.5rem;" @(ViewBag.employee.IsLoginAccess ? "checked" : "") />
                      </div>
                 </div>
             </div>
@@ -217,6 +221,7 @@
                     <div class="table-responsive">
 
                         <table class="table  table-bordered align-middle mb-0">
+                            <input hidden asp-for="EmployeePersonalDetail.Id"/>
                             <thead>
                                 <tr>
 
@@ -252,7 +257,10 @@
 
                                         <td>
 
-                                            <a asp-action="Update" asp-all-route asp-route-id="" class="btn btn-sm btn-info" id="editBtn">
+                                            <a asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation"
+                                               asp-route-employeeid="@qualification.EmployeeId"
+                                               asp-route-id="@qualification.Id" 
+                                                class="btn btn-sm btn-info" id="editBtn">
 
                                                 <i class="bi bi-pencil-square"></i>
 
@@ -310,7 +318,9 @@
 
                                             <td>
 
-                                                <a asp-action="Update" asp-all-route asp-route-id="" class="btn btn-sm btn-info" id="editBtn">
+                                                <a asp-action ="CreateEmployeeEducation" , asp-controller="EmployeeEducation"
+                                                   asp-route-employeeid="@experience.EmployeeId" asp-route-id="@experience.Id"
+                                                class="btn btn-sm btn-info" id="editBtn">
 
                                                     <i class="bi bi-pencil-square"></i>
 
@@ -339,7 +349,7 @@
                     <div class="card-header">
                         <div class="ribbon ribbon-success round-shape"><span>Family Details</span></div>
                     </div>
-                    <div class="table-reponsive">
+                    <div class="table-responsive">
                         <table class="table  table-bordered align-middle mb-0">
                             <thead>
                                 <tr>
@@ -366,7 +376,9 @@
 
                                         <td>
 
-                                            <a asp-action="Update" asp-all-route asp-route-id="" class="btn btn-sm btn-info" id="editBtn">
+                                            <a asp-action="CreateEmployeeFamily" , asp-controller="EmployeeFamily" 
+                                               asp-route-employeeid="@familyMember.EmployeeId" asp-route-id="@familyMember.Id"
+                                                class="btn btn-sm btn-info" id="editBtn">
 
                                                 <i class="bi bi-pencil-square"></i>
 
@@ -393,7 +405,7 @@
 
 
                             <table class="table  table-bordered align-middle mb-0">
-                                <tbody>
+                                <thead>
                                     <tr>
                                         <th>#</th>
                                         <th scope="col"><strong>ReferenceName:</strong></th>
@@ -403,28 +415,30 @@
                                         <th><strong>YearsOfAcquaintance</strong></th>
                                         <th></th>
                                     </tr>
-                                </tbody>
+                                </thead>
 
                                 <tbody>
-                                    @foreach (var familyMember in ViewBag.employee.ReferralDetail)
+                                    @foreach (var referral in ViewBag.employee.ReferralDetail)
                                     {
 
                                         <tr>
                                             <td>
-                                                @(ViewBag.employee.ReferralDetail.IndexOf(familyMember) + 1)
+                                                @(ViewBag.employee.ReferralDetail.IndexOf(referral) + 1)
                                             </td>
-                                            <td>@familyMember.ReferenceName</td>
+                                            <td>@referral.ReferenceName</td>
 
-                                            <td>@familyMember.Designation</td>
+                                            <td>@referral.Designation</td>
 
-                                            <td>@familyMember.OrganizationName</td>
+                                            <td>@referral.OrganizationName</td>
 
-                                            <td>@familyMember.ContactNumber</td>
+                                            <td>@referral.ContactNumber</td>
 
-                                            <td>@familyMember.YearsOfAcquaintance</td>
+                                            <td>@referral.YearsOfAcquaintance</td>
                                             <td>
 
-                                                <a asp-action="Update" asp-all-route asp-route-id="" class="btn btn-sm btn-info" id="editBtn">
+                                                <a asp-action="ReferenceView" , asp-controller="EmployeeReferral"
+                                                   asp-route-employeeid="@referral.EmployeeId" asp-route-id="@referral.Id"
+                                                   class="btn btn-sm btn-info" id="editBtn">
 
                                                     <i class="bi bi-pencil-square"></i>
 
@@ -490,6 +504,9 @@
                                                 <i class="bi bi-pencil-square"> Edit</i>
                                             </a>
                                         </div>
+                                        <a href="@document.Document.Url" download class="btn btn-sm btn-primary mr-2">
+                                            <i class="bi bi-download"> Download</i>
+                                        </a>
                                     </div>
                                 </div>
                             }

@@ -25,27 +25,36 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
             return View();
         }
 
-        public async Task<IActionResult> CreateEmployeeEducation(int? id)
+        public async Task<IActionResult> CreateEmployeeEducation(int? employeeId, int? id)
         {
+     
             await InitializeViewBags();
-
-
+ 
             var model = new EmployeeCreateViewModel();
-
-
+ 
             if (id.HasValue)
-            {
-                var employeeId = HttpContext.Session.GetInt32("EmployeeId").Value;
+            { 
 
-
-                var employeeEducationData = await _mediator.Send(new GetEmployeeQualificationQuery(employeeId));
-                var employeeExperienceData = await _mediator.Send(new GetEmployeeExperienceQuery(employeeId));
+                var employee = HttpContext.Session.GetInt32("EmployeeId") ?? employeeId.Value;
+ 
+                if (employee == default)
+                {
+                     
+                    return NotFound();  
+                }
+                 
+                var employeeEducationData = await _mediator.Send(new GetEmployeeQualificationQuery(employee));
+                var employeeExperienceData = await _mediator.Send(new GetEmployeeExperienceQuery(employee));
+ 
                 var qualification = employeeEducationData.Data.FirstOrDefault(x => x.Id == id.Value);
+                var experience = employeeExperienceData.Data.FirstOrDefault(x => x.Id == id.Value);
+ 
                 if (qualification != null)
                 {
                     model.Qualification = new CreateEmployeeEducationCommand
                     {
                         Id = qualification.Id,
+                        EmployeeId= qualification.EmployeeId,
                         Specification = qualification.Specification,
                         CourseId = qualification.CourseId,
                         ObtainMarks = qualification.ObtainMarks,
@@ -54,11 +63,9 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                         FromDate = qualification.FromDate,
                         UniversityBoard = qualification.UniversityBoard,
                     };
-
-
                 }
 
-                var experience = employeeExperienceData.Data.Find(x => x.Id == id);
+                // Populate the view model with the experience data if found
                 if (experience != null)
                 {
                     model.Experiences = new CreateEmployeeExperiencesCommand
@@ -75,13 +82,13 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                         StartDate = experience.StartDate,
                         Industry = experience.Industry,
                     };
-
                 }
             }
 
-
-            return View(model); ;
+            // Return the view with the populated model
+            return View(model);
         }
+
 
 
 
@@ -99,7 +106,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
 
                 if (commond.Qualification.Id == 0 || commond.Qualification.Id == null)
                 {
-
+                    
                     var data = await _mediator.Send(commond.Qualification);
                     if (data.code == 200)
                     {
@@ -109,13 +116,13 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                     {
                         Notify(data.Messages, null, data.code);
                     }
-                    return RedirectToAction("CreateEmployeeEducation");
+                    return RedirectToAction("CreateEmployeeEducation" );
                 }
                 else
                 {
                     var data = await _mediator.Send(new UpdateEmployeeQualificationCommand((int)commond.Qualification.Id, commond.Qualification));
                     //  var data = await _mediator.Send(commond.Qualification);
-
+                  
                     if (data.code == 200)
                     {
                         Notify(data.Messages, null, data.code);
@@ -125,8 +132,12 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                         Notify(data.Messages, null, data.code);
                     }
                     commond = new EmployeeCreateViewModel();
+                    if (HttpContext.Session.GetInt32("EmployeeId") != null)
+                    {
 
-                    return RedirectToAction("CreateEmployeeEducation");
+                    return View(commond);
+                    }
+                    return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = data.Data.EmployeeId });
                 }
             }
 
@@ -186,10 +197,10 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
 
             var course = await _mediator.Send(new GetCoursesQuery());
 
-            var employeeId = HttpContext.Session.GetInt32("EmployeeId");
-            if (employeeId != 0 && employeeId != null)
+            if (HttpContext.Session.GetInt32("EmployeeId") != 0 && HttpContext.Session.GetInt32("EmployeeId") != null)
 
             {
+            var employeeId = HttpContext.Session.GetInt32("EmployeeId");
                 var employeeEducationData = await _mediator.Send(new GetEmployeeQualificationQuery(employeeId.Value));
                 var employeeExperienceData = await _mediator.Send(new GetEmployeeExperienceQuery(employeeId.Value));
 
