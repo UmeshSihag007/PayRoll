@@ -48,7 +48,7 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetByIdEmployee
         
          .Include(x=>x.EmployeeDepartments)
                 .FirstOrDefaultAsync(e => e.Id == request.EmployeeId && e.IsDeleted == false, cancellationToken: cancellationToken);
-
+ 
             if (data == null)
             {
                 return Result<GetEmployeeDto>.NotFound();
