@@ -31,7 +31,6 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetByIdEmployee
         {
             try
             {
- 
                 var data = await _repository.Entities
                   .Include(x => x.AspUser)
                    .Include(x => x.EmployeePersonalDetail)
@@ -43,7 +42,6 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetByIdEmployee
                   .Include(x => x.EmployeeFamily).ThenInclude(x => x.RelationType)
             .Include(x => x.ReferralDetail)
          .Include(x=>x.EmployeeDesignations)
-        
           .Include(x=>x.EmergencyContact)
           .Include(x=>x.BankDetails)
           .Include(X=>X.EmployeeAddresses).ThenInclude(X=>X.AddressType)

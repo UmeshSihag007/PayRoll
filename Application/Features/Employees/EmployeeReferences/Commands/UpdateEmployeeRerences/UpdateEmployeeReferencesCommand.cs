@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.UpdateEmployeeRerences
 {
-    public class UpdateEmployeeReferencesCommand:IRequest<Result<int>>
+    public class UpdateEmployeeReferencesCommand:IRequest<Result<ReferralDetail>>
     {
         public UpdateEmployeeReferencesCommand(int id, CreateEmployeeReferencesCommand references)
         {
@@ -25,7 +25,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.
         public CreateEmployeeReferencesCommand references { get; set; }
         
     }
-    internal class UpdateEmployeeReferencesCommandHandler : IRequestHandler<UpdateEmployeeReferencesCommand, Result<int>>
+    internal class UpdateEmployeeReferencesCommandHandler : IRequestHandler<UpdateEmployeeReferencesCommand, Result<ReferralDetail>>
     {
        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -36,19 +36,19 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> Handle(UpdateEmployeeReferencesCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ReferralDetail>> Handle(UpdateEmployeeReferencesCommand request, CancellationToken cancellationToken)
         {
             var data = await _unitOfWork.Repository<ReferralDetail>().GetByIdAsync(request.Id);
             if(data == null)
             {
-                return Result<int>.BadRequest();
+                return Result<ReferralDetail>.BadRequest();
             }
-
+             request.references.EmployeeId=data.EmployeeId;
             var mapData = _mapper.Map(request.references,data);
            
             await _unitOfWork.Repository<ReferralDetail>().UpdateAsync(mapData);
             await _unitOfWork.Save(cancellationToken);
-            return Result<int>.Success();
+            return Result<ReferralDetail>.Success(data,"Updated..");
         }
     }
 }
