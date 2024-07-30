@@ -20,7 +20,7 @@ namespace ApwPayroll_Application.Common.Exceptions
             var regex = new Regex(@"^[A-Z]{1,2}[0-9]{7,12}$");
             if (!regex.IsMatch(rationCardNumber))
             {
-                return new ValidationResult("Invalid Ration Card number format. It should be a combination of letters and numbers.");
+                return new ValidationResult("Invalid Ration Card number format.  It should be in the format of AB123456789.");
             }
 
             // Additional validation: Check for duplicate characters (some states have this rule)
