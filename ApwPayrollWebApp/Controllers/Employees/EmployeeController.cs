@@ -9,6 +9,7 @@ using ApwPayroll_Application.Features.Employees.Commands.UpdateIsLoginAccess;
 using ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Commands.CreateEmployeePersonalDetail;
 using ApwPayroll_Application.Features.Employees.Queries.GetAllEmployees;
 using ApwPayroll_Application.Features.Employees.Queries.GetByIdEmployee;
+using ApwPayroll_Application.Features.Employees.Queries.SearchEmployee;
 using ApwPayroll_Application.Features.Locations.Queries.GetAllLocations;
 using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Domain.common.Enums.AccountType;
@@ -37,10 +38,34 @@ namespace ApwPayrollWebApp.Controllers.Employees
             _mediator = mediator;
             _relationRepository = relationRepository;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 40,SearchEmployeeDto? searchEmployee=default)
         {
-            var data = await _mediator.Send(new GetAllEmployeeQuery());
-            ViewBag.employee = data.Data;
+            await InitializeViewBags();
+            ModelState.Remove("searchEmployee.BranchId");
+            if (ModelState.IsValid)
+            {
+            var query = new GetAllEmployeeQuery(pageNumber, pageSize ,searchEmployee);
+            var result = await _mediator.Send(query);
+
+            if (!result.succeeded)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new EmployeeIndexViewModel
+            {
+                Employees = result.Data.Data,
+                Pagination = new PaginationViewModel
+                {
+                    CurrentPage = result.Data.CurrentPage,
+                    TotalPages = result.Data.TotalPages,
+                    PageSize = result.Data.PageSize
+                },
+                SearchEmployee = searchEmployee
+            };
+
+            return View(viewModel);
+            }
             return View();
         }
         public async Task<IActionResult> EmployeeCompleteDetails(int id)

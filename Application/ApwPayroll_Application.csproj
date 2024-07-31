@@ -48,6 +48,7 @@
     <Folder Include="Features\Menus\MenuTypes\Queries\GetMenuTypeById\" />
     <Folder Include="Features\Menus\Queries\GetMenus\" />
     <Folder Include="Features\Menus\Queries\GetMenuById\" />
+    <Folder Include="Features\RelationTypes\Commands\" />
     <Folder Include="Features\Users\Queries\" />
     <Folder Include="Interfaces\Repositories\NewFolder\" />
   </ItemGroup>

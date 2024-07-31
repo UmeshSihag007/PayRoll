@@ -1,4 +1,5 @@
 ﻿@using ApwPayrollWebApp.Models
+@using ApwPayroll_Domain.common.Enums.MarriedStatus
 
 
 @model EmployeeCreateViewModel
@@ -12,7 +13,10 @@
 <div class="tab-content">
     <div class="tab-pane active" id="personalDetails" role="tabpanel">
         <form asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" method="post" id="personalDetailsForm">
-
+            <input asp-for="EmployeePersonalDetail.Id" hidden/>
+            <input asp-for="EmployeePersonalDetail.CreateEmployeeBank.Id" hidden/>
+            <input asp-for="EmployeePersonalDetail.PermanentAddress.EmployeeId" hidden/>
+            <input asp-for="EmployeePersonalDetail.ResidentialAddress.EmployeeId" hidden/>
             <div class="row mt-1 mb-2">
                 <input type="hidden" asp-for="EmployeePersonalDetail.Id" name="employeeId" />
                 <div class="col-lg-4">
@@ -225,61 +229,66 @@
 
                 </div>
             </div>
-            <div id="spouseDetails" style="display:none;">
+            @if (Model.EmployeePersonalDetail.MarriedStatus == MarriedStatusEnum.Married)
+{
+                <div id="spouseDetails">
 
 
-                <div class="row mb-2">
-                    <div class="col-lg-3">
-                        <label asp-for="EmployeePersonalDetail.SpouseName" class="form-label">Spouse Name</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="ri-user-fill"></i>
-                            </span>
-                            <input asp-for="EmployeePersonalDetail.SpouseName" type="text" class="form-control form-control-sm" placeholder="Enter spouse name" />
+                    <div class="row mb-2">
+                        <div class="col-lg-3">
+                            <label asp-for="EmployeePersonalDetail.SpouseName" class="form-label">Spouse Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="ri-user-fill"></i>
+                                </span>
+                                <input asp-for="EmployeePersonalDetail.SpouseName" type="text" class="form-control form-control-sm" placeholder="Enter spouse name" />
+                            </div>
+                            <span asp-validation-for="EmployeePersonalDetail.SpouseName" class="text-danger"></span>
                         </div>
-                        <span asp-validation-for="EmployeePersonalDetail.SpouseName" class="text-danger"></span>
-                    </div>
-                    <div class="col-lg-3">
-                        <label asp-for="EmployeePersonalDetail.SpouseDOB" class="form-label">Spouse Date Of Birth</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="ri-calendar-event-fill"></i>
-                            </span>
-                            <input asp-for="EmployeePersonalDetail.SpouseDOB" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter spouse date of birth" />
+                        <div class="col-lg-3">
+                            <label asp-for="EmployeePersonalDetail.SpouseDOB" class="form-label">Spouse Date Of Birth</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="ri-calendar-event-fill"></i>
+                                </span>
+                                <input asp-for="EmployeePersonalDetail.SpouseDOB" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter spouse date of birth" />
+                            </div>
+                            <span asp-validation-for="EmployeePersonalDetail.SpouseDOB" class="text-danger"></span>
                         </div>
-                        <span asp-validation-for="EmployeePersonalDetail.SpouseDOB" class="text-danger"></span>
-                    </div>
-                    <div class="col-lg-3">
-                        <label asp-for="EmployeePersonalDetail.SpouseGender" class="form-label"> Spouse Gender</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="ri-calendar-event-fill"></i>
-                            </span>
-                            <select asp-for="EmployeePersonalDetail.Gender" class="form-control form-control-sm" required>
-                                <option value="" selected disabled>Select a gender</option>
-                                @foreach (var gender in ViewBag.GenderLookup)
-                                {
-                                    <option value="@gender.Id">@gender.Name</option>
-                                }
-                            </select>
-                            <span asp-validation-for="EmployeePersonalDetail.Gender" class="text-danger"></span>
+                        <div class="col-lg-3">
+                            <label asp-for="EmployeePersonalDetail.SpouseGender" class="form-label"> Spouse Gender</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="ri-calendar-event-fill"></i>
+                                </span>
+                                <select asp-for="EmployeePersonalDetail.Gender" class="form-control form-control-sm" required>
+                                    <option value="" selected disabled>Select a gender</option>
+                                    @foreach (var gender in ViewBag.GenderLookup)
+                                    {
+                                        <option value="@gender.Id">@gender.Name</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="EmployeePersonalDetail.Gender" class="text-danger"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <label asp-for="EmployeePersonalDetail.DateOfWedding" class="form-label">Date Of Wedding</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="ri-calendar-event-fill"></i>
-                            </span>
-                            <input asp-for="EmployeePersonalDetail.DateOfWedding" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter your wedding date">
-                        </div>
+                        <div class="col-lg-3">
+                            <label asp-for="EmployeePersonalDetail.DateOfWedding" class="form-label">Date Of Wedding</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="ri-calendar-event-fill"></i>
+                                </span>
+                                <input asp-for="EmployeePersonalDetail.DateOfWedding" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter your wedding date">
+                            </div>
 
-                        <span asp-validation-for="EmployeePersonalDetail.DateOfWedding" class="text-danger"></span>
+                            <span asp-validation-for="EmployeePersonalDetail.DateOfWedding" class="text-danger"></span>
+                        </div>
                     </div>
+
                 </div>
 
-            </div>
-
+}
+ 
+        
             @* Address *@
 
 
@@ -462,7 +471,7 @@
                     <span asp-validation-for="EmployeePersonalDetail.CreateEmployeeBank.AccountName" class="text-danger"></span>
                 </div>
                 <div class="col-lg-4">
-                    <label asp-for="EmployeePersonalDetail.CreateEmployeeBank.BankId" class="form-label">Bank Name</label>
+                    <label  class="form-label">Bank Name</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="bx bxs-bank"></i>
@@ -472,8 +481,10 @@
                             <option value="" selected disabled>Select a Bank</option>
                             @foreach (var bank in ViewBag.Bank)
                             {
-                                <option value="@bank.Id">@bank.Name</option>
+    
+                                <option value="@bank.Id">@bank.Name </option>
                             }
+                     
                         </select>
                         <span asp-validation-for="EmployeePersonalDetail.CreateEmployeeBank.BankId" class="text-danger"></span>
                     </div>

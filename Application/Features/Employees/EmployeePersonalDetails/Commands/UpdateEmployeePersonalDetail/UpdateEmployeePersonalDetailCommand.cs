@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Commands.UpdateEmployeePersonalDetail
 {
-    public class UpdateEmployeePersonalDetailCommand:IRequest<Result<int>>
+    public class UpdateEmployeePersonalDetailCommand:IRequest<Result<EmployeePersonalDetail>>
     {
         public UpdateEmployeePersonalDetailCommand(int id, CreateEmployeePersonalDetailDto createEmployeePersonals)
         {
@@ -28,7 +28,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
         public int Id { get; set;}
         public CreateEmployeePersonalDetailDto CreateEmployeePersonals { get; set; }
     }
-    internal class UpdateEmployeePersonalDetailCommandHandler : IRequestHandler<UpdateEmployeePersonalDetailCommand, Result<int>>
+    internal class UpdateEmployeePersonalDetailCommandHandler : IRequestHandler<UpdateEmployeePersonalDetailCommand, Result<EmployeePersonalDetail>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private     readonly IMapper _mapper;
@@ -39,20 +39,20 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> Handle(UpdateEmployeePersonalDetailCommand request, CancellationToken cancellationToken)
+        public async Task<Result<EmployeePersonalDetail>> Handle(UpdateEmployeePersonalDetailCommand request, CancellationToken cancellationToken)
         {
-           var data =await _unitOfWork.Repository<EmployeePersonalDetail>().GetByIdAsync(request.Id);
-            if(data == null)
+            var data = await _unitOfWork.Repository<EmployeePersonalDetail>().GetByIdAsync(request.Id);
+            if (data == null)
             {
-                return Result<int>.NotFound();
+                return Result<EmployeePersonalDetail>.NotFound();
             }
             //Bank Deatil working
-            if (request.CreateEmployeePersonals.CreateEmployeeBank.Id != null)
+            if (request.CreateEmployeePersonals.CreateEmployeeBank.Id != null && request.CreateEmployeePersonals.CreateEmployeeBank.Id != 0)
             {
                 var bank = await _unitOfWork.Repository<BankDetail>().GetByIdAsync(request.CreateEmployeePersonals.CreateEmployeeBank.Id.Value);
 
                 await _unitOfWork.Repository<BankDetail>().UpdateAsync(bank);
-                await _unitOfWork.Save(cancellationToken);  
+                await _unitOfWork.Save(cancellationToken);
             }
             else
             {
@@ -73,10 +73,10 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             }
 
             //Address Working
-            if (request.CreateEmployeePersonals.ResidentialAddress.EmployeeId != null)
+            if (request.CreateEmployeePersonals.ResidentialAddress.EmployeeId != null && request.CreateEmployeePersonals.ResidentialAddress.EmployeeId != 0)
             {
                 var residentialAddress = await _unitOfWork.Repository<EmployeeAddress>().GetByIdAsync(request.CreateEmployeePersonals.ResidentialAddress.EmployeeId);
-                await _unitOfWork.Repository<EmployeeAddress>().UpdateAsync(residentialAddress); 
+                await _unitOfWork.Repository<EmployeeAddress>().UpdateAsync(residentialAddress);
                 await _unitOfWork.Save(cancellationToken);
             }
             else
@@ -87,7 +87,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                     Address2 = request.CreateEmployeePersonals.ResidentialAddress.Address2,
                     Address3 = request.CreateEmployeePersonals.ResidentialAddress.Address3,
                     AddressTypeId = 2,
-                    EmployeeId = data   .EmployeeId,
+                    EmployeeId = data.EmployeeId,
                     Nationality = request.CreateEmployeePersonals.ResidentialAddress.Nationality,
                     IsActive = true,
                     CityId = request.CreateEmployeePersonals.ResidentialAddress.CityId,
@@ -97,7 +97,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                 await _unitOfWork.Repository<EmployeeAddress>().AddAsync(residentialAddress);
                 await _unitOfWork.Save(cancellationToken);
             }
-            if (request.CreateEmployeePersonals.PermanentAddress.EmployeeId != null)
+            if (request.CreateEmployeePersonals.PermanentAddress.EmployeeId != null && request.CreateEmployeePersonals.PermanentAddress.EmployeeId != 0)
             {
                 var permanentAddress = await _unitOfWork.Repository<EmployeeAddress>().GetByIdAsync(request.CreateEmployeePersonals.PermanentAddress.EmployeeId);
                 await _unitOfWork.Repository<EmployeeAddress>().UpdateAsync(permanentAddress);
@@ -124,7 +124,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                 //    await _unitOfWork.Repository<EmployeeAddress>().AddAsync(request.CreateEmployeePersonals.PermanentAddress);
 
             }
-            if(request.CreateEmployeePersonals.Emergency.Id != null)
+            if (request.CreateEmployeePersonals.Emergency.Id != null && request.CreateEmployeePersonals.Emergency.Id!=0)
             {
                 var emergency = await _unitOfWork.Repository<EmergencyContact>().GetByIdAsync(request.CreateEmployeePersonals.Emergency.Id);
                 await _unitOfWork.Repository<EmergencyContact>().UpdateAsync(emergency);
@@ -139,7 +139,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
 
               await _unitOfWork.Repository<EmployeePersonalDetail>().UpdateAsync(data);
             await _unitOfWork.Save(cancellationToken);
-            return Result<int>.Success();
+            return Result<EmployeePersonalDetail>.Success(data);
         }
     }
 }
