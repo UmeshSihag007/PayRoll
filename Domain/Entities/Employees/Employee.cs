@@ -53,12 +53,14 @@ namespace ApwPayroll_Domain.Entities.Employees
         public List<EmployeeDocument>? EmployeeDocuments { get; set; } = new List<EmployeeDocument>();
 
        public  EmployeePersonalDetail EmployeePersonalDetail { get; set; }
+ 
         public List<EmployeeFamily> EmployeeFamily { get; set; } = new List<EmployeeFamily>();
+ 
         public List<EmployeeExperience>? EmployeeExperience { get; set; } = new List<EmployeeExperience>();
         public List<EmployeeQualification> EmployeeQualification { get; set; } = new List<EmployeeQualification>();
         public List<ReferralDetail> ReferralDetail { get; set; } = new List<ReferralDetail>();
         public List<EmergencyContact>? EmergencyContact { get; set; } = new List<EmergencyContact>();
-        public List< EmployeeAddress>? EmployeeAddresses { get; set; }
+        public List<EmployeeAddress>? EmployeeAddresses { get; set; } = new List<EmployeeAddress>();
 
         // degisnation working
         public void AddDesignation(int designationId)

@@ -1,4 +1,5 @@
-﻿using ApwPayroll_Application.Interfaces.Repositories;
+﻿using ApwPayroll_Application.Common.Mappings;
+using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Domain.common.Enums.AccountType;
 using ApwPayroll_Domain.Entities.Banks;
 using ApwPayroll_Shared;
@@ -43,7 +44,7 @@ internal class GetAllBankQueryHandler : IRequestHandler<GetAllBankQuery, Result<
     }
 }
 
-public class GetBankDto
+public class GetBankDto:IMapFrom<Bank>
 {
     public int Id { get; set; }
     public string Name { get; set; }

@@ -143,10 +143,10 @@
                             </td>
                             <td>
                                 <span class="d-flex">
-                                    <a asp-action="BankView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn me-2">
+                                    <a asp-action="BankView" asp-all-route asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn me-2">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <button class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', '@Url.Action("Delete", "Bank")')">
+                                <button class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id','bank', '@Url.Action("Delete", "Bank")')">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
                                 </span>
@@ -166,50 +166,44 @@
         </div>
     </div>
 </div>
-
 @section scripts {
-    <!-- Dropzone, Crypto-KYC, and App js -->
+    <!-- dropzone min -->
     <script src="~/assets/libs/dropzone/dropzone-min.js"></script>
+
+    <!--crypto-kyc init-->
     <script src="~/assets/js/pages/crypto-kyc.init.js"></script>
+
+    <!-- App js -->
     <script src="~/assets/js/app.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Delete Confirmation Script -->
-    <script>
-        function confirmDelete(id, url) {
-            if (confirm("Are you sure you want to delete this item?")) {
-                window.location.href = url + '?id=' + id;
-            }
-        }
-    </script>
+    <partial name="_ValidationScriptsPartial" />
 
-    <!-- Edit Button Script -->
-    <script>
-        $(document).ready(function () {
-            $('.editBtn').click(function () {
-                $('#updateBtn').show();
-                $('#addBtn').hide();
-                // Load data into form if needed, e.g., populate fields for update
-                var bankId = $(this).attr('asp-route-id');
-                // Fetch and populate form with data based on bankId
-                $.ajax({
-                    url: '@Url.Action("GetBankDetails", "Bank")',
-                    type: 'GET',
-                    data: { id: bankId },
-                    success: function (data) {
-                        $('input[name="Id"]').val(data.Id);
-                        $('input[name="Name"]').val(data.Name);
-                        $('input[name="EmployeeId"]').val(data.EmployeeId);
-                        $('input[name="AccountNumber"]').val(data.AccountNumber);
-                        $('input[name="IFCCode"]').val(data.IFCCode);
-                        $('input[name="AccountName"]').val(data.AccountName);
-                        $('select[name="AccountType"]').val(data.AccountType);
-                        $('select[name="BranchId"]').val(data.BranchId);
-                        $('#isVerifiedToggle').prop('checked', data.IsBankAccountVerified);
-                    }
-                });
-            });
-        });
-    </script>
+
+
+
 }
- 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@Html.Partial("_DeleteConfirmation")
+
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let url;
+
+
+                url = '@Url.Action("Delete", "Bank")/' + id;
+            }
+            window.location.href = url;
+        }
+                            })
+                        }
+</script>
