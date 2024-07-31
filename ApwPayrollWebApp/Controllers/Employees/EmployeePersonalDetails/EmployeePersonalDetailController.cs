@@ -50,6 +50,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
 
         public async Task<IActionResult> CreateEmployeePersonal(int? id)
         {
+            await InitializeViewBags();
                 var model = new EmployeeCreateViewModel();
             if (id != 0 && id != null)
             {
@@ -139,7 +140,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
         [HttpPost]
         public async Task<IActionResult> CreateEmployeePersonal(int? employeeId, EmployeeCreateViewModel command)
         {
-
+            await InitializeViewBags();
             ModelState.Remove("EmployeePersonalDetail.ResidentialAddress.Nationality ");
             ModelState.Remove("EmployeePersonalDetail.PermanentAddress.EmployeeId");
             ModelState.Remove("EmployeePersonalDetail.ResidentialAddress.EmployeeId");

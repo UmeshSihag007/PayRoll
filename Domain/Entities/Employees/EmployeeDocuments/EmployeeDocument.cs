@@ -1,9 +1,10 @@
-﻿using ApwPayroll_Domain.Entities.Documents;
+﻿using ApwPayroll_Domain.common;
+using ApwPayroll_Domain.Entities.Documents;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDocumentTypes;
 
 namespace ApwPayroll_Domain.Entities.Employees.EmployeeDocuments
 {
-    public class EmployeeDocument
+    public class EmployeeDocument 
     {
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }

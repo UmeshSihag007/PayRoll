@@ -77,7 +77,7 @@ namespace ApwPayrollWebApp.Controllers.Employees
             if (data.succeeded)
             {
 
-            ViewBag.employee = data.Data;
+               ViewBag.employee = data.Data;
             }
              
             return View(model);

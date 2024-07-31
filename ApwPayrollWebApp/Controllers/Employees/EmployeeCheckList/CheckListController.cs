@@ -16,9 +16,14 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeCheckList
         public async Task<IActionResult> Index()
         {
             var employeeId = HttpContext.Session.GetInt32("EmployeeId");
+            /*var employeeId = 83;*/
             if (employeeId != 0 && employeeId != null)
             {
                 var data = await _mediator.Send(new GetEmployeeByIdQuery(employeeId.Value));
+                var firstDesignation = data.Data.EmployeeDesignations.First().Designation;
+                var firstDepartment = data.Data.EmployeeDepartments.First().Department;
+                ViewBag.department = firstDepartment;
+                ViewBag.designation=firstDesignation;   
                 ViewBag.employee = data.Data;
             }
             return View();

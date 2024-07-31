@@ -1,8 +1,10 @@
 ﻿using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Application.Interfaces.Repositories.Documents;
+using ApwPayroll_Application.Interfaces.Repositories.EmployeeDocuments;
 using ApwPayroll_Domain.Entities.AspUsers;
 using ApwPayroll_Persistence.Data;
 using ApwPayroll_Persistence.Repositories;
+using ApwPayroll_Persistence.Repositories.EmployeeDocuments;
 using Certificate_Persistence.Repositories.Documents;
 using Couchbase.Management.Users;
 using Microsoft.AspNetCore.Identity;
@@ -45,6 +47,7 @@ namespace ApwPayroll_Persistence.Extensions
                        .AddTransient<IDocumentRepository, DocumentRepository>()
                       .AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork))
                       .AddTransient<INotificationRepository, NotificationRepository>()
+                      .AddTransient<IEmployeeDocumentRepository,EmployeeDocumentRepository>()
                       /*.AddTransient<IDocumentRepository, DocumentRepository>()*/
                 .AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 

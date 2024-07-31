@@ -17,35 +17,16 @@ namespace ApwPayroll_Application.Common.Exceptions
 
             // Ration Card number format varies by state, so we'll provide a basic format check
             // You can modify or extend this to accommodate specific state formats
-            var regex = new Regex(@"^[A-Z]{1,2}[0-9]{7,12}$");
+            var regex = new Regex(@"^[0-9]{12}$");
             if (!regex.IsMatch(rationCardNumber))
             {
-                return new ValidationResult("Invalid Ration Card number format.  It should be in the format of AB123456789.");
+                return new ValidationResult("Invalid Ration Card number format. It should consist of exactly twelve digits.");
             }
 
-            // Additional validation: Check for duplicate characters (some states have this rule)
-            if (HasDuplicateCharacters(rationCardNumber))
-            {
-                return new ValidationResult("Invalid Ration Card number. It should not have duplicate characters.");
-            }
+            
+             
 
             return ValidationResult.Success;
-        }
-
-        private bool HasDuplicateCharacters(string input)
-        {
-            var charArray = input.ToCharArray();
-            for (int i = 0; i < charArray.Length; i++)
-            {
-                for (int j = i + 1; j < charArray.Length; j++)
-                {
-                    if (charArray[i] == charArray[j])
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
+        } 
     }
 }

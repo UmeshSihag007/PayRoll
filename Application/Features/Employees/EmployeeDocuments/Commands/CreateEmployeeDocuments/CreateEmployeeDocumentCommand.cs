@@ -67,6 +67,10 @@ public class CreateEmployeeDocumentCommand : IRequest<Result<int>>
         EmployeeId = employeeId;
         EmployeeDocuments = employeeDocuments;
     }
+    public CreateEmployeeDocumentCommand()
+    {
+            
+    }
 }
 internal class CreateEmployeeDocumentCommandHandler : IRequestHandler<CreateEmployeeDocumentCommand, Result<int>>
 {

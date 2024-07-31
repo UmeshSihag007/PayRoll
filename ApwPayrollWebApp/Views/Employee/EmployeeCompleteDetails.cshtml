@@ -1,4 +1,5 @@
-﻿ 
+﻿@using ApwPayrollWebApp.Models
+@model EmployeeCreateViewModel
 @{
     ViewData["Title"] = "EmployeeCompleteDetails";
 }
@@ -504,7 +505,7 @@
 
 
                                         <div class="d-flex flex-row-reverse m-2">
-                                            <a asp-action="Update" asp-all-route asp-route-id="" class="btn btn-sm btn-info" id="editBtn">
+                                            <a asp-action="Create" asp-controller="EmployeeDocument" type="post" asp-all-route asp-route-id="@document.Document.Id" asp-route-employeeid="@document.EmployeeId" class="btn btn-sm btn-info" id="editBtn">
                                                 <i class="bi bi-pencil-square"> Edit</i>
                                             </a>
                                         </div>

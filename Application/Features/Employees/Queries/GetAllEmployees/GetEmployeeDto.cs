@@ -21,6 +21,7 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetAllEmployees
     public class GetEmployeeDto : IMapFrom<Employee>
     {
         public int Id { get; set; }
+        public int EmployeeId {  get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
@@ -52,7 +53,7 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetAllEmployees
         public List<EmployeeDesignation>? EmployeeDesignations { get; set; } = new List<EmployeeDesignation>();
         public List<EmployeeDepartment>? EmployeeDepartments { get; set; } = new List<EmployeeDepartment>();
 
-        public List<EmployeeDocument> EmployeeDocuments { get; set; } = new List<EmployeeDocument>();
+        public List<EmployeeDocument> EmployeeDocuments { get; set; } = new List<EmployeeDocument>(); 
         public CreateEmployeeBankDetailCommand CreateEmployeeBank { get; set; }
         public EmployeePersonalDetail EmployeePersonalDetail { get; set; }
         public List< EmployeeAddress>  EmployeeAddress { get; set; }
