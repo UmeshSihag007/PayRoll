@@ -1,0 +1,52 @@
+﻿@model ApwPayrollWebApp.Models.PaginationViewModel
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        <!-- Previous Button -->
+        @if (Model.CurrentPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" href="?pageNumber=@(Model.CurrentPage - 1)&pageSize=@Model.PageSize" aria-label="Previous">Previous</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true">Previous</span>
+            </li>
+        }
+
+        <!-- Pagination Numbers -->
+        @{
+            var pageCount = 3; // Number of page links to display
+            var startPage = Math.Max(1, Model.CurrentPage - pageCount / 2);
+            var endPage = Math.Min(Model.TotalPages, startPage + pageCount - 1);
+
+            if (endPage - startPage < pageCount - 1)
+            {
+                startPage = Math.Max(1, endPage - pageCount + 1);
+            }
+        }
+
+        @for (int i = startPage; i <= endPage; i++)
+        {
+            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                <a class="page-link" href="?pageNumber=@i&pageSize=@Model.PageSize">@i</a>
+            </li>
+        }
+
+        <!-- Next Button -->
+        @if (Model.CurrentPage < Model.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" href="?pageNumber=@(Model.CurrentPage + 1)&pageSize=@Model.PageSize" aria-label="Next">Next</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true">Next</span>
+            </li>
+        }
+    </ul>
+</nav>
