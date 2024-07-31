@@ -20,6 +20,7 @@ using ApwPayroll_Domain.Entities.Banks;
 using ApwPayroll_Domain.Entities.Banks.BankDetails;
 using ApwPayroll_Domain.Entities.Employees.EmergencyContacts;
 using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
+using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
 using ApwPayroll_Domain.Entities.RelationTypes;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.EnumHelpers;
@@ -51,39 +52,41 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
         {
             await InitializeViewBags();
                 var model = new EmployeeCreateViewModel();
-            if(id != 0 &&  id!=null)
+            if (id != 0 && id != null)
             {
-
                 var data = await _mediator.Send(new GetEmployeeByIdQuery(id.Value));
                 var employee = data.Data;
-                var permanentAddress = employee.EmployeeAddresses?.FirstOrDefault(a => a.AddressTypeId == 1);
-                var residentialAddress = employee.EmployeeAddresses?.FirstOrDefault(a => a.AddressTypeId == 2);
-                var emergencyContact = employee.EmergencyContact?.FirstOrDefault();
-                var  bankDetails=employee.BankDetails?.FirstOrDefault();
 
-                if (data != null)
+                if (employee != null)
                 {
+                    var permanentAddress = employee.EmployeeAddresses?.FirstOrDefault(a => a.AddressTypeId == 1);
+                    var residentialAddress = employee.EmployeeAddresses?.FirstOrDefault(a => a.AddressTypeId == 2);
+                    var emergencyContact = employee.EmergencyContact?.FirstOrDefault();
+                    var bankDetails = employee.BankDetails?.FirstOrDefault();
+
                     model.EmployeePersonalDetail = new CreateEmployeePersonalDetailDto
                     {
-                        Id = employee.EmployeePersonalDetail.Id,
+                        Id = employee.EmployeePersonalDetail?.EmployeeId ?? 0,
+                         
                         BloodGroup = employee.EmployeePersonalDetail.BloodGroup,
                         DOB = employee.EmployeePersonalDetail.DOB,
                         Gender = employee.EmployeePersonalDetail.Gender,
-                        FatherName = employee.EmployeeFamily.FirstOrDefault(f => f.RelationType.Name == "Father")?.Name,
-                        FatherDOB = employee.EmployeeFamily.FirstOrDefault(f => f.RelationType.Name == "Father")?.DOB,
-                        MotherName = employee.EmployeeFamily.FirstOrDefault(f => f.RelationType.Name == "Mother")?.Name,
-                        MotherDOB = employee.EmployeeFamily.FirstOrDefault(f => f.RelationType.Name == "Mother")?.DOB,
+                        FatherName = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Father")?.Name,
+                        FatherDOB = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Father")?.DOB,
+                        MotherName = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.Name,
+                        MotherDOB = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.DOB,
                         MarriedStatus = employee.EmployeePersonalDetail.MarriedStatus,
-                        SpouseName = employee.EmployeeFamily.FirstOrDefault(f => f.RelationType.Name == "Spouse")?.Name,
-                        SpouseDOB = employee.EmployeeFamily.FirstOrDefault(f => f.RelationType.Name == "Spouse")?.DOB,
+                        SpouseName = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse")?.Name,
+                        SpouseDOB = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse")?.DOB,
                         SpouseGender = employee.EmployeeFamily.FirstOrDefault(f => f.RelationType.Name == "Spouse").Gender,
-                        DateOfWedding = employee.EmployeePersonalDetail.DateOfWedding,
+                        DateOfWedding = employee.EmployeePersonalDetail?.DateOfWedding,
                         Emergency = emergencyContact != null ? new EmergencyContact
                         {
                             Name = emergencyContact.Name,
                             Email = emergencyContact.Email,
                             MobileNumber = emergencyContact.MobileNumber,
                             WhatsAppNumber = emergencyContact.WhatsAppNumber,
+                            RelationTypeId=emergencyContact.RelationTypeId,
                         } : null,
                         PermanentAddress = permanentAddress != null ? new CreateEmployeeAddressCommand
                         {
@@ -115,19 +118,18 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                         } : null,
                         CreateEmployeeBank = bankDetails != null ? new CreateEmployeeBankDetailCommand
                         {
+                            Id= bankDetails.Id,
                             AccountBranch = bankDetails.AccountBranch,
                             AccountName = bankDetails.AccountName,
                             AccountType = bankDetails.AccountType,
                             BanAccountId = bankDetails.BanAccountId,
+                       BankId=bankDetails.BankId.Value,
                             IFCCode = bankDetails.IFCCode,
                             IsBankAccountVerified = bankDetails.IsBankAccountVerified,
                         } : null,
-                    Religion = employee.EmployeePersonalDetail.Religion,
-                        PlaceOfBirth=employee.EmployeePersonalDetail.PlaceOfBirth, 
-
-
+                        Religion = employee.EmployeePersonalDetail?.Religion,
+                        PlaceOfBirth = employee.EmployeePersonalDetail?.PlaceOfBirth,
                     };
-                  
                 }
                 Notify(["Tesing"], null, 200);
             }
@@ -140,16 +142,24 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
         {
             await InitializeViewBags();
             ModelState.Remove("EmployeePersonalDetail.ResidentialAddress.Nationality ");
-            if (ModelState.IsValid)
+            ModelState.Remove("EmployeePersonalDetail.PermanentAddress.EmployeeId");
+            ModelState.Remove("EmployeePersonalDetail.ResidentialAddress.EmployeeId");
+             if (ModelState.IsValid)
             {
                 if (HttpContext.Session.GetInt32("EmployeeId") != null)
                 {
                     employeeId = HttpContext.Session.GetInt32("EmployeeId");
                 }
 
-                if(command.EmployeePersonalDetail.Id != null)
+                if(command.EmployeePersonalDetail.Id != null && command.EmployeePersonalDetail.Id!=0)
                 {
-                    await _mediator.Send(new UpdateEmployeePersonalDetailCommand(command.EmployeePersonalDetail.Id.Value, command.EmployeePersonalDetail));
+                   var updateData=    await _mediator.Send(new UpdateEmployeePersonalDetailCommand(command.EmployeePersonalDetail.Id.Value, command.EmployeePersonalDetail));
+                    if (HttpContext.Session.GetInt32("EmployeeId") != null)
+                    {
+
+                        return View(command);
+                    }
+                    return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = updateData.Data.EmployeeId });
 
                 }
                 var data = await _mediator.Send(new CreateEmployeePersonalDetailCommand(employeeId.Value, command.EmployeePersonalDetail));
@@ -158,6 +168,8 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                 {
                     Notify(data.Messages, null, data.code);
                 }
+                command = new EmployeeCreateViewModel();
+         
                 return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
             }
             return View(command);

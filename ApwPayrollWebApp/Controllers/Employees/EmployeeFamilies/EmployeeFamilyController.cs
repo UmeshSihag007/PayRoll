@@ -98,7 +98,6 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
                     Notify(data.Messages, null, data.code);
                 }
                 }
-           
                 
             }
 
