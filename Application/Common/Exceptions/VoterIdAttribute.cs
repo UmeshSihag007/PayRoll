@@ -23,29 +23,10 @@ namespace ApwPayroll_Application.Common.Exceptions
                 return new ValidationResult("Invalid Voter ID format. It should be a combination of letters and numbers.");
             }
 
-            // Additional validation: Check for duplicate characters (some states have this rule)
-            if (HasDuplicateCharacters(voterId))
-            {
-                return new ValidationResult("Invalid Voter ID. It should not have duplicate characters.");
-            }
-
+            
             return ValidationResult.Success;
         }
 
-        private bool HasDuplicateCharacters(string input)
-        {
-            var charArray = input.ToCharArray();
-            for (int i = 0; i < charArray.Length; i++)
-            {
-                for (int j = i + 1; j < charArray.Length; j++)
-                {
-                    if (charArray[i] == charArray[j])
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
+        
     }
 }
