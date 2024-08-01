@@ -18,8 +18,9 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeReferral
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> ReferenceView(int?employeeId, int? id)
+        public async Task<IActionResult> ReferenceView(int? employeeId, int? id)
         {
+            ViewBag.employeeId = employeeId;
             await IntializeViewBag();
             var model = new EmployeeCreateViewModel();
             if (id.HasValue)
@@ -41,11 +42,11 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeReferral
 
                 }
             }
-          
+
             return View(model);
         }
 
-       
+
 
         public async Task<IActionResult> Delete(int id)
         {
@@ -85,10 +86,15 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeReferral
                 {
                     Notify(data.Messages, null, data.code);
                 }
+                if (HttpContext.Session.GetInt32("EmployeeId") != null)
+                {
+                    return RedirectToAction("ReferenceView");
+                }
+                return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = ViewBag.employeeId });
             }
             else
             {
-               var data= await _mediator.Send(new UpdateEmployeeReferencesCommand((int)command.ReferencesCommand.Id, command.ReferencesCommand));
+                var data = await _mediator.Send(new UpdateEmployeeReferencesCommand((int)command.ReferencesCommand.Id, command.ReferencesCommand));
                 if (data.code == 200)
                 {
                     Notify(data.Messages, null, data.code);
@@ -110,17 +116,17 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeReferral
         }
         private async Task IntializeViewBag()
         {
-               if(HttpContext.Session.GetInt32("EmployeeId")!=0 && HttpContext.Session.GetInt32("EmployeeId")!=null)
+            if (HttpContext.Session.GetInt32("EmployeeId") != 0 && HttpContext.Session.GetInt32("EmployeeId") != null)
             {
                 var employeeId = HttpContext.Session.GetInt32("EmployeeId");
-          
-            var ReferralList = await _mediator.Send(new GetEmployeeReferalQuery(employeeId.Value));
-           var employeeReferral=  ReferralList.Data.Where(x=>x.EmployeeId== employeeId).ToList();
-            if (employeeId != null)
-            {
 
-                ViewBag.Referral = employeeReferral;
-            }
+                var ReferralList = await _mediator.Send(new GetEmployeeReferalQuery(employeeId.Value));
+                var employeeReferral = ReferralList.Data.Where(x => x.EmployeeId == employeeId).ToList();
+                if (employeeId != null)
+                {
+
+                    ViewBag.Referral = employeeReferral;
+                }
 
             }
         }

@@ -25,6 +25,8 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
         }
         public async Task<IActionResult> Create(int? employeeId, int? id)
         {
+            ViewBag.EmployeeId = employeeId;
+
             await InitializeViewBags();
             var model = new EmployeeCreateViewModel();
             if (id.HasValue)
@@ -46,7 +48,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
                     };
                     model.documentCommand = new CreateEmployeeDocumentCommand
                     {
-                        EmployeeId = document.Data.EmployeeId, 
+                        EmployeeId = document.Data.EmployeeId,
                         EmployeeDocuments = new List<CreateEmployeeDocumentDto> { employeeDocument }
                     };
                 }
@@ -68,19 +70,24 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
 
             if (ModelState.IsValid)
             {
-               
-                    var data = await _mediator.Send(new CreateEmployeeDocumentCommand(EmployeeId, model.EmployeeDocument));
-                    if (data.code == 200)
-                    {
-                        Notify(data.Messages, null, data.code);
-                    }
-                    else
-                    {
-                        Notify(data.Messages, null, data.code);
-                    }
 
-                    return RedirectToAction("ReferenceView", "EmployeeReferral");
- 
+                var data = await _mediator.Send(new CreateEmployeeDocumentCommand(EmployeeId, model.EmployeeDocument));
+                if (data.code == 200)
+                {
+                    Notify(data.Messages, null, data.code);
+                }
+                else
+                {
+                    Notify(data.Messages, null, data.code);
+                }
+                if (HttpContext.Session.GetInt32("EmployeeId") != null)
+                {
+                return RedirectToAction("ReferenceView", "EmployeeReferral");
+
+                }
+                return RedirectToAction("EmployeeCompleteDetails", "Employee", new {id= EmployeeId});
+
+
 
             }
             await InitializeViewBags();

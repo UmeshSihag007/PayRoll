@@ -85,7 +85,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                     EmployeeId = request.EmployeeId,
                     DOB = request.CreateEmployeePersonals.DOB,
                     Gender = request.CreateEmployeePersonals.SpouseGender,
-                    RelationTypeId = 1,
+                    RelationTypeId = 4,
                     IsActive = true,
                 };
                 await _unitOfWork.Repository<EmployeeFamily>().AddAsync(SpouseData);
@@ -137,7 +137,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             {
                 var emergencyContact = new EmergencyContact
                 {
-                    Name = request.CreateEmployeePersonals.FatherName ?? "Testing",
+                    Name = GetEmergencyContactName(request.CreateEmployeePersonals.Emergency.RelationTypeId, request),
                     RelationTypeId = request.CreateEmployeePersonals.Emergency.RelationTypeId,
                     Email = request.CreateEmployeePersonals.Emergency.Email,
                     MobileNumber = request.CreateEmployeePersonals.Emergency.MobileNumber,
@@ -170,9 +170,18 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             }
 
 
-
-
             return Result<int>.Success();
+
+        }
+        private string GetEmergencyContactName(int? relationTypeId, CreateEmployeePersonalDetailCommand request)
+        {
+            return relationTypeId switch
+            {
+                1 => request.CreateEmployeePersonals.FatherName ?? "Testing",
+                2 => request.CreateEmployeePersonals.MotherName ?? "Testing",
+                4 => request.CreateEmployeePersonals.SpouseName ?? "Testing",
+                _ => "Testing"
+            };
 
         }
 

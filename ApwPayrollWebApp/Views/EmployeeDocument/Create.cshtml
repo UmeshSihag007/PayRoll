@@ -15,9 +15,11 @@
         </div>
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div class="row">
+                <input type="hidden" asp-for="EmployeeId" value="@ViewBag.EmployeeId"/>
                 @for (int i = 0; i < ViewBag.EmployeeDocumentTypes.Count; i++)
                 {
                     <input type="hidden" asp-for="EmployeeDocument[i].EmployeeDocumentTypeId" value="@ViewBag.EmployeeDocumentTypes[i].Id" />
+                   
 
                     @*             <input type="hidden" asp-for="EmployeeDocument[@i].EmployeeDocumentTypeId" value="@ViewBag.EmployeeDocumentTypes[i].Id" />
                 *@            <div class="col-lg-4">

@@ -17,6 +17,7 @@
             <form asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" method="post">
                 <div class=" row mt-1 mb-2">
                     <input type="hidden" asp-for="Qualification.Id" />
+                    <input type="hidden" asp-for="Qualification.EmployeeId" value="@ViewBag.employeeId" />
                     <div class="col-lg-3">
                         <label asp-for="Qualification.CourseId" class="form-label">Course</label>
                         <div class="input-group">
@@ -156,6 +157,7 @@
             <form asp-action="CreateEmployeeExperience" asp-controller="EmployeeExperience" method="post">
              
                 <input type="hidden" asp-for="Experiences.Id" />
+                <input type="hidden" asp-for="Experiences.EmployeeId" value="@ViewBag.employeeId" />
                 <div class="row mt-1 mb-2">
                     <div class="col-lg-4">
                         <label asp-for="Experiences.ComanyName" class="form-label">Company Name</label>
