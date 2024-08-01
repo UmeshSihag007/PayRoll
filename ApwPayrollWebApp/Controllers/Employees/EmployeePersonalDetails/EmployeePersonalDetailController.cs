@@ -51,42 +51,45 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
         public async Task<IActionResult> CreateEmployeePersonal(int? id)
         {
             await InitializeViewBags();
-                var model = new EmployeeCreateViewModel();
-            if (id != 0 && id != null)
+            var model = new EmployeeCreateViewModel();
+
+            if (id.HasValue && id.Value != 0)
             {
                 var data = await _mediator.Send(new GetEmployeeByIdQuery(id.Value));
-                var employee = data.Data;
+                var employee = data?.Data;
 
                 if (employee != null)
                 {
+                    var employeePersonalDetail = employee.EmployeePersonalDetail;
+                    var employeeFamily = employee.EmployeeFamily;
                     var permanentAddress = employee.EmployeeAddresses?.FirstOrDefault(a => a.AddressTypeId == 1);
                     var residentialAddress = employee.EmployeeAddresses?.FirstOrDefault(a => a.AddressTypeId == 2);
                     var emergencyContact = employee.EmergencyContact?.FirstOrDefault();
                     var bankDetails = employee.BankDetails?.FirstOrDefault();
+                    var spouse = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse");
 
                     model.EmployeePersonalDetail = new CreateEmployeePersonalDetailDto
                     {
-                        Id = employee.EmployeePersonalDetail?.EmployeeId ?? 0,
-                         
-                        BloodGroup = employee.EmployeePersonalDetail.BloodGroup,
-                        DOB = employee.EmployeePersonalDetail.DOB,
-                        Gender = employee.EmployeePersonalDetail.Gender,
-                        FatherName = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Father")?.Name,
-                        FatherDOB = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Father")?.DOB,
-                        MotherName = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.Name,
-                        MotherDOB = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.DOB,
-                        MarriedStatus = employee.EmployeePersonalDetail.MarriedStatus,
-                        SpouseName = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse")?.Name,
-                        SpouseDOB = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse")?.DOB,
-                        SpouseGender = employee.EmployeeFamily.FirstOrDefault(f => f.RelationType.Name == "Spouse").Gender,
-                        DateOfWedding = employee.EmployeePersonalDetail?.DateOfWedding,
+                        Id = employeePersonalDetail?.EmployeeId ?? 0,
+                        BloodGroup = employeePersonalDetail?.BloodGroup ?? default,
+                        DOB = employeePersonalDetail.DOB ,
+                        Gender = employeePersonalDetail?.Gender ?? default,
+                        FatherName = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Father")?.Name,
+                        FatherDOB = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Father")?.DOB,
+                        MotherName = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.Name,
+                        MotherDOB = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.DOB,
+                        MarriedStatus = employeePersonalDetail?.MarriedStatus ?? default,
+                        SpouseName = spouse?.Name,
+                        SpouseDOB = spouse?.DOB,
+                        SpouseGender = spouse?.Gender ?? default,
+                        DateOfWedding = employeePersonalDetail?.DateOfWedding,
                         Emergency = emergencyContact != null ? new EmergencyContact
                         {
                             Name = emergencyContact.Name,
                             Email = emergencyContact.Email,
                             MobileNumber = emergencyContact.MobileNumber,
                             WhatsAppNumber = emergencyContact.WhatsAppNumber,
-                            RelationTypeId=emergencyContact.RelationTypeId,
+                            RelationTypeId = emergencyContact.RelationTypeId
                         } : null,
                         PermanentAddress = permanentAddress != null ? new CreateEmployeeAddressCommand
                         {
@@ -118,21 +121,23 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                         } : null,
                         CreateEmployeeBank = bankDetails != null ? new CreateEmployeeBankDetailCommand
                         {
-                            Id= bankDetails.Id,
+                            Id = bankDetails.Id,
                             AccountBranch = bankDetails.AccountBranch,
                             AccountName = bankDetails.AccountName,
                             AccountType = bankDetails.AccountType,
                             BanAccountId = bankDetails.BanAccountId,
-                       BankId=bankDetails.BankId.Value,
+                            BankId = bankDetails.BankId ?? default,
                             IFCCode = bankDetails.IFCCode,
-                            IsBankAccountVerified = bankDetails.IsBankAccountVerified,
+                            IsBankAccountVerified = bankDetails.IsBankAccountVerified
                         } : null,
-                        Religion = employee.EmployeePersonalDetail?.Religion,
-                        PlaceOfBirth = employee.EmployeePersonalDetail?.PlaceOfBirth,
+                        Religion = employeePersonalDetail?.Religion,
+                        PlaceOfBirth = employeePersonalDetail?.PlaceOfBirth
                     };
                 }
-                Notify(["Tesing"], null, 200);
+
+                Notify(  ["Testing" ], null, 200);
             }
+
             await InitializeViewBags();
             return View(model);
         }

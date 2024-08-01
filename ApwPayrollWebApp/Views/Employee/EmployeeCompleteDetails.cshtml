@@ -19,7 +19,6 @@
                         <div class="ribbon ribbon-success round-shape"><span>Is Login Access </span></div>
                     </div>
                     <div class="col-5 form-switch">
- 
 
                          <input type="checkbox" class="form-check-input" id="isActiveToggle_@ViewBag.employee.Id" style="width: 3rem; height: 1.5rem;" @(ViewBag.employee.IsLoginAccess ? "checked" : "") />
                      </div>
@@ -38,10 +37,20 @@
 
                             </div>
                             <div class="col-5 text-end">
+                                @if (ViewBag.employee == null)
+                                {
+                                    <a asp-action="CreateEmployeeBasic" asp-all-route asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+                                 
+                                        Add
+                                    </a>
+                                }
+                                else
+                                {                                    
                                 <a asp-action="CreateEmployeeBasic" asp-all-route asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
                                     <i class="bi bi-pencil-square"></i>
                                     Edit
                                 </a>
+                                }
                             </div>
                         </div>
                     </div>
@@ -153,10 +162,20 @@
                             </div>
 
                             <div class="col-5 text-end">
+                                @if (@ViewBag.employee.EmployeePersonalDetail == null)
+                                {
+                                    <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail"   class="btn btn-sm btn-info" id="editBtn">
+                                    
+                                        Add
+                                    </a>
+                                }
+                                else
+                                {                                   
                                 <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
                                     <i class="bi bi-pencil-square"></i>
                                     Edit
                                 </a>
+                                }
                             </div>
                         </div>
 
@@ -216,9 +235,24 @@
                 <div class="card ribbon-box ">
                     <div class="card-header">
                         <div class="row">
-                        </div>
+                            <div class="col-7">
+
                         <div class="ribbon ribbon-success round-shape"><span>Education Details</span></div>
                     </div>
+                        <div class="col-5  text-end">
+                            @if (ViewBag.employee.EmployeeQualification.Count == 0)
+                            {
+                                <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+                             
+                                    Add
+                                </a>
+                            }
+                        </div>
+                        </div>
+                            </div>
+                    @if (ViewBag.employee.EmployeeQualification.Count != 0)
+                    {
+                        
                     <div class="table-responsive">
 
                         <table class="table  table-bordered align-middle mb-0">
@@ -269,19 +303,37 @@
                                             </a>
                                         </td>
 
-                                        <td colspan="2"><hr></td>
+                                    
                                     </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
+                    }
                 </div>
             </div>
             <div class="col-xxl-6">
                 <div class="card ribbon-box ">
                     <div class="card-header">
+                    <div class="row">
+                        <div class="col-7">
+
+                        
                         <div class="ribbon ribbon-success round-shape"><span>Experience Details</span></div>
+
+
                     </div>
+                        <div class="col-5 d-flex flex-row-reverse bd-highlight">
+                            @if (@ViewBag.employee.EmployeeExperience.Count == 0)
+                            {
+                                    <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+
+                                        Add
+                                    </a>
+                            }
+                        </div>
+                    </div>
+                        </div>
                     @if (@ViewBag.employee.EmployeeExperience.Count != 0)
                     {
                         <div class="table-responsive">
@@ -349,8 +401,27 @@
             <div class="col-xxl-6">
                 <div class="card ribbon-box ">
                     <div class="card-header">
+                        <div class="row">
+                            <div class="col-7">
+
                         <div class="ribbon ribbon-success round-shape"><span>Family Details</span></div>
+                            </div>
+                            <div class="col-5  text-end">
+                                @if (ViewBag.employee.EmployeeFamily.Count == 0)
+                                {
+                                    <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+
+                                        Add
+                                    </a>
+                                }
+                            </div>
+                        </div>
                     </div>
+
+
+                    @if (ViewBag.employee.EmployeeFamily.Count != 0)
+                    {
+                        
                     <div class="table-responsive">
                         <table class="table  table-bordered align-middle mb-0">
                             <thead>
@@ -392,13 +463,31 @@
                         </table>
 
                     </div>
+                    }
                 </div>
             </div>
 
             <div class="col-xxl-6">
                 <div class="card ribbon-box ">
                     <div class="card-header">
-                        <div class="ribbon ribbon-success round-shape"><span>ReferralDetail Details</span></div>
+                        <div class="row">
+
+                            <div class="col-7"  >
+
+                          <div class="ribbon ribbon-success round-shape"><span>ReferralDetail Details</span></div>
+                            </div>
+
+                            <div class="col-5  text-end">
+                                @if (@ViewBag.employee.ReferralDetail.Count == 0)
+                                {
+                                    
+                                <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+
+                                    Add
+                                </a>
+                                }
+                            </div>
+                        </div>
                     </div>
                     @if (@ViewBag.employee.ReferralDetail.Count != 0)
                     {
@@ -465,12 +554,23 @@
                 <div class="card ribbon-box">
                     <div class="card-header">
 
+                        <div class="row">
+                            <div class="col-7">
 
                         <div class="ribbon ribbon-success round-shape">
                             <span>Employee Documents</span>
+                        </div>
+                            </div>
+                            <div class="col-5 text-end">
+                                @if (ViewBag.employee.EmployeeDocuments!=null)
+                                {
+                                    
+                                <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
 
-
-
+                                    Add
+                                </a>
+                                }
+                            </div>
                         </div>
 
 
