@@ -46,10 +46,12 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
         {
             return View();
         }
-
+         
 
         public async Task<IActionResult> CreateEmployeePersonal(int? id)
         {
+            ViewBag.employeeId = id;
+
             await InitializeViewBags();
             var model = new EmployeeCreateViewModel();
 
@@ -58,7 +60,8 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                 var data = await _mediator.Send(new GetEmployeeByIdQuery(id.Value));
                 var employee = data?.Data;
 
-                if (employee != null)
+                 
+                if (employee != null && employee.EmployeePersonalDetail!=null)
                 {
                     var employeePersonalDetail = employee.EmployeePersonalDetail;
                     var employeeFamily = employee.EmployeeFamily;
@@ -138,7 +141,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                 Notify(  ["Testing" ], null, 200);
             }
 
-            await InitializeViewBags();
+                
             return View(model);
         }
 
@@ -146,11 +149,13 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
         public async Task<IActionResult> CreateEmployeePersonal(int? employeeId, EmployeeCreateViewModel command)
         {
             await InitializeViewBags();
+            
             ModelState.Remove("EmployeePersonalDetail.ResidentialAddress.Nationality ");
             ModelState.Remove("EmployeePersonalDetail.PermanentAddress.EmployeeId");
             ModelState.Remove("EmployeePersonalDetail.ResidentialAddress.EmployeeId");
              if (ModelState.IsValid)
-            {
+             {
+                
                 if (HttpContext.Session.GetInt32("EmployeeId") != null)
                 {
                     employeeId = HttpContext.Session.GetInt32("EmployeeId");
@@ -175,7 +180,14 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                 }
                 command = new EmployeeCreateViewModel();
          
+                if (HttpContext.Session.GetInt32("EmployeeId") != null)
+                {
                 return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
+          
+                }
+                
+                return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = employeeId });
+
             }
             return View(command);
         }

@@ -18,7 +18,9 @@
             <input asp-for="EmployeePersonalDetail.PermanentAddress.EmployeeId" hidden/>
             <input asp-for="EmployeePersonalDetail.ResidentialAddress.EmployeeId" hidden/>
             <div class="row mt-1 mb-2">
-                <input type="hidden" asp-for="EmployeePersonalDetail.Id" name="employeeId" />
+                <input type="hidden" asp-for="EmployeePersonalDetail.Id" name="employeeId" value="@ViewBag.employeeId" />
+                
+                 
                 <div class="col-lg-4">
                     <label asp-for=" EmployeePersonalDetail.Gender" class="form-label">Gender</label>
                     <div class="input-group">
@@ -238,7 +240,7 @@
                             <span class="input-group-text">
                                 <i class="ri-user-fill"></i>
                             </span>
-                            <input asp-for="EmployeePersonalDetail.SpouseName" type="text" class="form-control form-control-sm" placeholder="Enter spouse name" />
+                            <input asp-for="EmployeePersonalDetail.SpouseName" id="spouseName" type="text" class="form-control form-control-sm" placeholder="Enter spouse name" data-val-required="Spouse Name field is required" />
                         </div>
                         <span asp-validation-for="EmployeePersonalDetail.SpouseName" class="text-danger"></span>
                     </div>
@@ -248,12 +250,12 @@
                             <span class="input-group-text">
                                 <i class="ri-calendar-event-fill"></i>
                             </span>
-                            <input asp-for="EmployeePersonalDetail.SpouseDOB" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter spouse date of birth" />
+                            <input asp-for="EmployeePersonalDetail.SpouseDOB" id="spouseDOB" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter spouse date of birth" />
                         </div>
                         <span asp-validation-for="EmployeePersonalDetail.SpouseDOB" class="text-danger"></span>
                     </div>
                     <div class="col-lg-3">
-                        <label asp-for="EmployeePersonalDetail.SpouseGender" class="form-label">Spouse Gender</label>
+                        <label asp-for="EmployeePersonalDetail.SpouseGender" class="form-label"  >Spouse Gender</label>
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="ri-calendar-event-fill"></i>
@@ -274,7 +276,7 @@
                             <span class="input-group-text">
                                 <i class="ri-calendar-event-fill"></i>
                             </span>
-                            <input asp-for="EmployeePersonalDetail.DateOfWedding" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter your wedding date">
+                            <input asp-for="EmployeePersonalDetail.DateOfWedding" id="dateOfWedding" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter your wedding date">
                         </div>
                         <span asp-validation-for="EmployeePersonalDetail.DateOfWedding" class="text-danger"></span>
                     </div>
@@ -557,6 +559,7 @@
                         }
                         else
                         {
+                             
                             <button type="submit" class="btn btn-secondary">
                                 Save & Next
                             </button>
@@ -587,30 +590,33 @@
 
 
 
-    <script>
+   
+<script>
         $(document).ready(function () {
             var maritalStatusDropdown = $('#maritalStatusDropdown');
             var spouseDetails = $('#spouseDetails');
+            var spouseFields = $('#spouseName, #spouseDOB, #spouseGender, #dateOfWedding');
+
+            function toggleSpouseDetails(isMarried) {
+                if (isMarried) {
+                    spouseDetails.slideDown();
+                    spouseFields.attr('required', true);
+                } else {
+                    spouseDetails.slideUp();
+                    spouseFields.removeAttr('required');
+                }
+            }
 
             // Initial check to show/hide spouse details based on the initial value
-            if (maritalStatusDropdown.val() == '2') {
-                spouseDetails.show();
-            } else {
-                spouseDetails.hide();
-            }
+            toggleSpouseDetails(maritalStatusDropdown.val() == '2');
 
             maritalStatusDropdown.change(function () {
                 var selectedValue = $(this).val();
                 console.log("Selected Value: " + selectedValue);
-
-                if (selectedValue == '2') { // '2' corresponds to Married in the enum
-                    spouseDetails.slideDown();
-                } else {
-                    spouseDetails.slideUp();
-                }
+                toggleSpouseDetails(selectedValue == '2');
             });
         });
-    </script>
+</script>
 
 
 

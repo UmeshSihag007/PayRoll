@@ -27,6 +27,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
 
         public async Task<IActionResult> CreateEmployeeEducation(int? employeeId, int? id)
         {
+            ViewBag.employeeId = employeeId;
      
             await InitializeViewBags();
  
@@ -40,7 +41,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                 if (employee == default)
                 {
                      
-                    return NotFound();  
+                    return NotFound();      
                 }
                  
                 var employeeEducationData = await _mediator.Send(new GetEmployeeQualificationQuery(employee));
@@ -116,7 +117,12 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                     {
                         Notify(data.Messages, null, data.code);
                     }
-                    return RedirectToAction("CreateEmployeeEducation" );
+                    if (HttpContext.Session.GetInt32("EmployeeId") != null)
+                    {
+
+                        return View(commond);
+                    }
+                    return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = ViewBag.employeeId });
                 }
                 else
                 {
