@@ -42,6 +42,7 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetByIdEmployee
                   .Include(x => x.EmployeeFamily).ThenInclude(x => x.RelationType)
             .Include(x => x.ReferralDetail)
  
+ 
          .Include(x=>x.EmployeeDesignations).ThenInclude(x=>x.Designation)
          .Include(x=>x.EmployeeDepartments).ThenInclude(x=>x.Department)
           .Include(x=>x.EmergencyContact)
@@ -49,6 +50,7 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetByIdEmployee
           .Include(X=>X.EmployeeAddresses).ThenInclude(X=>X.AddressType)
         
          .Include(x=>x.EmployeeDepartments)
+ 
  
                 .FirstOrDefaultAsync(e => e.Id == request.EmployeeId && e.IsDeleted == false, cancellationToken: cancellationToken);
 
