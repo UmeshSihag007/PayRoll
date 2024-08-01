@@ -9,6 +9,7 @@ using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDepartments;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDesignations;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDocuments;
+using ApwPayroll_Domain.Entities.Employees.EmployeeDocumentTypes;
 using ApwPayroll_Domain.Entities.Employees.EmployeeExperiences;
 using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
@@ -61,7 +62,7 @@ namespace ApwPayroll_Domain.Entities.Employees
         public List<ReferralDetail> ReferralDetail { get; set; } = new List<ReferralDetail>();
         public List<EmergencyContact>? EmergencyContact { get; set; } = new List<EmergencyContact>();
         public List<EmployeeAddress>? EmployeeAddresses { get; set; } = new List<EmployeeAddress>();
-
+      
         // degisnation working
         public void AddDesignation(int designationId)
         {

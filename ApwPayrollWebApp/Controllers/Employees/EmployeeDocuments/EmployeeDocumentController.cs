@@ -68,8 +68,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
 
             if (ModelState.IsValid)
             {
-                if (model.documentCommand.EmployeeDocuments.Count == 0 || model.documentCommand.EmployeeDocuments.Count == null)
-                {
+               
                     var data = await _mediator.Send(new CreateEmployeeDocumentCommand(EmployeeId, model.EmployeeDocument));
                     if (data.code == 200)
                     {
@@ -81,9 +80,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
                     }
 
                     return RedirectToAction("ReferenceView", "EmployeeReferral");
-
-                }
-
+ 
 
             }
             await InitializeViewBags();

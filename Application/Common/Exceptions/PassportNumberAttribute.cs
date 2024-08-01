@@ -23,32 +23,11 @@ namespace ApwPayroll_Application.Common.Exceptions
                 return new ValidationResult("Invalid Passport number format. It should be a combination of letters and numbers.");
             }
 
-            // Additional validation: Check for checksum (some countries have this rule)
-            if (!IsValidChecksum(passportNumber))
-            {
-                return new ValidationResult("Invalid Passport number. The checksum is incorrect.");
-            }
+             
 
             return ValidationResult.Success;
         }
 
-        private bool IsValidChecksum(string passportNumber)
-        {
-            // This is a basic example of a checksum calculation
-            // You may need to modify or extend this to accommodate specific country rules
-            var digits = passportNumber.ToCharArray();
-            int sum = 0;
-            for (int i = 0; i < digits.Length - 1; i++)
-            {
-                int digit = int.Parse(digits[i].ToString());
-                sum += (digit * (i % 2 == 0 ? 2 : 1));
-            }
-            int checkDigit = sum % 10;
-            if (checkDigit != int.Parse(digits[digits.Length - 1].ToString()))
-            {
-                return false;
-            }
-            return true;
-        }
+         
     }
 }
