@@ -137,7 +137,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             {
                 var emergencyContact = new EmergencyContact
                 {
-                    Name = GetEmergencyContactName(request.CreateEmployeePersonals.Emergency.RelationTypeId, request),
+                    Name = request.CreateEmployeePersonals.FatherName ?? "Testing",
                     RelationTypeId = request.CreateEmployeePersonals.Emergency.RelationTypeId,
                     Email = request.CreateEmployeePersonals.Emergency.Email,
                     MobileNumber = request.CreateEmployeePersonals.Emergency.MobileNumber,
@@ -173,17 +173,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             return Result<int>.Success();
 
         }
-        private string GetEmergencyContactName(int? relationTypeId, CreateEmployeePersonalDetailCommand request)
-        {
-            return relationTypeId switch
-            {
-                1 => request.CreateEmployeePersonals.FatherName ?? "Testing",
-                2 => request.CreateEmployeePersonals.MotherName ?? "Testing",
-                4 => request.CreateEmployeePersonals.SpouseName ?? "Testing",
-                _ => "Testing"
-            };
-
-        }
+        
 
     }
 }

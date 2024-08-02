@@ -144,7 +144,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
             
             ViewBag.EmployeeFamilyData = employeeFamilyData.Data;
  
-            var employeeChildData = employeeFamilyData.Data.Where(x => x.RelationTypeId == 4).ToList();
+            var employeeChildData = employeeFamilyData.Data.Where(x => x.RelationTypeId == 3).ToList();
             ViewBag.EmployeeChildData = employeeChildData;
             }
  

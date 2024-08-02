@@ -61,40 +61,26 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                 var data = await _mediator.Send(new GetEmployeeByIdQuery(id.Value));
                 var employee = data?.Data;
 
-                 
-                if (employee != null && employee.EmployeePersonalDetail!=null)
+
+                if (employee != null && employee.EmployeePersonalDetail != null)
                 {
                     var employeePersonalDetail = employee.EmployeePersonalDetail;
                     var employeeFamily = employee.EmployeeFamily;
- 
+
                     var permanentAddress = employee.EmployeeAddresses?.FirstOrDefault(a => a.AddressTypeId == 1);
                     var residentialAddress = employee.EmployeeAddresses?.FirstOrDefault(a => a.AddressTypeId == 2);
                     var emergencyContact = employee.EmergencyContact?.FirstOrDefault();
                     var bankDetails = employee.BankDetails?.FirstOrDefault();
- 
+
                     var spouse = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse");
 
-                    model.EmployeePersonalDetail = new CreateEmployeePersonalDetailDto
-                    {
-                        Id = employeePersonalDetail?.EmployeeId ?? 0,
-                        BloodGroup = employeePersonalDetail?.BloodGroup ?? default,
-                        DOB = employeePersonalDetail.DOB ,
-                        Gender = employeePersonalDetail?.Gender ?? default,
-                        FatherName = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Father")?.Name,
-                        FatherDOB = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Father")?.DOB,
-                        MotherName = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.Name,
-                        MotherDOB = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.DOB,
-                        MarriedStatus = employeePersonalDetail?.MarriedStatus ?? default,
-                        SpouseName = spouse?.Name,
-                        SpouseDOB = spouse?.DOB,
-                        SpouseGender = spouse?.Gender ?? default,
-                        DateOfWedding = employeePersonalDetail?.DateOfWedding,
- 
+
+
 
                     model.EmployeePersonalDetail = new CreateEmployeePersonalDetailDto
                     {
                         Id = employee.EmployeePersonalDetail?.EmployeeId ?? 0,
-                         
+
                         BloodGroup = employee.EmployeePersonalDetail.BloodGroup,
                         DOB = employee.EmployeePersonalDetail.DOB,
                         Gender = employee.EmployeePersonalDetail.Gender,
@@ -107,16 +93,16 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                         SpouseDOB = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse")?.DOB,
                         SpouseGender = employee.EmployeeFamily.FirstOrDefault(f => f.RelationType.Name == "Spouse").Gender,
                         DateOfWedding = employee.EmployeePersonalDetail?.DateOfWedding,
- 
+
                         Emergency = emergencyContact != null ? new EmergencyContact
                         {
                             Name = emergencyContact.Name,
                             Email = emergencyContact.Email,
                             MobileNumber = emergencyContact.MobileNumber,
                             WhatsAppNumber = emergencyContact.WhatsAppNumber,
- 
+
                             RelationTypeId = emergencyContact.RelationTypeId
- 
+
                         } : null,
                         PermanentAddress = permanentAddress != null ? new CreateEmployeeAddressCommand
                         {
@@ -148,24 +134,25 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                         } : null,
                         CreateEmployeeBank = bankDetails != null ? new CreateEmployeeBankDetailCommand
                         {
- 
+
                             Id = bankDetails.Id,
- 
+
                             AccountBranch = bankDetails.AccountBranch,
                             AccountName = bankDetails.AccountName,
                             AccountType = bankDetails.AccountType,
                             BanAccountId = bankDetails.BanAccountId,
- 
+
                             BankId = bankDetails.BankId ?? default,
- 
+
                             IFCCode = bankDetails.IFCCode,
                             IsBankAccountVerified = bankDetails.IsBankAccountVerified
                         } : null,
- 
+
                         Religion = employee.EmployeePersonalDetail?.Religion,
                         PlaceOfBirth = employee.EmployeePersonalDetail?.PlaceOfBirth,
- 
+
                     };
+                     
                 }
 
                 Notify(  ["Testing" ], null, 200);
@@ -180,16 +167,16 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
         {
             await InitializeViewBags();
             
-            ModelState.Remove("EmployeePersonalDetail.ResidentialAddress.Nationality ");
+                if (HttpContext.Session.GetInt32("EmployeeId") != null)
+                {
+                    employeeId = HttpContext.Session.GetInt32("EmployeeId");
+                }
+             
             ModelState.Remove("EmployeePersonalDetail.PermanentAddress.EmployeeId");
             ModelState.Remove("EmployeePersonalDetail.ResidentialAddress.EmployeeId");
              if (ModelState.IsValid)
              {
                 
-                if (HttpContext.Session.GetInt32("EmployeeId") != null)
-                {
-                    employeeId = HttpContext.Session.GetInt32("EmployeeId");
-                }
 
                 if(command.EmployeePersonalDetail.Id != null && command.EmployeePersonalDetail.Id!=0)
                 {
@@ -212,6 +199,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
          
                 if (HttpContext.Session.GetInt32("EmployeeId") != null)
                 {
+                    
                 return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
           
                 }

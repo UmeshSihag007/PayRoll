@@ -31,7 +31,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.Cr
         {
             var mapData = _mapper.Map<EmployeeFamily>(request);
             mapData.IsActive = true;
-            mapData.RelationTypeId = 4;
+            mapData.RelationTypeId = 3;
         
           await _unitOfWork.Repository<EmployeeFamily>().AddAsync(mapData);
             await _unitOfWork.Save(cancellationToken);

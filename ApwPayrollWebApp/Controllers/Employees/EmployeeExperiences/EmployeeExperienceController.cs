@@ -25,6 +25,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeExperiences
         [HttpPost]
         public async Task<IActionResult> CreateEmployeeExperience(EmployeeCreateViewModel model)
         {
+            ModelState.Remove("Experiences.EmployeeId");
             if (ModelState.IsValid)
             {
                 if (HttpContext.Session.GetInt32("EmployeeId") != null)
