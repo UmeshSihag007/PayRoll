@@ -95,7 +95,7 @@
                                     <td>@(ViewBag.EmployeeFamilyData.IndexOf(item) + 1)</td>
                                     <td>@item.Name</td>
                                     <td>@item.DOB</td>
-                                    <td>@item.RelationType</td>
+                                    <td>@item.RelationType.Name</td>
                                     <td>
                                         <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-sm btn-info">
                                             <i class="bi bi-pencil-square"></i>

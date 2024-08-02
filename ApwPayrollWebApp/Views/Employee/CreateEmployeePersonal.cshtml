@@ -84,9 +84,9 @@
                     <label asp-for="EmployeePersonalDetail.PermanentAddress.Nationality" class="form-label">Nationality</label>
                     <div class="input-group">
                         <span class="input-group-text">
-                            <i class="ri-edit-circle-fill  "></i>
+                            <i class="ri-edit-circle-fill"></i>
                         </span>
-                        <input asp-for="EmployeePersonalDetail.ResidentialAddress.Nationality" type="text" class="form-control form-control-sm" placeholder="Enter Nationality" />
+                        <input asp-for="EmployeePersonalDetail.ResidentialAddress.Nationality" type="text" class="form-control form-control-sm" placeholder="Enter Nationality" required />
                         <input asp-for="EmployeePersonalDetail.PermanentAddress.Nationality" hidden value="EmployeePersonalDetail.ResidentialAddress.Nationality" />
                     </div>
                     <span asp-validation-for="EmployeePersonalDetail.PermanentAddress.Nationality" class="text-danger"></span>

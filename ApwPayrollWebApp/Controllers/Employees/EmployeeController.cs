@@ -83,7 +83,7 @@ namespace ApwPayrollWebApp.Controllers.Employees
             return View(model);
         }
         public async Task<IActionResult> CreateEmployeeBasic(int? id)
-        {
+        { 
             await InitializeViewBags();
                 var model = new EmployeeCreateViewModel();
             if (id.HasValue)

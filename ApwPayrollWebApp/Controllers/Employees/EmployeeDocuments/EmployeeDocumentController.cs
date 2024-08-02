@@ -67,6 +67,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
             {
                 EmployeeId = HttpContext.Session.GetInt32("EmployeeId").Value;
             }
+            ModelState.Remove("EmployeeId");
 
             if (ModelState.IsValid)
             {
@@ -82,10 +83,10 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
                 }
                 if (HttpContext.Session.GetInt32("EmployeeId") != null)
                 {
-                return RedirectToAction("ReferenceView", "EmployeeReferral");
+                    return RedirectToAction("ReferenceView", "EmployeeReferral");
 
                 }
-                return RedirectToAction("EmployeeCompleteDetails", "Employee", new {id= EmployeeId});
+                return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = EmployeeId });
 
 
 
@@ -94,6 +95,26 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
 
             return View(model);
         }
+
+
+
+        public async Task<IActionResult> DownloadFile(string url)
+            {
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetAsync(url);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return NotFound();
+                }
+
+                var fileBytes = await response.Content.ReadAsByteArrayAsync();
+                var fileName = Path.GetFileName(url);
+
+                return File(fileBytes, "application/pdf", fileName);
+            }
+        }
+
 
 
         private async Task InitializeViewBags()

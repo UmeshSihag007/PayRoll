@@ -101,6 +101,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
             {
                 commond.Qualification.EmployeeId = HttpContext.Session.GetInt32("EmployeeId").Value;
             }
+            ModelState.Remove("Qualification.EmployeeId");
 
             if (ModelState.IsValid)
             {
