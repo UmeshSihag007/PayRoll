@@ -1,5 +1,4 @@
 ﻿using ApwPayroll_Domain.common;
-using ApwPayroll_Domain.common.Enums.Gender;
 using ApwPayroll_Domain.common.Enums.Salutation;
 using ApwPayroll_Domain.Entities.AspUsers;
 using ApwPayroll_Domain.Entities.Banks.BankDetails;
@@ -9,26 +8,24 @@ using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDepartments;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDesignations;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDocuments;
-using ApwPayroll_Domain.Entities.Employees.EmployeeDocumentTypes;
 using ApwPayroll_Domain.Entities.Employees.EmployeeExperiences;
 using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
 using ApwPayroll_Domain.Entities.Employees.EmployeeQualifications;
 using ApwPayroll_Domain.Entities.ReferralDetails;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApwPayroll_Domain.Entities.Employees
 {
     public class Employee : BaseAuditEntity
     {
         public string FirstName { get; set; }
-        public string LastName { get; set; }
- 
+        public string? LastName { get; set; }
+
         public string? ESINumber { get; set; }
         public string? PfNumber { get; set; }
- 
+
         public DateTime DateOfJoining { get; set; }
-        public int InsuranceNumber { get; set; } 
+        public int InsuranceNumber { get; set; }
         public Int64 MobileNumber { get; set; }
         public string EmailId { get; set; }
         public string? EmployeeCode { get; set; }
@@ -53,16 +50,16 @@ namespace ApwPayroll_Domain.Entities.Employees
         public List<BankDetail> BankDetails { get; set; }
         public List<EmployeeDocument>? EmployeeDocuments { get; set; } = new List<EmployeeDocument>();
 
-       public  EmployeePersonalDetail EmployeePersonalDetail { get; set; }
- 
+        public EmployeePersonalDetail EmployeePersonalDetail { get; set; }
+
         public List<EmployeeFamily> EmployeeFamily { get; set; } = new List<EmployeeFamily>();
- 
+
         public List<EmployeeExperience>? EmployeeExperience { get; set; } = new List<EmployeeExperience>();
         public List<EmployeeQualification> EmployeeQualification { get; set; } = new List<EmployeeQualification>();
         public List<ReferralDetail> ReferralDetail { get; set; } = new List<ReferralDetail>();
         public List<EmergencyContact>? EmergencyContact { get; set; } = new List<EmergencyContact>();
         public List<EmployeeAddress>? EmployeeAddresses { get; set; } = new List<EmployeeAddress>();
-      
+
         // degisnation working
         public void AddDesignation(int designationId)
         {
@@ -123,7 +120,7 @@ namespace ApwPayroll_Domain.Entities.Employees
         // Document working
         public void AddDocument(int documentId, int typeId, string? Code)
         {
-            EmployeeDocuments.Add(new EmployeeDocument(documentId, Id, true, typeId,Code));
+            EmployeeDocuments.Add(new EmployeeDocument(documentId, Id, true, typeId, Code));
         }
 
         public void AddIfDocumentNotExists(List<int> documentId, int typeId)
@@ -132,7 +129,7 @@ namespace ApwPayroll_Domain.Entities.Employees
             {
                 if (EmployeeDocuments.All(pu => pu.DocumentId != document))
                 {
-                    EmployeeDocuments.Add(new EmployeeDocument(document, Id, true, typeId,null));
+                    EmployeeDocuments.Add(new EmployeeDocument(document, Id, true, typeId, null));
                 }
                 RemoveDocumentExists(documentId);
 

@@ -15,6 +15,7 @@ using ApwPayroll_Domain.common.Enums.BloodGroup;
 using ApwPayroll_Domain.common.Enums.Gender;
 using ApwPayroll_Domain.common.Enums.LocationTypes;
 using ApwPayroll_Domain.common.Enums.MarriedStatus;
+using ApwPayroll_Domain.common.Enums.Religions;
 using ApwPayroll_Domain.common.Enums.Salutation;
 using ApwPayroll_Domain.Entities.Banks;
 using ApwPayroll_Domain.Entities.Banks.BankDetails;
@@ -91,7 +92,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                         MarriedStatus = employee.EmployeePersonalDetail.MarriedStatus,
                         SpouseName = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse")?.Name,
                         SpouseDOB = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse")?.DOB,
-                        SpouseGender = employee.EmployeeFamily.FirstOrDefault(f => f.RelationType.Name == "Spouse").Gender,
+                        SpouseGender = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse")?.Gender,
                         DateOfWedding = employee.EmployeePersonalDetail?.DateOfWedding,
 
                         Emergency = emergencyContact != null ? new EmergencyContact
@@ -248,6 +249,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
             var locations = await _mediator.Send(new GetAllLocationQuery());
             var country = locations.Data.Where(x => x.LocationType == LocationTypeEnum.Country).ToList();
             var bank = await _mediator.Send(new GetBankLookUpQuery());
+            var religionLookUp= EnumHelper.GetEnumValues<ReligionEnum>().ToList();
 
 
             ViewBag.Country = country;
@@ -263,6 +265,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
             ViewBag.GenderLookup = genderLookup;
             ViewBag.SalutationLookup = salutationLookup;
             ViewBag.Course = course.Data;
+            ViewBag.Religion= religionLookUp;
         }
 
 

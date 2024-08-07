@@ -4,6 +4,7 @@ using ApwPayroll_Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApwPayroll_Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDataContext))]
-    partial class ApplicationDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240807062750_addingNullableColumns")]
+    partial class addingNullableColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,6 +77,7 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -218,9 +222,11 @@ namespace ApwPayroll_Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AccountBranch")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AccountName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AccountType")
@@ -922,7 +928,7 @@ namespace ApwPayroll_Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RelationTypeId")
+                    b.Property<int>("RelationTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -1462,8 +1468,7 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("EmployeeId")
-                        .IsRequired()
+                    b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Gender")
@@ -1479,8 +1484,7 @@ namespace ApwPayroll_Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RelationTypeId")
-                        .IsRequired()
+                    b.Property<int>("RelationTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -2967,17 +2971,9 @@ namespace ApwPayroll_Persistence.Migrations
                     b.HasData(
                         new
                         {
- 
-                            Id = "b5e1cda7-479d-43b0-a62f-51f087cc4d75",
- 
+                            Id = "bd5ea4dc-bd49-450c-8c49-13a17f32dabd",
                             Name = "Admin",
                             NormalizedName = "Admin"
-                        },
-                        new
-                        {
-                            Id = "42cafe42-d21f-48b6-bd1d-2034b0402330",
-                            Name = "Employee",
-                            NormalizedName = "Employee"
                         });
                 });
 
@@ -3436,7 +3432,9 @@ namespace ApwPayroll_Persistence.Migrations
 
                     b.HasOne("ApwPayroll_Domain.Entities.RelationTypes.RelationType", "RelationType")
                         .WithMany()
-                        .HasForeignKey("RelationTypeId");
+                        .HasForeignKey("RelationTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ApwPayroll_Domain.Entities.AspUsers.AspUser", "UpdatedByUser")
                         .WithMany()

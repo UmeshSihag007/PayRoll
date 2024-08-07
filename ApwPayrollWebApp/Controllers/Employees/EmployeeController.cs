@@ -1,4 +1,5 @@
-﻿using ApwPayroll_Application.Features.Banks.Queries.GetAllBanks;
+﻿using Amazon.Runtime.Internal.Util;
+using ApwPayroll_Application.Features.Banks.Queries.GetAllBanks;
 using ApwPayroll_Application.Features.Branches.Queries.GetAllBranches;
 using ApwPayroll_Application.Features.Courses.Queries.GetAllCourses;
 using ApwPayroll_Application.Features.Departments.Queries.GetAllDepartment;
@@ -85,6 +86,38 @@ namespace ApwPayrollWebApp.Controllers.Employees
              
             return View(model);
         }
+
+        public async Task<IActionResult> EmployeeDetailInResume(int id)
+        {
+            var model = new EmployeeCreateViewModel();
+            var data = await _mediator.Send(new GetEmployeeByIdQuery(id));
+
+            if (data.succeeded)
+            {
+                var designation = data.Data.EmployeeDesignations.FirstOrDefault()?.Designation;
+                var department = data.Data.EmployeeDepartments.FirstOrDefault()?.Department;
+                var address1 = data.Data.EmployeeAddresses.FirstOrDefault(x => x.AddressTypeId == 1);
+                var address2 = data.Data.EmployeeAddresses.FirstOrDefault(x => x.AddressTypeId == 2);
+                var bank = data.Data.BankDetails.FirstOrDefault()?.Bank;
+
+                ViewBag.employee = data.Data;
+                ViewBag.designation = designation;
+                ViewBag.department = department;
+                ViewBag.permanent = address1;
+                ViewBag.residential = address2;
+                ViewBag.bank = bank;
+            }
+            else
+            {
+                return View("Error"); // Handle the case where the query was not successful
+            }
+
+            return View(model);
+        }
+         
+
+
+
         public async Task<IActionResult> CreateEmployeeBasic(int? id)
         { 
             await InitializeViewBags();
@@ -184,6 +217,7 @@ namespace ApwPayrollWebApp.Controllers.Employees
             ViewBag.EmployeeId = employeeId;
             return View();
         }
+        
    
 
         #region UPDATE  LOGIN ACCESS   

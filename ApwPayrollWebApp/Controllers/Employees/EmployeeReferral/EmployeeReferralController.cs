@@ -90,7 +90,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeReferral
                 {
                     return RedirectToAction("ReferenceView");
                 }
-                return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = ViewBag.employeeId });
+                return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = data.Data.EmployeeId });
             }
             else
             {
