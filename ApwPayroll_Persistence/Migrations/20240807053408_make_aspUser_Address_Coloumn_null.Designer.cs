@@ -4,6 +4,7 @@ using ApwPayroll_Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApwPayroll_Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDataContext))]
-    partial class ApplicationDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240807053408_make_aspUser_Address_Coloumn_null")]
+    partial class make_aspUser_Address_Coloumn_null
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2972,13 +2975,13 @@ namespace ApwPayroll_Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b5e1cda7-479d-43b0-a62f-51f087cc4d75",
+                            Id = "0ee13843-7c50-4985-8d06-fbdf61a4ace4",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "42cafe42-d21f-48b6-bd1d-2034b0402330",
+                            Id = "46c7b835-970c-4dbb-86a3-d390c541f24a",
                             Name = "Employee",
                             NormalizedName = "Employee"
                         });

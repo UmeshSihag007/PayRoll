@@ -1,5 +1,6 @@
 ﻿using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Application.Interfaces.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,10 +14,12 @@ namespace ApwPayroll_Infrastructure.Services
         private readonly IConfiguration _configuration;
 
         private readonly IUnitOfWork _unitOfWork;
-        public JwtService(IConfiguration configuration, IUnitOfWork unitOfWork)
+        private  readonly IHttpContextAccessor _httpContextAccessor;
+        public JwtService(IConfiguration configuration, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _unitOfWork = unitOfWork;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<string> GenerateToken(string userId)
         {
@@ -46,8 +49,31 @@ namespace ApwPayroll_Infrastructure.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var jwtToken = tokenHandler.WriteToken(token);
+           
+            // Check if the token is already present in the cookie
+            var existingToken = _httpContextAccessor.HttpContext.Request.Cookies["Token"];
+            if (!string.IsNullOrEmpty(existingToken))
+            {
+                // Update the existing token
+                _httpContextAccessor.HttpContext.Response.Cookies.Delete("Token");
+            }
 
-            return "Bearer " + jwtToken;
+            // Configure cookie options
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddMinutes(60),
+                SameSite = SameSiteMode.Strict,
+                Secure = true // Ensure this is true in production environments
+            };
+
+            // Add the token to the cookies
+            _httpContextAccessor.HttpContext.Response.Cookies.Append("Token", jwtToken, cookieOptions);
+
+            return jwtToken;
+
+
+
         }
 
 
