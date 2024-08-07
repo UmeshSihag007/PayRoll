@@ -24,10 +24,12 @@ using ApwPayrollWebApp.EnumHelpers;
 using ApwPayrollWebApp.Models;
 using Google.Rpc;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApwPayrollWebApp.Controllers.Employees
-{
+{ 
+    [Authorize(Roles ="Admin")]
     public class EmployeeController : BaseController
     {
         private readonly IMediator _mediator;
@@ -38,6 +40,7 @@ namespace ApwPayrollWebApp.Controllers.Employees
             _mediator = mediator;
             _relationRepository = relationRepository;
         }
+ 
         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 40,SearchEmployeeDto? searchEmployee=default)
         {
             await InitializeViewBags();
@@ -151,7 +154,7 @@ namespace ApwPayrollWebApp.Controllers.Employees
                 {
 
                 var data = await _mediator.Send(command.Employee);
-                TempData["EmployeeId"] = data.Data.Id;
+                //TempData["EmployeeId"] = data.Data.Id;
 
                 if (data.code == 200)
                 {

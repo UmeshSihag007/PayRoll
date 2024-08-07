@@ -4,6 +4,7 @@ using ApwPayroll_Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApwPayroll_Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDataContext))]
-    partial class ApplicationDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240807030427_add_role_employee")]
+    partial class add_role_employee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,6 +77,7 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -228,8 +232,8 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Property<int>("AccountType")
                         .HasColumnType("int");
 
-                    b.Property<long>("BanAccountId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("BanAccountId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("BankId")
                         .HasColumnType("int");
@@ -2972,14 +2976,13 @@ namespace ApwPayroll_Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b5e1cda7-479d-43b0-a62f-51f087cc4d75",
- 
+                            Id = "8db74523-77a1-452d-b747-1358943ed47d",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "42cafe42-d21f-48b6-bd1d-2034b0402330",
+                            Id = "51830634-e133-4268-9dc4-2f24e2194adc",
                             Name = "Employee",
                             NormalizedName = "Employee"
                         });

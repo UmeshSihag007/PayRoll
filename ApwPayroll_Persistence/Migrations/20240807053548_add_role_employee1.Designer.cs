@@ -4,6 +4,7 @@ using ApwPayroll_Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApwPayroll_Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDataContext))]
-    partial class ApplicationDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240807053548_add_role_employee1")]
+    partial class add_role_employee1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,8 +231,8 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Property<int>("AccountType")
                         .HasColumnType("int");
 
-                    b.Property<long>("BanAccountId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("BanAccountId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("BankId")
                         .HasColumnType("int");
@@ -2973,7 +2976,6 @@ namespace ApwPayroll_Persistence.Migrations
                         new
                         {
                             Id = "b5e1cda7-479d-43b0-a62f-51f087cc4d75",
- 
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },

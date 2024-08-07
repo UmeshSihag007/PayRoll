@@ -36,7 +36,6 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
         [Email]
         public string EmailId { get; set; }
 
-
         public string? UserId { get; set; }
         public bool? IsBrokerExamPass { get; set; }
         public DateTime StartedSalary { get; set; }
@@ -79,24 +78,35 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
         public async Task<Result<Employee>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
 
-            var user = new AspUser()
+            var user = new AspUser
             {
+                UserName = request.EmailId, // UserName is required for Identity
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Email = request.EmailId,
+                Email = request.EmailId
             };
+
+            var password = GeneratePassword(request.EmailId);
+      var result=  await _userManager.CreateAsync(user, password);
+
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    return Result<Employee>.BadRequest(error.Description);
+                }
+            }
+
+            await _userManager.AddToRoleAsync(user, "Employee");
             var mapData = _mapper.Map<Employee>(request);
             var empCode = GenerateEmployeeCode();
             mapData.EmployeeCode = empCode;
             var data = await _unitOfWork.Repository<Employee>().AddAsync(mapData);
             await _unitOfWork.Save(cancellationToken);
-
-            var password = GeneratePassword(request.EmailId);
-            await _userManager.CreateAsync(user, password);
-
+         
 
             if (request.DesignationId != null)
-
             {
                 var checkDesignation = await _unitOfWork.Repository<Designation>().GetByIdAsync(request.DesignationId);
                 if (checkDesignation == null)
@@ -122,7 +132,7 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
 
         private string GeneratePassword(string email)
         {
-            string password = email + "@123";
+            string password = email +"ABC#$@123";
             return password;
         }
 
