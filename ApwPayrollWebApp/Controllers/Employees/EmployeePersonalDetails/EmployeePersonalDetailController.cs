@@ -155,8 +155,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                     };
                      
                 }
-
-                Notify(  ["Testing" ], null, 200);
+ 
             }
 
                 
@@ -187,6 +186,11 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
 
                         return View(command);
                     }
+                    if (updateData.code == 200)
+                    {
+                        Notify(updateData.Messages, null, updateData.code);
+                    }
+
                     return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = updateData.Data.EmployeeId });
 
                 }

@@ -64,7 +64,7 @@
                                     </tr>
                                     <tr>
                                         <td class="fw-medium"> Name</td>
-                                        <td>  <b> @(ViewBag.employee.Salutation.ToString() ?? "------")</b> @(ViewBag.employee.FirstName.ToUpper() ?? "------")  @(ViewBag.employee.LastName.ToUpper() ?? "------")</td>
+                                        <td>  <b> @(ViewBag?.employee?.Salutation?.ToString() ?? "------")</b> @(ViewBag?.employee?.FirstName.ToUpper() ?? "------")  @(ViewBag?.employee?.LastName?.ToUpper() ?? "------")</td>
                                     </tr>
 
 
