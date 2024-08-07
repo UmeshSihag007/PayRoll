@@ -1,10 +1,25 @@
 @using ApwPayroll_Domain.Entities.AspUsers
 @using Microsoft.AspNetCore.Identity
 <!-- ========== App Menu ========== -->
-@inject UserManager<AspUser> userManager;
+@inject UserManager<AspUser> _userManager;
+
 @{
-   
+
 }
+@{
+    var user = await _userManager.GetUserAsync(User);
+    IList<string> roles = new List<string>();
+    string roleName = string.Empty;
+
+    if (user != null)
+    {
+        roles = await _userManager.GetRolesAsync(user);
+        roleName = roles.FirstOrDefault();
+
+    }
+}
+
+
 
 <div class="app-menu navbar-menu">
     <!-- LOGO -->
@@ -38,14 +53,14 @@
             <div id="two-column-menu">
             </div>
             <ul class="navbar-nav" id="navbar-nav">
-                       
-        <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+
+                <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="@Url.Action("Index", "Home")">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
                     </a>
                 </li>
-                   <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="@Url.Action("Index", "Settings")">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Settings</span>
                     </a>
@@ -55,25 +70,31 @@
                        aria-expanded="false" aria-controls="sidebarPolicys">
                         <i class=" ri-stack-line"></i> <span data-key="t-maps">Manage Employees</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarEmployees">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="@Url.Action("Index", "Employee")" class="nav-link" data-key="t-google">
-                                    Employees
-                                </a>
-                            </li>     <li class="nav-item">
-                                <a href="@Url.Action("CreateEmployeeBasic", "Employee")" class="nav-link" data-key="t-google">
-                                    Add Employees
-                                </a>
-                            </li>
-                            @*
+                    @if (roleName != null && roleName == "Admin")
+                    {
+
+                        <div class="collapse menu-dropdown" id="sidebarEmployees">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "Employee")" class="nav-link" data-key="t-google">
+                                        Employees
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("CreateEmployeeBasic", "Employee")" class="nav-link" data-key="t-google">
+                                        Add Employees
+                                    </a>
+                                </li>
+                                @*
                             <li class="nav-item">
                             <a href="@Url.Action("Declaration", "Policy")" class="nav-link" data-key="t-leaflet">
                             Declartion
                             </a>
                             </li> *@
-                        </ul>
-                    </div>
+                            </ul>
+                        </div>
+                    }
+
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarMaterTables" data-bs-toggle="collapse" role="button"
@@ -84,7 +105,7 @@
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="@Url.Action("CourseView", "Course")" class="nav-link" data-key="t-google">
-                                     Courses
+                                    Courses
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -94,7 +115,7 @@
                             </li>
                             <li class="nav-item">
                                 <a href="@Url.Action("DesignationView", "Designation")" class="nav-link" data-key="t-google">
-                                   Designations
+                                    Designations
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -142,4 +163,3 @@
 
 
 
-   

@@ -31,7 +31,7 @@ namespace ApwPayroll_Persistence.Extensions
             services.AddDbContext<ApplicationDataContext>(options =>
                options.UseSqlServer(connectionString,
                    builder => builder.MigrationsAssembly(typeof(ApplicationDataContext).Assembly.FullName)));
- 
+
             services.AddIdentity<AspUser, IdentityRole>()
          .AddEntityFrameworkStores<ApplicationDataContext>()
          .AddDefaultTokenProviders()
@@ -47,8 +47,8 @@ namespace ApwPayroll_Persistence.Extensions
                        .AddTransient<IDocumentRepository, DocumentRepository>()
                       .AddTransient(typeof(IUnitOfWork), typeof(UnitOfWork))
                       .AddTransient<INotificationRepository, NotificationRepository>()
-                      .AddTransient<IEmployeeDocumentRepository,EmployeeDocumentRepository>()
-                      /*.AddTransient<IDocumentRepository, DocumentRepository>()*/
+                      .AddTransient<IEmployeeDocumentRepository, EmployeeDocumentRepository>()
+                /*.AddTransient<IDocumentRepository, DocumentRepository>()*/
                 .AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
         }

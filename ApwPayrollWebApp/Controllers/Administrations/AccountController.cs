@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApwPayrollWebApp.Controllers.Users
 {
-    public class AdministrationController : BaseController
+    public class AccountController : BaseController
     {
         private readonly IMediator _mediator;
         private readonly INotyfService _notyf;
-        public AdministrationController(IMediator mediator, INotyfService notyf)
+        public AccountController(IMediator mediator, INotyfService notyf)
         {
             _mediator = mediator;
             _notyf = notyf;
@@ -32,7 +32,8 @@ namespace ApwPayrollWebApp.Controllers.Users
         {
 
             var data = await _mediator.Send(userModel);
-            if (data.succeeded == false)
+          
+            if (data.succeeded)
             {
                 ViewBag.ErrorMessages = data.Messages;
                 Notify(data.Messages, null, 200);
@@ -62,7 +63,7 @@ namespace ApwPayrollWebApp.Controllers.Users
             }
 
             var data = await _mediator.Send(userModel);
-            if (data.succeeded && User != null && User.Identity.IsAuthenticated)
+            if (data.succeeded && User != null )
             {
                 Notify(data.Messages, null, data.code);
                 return RedirectToAction("Index", "Home");
