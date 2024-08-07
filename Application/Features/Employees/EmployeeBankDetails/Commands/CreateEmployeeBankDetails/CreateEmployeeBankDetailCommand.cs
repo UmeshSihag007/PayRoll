@@ -10,7 +10,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeBankDetails.Commands
   //      public string? BankName { get; set; } 
         public int BankId { get; set; } 
 
-        public int? BanAccountId { get; set; }
+        public long BanAccountId { get; set; }
         public bool? IsBankAccountVerified { get; set; }
         public string? IFCCode { get; set; }
         public string? AccountName { get; set; }

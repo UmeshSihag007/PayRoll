@@ -39,7 +39,7 @@
                             <div class="col-5 text-end">
                                 @if (ViewBag.employee == null)
                                 {
-                                    <a asp-action="CreateEmployeeBasic" asp-all-route asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+                                    <a asp-action="CreateEmployeeBasic" asp-controller="Employee" asp-all-route asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
                                  
                                         Add
                                     </a>
@@ -164,7 +164,7 @@
                             <div class="col-5 text-end">
                                 @if (@ViewBag.employee.EmployeePersonalDetail == null)
                                 {
-                                    <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail"   class="btn btn-sm btn-info" id="editBtn">
+                                    <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
                                     
                                         Add
                                     </a>
@@ -242,7 +242,7 @@
                         <div class="col-5  text-end">
                             @if (ViewBag.employee.EmployeeQualification.Count == 0)
                             {
-                                <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+                                    <a asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" asp-route-employeeId="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
                              
                                     Add
                                 </a>
@@ -326,7 +326,7 @@
                         <div class="col-5 d-flex flex-row-reverse bd-highlight">
                             @if (@ViewBag.employee.EmployeeExperience.Count == 0)
                             {
-                                    <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+                                    <a asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" asp-route-employeeId="@ViewBag.employee.Id"  class="btn btn-sm btn-info" id="editBtn">
 
                                         Add
                                     </a>
@@ -409,7 +409,7 @@
                             <div class="col-5  text-end">
                                 @if (ViewBag.employee.EmployeeFamily.Count == 0)
                                 {
-                                    <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+                                    <a asp-action="CreateEmployeeFamily" asp-controller="EmployeeFamily" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
 
                                         Add
                                     </a>
@@ -480,8 +480,8 @@
                             <div class="col-5  text-end">
                                 @if (@ViewBag.employee.ReferralDetail.Count == 0)
                                 {
-                                    
-                                <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+
+                                    <a asp-action="ReferenceView" asp-controller="EmployeeReferral" asp-route-employeeId="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
 
                                     Add
                                 </a>
@@ -562,14 +562,15 @@
                         </div>
                             </div>
                             <div class="col-5 text-end">
-                                @if (ViewBag.employee.EmployeeDocuments!=null)
+                                @if (ViewBag.employee.EmployeeDocuments.Count==0)
                                 {
-                                    
-                                <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+
+                                    <a asp-action="Create" asp-controller="EmployeeDocument" asp-route-employeeId="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
 
                                     Add
-                                </a>
+                                    </a>
                                 }
+                            
                             </div>
                         </div>
 
@@ -578,7 +579,7 @@
                     </div>
                     @if (ViewBag.employee.EmployeeDocuments != null)
                     {
-                        <div class="row">
+                        <div class="row mt-4">
                             @foreach (var document in ViewBag.employee.EmployeeDocuments)
                             {
                                 <div class="col-md-4 mb-3">
@@ -609,9 +610,10 @@
                                                 <i class="bi bi-pencil-square"> Edit</i>
                                             </a>
                                         </div>
-                                        <a href="@document.Document.Url" download class="btn btn-sm btn-primary mr-2">
-                                            <i class="bi bi-download"> Download</i>
+                                        <a href="/EmployeeDocument/DownloadFile?url=@document.Document.Url" class="btn btn-sm btn-primary mr-2">
+                                            <i class="bi bi-download"></i> Download
                                         </a>
+
                                     </div>
                                 </div>
                             }

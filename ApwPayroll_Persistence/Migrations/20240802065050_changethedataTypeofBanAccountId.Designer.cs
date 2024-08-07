@@ -4,6 +4,7 @@ using ApwPayroll_Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApwPayroll_Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDataContext))]
-    partial class ApplicationDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240802065050_changethedataTypeofBanAccountId")]
+    partial class changethedataTypeofBanAccountId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,6 +77,7 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -2972,16 +2976,9 @@ namespace ApwPayroll_Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b5e1cda7-479d-43b0-a62f-51f087cc4d75",
- 
+                            Id = "8d190116-3431-45e5-b66b-cc006f7ca61c",
                             Name = "Admin",
                             NormalizedName = "Admin"
-                        },
-                        new
-                        {
-                            Id = "42cafe42-d21f-48b6-bd1d-2034b0402330",
-                            Name = "Employee",
-                            NormalizedName = "Employee"
                         });
                 });
 

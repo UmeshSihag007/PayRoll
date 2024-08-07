@@ -11,8 +11,9 @@
     <div class="tab-pane active" id="references" role="tabpanel">
         <form asp-action="EmployeeReference" asp-controller="EmployeeReferral" method="post">
             <div class="row mb-2">
-                <div class="col-lg-4">
-                    <input asp-for="ReferencesCommand.Id" hidden />
+                <div class="col-lg-4">  
+                    <input asp-for="ReferencesCommand.Id" hidden   />
+                    <input asp-for="ReferencesCommand.EmployeeId" hidden value="@ViewBag.employeeId" />
                     <label asp-for="ReferencesCommand.ReferenceName" class="form-label">Reference Name</label>
                     <div class=" input-group">
                         <input asp-for="ReferencesCommand.ReferenceName" type="text" class="form-control" placeholder="Enter reference name" />

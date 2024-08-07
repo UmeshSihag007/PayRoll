@@ -25,6 +25,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeExperiences
         [HttpPost]
         public async Task<IActionResult> CreateEmployeeExperience(EmployeeCreateViewModel model)
         {
+            ModelState.Remove("Experiences.EmployeeId");
             if (ModelState.IsValid)
             {
                 if (HttpContext.Session.GetInt32("EmployeeId") != null)
@@ -44,7 +45,13 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeExperiences
                     {
                         Notify(data.Messages, null, data.code);
                     }
-                    return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
+                    if (HttpContext.Session.GetInt32("EmployeeId") != null)
+                    {
+
+                        return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
+                    }
+                    return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = model.Experiences.EmployeeId });
+                   
 
                 }
                 else

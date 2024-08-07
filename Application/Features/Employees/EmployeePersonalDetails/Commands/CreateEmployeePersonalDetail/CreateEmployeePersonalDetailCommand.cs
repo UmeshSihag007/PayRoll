@@ -85,7 +85,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                     EmployeeId = request.EmployeeId,
                     DOB = request.CreateEmployeePersonals.DOB,
                     Gender = request.CreateEmployeePersonals.SpouseGender,
-                    RelationTypeId = 1,
+                    RelationTypeId = 4,
                     IsActive = true,
                 };
                 await _unitOfWork.Repository<EmployeeFamily>().AddAsync(SpouseData);
@@ -170,11 +170,10 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             }
 
 
-
-
             return Result<int>.Success();
 
         }
+        
 
     }
 }
