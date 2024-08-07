@@ -2,6 +2,7 @@
 using ApwPayroll_Domain.common.Enums.BloodGroup;
 using ApwPayroll_Domain.common.Enums.Gender;
 using ApwPayroll_Domain.common.Enums.MarriedStatus;
+using ApwPayroll_Domain.common.Enums.Religions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,8 @@ namespace ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails
         public DateTime DOB { get; set; }
         public GenderEnum Gender { get; set; }
         public string? PlaceOfBirth { get; set; }
-        public string? Religion { get; set; }
-        public BloodGroupEnum BloodGroup { get; set; }
+        public ReligionEnum? Religion { get; set; }
+        public BloodGroupEnum? BloodGroup { get; set; }
         public MarriedStatusEnum MarriedStatus { get; set; }
         public DateTime? DateOfWedding { get; set; }
         public bool IsActive { get; set; }

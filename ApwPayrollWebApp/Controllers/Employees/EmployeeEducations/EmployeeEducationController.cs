@@ -121,7 +121,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                     if (HttpContext.Session.GetInt32("EmployeeId") != null)
                     {
 
-                        return View(commond);
+                        return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
                     }
                     return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = ViewBag.employeeId });
                 }
@@ -138,11 +138,11 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                     {
                         Notify(data.Messages, null, data.code);
                     }
-                    commond = new EmployeeCreateViewModel();
+                    
                     if (HttpContext.Session.GetInt32("EmployeeId") != null)
                     {
 
-                    return View(commond);
+                        return RedirectToAction("CreateEmployeeEducation", new { Id=0 });
                     }
                     return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = data.Data.EmployeeId });
                 }

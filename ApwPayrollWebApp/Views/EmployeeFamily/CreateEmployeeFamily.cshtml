@@ -45,22 +45,34 @@
                         <input asp-for="CreateEmployeeFamily.Id" class="form-control " hidden   />
                     <div class="col-3">
                         <label asp-for="CreateEmployeeFamily.Name"> Name </label>
+                        <div class="input-group">
+
                         <input asp-for="CreateEmployeeFamily.Name" class="form-control" />
+                        </div>
+                        <span asp-validation-for="CreateEmployeeFamily.Name" class="text-danger"></span>
 
                     </div>
                     <div class="col-3">
                         <label asp-for="CreateEmployeeFamily.Gender"> Gender </label>
-                        <select asp-for="CreateEmployeeFamily.Gender" class="form-control form-control  ">
+                        <div class="input-group">
+
+                        <select asp-for="CreateEmployeeFamily.Gender" class="form-control form-control" required>
                             <option value="" selected disabled>Select Gender</option>
                             @foreach (var gender in ViewBag.GenderLookup)
                             {
                                 <option value="@gender.Id">@gender.Name</option>
                             }
                         </select>
+                        </div>
+                        <span asp-validation-for="CreateEmployeeFamily.Gender" class="text-danger"></span>
                     </div>
                     <div class="col-3">
                         <label> DOB </label>
+                        <div class="input-group">
+
                         <input asp-for="CreateEmployeeFamily.DOB" class="form-control" />
+                        </div>
+                        <span asp-validation-for="CreateEmployeeFamily.DOB" class="text-danger"></span>
                     </div>
                     <div class="col-3">
                         <button class="btn btn-success mt-4">

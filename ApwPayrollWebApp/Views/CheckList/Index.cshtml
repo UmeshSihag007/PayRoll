@@ -720,7 +720,7 @@
             <tr>
                 <td>Employee Name</td>
                 
-                <td> <b> @(ViewBag?.employee?.Salutation.ToString() ?? "------")</b> @(ViewBag?.employee?.FirstName.ToUpper() ?? "------")  @(ViewBag?.employee?.LastName.ToUpper() ?? "------")</td>
+                <td> <b> @(ViewBag?.employee?.Salutation.ToString() ?? "------")</b> @(ViewBag?.employee?.FirstName.ToUpper() ?? "------")  @(ViewBag?.employee?.LastName?.ToUpper() ?? "------")</td>
                 <td>Department</td>
                 <td> @(ViewBag.department.Name??"------") </td>
             </tr>

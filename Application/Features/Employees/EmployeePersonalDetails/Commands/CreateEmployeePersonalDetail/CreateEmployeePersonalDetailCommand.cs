@@ -100,6 +100,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                     Address1 = request.CreateEmployeePersonals.PermanentAddress.Address1,
                     Address2 = request.CreateEmployeePersonals.PermanentAddress.Address2,
                     Address3 = request.CreateEmployeePersonals.PermanentAddress.Address3,
+                    PinCode= request.CreateEmployeePersonals.PermanentAddress.PinCode,
                     AddressTypeId = 1,
                     EmployeeId = request.EmployeeId,
                     Nationality = request.CreateEmployeePersonals.PermanentAddress.Nationality,
@@ -120,6 +121,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                     Address1 = request.CreateEmployeePersonals.ResidentialAddress.Address1,
                     Address2 = request.CreateEmployeePersonals.ResidentialAddress.Address2,
                     Address3 = request.CreateEmployeePersonals.ResidentialAddress.Address3,
+                    PinCode = request.CreateEmployeePersonals.ResidentialAddress.PinCode,
                     AddressTypeId = 2,
                     EmployeeId = request.EmployeeId,
                     Nationality = request.CreateEmployeePersonals.ResidentialAddress.Nationality,
@@ -160,7 +162,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                     IFCCode = request.CreateEmployeePersonals.CreateEmployeeBank.IFCCode,
                     AccountName = request.CreateEmployeePersonals.CreateEmployeeBank.AccountName,
                     AccountBranch = request.CreateEmployeePersonals.CreateEmployeeBank.AccountBranch,
-                    BanAccountId = 122,
+                    BanAccountId = request.CreateEmployeePersonals.CreateEmployeeBank.BanAccountId,
                     EmployeeId = request.EmployeeId,
 
 
