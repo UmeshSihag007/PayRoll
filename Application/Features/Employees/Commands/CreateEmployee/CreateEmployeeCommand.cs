@@ -22,8 +22,8 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
         
         [Required]
         public string FirstName { get; set; }
-        [Required]
-        public string LastName { get; set; }
+         
+        public string? LastName { get; set; }
 
         [ESINumber]
         public string? ESINumber { get; set; }

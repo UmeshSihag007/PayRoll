@@ -66,11 +66,12 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeExperiences
                     {
                         Notify(data.Messages, null, data.code);
                     }
-                    model = new EmployeeCreateViewModel();
+                    
                     if (HttpContext.Session.GetInt32("EmployeeId") != null)
                     {
 
-                        return View(model);
+                        return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
+
                     }
                     return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = data.Data.EmployeeId });
                 }

@@ -61,6 +61,9 @@ namespace ApwPayroll_Application.Common.Mappings
             CreateMap<CreateHolidayTypeCommand,HolidayType>();
             CreateMap<CreateBankCommand,Bank>();
             CreateMap<CreateLeaveTypeCommand,LeaveType>();
+            CreateMap< CreateEmployeePersonalDetailDto,EmployeePersonalDetail>();
+
+
 
 
  

@@ -20,7 +20,7 @@
                     </div>
                     <div class="col-5 form-switch">
 
-                         <input type="checkbox" class="form-check-input" id="isActiveToggle_@ViewBag.employee.Id" style="width: 3rem; height: 1.5rem;" @(ViewBag.employee.IsLoginAccess ? "checked" : "") />
+                         <input type="checkbox" class="form-check-input" id="isActiveToggle_@ViewBag.employee.Id" style="width: 3rem; height: 1.5rem;" @(ViewBag.employee?.IsLoginAccess ? "checked" : "") />
                      </div>
  
  
@@ -516,7 +516,7 @@
                                             <td>
                                                 @(ViewBag.employee.ReferralDetail.IndexOf(referral) + 1)
                                             </td>
-                          <td>@referral.ReferenceName</td>
+                                             <td>@referral.ReferenceName</td>
 
                                             <td>@referral.Designation</td>
  
@@ -585,6 +585,10 @@
                                 <div class="col-md-4 mb-3">
                                     <div class="card shadow-sm border-primary">
                                         <div class="card-body">
+                                            @{
+                                                bool isPdf = document.Document.Url.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
+                                            }
+                                            
                                             <!-- Document Type Heading -->
                                             <h5 class="card-title text-center mb-3">@document.EmployeeDocumentType.Name</h5>
 
@@ -592,9 +596,17 @@
                                             @if (!string.IsNullOrEmpty(document.Document.Url))
                                             {
                                                 <div class="text-center mb-3">
+                                                    @if (isPdf)
+                                                    {
+                                                        <iframe onclick ="showImageModal('@document.Document.Url', '@document.EmployeeDocumentType.Name')"  
+                                                        src="@document.Document.Url" style="width: 100%; height: 200px; object-fit: cover;"></iframe>
+                                                    }
+                                                    else
+                                                    {
                                                     <img onclick="showImageModal('@document.Document.Url', '@document.EmployeeDocumentType.Name')"
                                                          src="@document.Document.Url" alt="Document Image"
                                                          style="width: 100%; height: 200px; object-fit: cover;">
+                                                    }
                                                 </div>
                                             }
 
@@ -630,6 +642,7 @@
                                 </div>
                                 <div class="modal-body text-center">
                                     <img id="modalImage" src="" alt="Full Screen Document Image" style="width: 100%; height: auto;">
+                                    <iframe id="modalIframe" src="" style="width: 100%; height: 500px; display: none;" frameborder="0"></iframe>
                                 </div>
 
                                 <div class=" d-flex flex-row-reverse m-2">
