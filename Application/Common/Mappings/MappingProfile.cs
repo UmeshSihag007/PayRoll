@@ -15,6 +15,7 @@ using ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.Crea
 using ApwPayroll_Application.Features.Employees.Queries.GetAllEmployees;
 using ApwPayroll_Application.Features.Holidays.Commands.CreateHolidays;
 using ApwPayroll_Application.Features.Holidays.HollidayTypes.Commands.CreateHolidayTypes;
+using ApwPayroll_Application.Features.Leaves.Commands.CreateLeaves;
 using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.CreateLeaveTypes;
 using ApwPayroll_Application.Features.Locations.Commands.CreateLocations;
 using ApwPayroll_Application.Features.Locations.Queries.GetAllLocations;
@@ -33,6 +34,7 @@ using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeeQualifications;
 using ApwPayroll_Domain.Entities.Holidays;
 using ApwPayroll_Domain.Entities.Holidays.HolidayTypes;
+using ApwPayroll_Domain.Entities.Leaves;
 using ApwPayroll_Domain.Entities.Leaves.LeaveTypes;
 using ApwPayroll_Domain.Entities.Locations;
 using ApwPayroll_Domain.Entities.Menus.MenuTypes;
@@ -54,11 +56,12 @@ public class MappingProfile : Profile
         CreateMap<Branch, GetBranchDto>();
         CreateMap<CreateHolidayTypeCommand, HolidayType>();
 
-            CreateMap<CreateHolidayCommand, Holiday>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore()); // Ignore Id if you do not want to map it
-        
-    
-    CreateMap<Bank, GetBankDto>();
+        CreateMap<CreateHolidayCommand, Holiday>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore()); 
+
+        CreateMap<CreateLeaveCommand, Leave>();
+
+        CreateMap<Bank, GetBankDto>();
         CreateMap<Bank, LookUpDto>();
         CreateMap<Branch, LookUpDto>();
         CreateMap<CreateBankCommand, Bank>();
@@ -66,7 +69,7 @@ public class MappingProfile : Profile
         CreateMap<CreateDocumentTypeCommand, DocumentType>();
         CreateMap<CreateMenuTypeCommand, MenuType>();
         CreateMap<CreateEmployeeCommand, Employee>();
-        CreateMap< Employee,GetEmployeeDto>();
+        CreateMap<Employee, GetEmployeeDto>();
 
         CreateMap<CreateEmployeeEducationCommand, EmployeeQualification>();
         CreateMap<CreateEmployeeExperiencesCommand, EmployeeExperience>();
@@ -110,7 +113,6 @@ public class MappingProfile : Profile
                     foreach (var @interface in interfaces)
                     {
                         var interfaceMethodInfo = @interface.GetMethod(mappingMethodName, argumentTypes);
-
                         interfaceMethodInfo.Invoke(instance, new object[] { this });
                     }
                 }

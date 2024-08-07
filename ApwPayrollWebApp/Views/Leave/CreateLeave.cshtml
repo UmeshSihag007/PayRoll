@@ -1,0 +1,60 @@
+﻿@model ApwPayroll_Application.Features.Leaves.Commands.CreateLeaves.CreateLeaveCommand
+@{
+    ViewData["Title"] = "CreateLeave";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2> @(Model.Id != null && Model.Id.HasValue && Model.Id.Value != 0 ? "Update Leave" : "Add Leave")</h2>
+    <form asp-action="CreateLeave" method="post">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label asp-for="Reason" class="form-label">Reason</label>
+                <input asp-for="Reason" type="text" class="form-control" />
+                <span asp-validation-for="Reason" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="ContactNumber" class="form-label">Contact Number</label>
+                <input asp-for="ContactNumber" type="text" class="form-control" />
+                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="RequestedDate" class="form-label">Requested Date</label>
+                <input asp-for="RequestedDate" type="date" class="form-control" />
+                <span asp-validation-for="RequestedDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label asp-for="LeaveTypeId" class="form-label">Leave Type</label>
+                <select asp-for="LeaveTypeId" class="form-control" asp-items="@(new SelectList(ViewBag.LeaveTypeList, "Id", "Name"))"></select>
+                <span asp-validation-for="LeaveTypeId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input asp-for="IsPaid" type="checkbox" class="form-check-input" />
+                    <label asp-for="IsPaid" class="form-check-label">Is Paid</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input asp-for="IsHalfDay" type="checkbox" class="form-check-input" />
+                    <label asp-for="IsHalfDay" class="form-check-label">Is Half Day</label>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-secondary">
+                    @(Model.Id != null && Model.Id.HasValue && Model.Id.Value != 0 ? "Update" : "Add")
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

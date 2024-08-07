@@ -4,6 +4,7 @@ using ApwPayroll_Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApwPayroll_Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDataContext))]
-    partial class ApplicationDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240806062744_columndatatypechangesbyleaves")]
+    partial class columndatatypechangesbyleaves
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1863,26 +1866,6 @@ namespace ApwPayroll_Persistence.Migrations
                     b.ToTable("Training", "PayRolls");
                 });
 
-            modelBuilder.Entity("ApwPayroll_Domain.Entities.Holidays.HolidatTypeRuleLocations.HolidayTypeRuleLocation", b =>
-                {
-                    b.Property<int>("LocationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HolidayRuleTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("HolidayTypeRuleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("LocationId", "HolidayRuleTypeId");
-
-                    b.HasIndex("HolidayRuleTypeId");
-
-                    b.HasIndex("HolidayTypeRuleId");
-
-                    b.ToTable("HolidayTypeRuleLocation", "PayRolls");
-                });
-
             modelBuilder.Entity("ApwPayroll_Domain.Entities.Holidays.Holiday", b =>
                 {
                     b.Property<int>("Id")
@@ -1943,7 +1926,7 @@ namespace ApwPayroll_Persistence.Migrations
                     b.ToTable("Holidays", "PayRolls");
                 });
 
-            modelBuilder.Entity("ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles.HolidayTypeRule", b =>
+            modelBuilder.Entity("ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles.HolidatTypeRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1972,6 +1955,9 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(450)");
 
@@ -1985,6 +1971,8 @@ namespace ApwPayroll_Persistence.Migrations
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("HolidayId");
+
+                    b.HasIndex("LocationId");
 
                     b.HasIndex("UpdatedBy");
 
@@ -2988,7 +2976,7 @@ namespace ApwPayroll_Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "57502f93-223c-4f19-bbba-a0ea01636d70",
+                            Id = "d0b58b1a-3baa-423b-bafc-bc8662023faa",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         });
@@ -3880,29 +3868,6 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("ApwPayroll_Domain.Entities.Holidays.HolidatTypeRuleLocations.HolidayTypeRuleLocation", b =>
-                {
-                    b.HasOne("ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles.HolidayTypeRule", "HolidayTypeRule")
-                        .WithMany()
-                        .HasForeignKey("HolidayRuleTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles.HolidayTypeRule", null)
-                        .WithMany("HolidayTypeRuleLocations")
-                        .HasForeignKey("HolidayTypeRuleId");
-
-                    b.HasOne("ApwPayroll_Domain.Entities.Locations.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("HolidayTypeRule");
-
-                    b.Navigation("Location");
-                });
-
             modelBuilder.Entity("ApwPayroll_Domain.Entities.Holidays.Holiday", b =>
                 {
                     b.HasOne("ApwPayroll_Domain.Entities.AspUsers.AspUser", "CreatedByUser")
@@ -3926,7 +3891,7 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles.HolidayTypeRule", b =>
+            modelBuilder.Entity("ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles.HolidatTypeRole", b =>
                 {
                     b.HasOne("ApwPayroll_Domain.Entities.Banks.Branches.Branch", "Branch")
                         .WithMany()
@@ -3944,6 +3909,12 @@ namespace ApwPayroll_Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ApwPayroll_Domain.Entities.Locations.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ApwPayroll_Domain.Entities.AspUsers.AspUser", "UpdatedByUser")
                         .WithMany()
                         .HasForeignKey("UpdatedBy");
@@ -3953,6 +3924,8 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("Holiday");
+
+                    b.Navigation("Location");
 
                     b.Navigation("UpdatedByUser");
                 });
@@ -4501,11 +4474,6 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Navigation("EmployeeQualification");
 
                     b.Navigation("ReferralDetail");
-                });
-
-            modelBuilder.Entity("ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles.HolidayTypeRule", b =>
-                {
-                    b.Navigation("HolidayTypeRuleLocations");
                 });
 
             modelBuilder.Entity("Domain.Models.Templates.Template", b =>

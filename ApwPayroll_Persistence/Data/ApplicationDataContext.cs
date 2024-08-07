@@ -123,7 +123,7 @@ namespace ApwPayroll_Persistence.Data
         public DbSet<LeaveType> LeaveTypes => Set<LeaveType>();
         public DbSet<LeaveResponseStatus>LeaveResponseStatuses => Set<LeaveResponseStatus>();
         public DbSet<LeaveTypeRole> LeaveTypeRoles => Set<LeaveTypeRole>();
-        public DbSet<HolidatTypeRole> HolidatTypeRoles => Set<HolidatTypeRole>();
+        public DbSet<HolidayTypeRule> HolidatTypeRoles => Set<HolidayTypeRule>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

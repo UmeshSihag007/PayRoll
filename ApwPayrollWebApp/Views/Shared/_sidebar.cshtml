@@ -88,13 +88,33 @@
                             </li>
                         </ul>
                     </div>
-                </li> 
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarLeaveTables" data-bs-toggle="collapse" role="button"
+                       aria-expanded="false" aria-controls="sidebarPolicys">
+                        <i class=" ri-stack-line"></i> <span data-key="t-maps">Leave Tables</span>
+                    </a>
+                    <div class="collapse menu-dropdown overflow-auto" id="sidebarLeaveTables" style="max-height: 200px; overflow-y: auto;">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Leave")" class="nav-link" data-key="t-google">
+                                    LeaveList
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("CreateLeave", "Leave")" class="nav-link" data-key="t-google">
+                                    AddLeave
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarMasterTables" data-bs-toggle="collapse" role="button"
                        aria-expanded="false" aria-controls="sidebarPolicys">
                         <i class=" ri-stack-line"></i> <span data-key="t-maps">Master Tables</span>
                     </a>
-                    <div class="collapse menu-dropdown overflow-auto" id="sidebarMasterTables" style="max-height: 200px; overflow-y: auto;">
+                    <div class="collapse menu-dropdown overflow-auto" id="sidebarMasterTables" style="max-height: 200px; overflow-y: auto; height:180%">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="@Url.Action("CourseView", "Course")" class="nav-link" data-key="t-google">

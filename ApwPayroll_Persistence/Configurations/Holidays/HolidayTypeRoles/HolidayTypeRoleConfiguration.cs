@@ -4,17 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ApwPayroll_Persistence.Configurations.Holidays.HolidayTypeRoles;
 
-public class HolidayTypeRoleConfiguration : IEntityTypeConfiguration<HolidatTypeRole>
+public class HolidayTypeRoleConfiguration : IEntityTypeConfiguration<HolidayTypeRule>
 {
-    public void Configure(EntityTypeBuilder<HolidatTypeRole> builder)
+    public void Configure(EntityTypeBuilder<HolidayTypeRule> builder)
     {
         builder.HasKey(e => e.Id);
 
 
         builder.Property(e => e.HolidayId)
-            .IsRequired();
-
-        builder.Property(e => e.LocationId)
             .IsRequired();
 
         builder.Property(e => e.BranchId)
@@ -24,13 +21,6 @@ public class HolidayTypeRoleConfiguration : IEntityTypeConfiguration<HolidatType
                .WithMany()
                .HasForeignKey(bd => bd.HolidayId)
                .IsRequired(true);
-
-
-
-        builder.HasOne(e => e.Location)
-            .WithMany()
-            .HasForeignKey(x => x.LocationId)
-          .IsRequired();
 
         builder.HasOne(e => e.Branch)
             .WithMany()
