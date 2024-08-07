@@ -23,10 +23,9 @@
                     <label class="form-label ms-5 ">Is Active</label>
                 </div>
                 <div class="col-auto">
-                    <div class="form-check form-switch me-4">
-                        <input asp-for="createCourses.IsActive" type="checkbox" class="form-check-input"
-                               id="isActiveToggle" style="width: 3rem; height: 1.5rem;   " />
-
+                    <div class="form-check form-switch">
+                        <input asp-for="createLeaveType.IsActive" type="checkbox" class="form-check-input" id="isActiveToggle" />
+                        <label class="form-check-label" for="isActiveToggle">Active</label>
                     </div>
 
                 </div>
@@ -59,8 +58,7 @@
                             <td>@item.Name</td>
                             <td>
                                 <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input" id="isActiveToggle_@item.Id" style="width: 3rem; height: 1.5rem;"
-                                    @(item.IsActive ? "checked" : "") />
+                                    <input type="checkbox" class="form-check-input" id="isActiveToggle_@item.Id" @(item.IsActive ? "checked" : "") />
                                     <label class="form-check-label" for="isActiveToggle_@item.Id">Active</label>
                                 </div>
                             </td>
@@ -106,21 +104,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('.form-check-input').on('change', function () {
-            var itemId = $(this).attr('id').split('_')[1];
-            var isActive = $(this).is(':checked');
-            $.ajax({
-                url: '@Url.Action("UpdateStatus", "Course")', 
-                type: 'POST',
-                data: {
-                    id: itemId,
-                    isActive: isActive
-                },
-
-            });
-        });
-    });
+   
 
 
 
@@ -144,6 +128,47 @@
         }
                             })
                         };
+
+
+
+
+   
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.form-check-input').on('change', function () {
+            var $checkbox = $(this);
+            var itemId = $checkbox.attr('id').split('_')[1];
+            var isActive = $checkbox.is(':checked');
+
+            // Disable the checkbox
+            $checkbox.prop('disabled', true);
+
+            $.ajax({
+                url: '@Url.Action("UpdateIsActive", "Course")',
+                type: 'POST',
+                data: {
+                    id: itemId,
+                    isActive: isActive
+                },
+                success: function (response) {
+                    // Handle success
+                    // Re-enable the checkbox
+                    window.location.reload(true);
+                    $checkbox.prop('disabled', false);
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.log(xhr.responseText);
+                    window.location.reload(true);
+                    // Re-enable the checkbox
+                    $checkbox.prop('disabled', false);
+                }
+            });
+        });
+    });
+</script>
+
 
 
