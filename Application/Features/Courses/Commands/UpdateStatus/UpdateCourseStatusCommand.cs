@@ -41,6 +41,7 @@ namespace ApwPayroll_Application.Features.Courses.Commands.UpdateStatus
             {
                 return  Result<int>.BadRequest();
             }
+            data.IsActive = request.IsActive;
             await  _unitOfWork.Repository<Course>().UpdateAsync(data);
             await _unitOfWork.Save(cancellationToken);
               return Result<int>.Success(data.Id, " Status Updated Successfully ."); 
