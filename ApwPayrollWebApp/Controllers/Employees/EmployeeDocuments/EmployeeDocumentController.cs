@@ -99,7 +99,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
 
 
         public async Task<IActionResult> DownloadFile(string url)
-            {
+        {
             using (var httpClient = new HttpClient())
             {
                 var response = await httpClient.GetAsync(url);

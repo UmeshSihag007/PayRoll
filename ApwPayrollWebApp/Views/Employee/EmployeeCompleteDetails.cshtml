@@ -6,13 +6,13 @@
 
 <div class="container">
 
-    <div class="row"> 
-        <input  hidden asp-for="EmployeePersonalDetail.Id"/>
-        <input  hidden asp-for="Experiences.Id"/>
-        <input  hidden asp-for="CreateEmployeeFamily.Id"/>
-        <input  hidden asp-for="ReferencesCommand.Id"/>
+    <div class="row">
+        <input hidden asp-for="EmployeePersonalDetail.Id" />
+        <input hidden asp-for="Experiences.Id" />
+        <input hidden asp-for="CreateEmployeeFamily.Id" />
+        <input hidden asp-for="ReferencesCommand.Id" />
         <div class="card ribbon-box ">
- 
+
             <div class="card-header">
                 <div class="row mb-3">
                     <div class="col-7">
@@ -20,10 +20,10 @@
                     </div>
                     <div class="col-5 form-switch">
 
-                         <input type="checkbox" class="form-check-input" id="isActiveToggle_@ViewBag.employee.Id" style="width: 3rem; height: 1.5rem;" @(ViewBag.employee?.IsLoginAccess ? "checked" : "") />
-                     </div>
- 
- 
+                        <input type="checkbox" class="form-check-input" id="isActiveToggle_@ViewBag.employee.Id" style="width: 3rem; height: 1.5rem;" @(ViewBag.employee?.IsLoginAccess ? "checked" : "") />
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -40,16 +40,16 @@
                                 @if (ViewBag.employee == null)
                                 {
                                     <a asp-action="CreateEmployeeBasic" asp-controller="Employee" asp-all-route asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
-                                 
+
                                         Add
                                     </a>
                                 }
                                 else
-                                {                                    
-                                <a asp-action="CreateEmployeeBasic" asp-all-route asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
-                                    <i class="bi bi-pencil-square"></i>
-                                    Edit
-                                </a>
+                                {
+                                    <a asp-action="CreateEmployeeBasic" asp-all-route asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+                                        <i class="bi bi-pencil-square"></i>
+                                        Edit
+                                    </a>
                                 }
                             </div>
                         </div>
@@ -163,16 +163,16 @@
                                 @if (@ViewBag.employee.EmployeePersonalDetail == null)
                                 {
                                     <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
-                                    
+
                                         Add
                                     </a>
                                 }
                                 else
-                                {                                   
-                                <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
-                                    <i class="bi bi-pencil-square"></i>
-                                    Edit
-                                </a>
+                                {
+                                    <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+                                        <i class="bi bi-pencil-square"></i>
+                                        Edit
+                                    </a>
                                 }
                             </div>
                         </div>
@@ -235,103 +235,103 @@
                         <div class="row">
                             <div class="col-7">
 
-                        <div class="ribbon ribbon-success round-shape"><span>Education Details</span></div>
-                    </div>
-                        <div class="col-5  text-end">
-                            @if (ViewBag.employee.EmployeeQualification.Count == 0)
-                            {
-                                    <a asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" asp-route-employeeId="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
-                             
-                                    Add
-                                </a>
-                            }
-                        </div>
-                        </div>
+                                <div class="ribbon ribbon-success round-shape"><span>Education Details</span></div>
                             </div>
+                            <div class="col-5  text-end">
+                                @if (ViewBag.employee.EmployeeQualification.Count == 0)
+                                {
+                                    <a asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" asp-route-employeeId="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+
+                                        Add
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
                     @if (ViewBag.employee.EmployeeQualification.Count != 0)
                     {
-                        
-                    <div class="table-responsive">
 
-                        <table class="table  table-bordered align-middle mb-0">
-                            <input hidden asp-for="EmployeePersonalDetail.Id"/>
-                            <thead>
-                                <tr>
+                        <div class="table-responsive">
 
-                                    <th>#</th>
-                                    <th><strong> Course </strong></th>
-                                    <th><strong>University/Board</strong></th>
-                                    <th><strong>Specification</strong></th>
-                                    <th><strong class="d-flex">Obtain Marks</strong></th>
-                                    <th><strong>Total Marks</strong></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-
-                                @foreach (var qualification in ViewBag.employee.EmployeeQualification)
-                                {
+                            <table class="table  table-bordered align-middle mb-0">
+                                <input hidden asp-for="EmployeePersonalDetail.Id" />
+                                <thead>
                                     <tr>
-                                        <td>@(ViewBag.employee.EmployeeQualification.IndexOf(qualification) + 1)</td>
-                                        <td>@qualification.Course.Name</td>
 
-
-                                        <td>@qualification.UniversityBoard</td>
-
-
-                                        <td>@qualification.Specification</td>
-
-
-                                        <td>@qualification.ObtainMarks</td>
-
-
-                                        <td>@qualification.TotalMarks</td>
-
-                                        <td>
-
- 
-                                            <a asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation"
-                                               asp-route-employeeid="@qualification.EmployeeId"
-                                               asp-route-id="@qualification.Id" 
-                                                class="btn btn-sm btn-info" id="editBtn">
- 
-                                                <i class="bi bi-pencil-square"></i>
-
-                                            </a>
-                                        </td>
-
-                                    
+                                        <th>#</th>
+                                        <th><strong> Course </strong></th>
+                                        <th><strong>University/Board</strong></th>
+                                        <th><strong>Specification</strong></th>
+                                        <th><strong class="d-flex">Obtain Marks</strong></th>
+                                        <th><strong>Total Marks</strong></th>
+                                        <th></th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var qualification in ViewBag.employee.EmployeeQualification)
+                                    {
+                                        <tr>
+                                            <td>@(ViewBag.employee.EmployeeQualification.IndexOf(qualification) + 1)</td>
+                                            <td>@qualification.Course.Name</td>
+
+
+                                            <td>@qualification.UniversityBoard</td>
+
+
+                                            <td>@qualification.Specification</td>
+
+
+                                            <td>@qualification.ObtainMarks</td>
+
+
+                                            <td>@qualification.TotalMarks</td>
+
+                                            <td>
+
+
+                                                <a asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation"
+                                                   asp-route-employeeid="@qualification.EmployeeId"
+                                                   asp-route-id="@qualification.Id"
+                                                   class="btn btn-sm btn-info" id="editBtn">
+
+                                                    <i class="bi bi-pencil-square"></i>
+
+                                                </a>
+                                            </td>
+
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     }
                 </div>
             </div>
             <div class="col-xxl-6">
                 <div class="card ribbon-box ">
                     <div class="card-header">
-                    <div class="row">
-                        <div class="col-7">
-
-                        
-                        <div class="ribbon ribbon-success round-shape"><span>Experience Details</span></div>
+                        <div class="row">
+                            <div class="col-7">
 
 
-                    </div>
-                        <div class="col-5 d-flex flex-row-reverse bd-highlight">
-                            @if (@ViewBag.employee.EmployeeExperience.Count == 0)
-                            {
-                                    <a asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" asp-route-employeeId="@ViewBag.employee.Id"  class="btn btn-sm btn-info" id="editBtn">
+                                <div class="ribbon ribbon-success round-shape"><span>Experience Details</span></div>
+
+
+                            </div>
+                            <div class="col-5 d-flex flex-row-reverse bd-highlight">
+                                @if (@ViewBag.employee.EmployeeExperience.Count == 0)
+                                {
+                                    <a asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" asp-route-employeeId="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
 
                                         Add
                                     </a>
-                            }
+                                }
+                            </div>
                         </div>
                     </div>
-                        </div>
                     @if (@ViewBag.employee.EmployeeExperience.Count != 0)
                     {
                         <div class="table-responsive">
@@ -370,9 +370,9 @@
 
                                             <td>
 
-                                                <a asp-action ="CreateEmployeeEducation" , asp-controller="EmployeeEducation"
+                                                <a asp-action="CreateEmployeeEducation" , asp-controller="EmployeeEducation"
                                                    asp-route-employeeid="@experience.EmployeeId" asp-route-id="@experience.Id"
-                                                class="btn btn-sm btn-info" id="editBtn">
+                                                   class="btn btn-sm btn-info" id="editBtn">
 
                                                     <i class="bi bi-pencil-square"></i>
 
@@ -402,7 +402,7 @@
                         <div class="row">
                             <div class="col-7">
 
-                        <div class="ribbon ribbon-success round-shape"><span>Family Details</span></div>
+                                <div class="ribbon ribbon-success round-shape"><span>Family Details</span></div>
                             </div>
                             <div class="col-5  text-end">
                                 @if (ViewBag.employee.EmployeeFamily.Count == 0)
@@ -419,48 +419,48 @@
 
                     @if (ViewBag.employee.EmployeeFamily.Count != 0)
                     {
-                        
-                    <div class="table-responsive">
-                        <table class="table  table-bordered align-middle mb-0">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th><strong>Name:</strong></th>
-                                    <th><strong>Gender:</strong></th>
-                                    <th><strong>Relation:</strong></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
 
-                                @foreach (var familyMember in ViewBag.employee.EmployeeFamily)
-                                {
-
+                        <div class="table-responsive">
+                            <table class="table  table-bordered align-middle mb-0">
+                                <thead>
                                     <tr>
-                                        <td>@(ViewBag.employee.EmployeeFamily.IndexOf(familyMember) + 1) </td>
-                                        <td>@familyMember.Name</td>
-
-
-                                        <td>@familyMember.Gender</td>
-
-                                        <td>@familyMember.RelationType.Name</td>
-
-                                        <td>
-
-                                            <a asp-action="CreateEmployeeFamily" , asp-controller="EmployeeFamily" 
-                                               asp-route-employeeid="@familyMember.EmployeeId" asp-route-id="@familyMember.Id"
-                                                class="btn btn-sm btn-info" id="editBtn">
-
-                                                <i class="bi bi-pencil-square"></i>
-
-                                            </a>
-                                        </td>
+                                        <th scope="col">#</th>
+                                        <th><strong>Name:</strong></th>
+                                        <th><strong>Gender:</strong></th>
+                                        <th><strong>Relation:</strong></th>
+                                        <th></th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
 
-                    </div>
+                                    @foreach (var familyMember in ViewBag.employee.EmployeeFamily)
+                                    {
+
+                                        <tr>
+                                            <td>@(ViewBag.employee.EmployeeFamily.IndexOf(familyMember) + 1) </td>
+                                            <td>@familyMember.Name</td>
+
+
+                                            <td>@familyMember.Gender</td>
+
+                                            <td>@familyMember.RelationType.Name</td>
+
+                                            <td>
+
+                                                <a asp-action="CreateEmployeeFamily" , asp-controller="EmployeeFamily"
+                                                   asp-route-employeeid="@familyMember.EmployeeId" asp-route-id="@familyMember.Id"
+                                                   class="btn btn-sm btn-info" id="editBtn">
+
+                                                    <i class="bi bi-pencil-square"></i>
+
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
                     }
                 </div>
             </div>
@@ -470,9 +470,9 @@
                     <div class="card-header">
                         <div class="row">
 
-                            <div class="col-7"  >
+                            <div class="col-7">
 
-                          <div class="ribbon ribbon-success round-shape"><span>ReferralDetail Details</span></div>
+                                <div class="ribbon ribbon-success round-shape"><span>ReferralDetail Details</span></div>
                             </div>
 
                             <div class="col-5  text-end">
@@ -481,8 +481,8 @@
 
                                     <a asp-action="ReferenceView" asp-controller="EmployeeReferral" asp-route-employeeId="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
 
-                                    Add
-                                </a>
+                                        Add
+                                    </a>
                                 }
                             </div>
                         </div>
@@ -514,16 +514,16 @@
                                             <td>
                                                 @(ViewBag.employee.ReferralDetail.IndexOf(referral) + 1)
                                             </td>
-                                             <td>@referral.ReferenceName</td>
+                                            <td>@referral.ReferenceName</td>
 
                                             <td>@referral.Designation</td>
- 
+
 
                                             <td>@referral.OrganizationName</td>
 
                                             <td>@referral.ContactNumber</td>
 
- 
+
                                             <td>@referral.YearsOfAcquaintance</td>
                                             <td>
 
@@ -533,7 +533,7 @@
 
                                                     <i class="bi bi-pencil-square"></i>
 
- 
+
                                                 </a>
                                             </td>
                                         </tr>
@@ -555,20 +555,20 @@
                         <div class="row">
                             <div class="col-7">
 
-                        <div class="ribbon ribbon-success round-shape">
-                            <span>Employee Documents</span>
-                        </div>
+                                <div class="ribbon ribbon-success round-shape">
+                                    <span>Employee Documents</span>
+                                </div>
                             </div>
                             <div class="col-5 text-end">
-                                @if (ViewBag.employee.EmployeeDocuments.Count==0)
+                                @if (ViewBag.employee.EmployeeDocuments.Count == 0)
                                 {
 
                                     <a asp-action="Create" asp-controller="EmployeeDocument" asp-route-employeeId="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
 
-                                    Add
+                                        Add
                                     </a>
                                 }
-                            
+
                             </div>
                         </div>
 
@@ -586,7 +586,7 @@
                                             @{
                                                 bool isPdf = document.Document.Url.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
                                             }
-                                            
+
                                             <!-- Document Type Heading -->
                                             <h5 class="card-title text-center mb-3">@document.EmployeeDocumentType.Name</h5>
 
@@ -596,14 +596,14 @@
                                                 <div class="text-center mb-3">
                                                     @if (isPdf)
                                                     {
-                                                        <iframe onclick ="showImageModal('@document.Document.Url', '@document.EmployeeDocumentType.Name')"  
-                                                        src="@document.Document.Url" style="width: 100%; height: 200px; object-fit: cover;"></iframe>
+                                                        <iframe onclick="showImageModal('@document.Document.Url', '@document.EmployeeDocumentType.Name')"
+                                                                src="@document.Document.Url" style="width: 100%; height: 200px; object-fit: cover;"></iframe>
                                                     }
                                                     else
                                                     {
-                                                    <img onclick="showImageModal('@document.Document.Url', '@document.EmployeeDocumentType.Name')"
-                                                         src="@document.Document.Url" alt="Document Image"
-                                                         style="width: 100%; height: 200px; object-fit: cover;">
+                                                        <img onclick="showImageModal('@document.Document.Url', '@document.EmployeeDocumentType.Name')"
+                                                             src="@document.Document.Url" alt="Document Image"
+                                                             style="width: 100%; height: 200px; object-fit: cover;">
                                                     }
                                                 </div>
                                             }
