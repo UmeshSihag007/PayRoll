@@ -9,26 +9,29 @@
     <div class="tab-pane">
         <form asp-action="CreateLeaveType" method="post">
             <div class="row">
-                <div class="col-3">
+                <div class="col-auto">
                     <input asp-for="createLeaveType.Id" hidden />
                     <label asp-for="createLeaveType.Name" class="form-label">Name</label>
                 </div>
-                <div class="col-3">
+                <div class="col-auto">
                     <input asp-for="createLeaveType.Name" type="text" class="form-control form-control-sm" />
                     <span asp-validation-for="createLeaveType.Name" class="text-danger"></span>
                 </div>
-                <div class="col-3">
+                <div class="col-auto">
                     <label class="form-label">Is Active</label>
                 </div>
-                <div class="col-3">
+                <div class="col-auto">
                     <div class="form-check form-switch">
                         <input asp-for="createLeaveType.IsActive" type="checkbox" class="form-check-input" id="isActiveToggle" />
                         <label class="form-check-label" for="isActiveToggle">Active</label>
                     </div>
-                    <button type="submit" class="btn btn-secondary" id="addBtn">
+            </div>
+            <div class="col-2 ms-5">
+                    <button type="submit" class="btn btn-secondary btn-sm" id="addBtn">
                         @(Model.createLeaveType != null && Model.createLeaveType.Id.HasValue && Model.createLeaveType.Id.Value != 0 ? "Update" : "Add")
                     </button>
-                </div>
+                    </div>
+                
             </div>
         </form>
 
@@ -79,18 +82,45 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+   
+
+
+    
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
     $(document).ready(function () {
         $('.form-check-input').on('change', function () {
-            var itemId = $(this).attr('id').split('_')[1];
-            var isActive = $(this).is(':checked');
+            var $checkbox = $(this);
+            var itemId = $checkbox.attr('id').split('_')[1];
+            var isActive = $checkbox.is(':checked');
+
+            // Disable the checkbox
+            $checkbox.prop('disabled', true);
+
             $.ajax({
-                url: '@Url.Action("UpdateStatus", "LeaveType")',
+                url: '@Url.Action("UpdateIsActive", "LeaveType")',
                 type: 'POST',
                 data: {
                     id: itemId,
                     isActive: isActive
                 },
+                success: function (response) {
+                    // Handle success
+                    // Re-enable the checkbox
+                    window.location.reload(true);
+                    $checkbox.prop('disabled', false);
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.log(xhr.responseText);
+                    window.location.reload(true);
+                    // Re-enable the checkbox
+                    $checkbox.prop('disabled', false);
+                }
             });
         });
     });
 </script>
+

@@ -190,7 +190,6 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                     {
                         Notify(updateData.Messages, null, updateData.code);
                     }
-
                     return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = updateData.Data.EmployeeId });
 
                 }

@@ -1,6 +1,8 @@
-﻿using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.CreateLeaveTypes;
+﻿using ApwPayroll_Application.Features.Employees.Commands.UpdateIsLoginAccess;
+using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.CreateLeaveTypes;
 using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.DeleteLeaveTypes;
 using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.UpdateLeaveTypes;
+using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.UpdateLeaveTypesActive;
 using ApwPayroll_Application.Features.Leaves.LeaveTypes.Queries.GetAllLeaveTypes;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.Models;
@@ -75,6 +77,24 @@ public class LeaveTypeController : BaseController
         return RedirectToAction("LeaveTypeView");
 
     }
+
+    #region UPDATE  LOGIN ACCESS   
+    [HttpPost]
+    public async Task<IActionResult> UpdateIsActive(int id, bool isActive)
+    {
+        var data = await _mediator.Send(new UpdateLeaveTypeIsActiveCommand(id, isActive));
+        if (data.code == 200)
+        {
+            Notify(data.Messages, null, data.code);
+        }
+        else
+        {
+            Notify(data.Messages, null, data.code);
+        }
+
+        return Json(new { success = true });
+    }
+    #endregion
 
     public async Task<IActionResult> Delete(int id)
     {
