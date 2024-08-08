@@ -37,7 +37,7 @@ namespace ApwPayrollWebApp.Controllers.Users
             {
                 ViewBag.ErrorMessages = data.Messages;
                 Notify(data.Messages, null, 200);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login");
             }
             else
             {
@@ -45,7 +45,7 @@ namespace ApwPayrollWebApp.Controllers.Users
            return View(userModel);
             }
          
-            
+       
        
         }
         public IActionResult Login()

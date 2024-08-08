@@ -155,8 +155,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                     };
                      
                 }
-
-                Notify(  ["Testing" ], null, 200);
+ 
             }
 
                 
