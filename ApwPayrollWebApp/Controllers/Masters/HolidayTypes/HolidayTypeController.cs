@@ -1,5 +1,4 @@
-﻿using ApwPayroll_Application.Features.Courses.Commands.UpdateStatus;
-using ApwPayroll_Application.Features.Holidays.HollidayTypes.Commands.CreateHolidayTypes;
+﻿using ApwPayroll_Application.Features.Holidays.HollidayTypes.Commands.CreateHolidayTypes;
 using ApwPayroll_Application.Features.Holidays.HollidayTypes.Commands.DeleteHolidayTypes;
 using ApwPayroll_Application.Features.Holidays.HollidayTypes.Commands.UpdateHolidayTypes;
 using ApwPayroll_Application.Features.Holidays.HollidayTypes.Commands.UpdateStatus;
@@ -9,120 +8,73 @@ using ApwPayrollWebApp.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ApwPayrollWebApp.Controllers.Masters.HolidayTypes;
-
-public class HolidayTypeController : BaseController
+namespace ApwPayrollWebApp.Controllers.Masters.HolidayTypes
 {
-    private readonly IMediator _mediator;
-
-    public HolidayTypeController(IMediator mediator)
+    public class HolidayTypeController : BaseController
     {
-        _mediator = mediator;
-    }
+        private readonly IMediator _mediator;
 
-    public async Task<IActionResult> HolidayTypeView(int? id)
-    {
-        await IntializeViewBag();
-        var model = new MasterModel();
-        if (id.HasValue && id != 0)
+        public HolidayTypeController(IMediator mediator)
         {
-            var holidayTypeData = await _mediator.Send(new GetAllHolidayTypeQuery());
-            var holidayType = holidayTypeData.Data.FirstOrDefault(x => x.Id == id.Value);
-            if (holidayType != null)
+            _mediator = mediator;
+        }
+
+        public async Task<IActionResult> HolidayTypeView(int? id)
+        {
+            await InitializeViewBag();
+            var model = new MasterModel();
+            if (id.HasValue && id != 0)
             {
-                model.createHolidayType = new CreateHolidayTypeCommand
+                var holidayTypeData = await _mediator.Send(new GetAllHolidayTypeQuery());
+                var holidayType = holidayTypeData.Data.FirstOrDefault(x => x.Id == id.Value);
+                if (holidayType != null)
                 {
-                    Id = holidayType.Id,
-                    Name = holidayType.Name,
-                    IsActive = holidayType.IsActive
-                };
+                    model.createHolidayType = new CreateHolidayTypeCommand
+                    {
+                        Id = holidayType.Id,
+                        Name = holidayType.Name,
+                        IsActive = holidayType.IsActive
+                    };
+                }
             }
+            return View(model);
         }
-        return View(model);
-    }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateHolidayType(MasterModel employeeProfile)
-    {
-
-        if (employeeProfile.createHolidayType.Id == 0 || employeeProfile.createHolidayType.Id == null)
+        [HttpPost]
+        public async Task<IActionResult> CreateHolidayType(MasterModel model)
         {
-           var data= await _mediator.Send(employeeProfile.createHolidayType);
-            if (data.code == 200)
+            if (model.createHolidayType.Id == 0 || model.createHolidayType.Id == null)
             {
+                var data = await _mediator.Send(model.createHolidayType);
                 Notify(data.Messages, null, data.code);
             }
             else
             {
+                var data = await _mediator.Send(new UpdateHolidayTypeCommand((int)model.createHolidayType.Id, model.createHolidayType));
                 Notify(data.Messages, null, data.code);
             }
-        }
-        else
-        {
-          var updatedata=  await _mediator.Send(new UpdateHolidayTypeCommand((int)employeeProfile.createHolidayType.Id, employeeProfile.createHolidayType));
-            if(updatedata.code == 200)
-            {
-                Notify(updatedata.Messages, null, updatedata.code);
-            }
-            else
-            {
-                Notify(updatedata.Messages, null, updatedata.code);
-            }
+            return RedirectToAction("HolidayTypeView");
         }
 
-        return RedirectToAction("HolidayTypeView");
-
-    }
-    [HttpPost]
-    public async Task<IActionResult> UpdateStatus(int id, bool isActive)
-    {
-        try
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(int id, bool isActive)
         {
             var data = await _mediator.Send(new UpdateHolidayTypeStatusCommand(id, isActive));
-            if (data.succeeded)
-            {
-                Notify(data.Messages, null, data.code);
-
-            }
-            else
-            {
-                Notify(data.Messages, null, data.code);
-            }
-
-            return RedirectToAction("HolidayTypeView");
-
-
-        }
-        catch (Exception ex)
-        {
-            Notify(["Error"], null, 400);
-            return RedirectToAction("HolidayTypeView");
-        }
-
-    }
-    public async Task<IActionResult> Delete(int id)
-    {
-        var data = await _mediator.Send(new DeleteHolidayTypeCommand(id));
-        if (data.succeeded) 
-        {
-            Notify(data.Messages,null, data.code);
-        }
-        else
-        {
             Notify(data.Messages, null, data.code);
+            return RedirectToAction("HolidayTypeView");
         }
-        return RedirectToAction("HolidayTypeView");
-    }
 
-    private async Task IntializeViewBag()
-    {
-        var holidayTypeList = await _mediator.Send(new GetAllHolidayTypeQuery());
-        if (holidayTypeList.Data != null && holidayTypeList.Data.Count != 0)
+        public async Task<IActionResult> Delete(int id)
         {
-            var data = holidayTypeList.Data.ToList();
-            ViewBag.HolidayType = data;
-
+            var data = await _mediator.Send(new DeleteHolidayTypeCommand(id));
+            Notify(data.Messages, null, data.code);
+            return RedirectToAction("HolidayTypeView");
         }
 
+        private async Task InitializeViewBag()
+        {
+            var holidayTypeList = await _mediator.Send(new GetAllHolidayTypeQuery());
+            ViewBag.HolidayType = holidayTypeList?.Data?.ToList();
+        }
     }
 }

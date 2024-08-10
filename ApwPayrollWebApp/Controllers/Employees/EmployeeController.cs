@@ -1,4 +1,4 @@
-﻿using Amazon.Runtime.Internal.Util;
+using Amazon.Runtime.Internal.Util;
 using ApwPayroll_Application.Features.Banks.Queries.GetAllBanks;
 using ApwPayroll_Application.Features.Branches.Queries.GetAllBranches;
 using ApwPayroll_Application.Features.Courses.Queries.GetAllCourses;

@@ -12,7 +12,12 @@ using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.Cre
 using ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.CreateEmployeeFamily;
 using ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Commands.CreateEmployeePersonalDetail;
 using ApwPayroll_Application.Features.Employees.EmployeeReferences.Commands.CreateEmployeeReferences;
+ 
+using ApwPayroll_Application.Features.Employees.Queries.GetAllEmployees;
+using ApwPayroll_Application.Features.Holidays.Commands.CreateHolidays;
+ 
 using ApwPayroll_Application.Features.Holidays.HollidayTypes.Commands.CreateHolidayTypes;
+using ApwPayroll_Application.Features.Leaves.Commands.CreateLeaves;
 using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.CreateLeaveTypes;
 using ApwPayroll_Application.Features.Locations.Commands.CreateLocations;
 using ApwPayroll_Application.Features.Menus.MenuTypes.Commands.CreateMenuType;
@@ -31,7 +36,11 @@ using ApwPayroll_Domain.Entities.Employees.EmployeeExperiences;
 using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
 using ApwPayroll_Domain.Entities.Employees.EmployeeQualifications;
+using ApwPayroll_Domain.Entities.Holidays;
+using ApwPayroll_Domain.Entities.Holidays.HolidatTypeRuleLocations;
+using ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles;
 using ApwPayroll_Domain.Entities.Holidays.HolidayTypes;
+using ApwPayroll_Domain.Entities.Leaves;
 using ApwPayroll_Domain.Entities.Leaves.LeaveTypes;
 using ApwPayroll_Domain.Entities.Locations;
 using ApwPayroll_Domain.Entities.Menus.MenuTypes;
@@ -80,6 +89,48 @@ namespace ApwPayroll_Application.Common.Mappings
         {
             var mapFromType = typeof(IMapFrom<>);
 
+ 
+        //  custome  mapping work 
+        CreateMap<CreateLocationCommand, Location>();
+        CreateMap<Location, GetAllLocationDto>();
+        CreateMap<CreateBranchCommand, Branch>();
+        CreateMap<Branch, GetBranchDto>();
+        CreateMap<CreateHolidayTypeCommand, HolidayType>();
+
+        CreateMap<CreateHolidayCommand, Holiday>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+        CreateMap<Holiday, GetHolidayRuleDto>();
+        CreateMap<HolidayTypeRule, GetHolidayRuleDto>();
+        CreateMap<HolidayTypeRuleLocation, GetHolidayRuleDto>();
+
+        CreateMap<CreateLeaveCommand, Leave>();
+
+        CreateMap<Bank, GetBankDto>();
+        CreateMap<Bank, LookUpDto>();
+        CreateMap<Branch, LookUpDto>();
+        CreateMap<CreateBankCommand, Bank>();
+        CreateMap<CreateLeaveTypeCommand, LeaveType>();
+        CreateMap<CreateDocumentTypeCommand, DocumentType>();
+        CreateMap<CreateMenuTypeCommand, MenuType>();
+        CreateMap<CreateEmployeeCommand, Employee>();
+        CreateMap<Employee, GetEmployeeDto>();
+
+        CreateMap<CreateEmployeeEducationCommand, EmployeeQualification>();
+        CreateMap<CreateEmployeeExperiencesCommand, EmployeeExperience>();
+        CreateMap<CreateEmployeeFamilyCommand, EmployeeFamily>();
+        CreateMap<CreateEmployeeReferencesCommand, ReferralDetail>();
+        CreateMap<CreateCoursesCommand, Course>();
+        CreateMap<CreateDepartmentCommand, Department>();
+        CreateMap<CreateDesignationCommand, Designation>();
+
+        CreateMap<RegisterUserCommand, AspUser>()
+        .ForMember(u => u.UserName, opt => opt.MapFrom(x => x.Email));
+    }
+        private void ApplyMappingsFromAssembly(Assembly assembly)
+        {
+            var mapFromType = typeof(IMapFrom<>);
+
             var mappingMethodName = nameof(IMapFrom<object>.Mapping);
  
             bool HasInterface(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == mapFromType;
@@ -114,6 +165,7 @@ namespace ApwPayroll_Application.Common.Mappings
                 }
             }
         }
+   
     }
 
 }

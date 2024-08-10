@@ -9,5 +9,11 @@ public class LeaveTypeConfiguration : IEntityTypeConfiguration<LeaveType>
     public void Configure(EntityTypeBuilder<LeaveType> builder)
     {
         builder.Property(x => x.IsActive).HasDefaultValue(true);
+        builder.HasMany(x => x.LeaveTypeRole)
+               .WithOne(x => x.LeaveType)
+               .HasForeignKey(x => x.LeaveTypeId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+
     }
 }
