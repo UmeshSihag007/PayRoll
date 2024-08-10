@@ -25,15 +25,13 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeExperiences
         [HttpPost]
         public async Task<IActionResult> CreateEmployeeExperience(EmployeeCreateViewModel model)
         {
+            ModelState.Remove("Experiences.EmployeeId");
             if (ModelState.IsValid)
             {
-
-                var employeeId = HttpContext.Session.GetInt32("EmployeeId");
-                if (employeeId != 0 && employeeId != null)
+                if (HttpContext.Session.GetInt32("EmployeeId") != null)
                 {
-                    model.Experiences.EmployeeId = employeeId.Value;
+                    model.Experiences.EmployeeId = HttpContext.Session.GetInt32("EmployeeId").Value;
                 }
-
                 if (model.Experiences.Id == 0 || model.Experiences.Id == null)
                 {
 
@@ -47,7 +45,13 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeExperiences
                     {
                         Notify(data.Messages, null, data.code);
                     }
-                    return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
+                    if (HttpContext.Session.GetInt32("EmployeeId") != null)
+                    {
+
+                        return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
+                    }
+                    return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = model.Experiences.EmployeeId });
+                   
 
                 }
                 else
@@ -62,7 +66,14 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeExperiences
                     {
                         Notify(data.Messages, null, data.code);
                     }
-                    return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
+                    
+                    if (HttpContext.Session.GetInt32("EmployeeId") != null)
+                    {
+
+                        return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
+
+                    }
+                    return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = data.Data.EmployeeId });
                 }
             }
             return View();
@@ -83,7 +94,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeExperiences
         public async Task<IActionResult> Delete(int id)
         {
             var data = await _mediator.Send(new DeleteEmployeeExperienceCommand(id));
-            if (data.code == 200)
+            if (data.succeeded)
             {
                 Notify(data.Messages, null, data.code);
             }

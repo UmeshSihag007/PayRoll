@@ -40,7 +40,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.De
 
             await _unitOfWork.Repository<EmployeeFamily>().DeleteAsync(data);
             await _unitOfWork.Save(cancellationToken);
-            return  Result<int>.Success ( data .Id, "Deleted.");
+            return  Result<int>.BadRequest ("Deleted Successfully");
           
         }
     }

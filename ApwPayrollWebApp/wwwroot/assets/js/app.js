@@ -2074,4 +2074,36 @@ if (mybutton) {
 		document.body.scrollTop = 0;
 		document.documentElement.scrollTop = 0;
 	}
+
+
+
+	// for  pagination working
+
+	$(document).ready(function () {
+		// Attach click event handler to pagination links
+		$(document).on('click', 'a[data-ajax="true"]', function (event) {
+			event.preventDefault(); // Prevent default link behavior
+
+			var url = $(this).attr('href'); // Get the URL from the link
+
+			$.ajax({
+				url: url,
+				type: 'GET',
+				success: function (data) {
+					// Replace the content of the main container with the new data
+					$('#main-container').html($(data).find('#main-container').html());
+
+					// Replace the pagination partial with the new pagination
+					$('#pagination-container').html($(data).find('#pagination-container').html());
+				},
+				error: function (xhr, status, error) {
+					console.error('Error loading page:', status, error);
+				}
+			});
+		});
+	});
+
+
+
+
 }

@@ -60,19 +60,33 @@ File: Main Css File
   }
 }
 
+@media  (max-width: 999px) {
+    #page-topbar
+{
+    left:0 !important;
+}
+    .app-menu.navbar-menu {
+        display: none !important;
+
+    }
+    .main-content {
+        margin: 0 !important;
+    }
+}
+
 .navbar-header {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: justify;
-  -webkit-box-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  margin: 0 auto;
-  height: 70px;
-  padding: 0 1.5rem 0 calc(1.5rem * 0.5);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin: 0 auto;
+    height: 70px;
+    padding: 0 1.5rem 0 calc(1.5rem * 0.5);
 }
 @media (max-width: 767.98px) {
   .navbar-header {

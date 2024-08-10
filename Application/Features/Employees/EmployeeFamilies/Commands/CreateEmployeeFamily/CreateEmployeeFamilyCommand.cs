@@ -11,9 +11,9 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.Cr
     public class CreateEmployeeFamilyCommand : IRequest<Result<int>>
     {
         public int? Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public int? EmployeeId { get; set; }
-        public DateTime DOB { get; set; }
+        public DateTime? DOB { get; set; }
         public GenderEnum Gender { get; set; }
 
     }
@@ -31,7 +31,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.Cr
         {
             var mapData = _mapper.Map<EmployeeFamily>(request);
             mapData.IsActive = true;
-            mapData.RelationTypeId = 4;
+            mapData.RelationTypeId = 3;
         
           await _unitOfWork.Repository<EmployeeFamily>().AddAsync(mapData);
             await _unitOfWork.Save(cancellationToken);

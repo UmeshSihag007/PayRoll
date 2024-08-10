@@ -18,10 +18,12 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
 {
     public class CreateEmployeeCommand : IRequest<Result<Employee>>
     {
+        public int? Id { get; set; }
+        
         [Required]
         public string FirstName { get; set; }
-        [Required]
-        public string LastName { get; set; }
+         
+        public string? LastName { get; set; }
 
         [ESINumber]
         public string? ESINumber { get; set; }
@@ -33,7 +35,6 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
         public Int64 MobileNumber { get; set; }
         [Email]
         public string EmailId { get; set; }
-
 
         public string? UserId { get; set; }
         public bool? IsBrokerExamPass { get; set; }
@@ -77,24 +78,35 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
         public async Task<Result<Employee>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
 
-            var user = new AspUser()
+            var user = new AspUser
             {
+                UserName = request.EmailId, // UserName is required for Identity
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Email = request.EmailId,
+                Email = request.EmailId
             };
+
+            var password = GeneratePassword(request.EmailId);
+      var result=  await _userManager.CreateAsync(user, password);
+
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    return Result<Employee>.BadRequest(error.Description);
+                }
+            }
+
+            await _userManager.AddToRoleAsync(user, "Employee");
             var mapData = _mapper.Map<Employee>(request);
             var empCode = GenerateEmployeeCode();
             mapData.EmployeeCode = empCode;
             var data = await _unitOfWork.Repository<Employee>().AddAsync(mapData);
             await _unitOfWork.Save(cancellationToken);
-
-            var password = GeneratePassword(request.EmailId);
-            await _userManager.CreateAsync(user, password);
-
+         
 
             if (request.DesignationId != null)
-
             {
                 var checkDesignation = await _unitOfWork.Repository<Designation>().GetByIdAsync(request.DesignationId);
                 if (checkDesignation == null)
@@ -102,7 +114,7 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
                     return Result<Employee>.BadRequest();
                 }
                 data.AddDesignation(request.DesignationId);
-
+                await _unitOfWork.Save(cancellationToken);
             }
             if (request.DepartmentId != null)
             {
@@ -112,14 +124,15 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
                 {
                     return Result<Employee>.BadRequest();
                 }
-                data.AddDesignation(request.DepartmentId);
+                data.AddDepartment(request.DepartmentId);
+            await _unitOfWork.Save(cancellationToken);
             }
-            return Result<Employee>.Success(data, "Created SuccessFully");
+            return Result<Employee>.Success(data, "Created Successfully");
         }
 
         private string GeneratePassword(string email)
         {
-            string password = email + "@123";
+            string password = email +"ABC#$@123";
             return password;
         }
 

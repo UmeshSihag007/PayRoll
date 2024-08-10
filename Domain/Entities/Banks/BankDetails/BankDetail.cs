@@ -10,11 +10,11 @@ namespace ApwPayroll_Domain.Entities.Banks.BankDetails
         public Bank? Bank { get; set; }
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
-        public int BanAccountId { get; set; }
+        public long BanAccountId { get; set; }
         public bool IsBankAccountVerified { get; set; }
         public string IFCCode { get; set; }
-        public string AccountName { get; set; }
+        public string? AccountName { get; set; }
         public AccountTypeEnum AccountType { get; set; }
-        public string AccountBranch { get; set; }
+        public string? AccountBranch { get; set; }
     }
 }

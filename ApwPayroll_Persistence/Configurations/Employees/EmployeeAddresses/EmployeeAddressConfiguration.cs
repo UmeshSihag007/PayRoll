@@ -14,7 +14,7 @@ namespace ApwPayroll_Persistence.Configurations.Employees.EmployeeAddresses
        .WithMany()
        .HasForeignKey(bd => bd.AddressTypeId);
             builder.HasOne(bd => bd.Employee)
-   .WithMany()
+   .WithMany(x => x.EmployeeAddresses)
    .HasForeignKey(bd => bd.EmployeeId);
             builder.Property(x => x.IsActive).HasDefaultValue(true);
         }

@@ -13,13 +13,16 @@ namespace ApwPayroll_Domain.Entities.Employees.EmployeeDepartments
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
         public int DepartmentId { get; set; }
+
+
         public Department Department { get; set; }
-        public bool IActive {  get; set; }
-        public EmployeeDepartment(int employeeId, int departmentId, bool iActive)
+        public bool IsActive {  get; set; }
+
+        public EmployeeDepartment(int departmentId, int employeeId,  bool isActive)
         {
-            EmployeeId = employeeId;
             DepartmentId = departmentId;
-            IActive = iActive;
+            EmployeeId = employeeId;
+            IsActive = isActive;
         }
     }
 }

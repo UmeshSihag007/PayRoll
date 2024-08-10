@@ -1,376 +1,711 @@
-﻿@{
+﻿@using ApwPayrollWebApp.Models
+@model EmployeeCreateViewModel
+@{
     ViewData["Title"] = "EmployeeCompleteDetails";
 }
 
 <div class="container">
 
-
     <div class="row">
+        <input hidden asp-for="EmployeePersonalDetail.Id" />
+        <input hidden asp-for="Experiences.Id" />
+        <input hidden asp-for="CreateEmployeeFamily.Id" />
+        <input hidden asp-for="ReferencesCommand.Id" />
+        <div class="card ribbon-box ">
 
-        <div class="col-xxl-6">
-            <div class="card ribbon-box ">
-                <div class="card-header">
-                    <div class="ribbon ribbon-success round-shape"><span>Basic Details</span></div>
+            <div class="card-header">
+                <div class="row mb-3">
+                    <div class="col-7">
+                        <div class="ribbon ribbon-success round-shape"><span>Is Login Access </span></div>
+                    </div>
+                    <div class="col-5 form-switch">
+
+                        <input type="checkbox" class="form-check-input" id="isActiveToggle_@ViewBag.employee.Id" style="width: 3rem; height: 1.5rem;" @(ViewBag.employee?.IsLoginAccess ? "checked" : "") />
+                    </div>
+
+
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive table-card">
-                        <table class="table table-borderless align-middle mb-0">
-                            <tbody>
-                                <tr>
-                                    <td class="fw-medium">First Name</td>
-                                    <td>@(ViewBag.employee.FirstName ?? "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Last Name</td>
-                                    <td>@(ViewBag.employee.LastName ?? "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Email</td>
-                                    <td>@(ViewBag.employee.EmailId ?? "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Mobile Number</td>
-                                    <td>@(ViewBag.employee.MobileNumber != null ? ViewBag.employee.MobileNumber.ToString() : "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Date of Joining</td>
-                                    <td>@(ViewBag.employee.DateOfJoining != null ? ViewBag.employee.DateOfJoining.ToString("dd MMM yyyy") : "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">ESI Number</td>
-                                    <td>@(ViewBag.employee.ESINumber ?? "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">PF Number</td>
-                                    <td>@(ViewBag.employee.PfNumber ?? "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Insurance Number</td>
-                                    <td>@(ViewBag.employee.InsuranceNumber.ToString() ?? "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Employee Code</td>
-                                    <td>@(ViewBag.employee.EmployeeCode ?? "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">User ID</td>
-                                    <td>@(ViewBag.employee.UserId ?? "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Is Broker Exam Pass</td>
-                                    <td>@(ViewBag.employee.IsBrokerExamPass != null ? ViewBag.employee.IsBrokerExamPass.ToString() : "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Started Salary</td>
-                                    <td>@(ViewBag.employee.StartedSalary != null ? ViewBag.employee.StartedSalary.ToString("dd MMM yyyy") : "------")</td>
-                                </tr>
-                                <tr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xxl-6">
+                <div class="card ribbon-box ">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-7">
+                                <div class="ribbon ribbon-success round-shape"><span>Basic Details</span></div>
+
+                            </div>
+                            <div class="col-5 text-end">
+                                @if (ViewBag.employee == null)
+                                {
+                                    <a asp-action="CreateEmployeeBasic" asp-controller="Employee" asp-all-route asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+
+                                        Add
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-action="CreateEmployeeBasic" asp-all-route asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+                                        <i class="bi bi-pencil-square"></i>
+                                        Edit
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive table-card">
+                            <table class="table table-borderless align-middle mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-medium">Employee Code</td>
+                                        <td>@(ViewBag.employee.EmployeeCode ?? "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium"> Name</td>
+                                        <td>  <b> @(ViewBag?.employee?.Salutation?.ToString() ?? "------")</b> @(ViewBag?.employee?.FirstName.ToUpper() ?? "------")  @(ViewBag?.employee?.LastName?.ToUpper() ?? "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">Email</td>
+                                        <td>@(ViewBag.employee.EmailId ?? "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">Mobile Number</td>
+                                        <td>@(ViewBag.employee.MobileNumber != null ? ViewBag.employee.MobileNumber.ToString() : "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">Date of Joining</td>
+                                        <td>@(ViewBag.employee.DateOfJoining != null ? ViewBag.employee.DateOfJoining.ToString("dd MMM yyyy") : "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">ESI Number</td>
+                                        <td>@(ViewBag.employee.ESINumber ?? "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">PF Number</td>
+                                        <td>@(ViewBag.employee.PfNumber ?? "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">Insurance Number</td>
+                                        <td>@(ViewBag.employee.InsuranceNumber.ToString() ?? "------")</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="fw-medium">Is Broker Exam Pass</td>
+                                        <td>@(ViewBag.employee.IsBrokerExamPass != null ? ViewBag.employee.IsBrokerExamPass.ToString() : "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">Started Salary</td>
+                                        <td>@(ViewBag.employee.StartedSalary != null ? ViewBag.employee.StartedSalary.ToString("dd MMM yyyy") : "------")</td>
+                                    </tr>
+                                    @* <tr>
                                     <td class="fw-medium">Salutation</td>
                                     <td>@(ViewBag.employee.Salutation.ToString() ?? "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Branch ID</td>
-                                    <td>@(ViewBag.employee.BranchId != null ? ViewBag.employee.BranchId.ToString() : "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Is Login Access</td>
-                                    <td>@(ViewBag.employee.IsLoginAccess ? "Yes" : "No")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">PAN Number</td>
-                                    <td>@(ViewBag.employee.PanNumber ?? "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Aadhar Number</td>
-                                    <td>@(ViewBag.employee.AadharNumber != null ? ViewBag.employee.AadharNumber.ToString() : "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Ration Card Number</td>
-                                    <td>@(ViewBag.employee.RationCardNumber != null ? ViewBag.employee.RationCardNumber.ToString() : "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Passport Number</td>
-                                    <td>@(ViewBag.employee.PassportNumber ?? "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Voter ID</td>
-                                    <td>@(ViewBag.employee.VoterId ?? "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">Licence Number</td>
-                                    <td>@(ViewBag.employee.LicenceNumber ?? "------")</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-medium">UAN Number</td>
-                                    <td>@(ViewBag.employee.UanNumber ?? "------")</td>
-                                </tr>
-                            </tbody>
+                                    </tr> *@
+                                    <tr>
+                                        <td class="fw-medium">Branch </td>
+                                        <td>@(ViewBag.employee.Branch.Name != null ? ViewBag.employee.Branch.Name.ToString() : "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">Is Login Access</td>
+                                        <td>@(ViewBag.employee.IsLoginAccess ? "Yes" : "No")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">PAN Number</td>
+                                        <td>@(ViewBag.employee.PanNumber ?? "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">Aadhar Number</td>
+                                        <td>@(ViewBag.employee.AadharNumber != null ? ViewBag.employee.AadharNumber.ToString() : "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">Ration Card Number</td>
+                                        <td>@(ViewBag.employee.RationCardNumber != null ? ViewBag.employee.RationCardNumber.ToString() : "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">Passport Number</td>
+                                        <td>@(ViewBag.employee.PassportNumber ?? "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">Voter ID</td>
+                                        <td>@(ViewBag.employee.VoterId ?? "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">Licence Number</td>
+                                        <td>@(ViewBag.employee.LicenceNumber ?? "------")</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">UAN Number</td>
+                                        <td>@(ViewBag.employee.UanNumber ?? "------")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-xxl-6">
+
+                <div class="card ribbon-box ">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-7">
+                                <div class="ribbon ribbon-success round-shape"><span>Personal   Details</span></div>
+
+                            </div>
+
+                            <div class="col-5 text-end">
+                                @if (@ViewBag.employee.EmployeePersonalDetail == null)
+                                {
+                                    <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+
+                                        Add
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-action="CreateEmployeePersonal" asp-controller="EmployeePersonalDetail" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+                                        <i class="bi bi-pencil-square"></i>
+                                        Edit
+                                    </a>
+                                }
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless align-middle mb-0">
+                            @if (@ViewBag.employee.EmployeePersonalDetail != null)
+                            {
+
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Date of Birth</strong></td>
+                                        <td>@ViewBag.employee.EmployeePersonalDetail.DOB.ToString("dd MMM yyyy")</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Gender</strong></td>
+                                        <td>@ViewBag.employee.EmployeePersonalDetail.Gender</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Place of Birth</strong></td>
+                                        <td>@ViewBag.employee.EmployeePersonalDetail.PlaceOfBirth</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Religion</strong></td>
+                                        <td>@ViewBag.employee.EmployeePersonalDetail.Religion</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Blood Group</strong></td>
+                                        <td>@ViewBag.employee.EmployeePersonalDetail.BloodGroup</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Marital Status</strong></td>
+                                        <td>@ViewBag.employee.EmployeePersonalDetail.MarriedStatus</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Date of Wedding</strong></td>
+                                        <td>@ViewBag.employee.EmployeePersonalDetail.DateOfWedding</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Active Status</strong></td>
+                                        <td>@ViewBag.employee.EmployeePersonalDetail.IsActive</td>
+                                    </tr>
+                                </tbody>
+                            }
                         </table>
 
-
                     </div>
-
                 </div>
+
             </div>
-
         </div>
-        <div class="col-xxl-6">
 
-            <div class="card ribbon-box ">
-                <div class="card-header">
-                    <div class="ribbon ribbon-success round-shape"><span>Personal   Details</span></div>
-                </div>
-                <div class="card-body">
-                    <table class="table table-borderless align-middle mb-0">
-                            @if (@ViewBag.employee.EmployeePersonalDetail !=null)
-                            {
-                                
-                        <tbody>
-                            <tr>
-                                <td><strong>Date of Birth</strong></td>
-                                <td>@ViewBag.employee.EmployeePersonalDetail.DOB.ToString("dd MMM yyyy")</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Gender</strong></td>
-                                <td>@ViewBag.employee.EmployeePersonalDetail.Gender</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Place of Birth</strong></td>
-                                <td>@ViewBag.employee.EmployeePersonalDetail.PlaceOfBirth</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Religion</strong></td>
-                                <td>@ViewBag.employee.EmployeePersonalDetail.Religion</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Blood Group</strong></td>
-                                <td>@ViewBag.employee.EmployeePersonalDetail.BloodGroup</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Marital Status</strong></td>
-                                <td>@ViewBag.employee.EmployeePersonalDetail.MarriedStatus</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Date of Wedding</strong></td>
-                                <td>@ViewBag.employee.EmployeePersonalDetail.DateOfWedding</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Active Status</strong></td>
-                                <td>@ViewBag.employee.EmployeePersonalDetail.IsActive</td>
-                            </tr>
-                        </tbody>
-                            }
-                    </table>
+        <div class="row">
 
-                </div>
-            </div>
+            <div class="col-xxl-6">
+                <div class="card ribbon-box ">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-7">
 
-        </div>
-    </div>
+                                <div class="ribbon ribbon-success round-shape"><span>Education Details</span></div>
+                            </div>
+                            <div class="col-5  text-end">
+                                @if (ViewBag.employee.EmployeeQualification.Count == 0)
+                                {
+                                    <a asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" asp-route-employeeId="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
 
-    <div class="row">
-
-        <div class="col-xxl-6">
-            <div class="card ribbon-box ">
-                <div class="card-header">
-                    <div class="ribbon ribbon-success round-shape"><span>Education Details</span></div>
-                </div>
-            <table class="table table-borderless align-middle mb-0">
-                <tbody>
-                    @foreach (var qualification in ViewBag.employee.EmployeeQualification)
+                                        Add
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    @if (ViewBag.employee.EmployeeQualification.Count != 0)
                     {
-                        <tr>
-                            <td><strong>Course</strong></td>
-                            <td><h5>@qualification.Course.Name</h5></td>
-                        </tr>
-                        <tr>
-                            <td><strong>University/Board</strong></td>
-                            <td>@qualification.UniversityBoard</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Specification</strong></td>
-                            <td>@qualification.Specification</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Obtain Marks</strong></td>
-                            <td>@qualification.ObtainMarks</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Total Marks</strong></td>
-                            <td>@qualification.TotalMarks</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><hr></td>
-                        </tr>
+
+                        <div class="table-responsive">
+
+                            <table class="table  table-bordered align-middle mb-0">
+                                <input hidden asp-for="EmployeePersonalDetail.Id" />
+                                <thead>
+                                    <tr>
+
+                                        <th>#</th>
+                                        <th><strong> Course </strong></th>
+                                        <th><strong>University/Board</strong></th>
+                                        <th><strong>Specification</strong></th>
+                                        <th><strong class="d-flex">Obtain Marks</strong></th>
+                                        <th><strong>Total Marks</strong></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var qualification in ViewBag.employee.EmployeeQualification)
+                                    {
+                                        <tr>
+                                            <td>@(ViewBag.employee.EmployeeQualification.IndexOf(qualification) + 1)</td>
+                                            <td>@qualification.Course.Name</td>
+
+
+                                            <td>@qualification.UniversityBoard</td>
+
+
+                                            <td>@qualification.Specification</td>
+
+
+                                            <td>@qualification.ObtainMarks</td>
+
+
+                                            <td>@qualification.TotalMarks</td>
+
+                                            <td>
+
+
+                                                <a asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation"
+                                                   asp-route-employeeid="@qualification.EmployeeId"
+                                                   asp-route-id="@qualification.Id"
+                                                   class="btn btn-sm btn-info" id="editBtn">
+
+                                                    <i class="bi bi-pencil-square"></i>
+
+                                                </a>
+                                            </td>
+
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     }
-                </tbody>
-            </table>
-             </div>
-        </div>
-        <div class="col-xxl-6">
-            <div class="card ribbon-box ">
-                <div class="card-header">
-                    <div class="ribbon ribbon-success round-shape"><span>Experience Details</span></div>
-
                 </div>
-                <table class="table table-borderless align-middle mb-0">
-                    <tbody>
-                        @foreach (var experience in ViewBag.employee.EmployeeExperience)
-                        {
-                            <tr>
-                                <td><strong>ComanyName</strong></td>
-                                <td><h5>@experience.ComanyName</h5></td>
-                            </tr>
-                            <tr>
-                                <td><strong> ComanyAddress</strong></td>
-                                <td>@experience.ComanyAddress</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Designation</strong></td>
-                                <td>@experience.Designation</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Industry</strong></td>
-                                <td>@experience.Industry</td>
-                            </tr>
-                            <tr>
-                                <td><strong>AnnualInCome</strong></td>
-                                <td>@experience.AnnualInCome</td>
-                            </tr>
-                            <tr>
-                                <td><strong> StartDate-CompletedDate</strong></td>
-                                <td>@experience.StartDate.ToString("dd MMM yyyy") - @experience.CompletedDate.ToString("dd MMM yyyy") </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><hr></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-
-            </div> 
             </div>
-    </div>
+            <div class="col-xxl-6">
+                <div class="card ribbon-box ">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-7">
 
 
+                                <div class="ribbon ribbon-success round-shape"><span>Experience Details</span></div>
 
 
-    <div class="row">
+                            </div>
+                            <div class="col-5 d-flex flex-row-reverse bd-highlight">
+                                @if (@ViewBag.employee.EmployeeExperience.Count == 0)
+                                {
+                                    <a asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" asp-route-employeeId="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
 
-        <div class="col-xxl-6">
-            <div class="card ribbon-box ">
-                <div class="card-header">
-                    <div class="ribbon ribbon-success round-shape"><span>Family Details</span></div>
-                </div>
-                <table class="table table-borderless align-middle mb-0">
-                    <tbody>
- 
-                        @foreach (var familyMember in ViewBag.employee.EmployeeFamily)
-                        {
-
-                            <tr>
-                                <td><strong>Name:</strong></td>
-                                <td>@familyMember.Name</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Gender:</strong></td>
-                                <td>@familyMember.Gender</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Relation:</strong></td>
-                                <td>@familyMember.RelationType.Name</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><hr></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-
-            </div>
-        </div>
-
-        <div class="col-xxl-6">
-            <div class="card ribbon-box ">
-                <div class="card-header">
-                    <div class="ribbon ribbon-success round-shape"><span>ReferralDetail Details</span></div>
-                </div>
-                <table class="table table-borderless align-middle mb-0">
-                    <tbody>
-                        @foreach (var familyMember in ViewBag.employee.ReferralDetail)
-                        {
-
-                            <tr>
-                                <td><strong>ReferenceName:</strong></td>
-                                <td>@familyMember.ReferenceName</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Designation</strong></td>
-                                <td>@familyMember.Designation</td>
-                            </tr>
-                            <tr>
-                                <td><strong>OrganizationName</strong></td>
-                                <td>@familyMember.OrganizationName</td>
-                            </tr>   
-                            <tr>
-                                <td><strong>ContactNumber</strong></td>
-                                <td>@familyMember.ContactNumber</td>
-                            </tr>  
-                            <tr>
-                                <td><strong>YearsOfAcquaintance</strong></td>
-                                <td>@familyMember.YearsOfAcquaintance</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><hr></td>
-                            </tr>
-                        }
-                       </tbody>
-                  </table>
-           </div>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card ribbon-box">
-                <div class="card-header">
-                    <div class="ribbon ribbon-success round-shape">
-                        <span>Employee Documents</span>
+                                        Add
+                                    </a>
+                                }
+                            </div>
+                        </div>
                     </div>
+                    @if (@ViewBag.employee.EmployeeExperience.Count != 0)
+                    {
+                        <div class="table-responsive">
+
+                            <table class="table  table-bordered align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th scope="col"><strong>ComanyName</strong></th>
+                                        <th><strong> ComanyAddress</strong></th>
+                                        <th><strong>Designation</strong></th>
+                                        <th><strong>Industry</strong></th>
+                                        <th><strong>AnnualInCome</strong></th>
+                                        <th><strong> StartDate-CompletedDate</strong></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var experience in ViewBag.employee.EmployeeExperience)
+                                    {
+                                        <tr>
+
+                                            <td>@(ViewBag.employee.EmployeeExperience.IndexOf(experience) + 1)</td>
+                                            <td><h5>@experience.ComanyName</h5></td>
+
+                                            <td>@experience.ComanyAddress</td>
+
+                                            <td>@experience.Designation</td>
+
+                                            <td>@experience.Industry</td>
+
+                                            <td>@experience.AnnualInCome</td>
+
+                                            <td>@experience.StartDate.ToString("dd MMM yyyy") - @experience.CompletedDate.ToString("dd MMM yyyy") </td>
+
+
+                                            <td>
+
+                                                <a asp-action="CreateEmployeeEducation" , asp-controller="EmployeeEducation"
+                                                   asp-route-employeeid="@experience.EmployeeId" asp-route-id="@experience.Id"
+                                                   class="btn btn-sm btn-info" id="editBtn">
+
+                                                    <i class="bi bi-pencil-square"></i>
+
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    }
                 </div>
-                @if (ViewBag.employee.EmployeeDocuments != null)
-                {
-                    <div class="row">
-                        @foreach (var document in ViewBag.employee.EmployeeDocuments)
-                        {
-                            <div class="col-md-4 mb-3">
-                                <div class="card shadow-sm border-primary">
-                                    <div class="card-body">
-                                        <!-- Document Type Heading -->
-                                        <h5 class="card-title text-center mb-3">@document.EmployeeDocumentType.Name</h5>
+            </div>
+        </div>
 
-                                        <!-- Document Image -->
-                                        @if (!string.IsNullOrEmpty(document.Document.Url))
-                                        {
-                                            <div class="text-center mb-3">
-                                                <img src="@document.Document.Url" alt="Document Image"
-                                                     style="width: 100%; height: 200px; object-fit: cover;">
-                                            </div>
-                                        }
 
-                                        <!-- Document Code -->
-                                        <p class="card-text text-center font-weight-bold">
-                                            <b>Code:</b> @document.Code
-                                        </p>
-                                    </div>
+
+
+        <div class="row">
+
+            <div class="col-xxl-6">
+                <div class="card ribbon-box ">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-7">
+
+                                <div class="ribbon ribbon-success round-shape"><span>Family Details</span></div>
+                            </div>
+                            <div class="col-5  text-end">
+                                @if (ViewBag.employee.EmployeeFamily.Count == 0)
+                                {
+                                    <a asp-action="CreateEmployeeFamily" asp-controller="EmployeeFamily" asp-route-id="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+
+                                        Add
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @if (ViewBag.employee.EmployeeFamily.Count != 0)
+                    {
+
+                        <div class="table-responsive">
+                            <table class="table  table-bordered align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th><strong>Name:</strong></th>
+                                        <th><strong>Gender:</strong></th>
+                                        <th><strong>Relation:</strong></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var familyMember in ViewBag.employee.EmployeeFamily)
+                                    {
+
+                                        <tr>
+                                            <td>@(ViewBag.employee.EmployeeFamily.IndexOf(familyMember) + 1) </td>
+                                            <td>@familyMember.Name</td>
+
+
+                                            <td>@familyMember.Gender</td>
+
+                                            <td>@familyMember.RelationType.Name</td>
+
+                                            <td>
+
+                                                <a asp-action="CreateEmployeeFamily" , asp-controller="EmployeeFamily"
+                                                   asp-route-employeeid="@familyMember.EmployeeId" asp-route-id="@familyMember.Id"
+                                                   class="btn btn-sm btn-info" id="editBtn">
+
+                                                    <i class="bi bi-pencil-square"></i>
+
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-xxl-6">
+                <div class="card ribbon-box ">
+                    <div class="card-header">
+                        <div class="row">
+
+                            <div class="col-7">
+
+                                <div class="ribbon ribbon-success round-shape"><span>ReferralDetail Details</span></div>
+                            </div>
+
+                            <div class="col-5  text-end">
+                                @if (@ViewBag.employee.ReferralDetail.Count == 0)
+                                {
+
+                                    <a asp-action="ReferenceView" asp-controller="EmployeeReferral" asp-route-employeeId="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+
+                                        Add
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    @if (@ViewBag.employee.ReferralDetail.Count != 0)
+                    {
+
+                        <div class="table-responsive">
+
+
+                            <table class="table  table-bordered align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th scope="col"><strong>ReferenceName:</strong></th>
+                                        <th><strong>Designation</strong></th>
+                                        <th><strong>OrganizationName</strong></th>
+                                        <th><strong>ContactNumber</strong></th>
+                                        <th><strong>YearsOfAcquaintance</strong></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var referral in ViewBag.employee.ReferralDetail)
+                                    {
+
+                                        <tr>
+                                            <td>
+                                                @(ViewBag.employee.ReferralDetail.IndexOf(referral) + 1)
+                                            </td>
+                                            <td>@referral.ReferenceName</td>
+
+                                            <td>@referral.Designation</td>
+
+
+                                            <td>@referral.OrganizationName</td>
+
+                                            <td>@referral.ContactNumber</td>
+
+
+                                            <td>@referral.YearsOfAcquaintance</td>
+                                            <td>
+
+                                                <a asp-action="ReferenceView" , asp-controller="EmployeeReferral"
+                                                   asp-route-employeeid="@referral.EmployeeId" asp-route-id="@referral.Id"
+                                                   class="btn btn-sm btn-info" id="editBtn">
+
+                                                    <i class="bi bi-pencil-square"></i>
+
+
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card ribbon-box">
+                    <div class="card-header">
+
+                        <div class="row">
+                            <div class="col-7">
+
+                                <div class="ribbon ribbon-success round-shape">
+                                    <span>Employee Documents</span>
                                 </div>
                             </div>
-                        }
+                            <div class="col-5 text-end">
+                                @if (ViewBag.employee.EmployeeDocuments.Count == 0)
+                                {
+
+                                    <a asp-action="Create" asp-controller="EmployeeDocument" asp-route-employeeId="@ViewBag.employee.Id" class="btn btn-sm btn-info" id="editBtn">
+
+                                        Add
+                                    </a>
+                                }
+
+                            </div>
+                        </div>
+
+
+
                     </div>
-                }
+                    @if (ViewBag.employee.EmployeeDocuments != null)
+                    {
+                        <div class="row mt-4">
+                            @foreach (var document in ViewBag.employee.EmployeeDocuments)
+                            {
+                                <div class="col-md-4 mb-3">
+                                    <div class="card shadow-sm border-primary">
+                                        <div class="card-body">
+                                            @{
+                                                bool isPdf = document.Document.Url.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
+                                            }
+
+                                            <!-- Document Type Heading -->
+                                            <h5 class="card-title text-center mb-3">@document.EmployeeDocumentType.Name</h5>
+
+                                            <!-- Document Image -->
+                                            @if (!string.IsNullOrEmpty(document.Document.Url))
+                                            {
+                                                <div class="text-center mb-3">
+                                                    @if (isPdf)
+                                                    {
+                                                        <iframe onclick="showImageModal('@document.Document.Url', '@document.EmployeeDocumentType.Name')"
+                                                                src="@document.Document.Url" style="width: 100%; height: 200px; object-fit: cover;"></iframe>
+                                                    }
+                                                    else
+                                                    {
+                                                        <img onclick="showImageModal('@document.Document.Url', '@document.EmployeeDocumentType.Name')"
+                                                             src="@document.Document.Url" alt="Document Image"
+                                                             style="width: 100%; height: 200px; object-fit: cover;">
+                                                    }
+                                                </div>
+                                            }
+
+                                            <!-- Document Code -->
+                                            <p class="card-text text-center font-weight-bold">
+                                                <b>Code:</b> @document.Code
+                                            </p>
+                                        </div>
+
+
+                                        <div class="d-flex flex-row-reverse m-2">
+                                            <a asp-action="Create" asp-controller="EmployeeDocument" type="post" asp-all-route asp-route-id="@document.Document.Id" asp-route-employeeid="@document.EmployeeId" class="btn btn-sm btn-info" id="editBtn">
+                                                <i class="bi bi-pencil-square"> Edit</i>
+                                            </a>
+                                        </div>
+                                        <a href="/EmployeeDocument/DownloadFile?url=@document.Document.Url" class="btn btn-sm btn-primary mr-2">
+                                            <i class="bi bi-download"></i> Download
+                                        </a>
+
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <!-- Bootstrap Modal -->
+                    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="imageModalLabel">Document Image</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <img id="modalImage" src="" alt="Full Screen Document Image" style="width: 100%; height: auto;">
+                                    <iframe id="modalIframe" src="" style="width: 100%; height: 500px; display: none;" frameborder="0"></iframe>
+                                </div>
+
+                                <div class=" d-flex flex-row-reverse m-2">
+
+                                    <button type="button" class="btn btn-lg btn-danger text-end" data-bs-dismiss="modal"> Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
             </div>
         </div>
     </div>
-  
 </div>
+
+<script>
+    function showImageModal(imageUrl, documentTypeName) {
+        // Set the image URL in the modal
+        document.getElementById('modalImage').src = imageUrl;
+        // Set the document type name as the modal title
+        document.getElementById('imageModalLabel').innerText = documentTypeName;
+        // Show the modal
+        var imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+        imageModal.show();
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.form-check-input').on('change', function () {
+            var $checkbox = $(this);
+            var itemId = $checkbox.attr('id').split('_')[1];
+            var isActive = $checkbox.is(':checked');
+
+            // Disable the checkbox
+            $checkbox.prop('disabled', true);
+
+            $.ajax({
+                url: '@Url.Action("UpdateLoginAccess", "Employee")',
+                type: 'POST',
+                data: {
+                    id: itemId,
+                    isActive: isActive
+                },
+                success: function (response) {
+                    // Handle success
+                    // Re-enable the checkbox
+                    window.location.reload(true);
+                    $checkbox.prop('disabled', false);
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.log(xhr.responseText);
+                    window.location.reload(true);
+                    // Re-enable the checkbox
+                    $checkbox.prop('disabled', false);
+                }
+            });
+        });
+    });
+</script>
+
+
+
+

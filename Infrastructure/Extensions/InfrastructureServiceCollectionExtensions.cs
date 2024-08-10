@@ -33,42 +33,33 @@ namespace ApwPayroll_Infrastructure.Extensions
         }
         private static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            // Add JWT authentication
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Changed here
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = configuration["Jwt:Issuer"],
-                    ValidAudience = configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true
-                };
-            });
-          services.AddAuthentication(options =>
-          {
-              options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-              options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-          })
-    .AddCookie(options =>
-    {
-        options.AccessDeniedPath = "/Administration/Denied";
-        options.Cookie.Name = "AppCookie";
-        options.Cookie.HttpOnly = true;
-        options.ExpireTimeSpan = TimeSpan.FromDays(60);
-        options.LoginPath = "/Administration/Login";
-        options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
-        options.SlidingExpiration = true;
-    });
-
+            // Add JWT and Cookie authentication
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Optional, if you use cookies for signing in
+            //})
+            //.AddJwtBearer(options =>
+            //{
+            //    options.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidIssuer = configuration["Jwt:Issuer"],
+            //        ValidAudience = configuration["Jwt:Audience"],
+            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
+            //        ValidateIssuer = true,
+            //        ValidateAudience = true,
+            //        ValidateLifetime = true,
+            //        ValidateIssuerSigningKey = true
+            //    };
+            //})
+            //.AddCookie(options =>
+            //{
+            //    options.LoginPath = "/Administration/Login";
+            //});
         }
+
     }
+
 }
 

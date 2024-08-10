@@ -2,7 +2,6 @@
 using ApwPayroll_Application.Features.Banks.Commands.DeleteBankCommands;
 using ApwPayroll_Application.Features.Banks.Commands.UpdateBankCommands;
 using ApwPayroll_Application.Features.Banks.Queries.GetAllBanks;
-using ApwPayroll_Application.Features.Branches.Commands.UpdateBranchCommands;
 using ApwPayroll_Application.Features.Branches.Queries.GetBranchLookUpQuery;
 using ApwPayroll_Domain.common.Enums.AccountType;
 using ApwPayrollWebApp.Controllers.Common;
@@ -62,7 +61,7 @@ public class BankController : BaseController
         if (commad.createBank.Id == 0 || commad.createBank.Id == null)
         {
             var data = await _mediator.Send(commad.createBank);
-            if (data.succeeded)
+            if (data.code==200)
             {
                 Notify(data.Messages, null, data.code);
             }
@@ -75,7 +74,7 @@ public class BankController : BaseController
         else
         {
             var data = await _mediator.Send(new UpdateBankCommand((int)commad.createBank.Id, commad.createBank));
-            if (data.succeeded)
+            if (data.code==200)
             {
                 Notify(data.Messages, null, data.code);
             }
@@ -89,7 +88,7 @@ public class BankController : BaseController
 
     public async Task<IActionResult> Delete(int id)
     {
-       var data= await _mediator.Send(new DeleteBankCommand(id));
+        var data = await _mediator.Send(new DeleteBankCommand(id));
         if (data.succeeded)
         {
             Notify(data.Messages, null, data.code);

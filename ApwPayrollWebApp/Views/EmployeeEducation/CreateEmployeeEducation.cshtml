@@ -17,6 +17,7 @@
             <form asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" method="post">
                 <div class=" row mt-1 mb-2">
                     <input type="hidden" asp-for="Qualification.Id" />
+                    <input type="hidden" asp-for="Qualification.EmployeeId" value="@ViewBag.employeeId" />
                     <div class="col-lg-3">
                         <label asp-for="Qualification.CourseId" class="form-label">Course</label>
                         <div class="input-group">
@@ -87,9 +88,18 @@
                         <span asp-validation-for="Qualification.Specification" class="text-danger"></span>
 
                     </div>
-                    <button type="submit" class="btn form-control-sm btn-success" id="addBtn"> 
-                        @(Model.Qualification!=null && Model.Qualification.Id.HasValue && Model.Qualification.Id.Value!=0?"Update":"Add")
-                    </button>
+                    <div class="row mt-1 mb-2">
+                        <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+
+                                <button  type="submit" class="btn btn-secondary">
+                                    @(Model.Qualification != null && Model.Qualification.Id.HasValue && Model.Qualification.Id.Value != 0 ? "Update" : "Add")
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                    
                      
 
                 </div>
@@ -147,11 +157,12 @@
             <form asp-action="CreateEmployeeExperience" asp-controller="EmployeeExperience" method="post">
              
                 <input type="hidden" asp-for="Experiences.Id" />
+                <input type="hidden" asp-for="Experiences.EmployeeId" value="@ViewBag.employeeId" />
                 <div class="row mt-1 mb-2">
                     <div class="col-lg-4">
                         <label asp-for="Experiences.ComanyName" class="form-label">Company Name</label>
                         <div class=" input-group">
-                            <input asp-for="Experiences.ComanyName" type="text" class="form-control form-control " placeholder="Enter company name" />
+                            <input asp-for="Experiences.ComanyName" type="text" class="form-control form-control " placeholder="Enter company name" required />
                         </div>
                         <span asp-validation-for="Experiences.ComanyName" class=" text-danger"></span>
                     </div>
@@ -165,7 +176,7 @@
                     <div class="col-lg-4">
                         <label asp-for="Experiences.Designation" class="form-label">Designation</label>
                         <div class=" input-group">
-                            <input asp-for="Experiences.Designation" type="text" class="form-control form-control " placeholder="Enter designation name" />
+                            <input asp-for="Experiences.Designation" type="text" class="form-control form-control " placeholder="Enter designation name" required />
                         </div>
                         <span asp-validation-for="Experiences.Designation" class=" text-danger"></span>
                     </div>
@@ -207,7 +218,7 @@
                             <span class="input-group-text">
                                 <i class="ri-calendar-event-fill"></i>
                             </span>
-                            <input asp-for="Experiences.StartDate" data-provider="flatpickr" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter date" />
+                            <input asp-for="Experiences.StartDate" data-provider="flatpickr" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter date"  required/>
                         </div>
                         <span asp-validation-for="Experiences.StartDate" class=" text-danger"></span>
                     </div>
@@ -217,7 +228,7 @@
                             <span class="input-group-text">
                                 <i class="ri-calendar-event-fill"></i>
                             </span>
-                            <input asp-for="Experiences.CompletedDate" data-provider="flatpickr" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter date" />
+                            <input asp-for="Experiences.CompletedDate" data-provider="flatpickr" class="form-control form-control-sm" data-provider="flatpickr" placeholder="Enter date"  required/>
                         </div>
                         <span asp-validation-for="Experiences.CompletedDate" data-provider="flatpickr" class=" text-danger"></span>
                     </div>
@@ -262,7 +273,7 @@
                                 <td>@item.StartDate - @item.CompletedDate</td>
                                 <td>@item.Industry</td>
                                 <td>
-                                    <a asp-action="Update" asp-controller="EmployeeExperience" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                    <a asp-action="CreateEmployeeEducation" asp-controller="EmployeeEducation" asp-route-id="@item.Id" class="btn btn-sm btn-info">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                       <a class="btn btn-sm btn-danger"  onclick="confirmDelete('@item.Id', 'experience', '@Url.Action("Delete", "EmployeeExperience")') ">
