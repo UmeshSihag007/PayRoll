@@ -336,7 +336,7 @@
                         <span class="input-group-text">
                             <i class="ri-arrow-down-s-fill"></i>
                         </span>
-                        <select class="form-control form-control-sm" id="countryDropdown">
+                        <select class="form-control form-control-sm" id="residentialCountryDropdown" asp-for="EmployeePersonalDetail.PermanentAddress.CountryId">
                             <option hidden>Select Country</option>
                             @foreach (var item in ViewBag.Country)
                             {
@@ -351,7 +351,7 @@
                         <span class="input-group-text">
                             <i class="ri-arrow-down-s-fill"></i>
                         </span>
-                        <select class="form-control form-control-sm" id="stateDropdown" asp-for="EmployeePersonalDetail.PermanentAddress.StateId">
+                        <select class="form-control form-control-sm" id="residentialStateDropdown" asp-for="EmployeePersonalDetail.PermanentAddress.StateId">
                         </select>
                     </div>
                 </div>
@@ -361,7 +361,7 @@
                         <span class="input-group-text">
                             <i class="ri-arrow-down-s-fill"></i>
                         </span>
-                        <select class="form-control form-control-sm" id="city" asp-for="EmployeePersonalDetail.ResidentialAddress.LocationId">
+                        <select class="form-control form-control-sm" id="residentialCityDropdown" asp-for="EmployeePersonalDetail.ResidentialAddress.LocationId">
                         </select>
                     </div>
                     <span asp-validation-for="EmployeePersonalDetail.ResidentialAddress.LocationId" class="text-danger"></span>
@@ -419,7 +419,7 @@
                         <span class="input-group-text">
                             <i class="ri-arrow-down-s-fill"></i>
                         </span>
-                        <select class="form-control form-control-sm" id="countryDropdown">
+                        <select class="form-control form-control-sm" id="permanentCountryDropdown">
                             <option hidden>Select Country</option>
                             @foreach (var item in ViewBag.Country)
                             {
@@ -429,13 +429,13 @@
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <label asp-for="EmployeePersonalDetail.ResidentialAddress.StateId" class="form-label">State</label>
+                    <label asp-for="EmployeePersonalDetail.PermanentAddress.StateId" class="form-label">State</label>
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="ri-arrow-down-s-fill"></i>
                         </span>
-                        <select class="form-control form-control-sm" id="stateDropdown">
-                            <option value="" selected disabled>Select State</option>
+                         
+                        <select class="form-control form-control-sm" id="permanentStateDropdown" asp-for="EmployeePersonalDetail.PermanentAddress.StateId">
                         </select>
                     </div>
                 </div>
@@ -445,8 +445,7 @@
                         <span class="input-group-text">
                             <i class="ri-arrow-down-s-fill"></i>
                         </span>
-                        <select class="form-control form-control-sm" id="cityPermanent" asp-for="EmployeePersonalDetail.PermanentAddress.LocationId">
-                            <option value="" selected disabled>Select City</option>
+                        <select class="form-control form-control-sm" id="permanentCityDropdown" asp-for="EmployeePersonalDetail.ResidentialAddress.LocationId">
                         </select>
                     </div>
                     <span asp-validation-for="EmployeePersonalDetail.PermanentAddress.LocationId" class="text-danger"></span>
@@ -673,48 +672,91 @@
 
 
 
-    <script>
-        $(document).ready(function () {
-            $('#countryDropdown').change(function () {
-                var countryId = $(this).val();
-                if (countryId) {
-                    $.ajax({
-                        url: '@Url.Action("GetStatesByCountry", "Employee")', // Adjust the URL to match your controller/action
-                        type: 'GET',
-                        data: { countryId: countryId },
-                        success: function (data) {
-                            $('#stateDropdown').empty();
-                            $('#stateDropdown').append('<option value="" selected disabled>Select State</option>');
-                            $.each(data, function (index, item) {
-                                $('#stateDropdown').append('<option value="' + item.id + '">' + item.name + '</option>');
-                            });
-                        }
-                    });
-                }
-            });
-
-            $('#stateDropdown').change(function () {
-                var stateId = $(this).val();
-                if (stateId) {
-                    $.ajax({
-                        url: '@Url.Action("GetCitiesByState", "Employee")',
-                        type: 'GET',
-                        data: { stateId: stateId },
-                        success: function (data) {
-                            $('#cityDropdown').empty();
-                            $('#cityDropdown').append('<option value="" selected disabled>Select City</option>');
-                            $.each(data, function (index, item) {
-                                $('#cityDropdown').append('<option value="' + item.id + '">' + item.name + '</option>');
-                            });
-                        }
-                    });
-                }
-            });
-        });
-    </script>
+ 
 
 
 }
 
 
+<script>
+    $(document).ready(function () {
+        // Residential Address
+        $('#residentialCountryDropdown').change(function () {
+            var countryId = $(this).val();
+            if (countryId) {
+                $.ajax({
+                    url: '@Url.Action("GetStatesByCountry", "EmployeePersonalDetail")',
+                    type: 'GET',
+                    data: { countryId: countryId },
+                    success: function (data) {
+                        console.log(data);
+                        $('#residentialStateDropdown').empty();
+                        $('#residentialStateDropdown').append('<option value="" selected disabled>Select State</option>');
+                        $.each(data.$values, function (index, item) {
+                            $('#residentialStateDropdown').append('<option value="' + item.id + '">' + item.name + '</option>');
+                        });
+                    }
+                });
+            }
+        });
 
+        $('#residentialStateDropdown').change(function () {
+            var stateId = $(this).val();
+            if (stateId) {
+                $.ajax({
+                    url: '@Url.Action("GetCitiesByState", "EmployeePersonalDetail")',
+                    type: 'GET',
+                    data: { stateId: stateId },
+                    success: function (data) {
+                        console.log(data);
+                        $('#residentialCityDropdown').empty();
+                        $('#residentialCityDropdown').append('<option value="" selected disabled>Select City</option>');
+                        $.each(data.$values, function (index, item) {
+                            $('#residentialCityDropdown').append('<option value="' + item.id + '">' + item.name + '</option>');
+                        });
+                    }
+                });
+            }
+        });
+
+        // Permanent Address
+        $('#permanentCountryDropdown').change(function () {
+            var countryId = $(this).val();
+            if (countryId) {
+                $.ajax({
+                    url: '@Url.Action("GetStatesByCountry", "EmployeePersonalDetail")',
+                    type: 'GET',
+                    data: { countryId: countryId },
+                    success: function (data) {
+                        console.log(data);
+                        $('#permanentStateDropdown').empty();
+                        $('#permanentStateDropdown').append('<option value="" selected disabled>Select State</option>');
+                        $.each(data.$values, function (index, item) {
+                            $('#permanentStateDropdown').append('<option value="' + item.id + '">' + item.name + '</option>');
+                        });
+                    }
+                });
+            }
+        });
+
+        $('#permanentStateDropdown').change(function () {
+            var stateId = $(this).val();
+            if (stateId) {
+                $.ajax({
+                    url: '@Url.Action("GetCitiesByState", "EmployeePersonalDetail")',
+                    type: 'GET',
+                    data: { stateId: stateId },
+                    success: function (data) {
+                        console.log(data);
+                        $('#permanentCityDropdown').empty();
+                        $('#permanentCityDropdown').append('<option value="" selected disabled>Select City</option>');
+                        $.each(data.$values, function (index, item) {
+                            $('#permanentCityDropdown').append('<option value="' + item.id + '">' + item.name + '</option>');
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+</script>

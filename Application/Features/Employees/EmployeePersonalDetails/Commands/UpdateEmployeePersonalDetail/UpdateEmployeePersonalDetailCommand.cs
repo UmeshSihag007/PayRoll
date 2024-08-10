@@ -1,17 +1,23 @@
 ﻿using ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Commands.CreateEmployeePersonalDetail;
 using ApwPayroll_Application.Interfaces.Repositories;
+using ApwPayroll_Domain.common.Enums.Gender;
+using ApwPayroll_Domain.Entities.Banks;
 using ApwPayroll_Domain.Entities.Banks.BankDetails;
+using ApwPayroll_Domain.Entities.Employees;
 using ApwPayroll_Domain.Entities.Employees.EmergencyContacts;
 using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
+using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
 using ApwPayroll_Domain.Entities.RelationTypes;
 using ApwPayroll_Shared;
 using AutoMapper;
 using Couchbase.Core.Retry;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,17 +47,18 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
 
         public async Task<Result<EmployeePersonalDetail>> Handle(UpdateEmployeePersonalDetailCommand request, CancellationToken cancellationToken)
         {
-            var data = await _unitOfWork.Repository<EmployeePersonalDetail>().GetByIdAsync(request.Id);
+            var data = await _unitOfWork.Repository<EmployeePersonalDetail>().Entities.Where(x => x.EmployeeId == request.Id && x.IsDeleted == false).FirstOrDefaultAsync();
             if (data == null)
             {
                 return Result<EmployeePersonalDetail>.NotFound();
             }
-            //Bank Deatil working
+            //Bank Details working
             if (request.CreateEmployeePersonals.CreateEmployeeBank.Id != null && request.CreateEmployeePersonals.CreateEmployeeBank.Id != 0)
             {
                 var bank = await _unitOfWork.Repository<BankDetail>().GetByIdAsync(request.CreateEmployeePersonals.CreateEmployeeBank.Id.Value);
-
-                await _unitOfWork.Repository<BankDetail>().UpdateAsync(bank);
+                var mapData = _mapper.Map(request.CreateEmployeePersonals.CreateEmployeeBank, bank);
+                mapData.EmployeeId = request.Id;
+                await _unitOfWork.Repository<BankDetail>().UpdateAsync(mapData);
                 await _unitOfWork.Save(cancellationToken);
             }
             else
@@ -75,9 +82,16 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             //Address Working
             if (request.CreateEmployeePersonals.ResidentialAddress.EmployeeId != null && request.CreateEmployeePersonals.ResidentialAddress.EmployeeId != 0)
             {
-                var residentialAddress = await _unitOfWork.Repository<EmployeeAddress>().GetByIdAsync(request.CreateEmployeePersonals.ResidentialAddress.EmployeeId);
-                await _unitOfWork.Repository<EmployeeAddress>().UpdateAsync(residentialAddress);
+                var residentialAddress = await _unitOfWork.Repository<EmployeeAddress>().Entities.Where(x => x.EmployeeId == request.CreateEmployeePersonals.PermanentAddress.EmployeeId  && x.AddressTypeId==2).FirstOrDefaultAsync();
+                if (residentialAddress != null)
+                {
+                    var mapData = _mapper.Map(request.CreateEmployeePersonals.ResidentialAddress, residentialAddress);
+                    mapData.EmployeeId = request.Id;
+                    mapData.AddressTypeId = 2;
+                    mapData.LocationId = request.CreateEmployeePersonals.ResidentialAddress.LocationId;
+                    await _unitOfWork.Repository<EmployeeAddress>().UpdateAsync(mapData);
                 await _unitOfWork.Save(cancellationToken);
+                }
             }
             else
             {
@@ -99,9 +113,16 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             }
             if (request.CreateEmployeePersonals.PermanentAddress.EmployeeId != null && request.CreateEmployeePersonals.PermanentAddress.EmployeeId != 0)
             {
-                var permanentAddress = await _unitOfWork.Repository<EmployeeAddress>().GetByIdAsync(request.CreateEmployeePersonals.PermanentAddress.EmployeeId);
-                await _unitOfWork.Repository<EmployeeAddress>().UpdateAsync(permanentAddress);
-                await _unitOfWork.Save(cancellationToken);
+                var permanentAddress = await _unitOfWork.Repository<EmployeeAddress>().Entities.Where(x=>x.EmployeeId== request.CreateEmployeePersonals.PermanentAddress.EmployeeId && x.AddressTypeId==1).FirstOrDefaultAsync();
+                if (permanentAddress != null)
+                {
+                    var mapData = _mapper.Map(request.CreateEmployeePersonals.PermanentAddress, permanentAddress);
+                    mapData.EmployeeId = request.Id;
+                    mapData.AddressTypeId = 1;
+                    mapData.LocationId = request.CreateEmployeePersonals.PermanentAddress.LocationId;
+                    await _unitOfWork.Repository<EmployeeAddress>().UpdateAsync(mapData);
+                    await _unitOfWork.Save(cancellationToken);           
+                }
 
             }
             else
@@ -124,6 +145,9 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                 //    await _unitOfWork.Repository<EmployeeAddress>().AddAsync(request.CreateEmployeePersonals.PermanentAddress);
 
             }
+
+            //Emergency Contact Working
+
             if (request.CreateEmployeePersonals.Emergency.Id != null && request.CreateEmployeePersonals.Emergency.Id!=0)
             {
                 var emergency = await _unitOfWork.Repository<EmergencyContact>().GetByIdAsync(request.CreateEmployeePersonals.Emergency.Id);
@@ -135,9 +159,73 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                 await _unitOfWork.Repository<EmergencyContact>().AddAsync(request.CreateEmployeePersonals.Emergency);
                  await _unitOfWork.Save(cancellationToken);
             }
-            _mapper.Map(request.CreateEmployeePersonals, data);
 
-              await _unitOfWork.Repository<EmployeePersonalDetail>().UpdateAsync(data);
+            ///  Family Detail
+
+          //father details
+            if (request.CreateEmployeePersonals.FatherName != null || request.CreateEmployeePersonals.FatherDOB != null)
+            {
+                var fatherData = new EmployeeFamily
+                {
+                    Name = request.CreateEmployeePersonals.FatherName,
+                    EmployeeId = request.Id ,
+                    DOB = request.CreateEmployeePersonals.DOB,
+                    Gender = GenderEnum.Male,
+                    RelationTypeId = 1,
+                    IsActive = true,
+                };
+                await _unitOfWork.Repository<EmployeeFamily>().AddAsync(fatherData);
+                await _unitOfWork.Save(cancellationToken);
+            }
+
+            //  mother details 
+            if (request.CreateEmployeePersonals.MotherName != null || request.CreateEmployeePersonals.MotherDOB != null)
+            {
+                var motherData = new EmployeeFamily
+                {
+                    Name = request.CreateEmployeePersonals.MotherName,
+                    EmployeeId = request.Id,
+                    DOB = request.CreateEmployeePersonals.DOB,
+                    Gender = GenderEnum.Male,
+                    RelationTypeId = 2,
+                    IsActive = true,
+                };
+                await _unitOfWork.Repository<EmployeeFamily>().AddAsync(motherData);
+                await _unitOfWork.Save(cancellationToken);
+
+            }
+
+            //spouse details
+            if (request.CreateEmployeePersonals.SpouseName != null || request.CreateEmployeePersonals.SpouseDOB != null)
+            {
+                var SpouseData = new EmployeeFamily
+                {
+                    Name = request.CreateEmployeePersonals.SpouseName,
+                    EmployeeId = request.Id,
+                    DOB = request.CreateEmployeePersonals.DOB,
+                    Gender = request.CreateEmployeePersonals.SpouseGender,
+                    RelationTypeId = 4,
+                    IsActive = true,
+                };
+                await _unitOfWork.Repository<EmployeeFamily>().AddAsync(SpouseData);
+                await _unitOfWork.Save(cancellationToken);
+            }
+
+            var employeePersonalDetail = new EmployeePersonalDetail
+            {
+                Id=data.Id,
+                EmployeeId = request.Id,
+                DOB = request.CreateEmployeePersonals.DOB,
+                Gender = request.CreateEmployeePersonals. Gender,
+                PlaceOfBirth = request.CreateEmployeePersonals.PlaceOfBirth,
+                Religion = request.CreateEmployeePersonals.Religion  ,
+                BloodGroup = request.CreateEmployeePersonals.BloodGroup  ,
+                MarriedStatus = request.CreateEmployeePersonals.MarriedStatus  ,
+                DateOfWedding = request.CreateEmployeePersonals.DateOfWedding  ,
+                IsActive = true
+            };
+
+              await _unitOfWork.Repository<EmployeePersonalDetail>().UpdateAsync(employeePersonalDetail);
             await _unitOfWork.Save(cancellationToken);
             return Result<EmployeePersonalDetail>.Success(data);
         }
