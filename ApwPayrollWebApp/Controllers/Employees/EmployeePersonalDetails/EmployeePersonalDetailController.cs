@@ -17,17 +17,15 @@ using ApwPayroll_Domain.common.Enums.LocationTypes;
 using ApwPayroll_Domain.common.Enums.MarriedStatus;
 using ApwPayroll_Domain.common.Enums.Religions;
 using ApwPayroll_Domain.common.Enums.Salutation;
-using ApwPayroll_Domain.Entities.Banks;
-using ApwPayroll_Domain.Entities.Banks.BankDetails;
 using ApwPayroll_Domain.Entities.Employees.EmergencyContacts;
-using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
-using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
+using ApwPayroll_Domain.Entities.Locations;
 using ApwPayroll_Domain.Entities.RelationTypes;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.EnumHelpers;
 using ApwPayrollWebApp.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
 {
@@ -36,24 +34,23 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
         private readonly IMediator _mediator;
 
         private readonly IGenericRepository<RelationType> _relationRepository;
+        private readonly IGenericRepository<Location> _loctionRepository;
 
-        public EmployeePersonalDetailController(IMediator mediator, IGenericRepository<RelationType> relationRepository)
+        public EmployeePersonalDetailController(IMediator mediator, IGenericRepository<RelationType> relationRepository, IGenericRepository<Location> loctionRepository)
         {
             _mediator = mediator;
             _relationRepository = relationRepository;
+            _loctionRepository = loctionRepository;
         }
 
         public IActionResult Index()
         {
             return View();
         }
-         
 
         public async Task<IActionResult> CreateEmployeePersonal(int? id)
         {
- 
             ViewBag.employeeId = id;
- 
             await InitializeViewBags();
             var model = new EmployeeCreateViewModel();
 
@@ -61,7 +58,6 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
             {
                 var data = await _mediator.Send(new GetEmployeeByIdQuery(id.Value));
                 var employee = data?.Data;
-
 
                 if (employee != null && employee.EmployeePersonalDetail != null)
                 {
@@ -72,11 +68,32 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                     var residentialAddress = employee.EmployeeAddresses?.FirstOrDefault(a => a.AddressTypeId == 2);
                     var emergencyContact = employee.EmergencyContact?.FirstOrDefault();
                     var bankDetails = employee.BankDetails?.FirstOrDefault();
-
                     var spouse = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse");
 
+                    // Initialize location variables
+                    Location residentialCity = null;
+                    Location residentialState = null;
+                    Location residentialCountry = null;
 
+                    if (residentialAddress?.LocationId != null)
+                    {
+                        residentialCity = await _loctionRepository.Entities
+                            .Include(x => x.Parent)
+                            .FirstOrDefaultAsync(x => x.Id == residentialAddress.LocationId);
 
+                        if (residentialCity?.Parent != null)
+                        {
+                            residentialState = await _loctionRepository.Entities
+                                .Include(x => x.Parent)
+                                .FirstOrDefaultAsync(x => x.Id == residentialCity.ParentId);
+
+                            if (residentialState?.Parent != null)
+                            {
+                                residentialCountry = await _loctionRepository.Entities
+                                    .FirstOrDefaultAsync(x => x.Id == residentialState.ParentId);
+                            }
+                        }
+                    }
 
                     model.EmployeePersonalDetail = new CreateEmployeePersonalDetailDto
                     {
@@ -90,9 +107,9 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                         MotherName = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.Name,
                         MotherDOB = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.DOB,
                         MarriedStatus = employee.EmployeePersonalDetail.MarriedStatus,
-                        SpouseName = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse")?.Name,
-                        SpouseDOB = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse")?.DOB,
-                        SpouseGender = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse")?.Gender,
+                        SpouseName = spouse?.Name,
+                        SpouseDOB = spouse?.DOB,
+                        SpouseGender = spouse?.Gender,
                         DateOfWedding = employee.EmployeePersonalDetail?.DateOfWedding,
 
                         Emergency = emergencyContact != null ? new EmergencyContact
@@ -101,10 +118,9 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                             Email = emergencyContact.Email,
                             MobileNumber = emergencyContact.MobileNumber,
                             WhatsAppNumber = emergencyContact.WhatsAppNumber,
-
                             RelationTypeId = emergencyContact.RelationTypeId
-
                         } : null,
+
                         PermanentAddress = permanentAddress != null ? new CreateEmployeeAddressCommand
                         {
                             Address1 = permanentAddress.Address1,
@@ -112,6 +128,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                             Address3 = permanentAddress.Address3,
                             CityId = permanentAddress.CityId,
                             StateId = permanentAddress.StateId,
+                           
                             LocationId = permanentAddress.LocationId,
                             PinCode = permanentAddress.PinCode,
                             IsActive = permanentAddress.IsActive,
@@ -119,68 +136,66 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                             AddressTypeId = permanentAddress.AddressTypeId,
                             EmployeeId = permanentAddress.EmployeeId
                         } : null,
+
                         ResidentialAddress = residentialAddress != null ? new CreateEmployeeAddressCommand
                         {
                             Address1 = residentialAddress.Address1,
                             Address2 = residentialAddress.Address2,
                             Address3 = residentialAddress.Address3,
-                            CityId = residentialAddress.CityId,
-                            StateId = residentialAddress.StateId,
-                            LocationId = residentialAddress.LocationId,
+                            CityId = residentialCity?.Id,
+                            StateId = residentialState?.Id,
+                            LocationId = residentialCity?.Id,
                             PinCode = residentialAddress.PinCode,
+                            CountryId = residentialCountry?.Id,
                             IsActive = residentialAddress.IsActive,
                             Nationality = residentialAddress.Nationality,
                             AddressTypeId = residentialAddress.AddressTypeId,
                             EmployeeId = residentialAddress.EmployeeId
                         } : null,
+
                         CreateEmployeeBank = bankDetails != null ? new CreateEmployeeBankDetailCommand
                         {
-
                             Id = bankDetails.Id,
-
                             AccountBranch = bankDetails.AccountBranch,
                             AccountName = bankDetails.AccountName,
                             AccountType = bankDetails.AccountType,
                             BanAccountId = bankDetails.BanAccountId,
-
                             BankId = bankDetails.BankId ?? default,
-
                             IFCCode = bankDetails.IFCCode,
                             IsBankAccountVerified = bankDetails.IsBankAccountVerified
                         } : null,
 
                         Religion = employee.EmployeePersonalDetail?.Religion,
                         PlaceOfBirth = employee.EmployeePersonalDetail?.PlaceOfBirth,
-
                     };
-                     
                 }
- 
             }
 
-                
             return View(model);
         }
 
+
+         
         [HttpPost]
         public async Task<IActionResult> CreateEmployeePersonal(int? employeeId, EmployeeCreateViewModel command)
         {
             await InitializeViewBags();
-            
-                if (HttpContext.Session.GetInt32("EmployeeId") != null)
-                {
-                    employeeId = HttpContext.Session.GetInt32("EmployeeId");
-                }
-             
+
+            if (HttpContext.Session.GetInt32("EmployeeId") != null)
+            {
+                employeeId = HttpContext.Session.GetInt32("EmployeeId");
+            }
             ModelState.Remove("EmployeePersonalDetail.PermanentAddress.EmployeeId");
             ModelState.Remove("EmployeePersonalDetail.ResidentialAddress.EmployeeId");
-             if (ModelState.IsValid)
-             {
-                
 
-                if(command.EmployeePersonalDetail.Id != null && command.EmployeePersonalDetail.Id!=0)
+
+            if (ModelState.IsValid)
+            {
+
+
+                if (command.EmployeePersonalDetail.Id != null && command.EmployeePersonalDetail.Id != 0)
                 {
-                   var updateData=    await _mediator.Send(new UpdateEmployeePersonalDetailCommand(command.EmployeePersonalDetail.Id.Value, command.EmployeePersonalDetail));
+                    var updateData = await _mediator.Send(new UpdateEmployeePersonalDetailCommand(command.EmployeePersonalDetail.Id.Value, command.EmployeePersonalDetail));
                     if (HttpContext.Session.GetInt32("EmployeeId") != null)
                     {
 
@@ -189,6 +204,11 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                     if (updateData.code == 200)
                     {
                         Notify(updateData.Messages, null, updateData.code);
+                    }
+                    else
+                    {
+                        Notify(updateData.Messages, null, updateData.code);
+                        return View(command);
                     }
                     return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = updateData.Data.EmployeeId });
 
@@ -200,14 +220,14 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                     Notify(data.Messages, null, data.code);
                 }
                 command = new EmployeeCreateViewModel();
-         
+
                 if (HttpContext.Session.GetInt32("EmployeeId") != null)
                 {
-                    
-                return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
-          
+
+                    return RedirectToAction("CreateEmployeeEducation", "EmployeeEducation");
+
                 }
-                
+
                 return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = employeeId });
 
             }
@@ -217,26 +237,26 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
 
 
 
-
         public async Task<IActionResult> GetStatesByCountry(int countryId)
         {
             var locations = await _mediator.Send(new GetAllLocationQuery());
             var states = locations.Data
                 .Where(x => x.LocationType == LocationTypeEnum.State && x.ParentId == countryId)
-                .Select(x => new { x.Id, x.Name })
+
                 .ToList();
             return Json(states);
         }
-
+        [HttpGet]
         public async Task<IActionResult> GetCitiesByState(int stateId)
         {
             var locations = await _mediator.Send(new GetAllLocationQuery());
             var cities = locations.Data
                 .Where(x => x.LocationType == LocationTypeEnum.City && x.ParentId == stateId)
-                .Select(x => new { x.Id, x.Name })
+
                 .ToList();
             return Json(cities);
         }
+        [HttpGet]
         private async Task InitializeViewBags()
         {
             var branches = await _mediator.Send(new GetAllBranchQuery());
@@ -252,7 +272,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
             var locations = await _mediator.Send(new GetAllLocationQuery());
             var country = locations.Data.Where(x => x.LocationType == LocationTypeEnum.Country).ToList();
             var bank = await _mediator.Send(new GetBankLookUpQuery());
-            var religionLookUp= EnumHelper.GetEnumValues<ReligionEnum>().ToList();
+            var religionLookUp = EnumHelper.GetEnumValues<ReligionEnum>().ToList();
 
 
             ViewBag.Country = country;
@@ -268,7 +288,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
             ViewBag.GenderLookup = genderLookup;
             ViewBag.SalutationLookup = salutationLookup;
             ViewBag.Course = course.Data;
-            ViewBag.Religion= religionLookUp;
+            ViewBag.Religion = religionLookUp;
         }
 
 

@@ -23,5 +23,24 @@ namespace ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails
         public MarriedStatusEnum MarriedStatus { get; set; }
         public DateTime? DateOfWedding { get; set; }
         public bool IsActive { get; set; }
+
+     
+        public EmployeePersonalDetail(int employeeId, Employee employee, DateTime dOB, GenderEnum gender, string? placeOfBirth, ReligionEnum? religion, BloodGroupEnum? bloodGroup, MarriedStatusEnum marriedStatus, DateTime? dateOfWedding, bool isActive)
+        {
+            EmployeeId = employeeId;
+            Employee = employee;
+            DOB = dOB;
+            Gender = gender;
+            PlaceOfBirth = placeOfBirth;
+            Religion = religion;
+            BloodGroup = bloodGroup;
+            MarriedStatus = marriedStatus;
+            DateOfWedding = dateOfWedding;
+            IsActive = isActive;
+        }
+        public EmployeePersonalDetail()
+        {
+            
+        }
     }
 }

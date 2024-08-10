@@ -31,7 +31,8 @@ namespace ApwPayroll_Persistence.Repositories.EmployeeDocuments
 
         public async Task<EmployeeDocument> GetEmployeeDocument(int employeeId, int documentId)
         {
-            var data= await _applicationDataContext.EmployeeDocuments.Where(x=>x.EmployeeId==employeeId &&x.DocumentId==documentId).FirstOrDefaultAsync();
+            var data= await _applicationDataContext.EmployeeDocuments.Where(x=>x.EmployeeId==employeeId &&x.DocumentId==documentId).Include(x=>x.Document)
+                .FirstOrDefaultAsync();
             if(data!= null)
             {
                 return data;
