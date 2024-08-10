@@ -1,12 +1,12 @@
 ﻿using ApwPayroll_Application.Features.Holidays.Commands.CreateHolidays;
 using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Domain.Entities.Holidays;
+using ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles;
 using ApwPayroll_Domain.Entities.Holidays.HolidayTypes;
 using ApwPayroll_Shared;
 using AutoMapper;
 using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApwPayroll_Application.Features.Holidays.Commands.UpdateHolidays
 {
@@ -49,8 +49,33 @@ namespace ApwPayroll_Application.Features.Holidays.Commands.UpdateHolidays
 
             _mapper.Map(request.CreateHolidayCommand, holiday);
 
-            await _unitOfWork.Repository<Holiday>().UpdateAsync(holiday);
+            _unitOfWork.Repository<Holiday>().UpdateAsync(holiday);
             await _unitOfWork.Save(cancellationToken);
+
+            var exitsRule = await _unitOfWork.Repository<HolidayTypeRule>().Entities
+                .Where(x => x.HolidayId == request.Id)
+                .Include(x=>x.HolidayTypeRuleLocations)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (exitsRule != null)
+            {
+                if (exitsRule.Gender != null)
+                {
+                    exitsRule.Gender = request.CreateHolidayCommand.HolidayRuleDto.Gender;
+                }
+                if (exitsRule.BranchId != null)
+                {
+                    exitsRule.BranchId = request.CreateHolidayCommand.HolidayRuleDto.BranchId;
+                }
+                if (exitsRule.HolidayTypeRuleLocations != null)
+                {
+                     exitsRule.AddIfNotLocationExists(request.CreateHolidayCommand.HolidayRuleDto.LocationId);
+
+                }
+
+                await _unitOfWork.Repository<HolidayTypeRule>().UpdateAsync(exitsRule);
+                await _unitOfWork.Save(cancellationToken);
+            }
 
             return Result<Holiday>.Success(holiday, "Update Successfully");
         }

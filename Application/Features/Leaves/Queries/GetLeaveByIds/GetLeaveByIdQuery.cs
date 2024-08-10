@@ -3,6 +3,7 @@ using ApwPayroll_Domain.Entities.Leaves;
 using ApwPayroll_Shared;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApwPayroll_Application.Features.Leaves.Queries.GetLeaveByIds;
 
@@ -27,7 +28,7 @@ public class GetLeaveByIdQuery : IRequest<Result<Leave>>
 
         public async Task<Result<Leave>> Handle(GetLeaveByIdQuery request, CancellationToken cancellationToken)
         {
-            var data = await _unitOfWork.Repository<Leave>().GetByIdAsync(request.Id);
+            var data = await _unitOfWork.Repository<Leave>().Entities.Include(x=>x.LeaveType).ThenInclude(x=>x.LeaveTypeRole).Where(x=>x.Id==request.Id).FirstOrDefaultAsync();
             if (data == null)
             {
                 return Result<Leave>.BadRequest();

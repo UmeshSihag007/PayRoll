@@ -5,9 +5,16 @@
     ViewData["Title"] = "Create Holiday";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<!-- Chosen CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.6.2/chosen.min.css" rel="stylesheet" />
+
+<!-- Chosen JS -->
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.6.2/chosen.jquery.min.js"></script>
 
 <!-- Include Chosen CSS and JS -->
 <link rel="stylesheet" href="~/assets/libs/chosen/chosen.min.css" />
+    
 <script src="~/assets/libs/chosen/chosen.jquery.min.js"></script>
 
 <div class="container">
@@ -80,12 +87,13 @@
                         </select>
                         <span asp-validation-for="HolidayRuleDto.BranchId" class="text-danger"></span>
                     </div>
-
-               @*      <div class="col-md-12">
-                        <label asp-for="HolidayRuleDto.LocationId" class="form-label">Location</label>
-                        @Html.ListBoxFor(model => model.HolidayRuleDto.LocationId, (SelectList)ViewBag.LocationList, new { @class = "form-control" })
-                        <span asp-validation-for="HolidayRuleDto.LocationId" class="text-danger"></span>
-                    </div> *@
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label asp-for="HolidayRuleDto.LocationId" class="form-label">Location</label>
+                            @Html.ListBoxFor(model => model.HolidayRuleDto.LocationId, (IEnumerable<SelectListItem>)ViewBag.Location, new { @class = "form-control chosen-select", style = "width:100%" })
+                            <span asp-validation-for="HolidayRuleDto.LocationId" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -103,12 +111,17 @@
 
 @section scripts {
     <!-- Chosen JS -->
-    <script src="~/assets/libs/chosen/chosen.jquery.min.js"></script>
+      <script src="~/assets/libs/chosen/chosen.jquery.min.js"></script>
 
     <!-- Initialize Chosen -->
+    
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#HolidayRuleDto_LocationId").chosen({ width: "100%" });
+            // Initialize Chosen for select elements
+            $(".chosen-select").chosen({
+                width: "100%",
+                allow_single_deselect: true
+            });
         });
     </script>
 

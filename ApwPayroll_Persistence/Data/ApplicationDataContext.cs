@@ -33,6 +33,7 @@ using ApwPayroll_Domain.Entities.Employees.EmployeeQualifications;
 using ApwPayroll_Domain.Entities.Employees.EmployeeSocials;
 using ApwPayroll_Domain.Entities.Employees.Trainings;
 using ApwPayroll_Domain.Entities.Holidays;
+using ApwPayroll_Domain.Entities.Holidays.HolidatTypeRuleLocations;
 using ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles;
 using ApwPayroll_Domain.Entities.Holidays.HolidayTypes;
 using ApwPayroll_Domain.Entities.Leaves;
@@ -122,8 +123,9 @@ namespace ApwPayroll_Persistence.Data
         public DbSet<Leave> Leaves => Set<Leave>();
         public DbSet<LeaveType> LeaveTypes => Set<LeaveType>();
         public DbSet<LeaveResponseStatus>LeaveResponseStatuses => Set<LeaveResponseStatus>();
-        public DbSet<LeaveTypeRole> LeaveTypeRoles => Set<LeaveTypeRole>();
+        public DbSet<LeaveTypeRule> LeaveTypeRoles => Set<LeaveTypeRule>();
         public DbSet<HolidayTypeRule> HolidatTypeRoles => Set<HolidayTypeRule>();
+        public DbSet<HolidayTypeRuleLocation> HolidayTypeRuleLocation => Set<HolidayTypeRuleLocation>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

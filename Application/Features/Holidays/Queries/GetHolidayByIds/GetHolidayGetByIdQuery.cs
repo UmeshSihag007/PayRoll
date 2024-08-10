@@ -3,6 +3,7 @@ using ApwPayroll_Domain.Entities.Holidays;
 using ApwPayroll_Shared;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApwPayroll_Application.Features.Holidays.Queries.GetHolidayByIds;
 public class GetHolidayGetByIdQuery : IRequest<Result<Holiday>>
@@ -26,14 +27,20 @@ public class GetHolidayGetByIdQuery : IRequest<Result<Holiday>>
 
         public async Task<Result<Holiday>> Handle(GetHolidayGetByIdQuery request, CancellationToken cancellationToken)
         {
-            var data = await _unitOfWork.Repository<Holiday>().GetByIdAsync(request.Id);
+            var data = await _unitOfWork.Repository<Holiday>()
+            .Entities
+           .Include(x => x.HolidayTypeRules)
+         .ThenInclude(x => x.HolidayTypeRuleLocations.Where(location => location.IsActive))
+         .Where(x => x.Id == request.Id && x.IsDeleted == false)
+           .FirstOrDefaultAsync();
+
             if (data == null)
             {
                 return Result<Holiday>.BadRequest();
             }
-            var mapData = _mapper.Map<Holiday>(data);
-            return Result<Holiday>.Success(mapData);
+            return Result<Holiday>.Success(data);
         }
     }
-
 }
+
+

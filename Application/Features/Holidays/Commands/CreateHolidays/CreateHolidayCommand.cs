@@ -19,7 +19,6 @@ public class CreateHolidayCommand : IRequest<Result<Holiday>>
     public bool IsResetToLeaveRequest { get; set; }
     public string Description { get; set; }
     public int HolidayTypeId { get; set; }
-
     public GetHolidayRuleDto HolidayRuleDto { get; set; }
 }
 internal class CreateHolidayCommandHandler : IRequestHandler<CreateHolidayCommand, Result<Holiday>>
@@ -35,12 +34,7 @@ internal class CreateHolidayCommandHandler : IRequestHandler<CreateHolidayComman
 
     public async Task<Result<Holiday>> Handle(CreateHolidayCommand request, CancellationToken cancellationToken)
     {
-        // Validate if HolidayRuleDto is provided
-        if (request.HolidayRuleDto == null || !IsHolidayRuleDtoValid(request.HolidayRuleDto))
-        {
-            return Result<Holiday>.BadRequest("Please provide a valid holiday rule.");
-        }
-
+    
         var holidayType = await _unitOfWork.Repository<HolidayType>().GetByIdAsync(request.HolidayTypeId);
         if (holidayType == null)
         {
@@ -49,50 +43,41 @@ internal class CreateHolidayCommandHandler : IRequestHandler<CreateHolidayComman
 
         var mapData = _mapper.Map<Holiday>(request);
         var holiday = await _unitOfWork.Repository<Holiday>().AddAsync(mapData);
+        await _unitOfWork.Save(cancellationToken); 
 
-        await _unitOfWork.Save(cancellationToken);
-
-        var holidayRule = new HolidayTypeRule
+        if (request.HolidayRuleDto != null)
         {
-            HolidayId = holiday.Id,
-            Gender = request.HolidayRuleDto.Gender,
-            BranchId = request.HolidayRuleDto.BranchId
-        };
+            var holidayRule = new HolidayTypeRule
+            {
+                HolidayId = holiday.Id,
+                Gender = request.HolidayRuleDto.Gender,
+                BranchId = request.HolidayRuleDto.BranchId
+            };
 
-        await _unitOfWork.Repository<HolidayTypeRule>().AddAsync(holidayRule);
+            await _unitOfWork.Repository<HolidayTypeRule>().AddAsync(holidayRule);
+            await _unitOfWork.Save(cancellationToken); 
 
-        await _unitOfWork.Save(cancellationToken);
+            if (request.HolidayRuleDto.LocationId != null && request.HolidayRuleDto.LocationId.Any())
+            {
+                foreach (var locationId in request.HolidayRuleDto.LocationId)
+                {
+                    holidayRule.AddLocation(locationId);
+                    await _unitOfWork.Save(cancellationToken);
+                }
+            }
 
-        /* if (request.HolidayRuleDto.LocationId != null && request.HolidayRuleDto.LocationId.Any())
-         {
-             foreach (var locationId in request.HolidayRuleDto.LocationId)
-             {
-                 var location = new HolidayTypeRuleLocation
-                 {
-                     LocationId = locationId,
-                     HolidayRuleTypeId = holidayRule.Id
-                 };
-
-                 await _unitOfWork.Repository<HolidayTypeRuleLocation>().AddAsync(location);
-             }
-         }*/
-
-        await _unitOfWork.Save(cancellationToken);
+        }
 
         return Result<Holiday>.Success(holiday, "Created Successfully");
     }
 
-    private bool IsHolidayRuleDtoValid(GetHolidayRuleDto holidayRuleDto)
-    {
-        return holidayRuleDto.Gender != null && holidayRuleDto.BranchId > 0;
-    }
+  
 }
-
 
 
 public class GetHolidayRuleDto
 {
-    public GenderEnum Gender { get; set; }
-    //public List<int> LocationId { get; set; } = new List<int>();
-    public int BranchId { get; set; }
+    public GenderEnum? Gender { get; set; }
+    public List<int>? LocationId { get; set; } = new List<int>();
+    public int? BranchId { get; set; }
 }

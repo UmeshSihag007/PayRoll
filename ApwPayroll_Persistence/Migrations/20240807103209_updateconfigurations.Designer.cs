@@ -4,6 +4,7 @@ using ApwPayroll_Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApwPayroll_Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDataContext))]
-    partial class ApplicationDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240807103209_updateconfigurations")]
+    partial class updateconfigurations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1871,9 +1874,6 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Property<int>("HolidayRuleTypeId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.HasKey("LocationId", "HolidayRuleTypeId");
 
                     b.HasIndex("HolidayRuleTypeId");
@@ -1949,7 +1949,7 @@ namespace ApwPayroll_Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BranchId")
+                    b.Property<int>("BranchId")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
@@ -1961,7 +1961,7 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("Gender")
+                    b.Property<int>("Gender")
                         .HasColumnType("int");
 
                     b.Property<int>("HolidayId")
@@ -2053,9 +2053,6 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("FromDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -2076,9 +2073,6 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RequestedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ToDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedBy")
@@ -2155,7 +2149,7 @@ namespace ApwPayroll_Persistence.Migrations
                     b.ToTable("LeaveResponseStatuses", "PayRolls");
                 });
 
-            modelBuilder.Entity("ApwPayroll_Domain.Entities.Leaves.LeaveTypeRoles.LeaveTypeRule", b =>
+            modelBuilder.Entity("ApwPayroll_Domain.Entities.Leaves.LeaveTypeRoles.LeaveTypeRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2163,7 +2157,7 @@ namespace ApwPayroll_Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BranchId")
+                    b.Property<int>("BranchId")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
@@ -2175,22 +2169,22 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DesignationId")
+                    b.Property<int>("DesignationId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Gender")
+                    b.Property<int>("Gender")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LeaveTypeId")
+                    b.Property<int>("LeaveTypeId")
                         .HasColumnType("int");
 
-                    b.Property<long?>("MaxMonthLeave")
+                    b.Property<long>("MaxMonthLeave")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("MaxYearLeave")
+                    b.Property<long>("MaxYearLeave")
                         .HasColumnType("bigint");
 
                     b.Property<string>("UpdatedBy")
@@ -2992,7 +2986,7 @@ namespace ApwPayroll_Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5eabf5a8-b771-41bc-95df-396386da3bb6",
+                            Id = "2c081715-3296-45e8-84fc-a918d24de387",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         });
@@ -3930,14 +3924,16 @@ namespace ApwPayroll_Persistence.Migrations
                 {
                     b.HasOne("ApwPayroll_Domain.Entities.Banks.Branches.Branch", "Branch")
                         .WithMany()
-                        .HasForeignKey("BranchId");
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ApwPayroll_Domain.Entities.AspUsers.AspUser", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedBy");
 
                     b.HasOne("ApwPayroll_Domain.Entities.Holidays.Holiday", "Holiday")
-                        .WithMany("HolidayTypeRules")
+                        .WithMany()
                         .HasForeignKey("HolidayId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -4030,11 +4026,13 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("ApwPayroll_Domain.Entities.Leaves.LeaveTypeRoles.LeaveTypeRule", b =>
+            modelBuilder.Entity("ApwPayroll_Domain.Entities.Leaves.LeaveTypeRoles.LeaveTypeRole", b =>
                 {
                     b.HasOne("ApwPayroll_Domain.Entities.Banks.Branches.Branch", "Branch")
                         .WithMany()
-                        .HasForeignKey("BranchId");
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ApwPayroll_Domain.Entities.AspUsers.AspUser", "CreatedByUser")
                         .WithMany()
@@ -4042,11 +4040,15 @@ namespace ApwPayroll_Persistence.Migrations
 
                     b.HasOne("ApwPayroll_Domain.Entities.Designations.Designation", "Designation")
                         .WithMany()
-                        .HasForeignKey("DesignationId");
+                        .HasForeignKey("DesignationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ApwPayroll_Domain.Entities.Leaves.LeaveTypes.LeaveType", "LeaveType")
                         .WithMany()
-                        .HasForeignKey("LeaveTypeId");
+                        .HasForeignKey("LeaveTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ApwPayroll_Domain.Entities.AspUsers.AspUser", "UpdatedByUser")
                         .WithMany()
@@ -4493,11 +4495,6 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Navigation("EmployeeQualification");
 
                     b.Navigation("ReferralDetail");
-                });
-
-            modelBuilder.Entity("ApwPayroll_Domain.Entities.Holidays.Holiday", b =>
-                {
-                    b.Navigation("HolidayTypeRules");
                 });
 
             modelBuilder.Entity("ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles.HolidayTypeRule", b =>

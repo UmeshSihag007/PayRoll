@@ -15,6 +15,7 @@ public class Holiday : BaseAuditEntity
     public int HolidayTypeId { get; set; }
     public HolidayType HolidayType { get; set; }
 
-    public HolidayTypeRule HolidayTypeRules { get; set; } = new HolidayTypeRule();
+
+    public List<HolidayTypeRule> HolidayTypeRules { get; set;}=new List<HolidayTypeRule>();
 
 }

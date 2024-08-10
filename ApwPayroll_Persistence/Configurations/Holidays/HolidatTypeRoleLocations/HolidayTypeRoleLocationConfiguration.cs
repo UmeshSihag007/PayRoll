@@ -14,7 +14,7 @@ public class HolidayTypeRoleLocationConfiguration : IEntityTypeConfiguration<Hol
                .WithMany()
                .HasForeignKey(bd => bd.LocationId);
         builder.HasOne(bd => bd.HolidayRuleType)
-               .WithMany()
+               .WithMany(x=>x.HolidayTypeRuleLocations)
                .HasForeignKey(bd => bd.HolidayRuleTypeId);
     }
 }

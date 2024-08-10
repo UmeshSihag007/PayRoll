@@ -10,6 +10,8 @@ public class HolidayTypeRuleLocation
     public int HolidayRuleTypeId { get; set; }
     public HolidayTypeRule HolidayRuleType { get; set; }
 
+    public bool IsActive { get; set; } = true;
+
     public HolidayTypeRuleLocation(int locationId, int holidayRuleTypeId)
     {
         LocationId = locationId;
@@ -18,7 +20,7 @@ public class HolidayTypeRuleLocation
 
     public HolidayTypeRuleLocation()
     {
-        
+
     }
 
 }

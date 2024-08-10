@@ -33,6 +33,8 @@ using ApwPayroll_Domain.Entities.Employees.EmployeeExperiences;
 using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeeQualifications;
 using ApwPayroll_Domain.Entities.Holidays;
+using ApwPayroll_Domain.Entities.Holidays.HolidatTypeRuleLocations;
+using ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles;
 using ApwPayroll_Domain.Entities.Holidays.HolidayTypes;
 using ApwPayroll_Domain.Entities.Leaves;
 using ApwPayroll_Domain.Entities.Leaves.LeaveTypes;
@@ -57,7 +59,11 @@ public class MappingProfile : Profile
         CreateMap<CreateHolidayTypeCommand, HolidayType>();
 
         CreateMap<CreateHolidayCommand, Holiday>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore()); 
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+        CreateMap<Holiday, GetHolidayRuleDto>();
+        CreateMap<HolidayTypeRule, GetHolidayRuleDto>();
+        CreateMap<HolidayTypeRuleLocation, GetHolidayRuleDto>();
 
         CreateMap<CreateLeaveCommand, Leave>();
 
