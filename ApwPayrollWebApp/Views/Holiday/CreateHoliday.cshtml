@@ -20,14 +20,17 @@
 <div class="container">
     <div class="row mb-3">
         <div class="d-flex justify-content-between">
-            <h2>@(Model.Id.HasValue && Model.Id.Value != 0 ? "Update Holiday" : "Add Holiday")</h2>
-            <button type="button" class="btn btn-primary" id="addRuleBtn">Add Rule</button>
+           
+
         </div>
     </div>
 
     <form asp-action="CreateHoliday" method="post">
         <div class="row mb-3">
             <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header"> <h3>@(Model.Id.HasValue && Model.Id.Value != 0 ? "Update Holiday" : "Add Holiday")</h3></div>
+                <div class="card-body">
                 <div class="row mb-3 g-3">
                     <div class="col-md-6">
                         <label asp-for="Name" class="form-label">Name</label>
@@ -69,8 +72,15 @@
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                 </div>
+                </div>
             </div>
+            </div>
+            
             <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header"> <h3>@(Model.Id.HasValue && Model.Id.Value != 0 ? "Update Rule" : "Add Rule")</h3></div>
+
+                    <div class="card-body">
                 <div class="row mb-3 g-3">
                     <div class="col-md-6">
                         <label asp-for="HolidayRuleDto.Gender" class="form-label">Gender</label>
@@ -96,6 +106,8 @@
                     </div>
                 </div>
             </div>
+        </div>
+        </div>
         </div>
         <div class="row mb-3">
             <div class="col-md-12">

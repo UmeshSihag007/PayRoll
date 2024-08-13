@@ -8,7 +8,7 @@ namespace ApwPayroll_Domain.Entities.Leaves.LeaveTypeRoles;
 
 public class LeaveTypeRule : BaseAuditEntity
 {
-    public int? LeaveTypeId { get; set; }
+    public int LeaveTypeId { get; set; }
     public LeaveType? LeaveType { get; set; }
     public GenderEnum? Gender { get; set; }
     public int? DesignationId { get; set; }
@@ -17,4 +17,5 @@ public class LeaveTypeRule : BaseAuditEntity
     public Branch? Branch { get; set; }
     public long? MaxMonthLeave { get; set; }
     public long? MaxYearLeave { get; set; }  
+    
 }

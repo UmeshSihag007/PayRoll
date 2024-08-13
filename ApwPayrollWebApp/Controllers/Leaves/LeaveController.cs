@@ -42,30 +42,34 @@ public class LeaveController : BaseController
             var data = await _mediator.Send(new GetLeaveByIdQuery(id.Value));
             if (data.Data != null)
             {
-               var rule = data.Data.LeaveType.LeaveTypeRole.FirstOrDefault();
+                var rule = data.Data.LeaveType.LeaveTypeRole.FirstOrDefault();
 
                 model = new CreateLeaveCommand
                 {
                     Id = data.Data.Id,
                     LeaveTypeId = data.Data.LeaveTypeId,
                     Reason = data.Data.Reason,
-                    ToDate=data.Data.ToDate,
-                    FromDate=data.Data.FromDate,
+                    ToDate = data.Data.ToDate,
+                    FromDate = data.Data.FromDate,
                     ContactNumber = data.Data.ContactNumber,
                     IsPaid = data.Data.IsPaid,
                     LeaveStatus = data.Data.LeaveStatus,
                     IsHalfDay = data.Data.IsHalfDay,
 
-                    LeaveTypeRole = data.Data.LeaveType.LeaveTypeRole!= null ? new LeaveTypeRule
+                    LeaveTypeRole = data.Data.LeaveType.LeaveTypeRole != null ? new LeaveTypeRule
                     {
-                        BranchId = rule?.BranchId?? 0,
+                        Id = rule.Id,
+                        BranchId = rule?.BranchId ?? 0,
                         DesignationId = rule?.DesignationId ?? 0,
                         Gender = rule?.Gender,
                     } : null
+
                 };
+                HttpContext.Session.SetInt32("LeaveTypeRoleId", rule.Id);
             }
-           var type = await _mediator.Send(new GetLeaveByIdQuery(data.Data.LeaveTypeId));
+            var type = await _mediator.Send(new GetLeaveByIdQuery(data.Data.LeaveTypeId));
             ViewBag.LeaveType = type.Data;
+
         }
         await InitializeViewBags();
 
@@ -75,18 +79,20 @@ public class LeaveController : BaseController
     [HttpPost]
     public async Task<IActionResult> CreateLeave(CreateLeaveCommand command)
     {
-       
+
+
         if (ModelState.IsValid)
         {
             Result<Leave> result;
             if (command.Id == 0 || command.Id == null)
             {
-                command.LeaveStatus = LeaveStatusEnum.Pending;
-                result = await _mediator.Send(command);
+                    command.LeaveStatus = LeaveStatusEnum.Pending;
+                    result = await _mediator.Send(command);
             }
             else
             {
-                var updateCommand = new UpdateLeaveCommand(command.Id.Value, command);
+                var LeaveTypeRoleId = HttpContext.Session.GetInt32("LeaveTypeRoleId");
+                var updateCommand = new UpdateLeaveCommand(command.Id.Value, command, LeaveTypeRoleId);
                 result = await _mediator.Send(updateCommand);
             }
 
@@ -107,7 +113,7 @@ public class LeaveController : BaseController
         {
             Value = l.Id.ToString(),
             Text = l.Name
-        }).ToList() ?? new List<SelectListItem>(); // Default to empty list if null
+        }).ToList() ?? new List<SelectListItem>();
 
         var gender = EnumHelper.GetEnumValues<GenderEnum>().ToList();
         ViewBag.GenderList = gender;
@@ -117,15 +123,15 @@ public class LeaveController : BaseController
         {
             Value = b.Id.ToString(),
             Text = b.Name
-        }).ToList() ?? new List<SelectListItem>(); // Default to empty list if null
+        }).ToList() ?? new List<SelectListItem>();
 
         var designations = await _mediator.Send(new GetAllDesignationQuery());
         ViewBag.DesignationList = designations.Data?.Select(d => new SelectListItem
         {
             Value = d.Id.ToString(),
             Text = d.Name
-        }).ToList() ?? new List<SelectListItem>(); // Default to empty list if null
+        }).ToList() ?? new List<SelectListItem>();
+
+
     }
-
-
 }

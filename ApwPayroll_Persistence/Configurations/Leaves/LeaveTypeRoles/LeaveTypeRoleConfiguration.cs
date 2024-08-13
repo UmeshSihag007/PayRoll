@@ -8,11 +8,11 @@ public class LeaveTypeRoleConfiguration : IEntityTypeConfiguration<LeaveTypeRule
 {
     public void Configure(EntityTypeBuilder<LeaveTypeRule> builder)
     {
-        builder.Property(x => x.LeaveTypeId).IsRequired(false);
+        builder.Property(x => x.LeaveTypeId).IsRequired(true);
         builder.HasOne(x => x.LeaveType)
             .WithMany()
             .HasForeignKey(x => x.LeaveTypeId)
-            .IsRequired(false);
+            .IsRequired(true);
 
         builder.Property(x => x.DesignationId).IsRequired(false);
         builder.HasOne(x => x.Designation)
