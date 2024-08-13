@@ -1,6 +1,4 @@
 ﻿@using ApwPayrollWebApp.Models
-
-
 @model EmployeeCreateViewModel
 @{
     ViewData["Title"] = "Create";
@@ -10,54 +8,90 @@
 <div class="tab-content">
     <div class="tab-pane active" id="basicDetails" role="tabpanel">
         <div class="m-3 mt-2">
-
-        <h2>Create Document</h2>
+            <h2>@(Model?.documentCommand != null && Model.documentCommand.EmployeeId != 0 ? "Update Document" : "Create Document")</h2>
         </div>
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div class="row">
-                <input type="hidden" asp-for="EmployeeId" value="@ViewBag.EmployeeId"/>
-                @for (int i = 0; i < ViewBag.EmployeeDocumentTypes.Count; i++)
-                {
-                    <input type="hidden" asp-for="EmployeeDocument[i].EmployeeDocumentTypeId" value="@ViewBag.EmployeeDocumentTypes[i].Id" />
-                   
+                <input type="hidden" asp-for="EmployeeId" value="@ViewBag.EmployeeId" />
 
-                    @*             <input type="hidden" asp-for="EmployeeDocument[@i].EmployeeDocumentTypeId" value="@ViewBag.EmployeeDocumentTypes[i].Id" />
-                *@            <div class="col-lg-4">
-                        <div class="card mb-3" style="max-width: 400px; box-shadow:rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
-                            <h5 class="card-title text-success mt-1" style="text-align:center;">@ViewBag.EmployeeDocumentTypes[i].Name</h5>
+                @if (Model?.documentCommand != null && Model.documentCommand.EmployeeId != 0)
+                {
+                    <input type="hidden" asp-for="EmployeeDocument[0].EmployeeDocumentTypeId" value="@ViewBag.EmployeeDocumentTypeId" />
+                    <input type="hidden" id="currentDocumentUrl_0" value="@ViewBag.document" />
+
+                    <div class="col-lg-4">
+                        <div class="card mb-3" style="max-width: 400px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                            <h5 class="card-title text-success mt-1" style="text-align:center;">@ViewBag.EmployeeDocumentType</h5>
                             <div class="row g-0">
                                 <div class="col-md-12">
                                     <div class="card-body">
+                                        <label for="Documents_0">Upload Document</label>
+                                        <input asp-for="EmployeeDocument[0].Document" type="file" id="Documents_0" class="form-control-file" onchange="previewFile(this, 'imagePreview_0', 'filePreview_0');" />
 
-                                        <label for="Documents_@(i)">Upload @ViewBag.EmployeeDocumentTypes[i].Name</label>
-                                        <input asp-for="EmployeeDocument[i].Document" type="file" id="Documents_@(i)" class="form-control-file" onchange="previewFile(this, 'imagePreview_@(i)', 'filePreview_@(i)');" />
+                                        <!-- Conditionally display current document if available -->
+                                        <div class="mt-2" id="currentDocument_0" style="display:none;">
+                                            <label>Current Document:</label><br />
+                                            <a id="currentDocumentLink_0" href="#" target="_blank">
+                                                <img id="currentDocumentImage_0" src="#" alt="Current Document" class="img-fluid mt-2" style="max-width: 100%;" />
+                                            </a>
+                                        </div>
 
                                         <!-- Image preview for image files -->
-                                        <img id="imagePreview_@(i)" src="#" alt="Preview" class="img-fluid mt-2" style="max-width: 100%; display: none;" />
+                                        <img id="imagePreview_0" src="#" alt="Preview" class="img-fluid mt-2" style="max-width: 100%; display: none;" />
 
                                         <!-- Iframe preview for PDF and HTML files -->
-                                        <iframe id="filePreview_@(i)" class="mt-2" style="max-width: 100%; display: none;"></iframe>
+                                        <iframe id="filePreview_0" class="mt-2" style="max-width: 100%; display: none;"></iframe>
 
-                                        <span asp-validation-for="EmployeeDocument[i].Document" class="text-danger"></span>
+                                        <span asp-validation-for="EmployeeDocument[0].Document" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <label for="Codes_@(i)">@ViewBag.EmployeeDocumentTypes[i].Name Number</label>
-
-                                <input asp-for="EmployeeDocument[i].Code" type="text" id="Codes_@(i)" class="form-control" />
-                                @* <input asp-for="EmployeeDocument[@i].Code" type="text" id="Codes_@(i)" class="form-control" /> *@
+                                <label for="Codes_0">@ViewBag.EmployeeDocumentType Number</label>
+                                <input asp-for="EmployeeDocument[0].Code" type="text" id="Codes_0" class="form-control" />
                             </div>
                         </div>
                     </div>
+                }
+                else
+                {
+                    @for (int i = 0; i < ViewBag.EmployeeDocumentTypes.Count; i++)
+                    {
+                        <input type="hidden" asp-for="EmployeeDocument[i].EmployeeDocumentTypeId" value="@ViewBag.EmployeeDocumentTypes[i].Id" />
+                        <div class="col-lg-4">
+                            <div class="card mb-3" style="max-width: 400px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                                <h5 class="card-title text-success mt-1" style="text-align:center;">@ViewBag.EmployeeDocumentTypes[i].Name</h5>
+                                <div class="row g-0">
+                                    <div class="col-md-12">
+                                        <div class="card-body">
+                                            <label for="Documents_@(i)">Upload @ViewBag.EmployeeDocumentTypes[i].Name</label>
+                                            <input asp-for="EmployeeDocument[i].Document" type="file" id="Documents_@(i)" class="form-control-file" onchange="previewFile(this, 'imagePreview_@(i)', 'filePreview_@(i)');" />
+
+                                            <!-- Image preview for image files -->
+                                            <img id="imagePreview_@(i)" src="#" alt="Preview" class="img-fluid mt-2" style="max-width: 100%; display: none;" />
+
+                                            <!-- Iframe preview for PDF and HTML files -->
+                                            <iframe id="filePreview_@(i)" class="mt-2" style="max-width: 100%; display: none;"></iframe>
+
+                                            <span asp-validation-for="EmployeeDocument[i].Document" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <label for="Codes_@(i)">@ViewBag.EmployeeDocumentTypes[i].Name Number</label>
+                                    <input asp-for="EmployeeDocument[i].Code" type="text" id="Codes_@(i)" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    }
                 }
             </div>
             <div class="row">
                 <div class="col-lg">
                     <div class="hstack gap-2 justify-content-end mt-5 mb-3">
- 
-                        <button type="submit" s class="btn btn-sm btn-success">Submit</button>
- 
+                        <button type="submit" class="btn btn-sm btn-success">
+                            @(Model?.documentCommand != null && Model.documentCommand.EmployeeId != 0 ? "Update" : "Add")
+                        </button>
                     </div>
                 </div>
             </div>
@@ -71,6 +105,10 @@
             const file = input.files[0];
             const previewImage = document.getElementById(imagePreviewId);
             const previewFile = document.getElementById(filePreviewId);
+            const currentDocumentUrl = document.getElementById('currentDocumentUrl_0').value;
+            const currentDocument = document.getElementById('currentDocument_0');
+            const currentDocumentLink = document.getElementById('currentDocumentLink_0');
+            const currentDocumentImage = document.getElementById('currentDocumentImage_0');
 
             if (file) {
                 const reader = new FileReader();
@@ -78,6 +116,12 @@
                 reader.onloadend = function () {
                     const fileType = file.type;
 
+                    // Hide the current document preview
+                    if (currentDocument) {
+                        currentDocument.style.display = 'none';
+                    }
+
+                    // Display the new file preview based on the file type
                     if (fileType.startsWith("image/")) {
                         previewImage.src = reader.result;
                         previewImage.style.display = 'block';
@@ -93,15 +137,28 @@
                 };
 
                 reader.readAsDataURL(file);
+            } else if (currentDocumentUrl) {
+                // If no new file is selected, show the current document
+                currentDocument.style.display = 'block';
+                currentDocumentLink.href = currentDocumentUrl;
+                if (currentDocumentUrl.endsWith('.pdf') || currentDocumentUrl.endsWith('.html')) {
+                    document.getElementById('filePreview_0').src = currentDocumentUrl;
+                    document.getElementById('filePreview_0').style.display = 'block';
+                    document.getElementById('imagePreview_0').style.display = 'none';
+                } else {
+                    document.getElementById('currentDocumentImage_0').src = currentDocumentUrl;
+                    document.getElementById('imagePreview_0').style.display = 'none';
+                    document.getElementById('filePreview_0').style.display = 'none';
+                }
             } else {
                 previewImage.style.display = 'none';
                 previewFile.style.display = 'none';
             }
         }
+
+        // Call the preview function on page load to set current document if available
+        $(document).ready(function () {
+            previewFile({ files: [] }, 'imagePreview_0', 'filePreview_0');
+        });
     </script>
-
 }
-
-
-
-

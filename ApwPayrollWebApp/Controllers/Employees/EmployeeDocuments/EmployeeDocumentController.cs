@@ -34,13 +34,16 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
             {
                 var employee = HttpContext.Session.GetInt32("EmployeeId") ?? employeeId.Value;
 
+             
                 if (employee == default)
                 {
                     return NotFound();
                 }
 
                 var document = await _mediator.Send(new GetDocumentByDocumentIdQuery(employee, id.Value));
-
+                ViewBag.document = document.Data.Document.Url;
+                ViewBag.EmployeeDocumentType = document.Data.EmployeeDocumentType.Name;
+                ViewBag.EmployeeDocumentTypeId = document.Data.EmployeeDocumentType.Id;
                 if (document != null)
                 {
                     var employeeDocument = new CreateEmployeeDocumentDto
@@ -53,6 +56,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
                         EmployeeId = document.Data.EmployeeId,
                         EmployeeDocuments = new List<CreateEmployeeDocumentDto> { employeeDocument }
                     };
+
                 }
             }
 

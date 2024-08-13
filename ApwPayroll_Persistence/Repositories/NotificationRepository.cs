@@ -1,10 +1,5 @@
 ﻿using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Persistence.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApwPayroll_Persistence.Repositories
 {
@@ -19,5 +14,10 @@ namespace ApwPayroll_Persistence.Repositories
         {
             throw new NotImplementedException();
         }
+
+/*        public async Task<List<int>> Delete(List<int> locationId)
+        {
+var data = await _applicationDataContext.HolidayTypeRuleLocation
+        }*/
     }
 }

@@ -5,6 +5,7 @@
 
 @{
 
+ 
 }
 @{
     var user = await _userManager.GetUserAsync(User);
@@ -17,6 +18,7 @@
         roleName = roles.FirstOrDefault();
 
     }
+ 
 }
 
 
@@ -70,6 +72,42 @@
                        aria-expanded="false" aria-controls="sidebarPolicys">
                         <i class=" ri-stack-line"></i> <span data-key="t-maps">Manage Employees</span>
                     </a>
+ 
+                    <div class="collapse menu-dropdown" id="sidebarEmployees">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Employee")" class="nav-link" data-key="t-google">
+                                    Employees
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("CreateEmployeeBasic", "Employee")" class="nav-link" data-key="t-google">
+                                    Add Employees
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarHolidayTables" data-bs-toggle="collapse" role="button"
+                       aria-expanded="false" aria-controls="sidebarPolicys">
+                        <i class=" ri-stack-line"></i> <span data-key="t-maps">Holiday Tables</span>
+                    </a>
+                    <div class="collapse menu-dropdown overflow-auto" id="sidebarHolidayTables" style="max-height: 200px; overflow-y: auto;">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Holiday")" class="nav-link" data-key="t-google">
+                                    HolidayList
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("CreateHoliday", "Holiday")" class="nav-link" data-key="t-google">
+                                    AddHoliday
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+ 
                     @if (roleName != null && roleName == "Admin")
                     {
 
@@ -94,14 +132,34 @@
                             </ul>
                         </div>
                     }
-
+ 
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarMaterTables" data-bs-toggle="collapse" role="button"
+                    <a class="nav-link menu-link" href="#sidebarLeaveTables" data-bs-toggle="collapse" role="button"
                        aria-expanded="false" aria-controls="sidebarPolicys">
-                        <i class=" ri-stack-line"></i> <span data-key="t-maps"> Mater Tables</span>
+                        <i class=" ri-stack-line"></i> <span data-key="t-maps">Leave Tables</span>
                     </a>
-                    <div class="collapse menu-dropdown overflow-auto " id="sidebarMaterTables">
+                    <div class="collapse menu-dropdown overflow-auto" id="sidebarLeaveTables" style="max-height: 200px; overflow-y: auto;">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Leave")" class="nav-link" data-key="t-google">
+                                    LeaveList
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("CreateLeave", "Leave")" class="nav-link" data-key="t-google">
+                                    AddLeave
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarMasterTables" data-bs-toggle="collapse" role="button"
+                       aria-expanded="false" aria-controls="sidebarPolicys">
+                        <i class=" ri-stack-line"></i> <span data-key="t-maps">Master Tables</span>
+                    </a>
+                    <div class="collapse menu-dropdown overflow-auto" id="sidebarMasterTables" style="max-height: 200px; overflow-y: auto; height:180%">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="@Url.Action("CourseView", "Course")" class="nav-link" data-key="t-google">
@@ -138,7 +196,6 @@
                                     HolidayType
                                 </a>
                             </li>
-
                             <li class="nav-item">
                                 <a href="@Url.Action("LeaveTypeView", "LeaveType")" class="nav-link" data-key="t-google">
                                     LeaveType
@@ -147,10 +204,6 @@
                         </ul>
                     </div>
                 </li>
-
-
-
-
             </ul>
         </div>
         <!-- Sidebar -->
@@ -160,6 +213,4 @@
 <!-- Left Sidebar End -->
 <!-- Vertical Overlay-->
 <div class="vertical-overlay"></div>
-
-
-
+ 

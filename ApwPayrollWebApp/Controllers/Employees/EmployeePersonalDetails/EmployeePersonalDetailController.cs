@@ -34,13 +34,13 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
         private readonly IMediator _mediator;
 
         private readonly IGenericRepository<RelationType> _relationRepository;
-        private readonly IGenericRepository<Location> _loctionRepository;
+        private readonly IGenericRepository<Location> _locationRepository;
 
         public EmployeePersonalDetailController(IMediator mediator, IGenericRepository<RelationType> relationRepository, IGenericRepository<Location> loctionRepository)
         {
             _mediator = mediator;
             _relationRepository = relationRepository;
-            _loctionRepository = loctionRepository;
+            _locationRepository = loctionRepository;
         }
 
         public IActionResult Index()
@@ -52,130 +52,113 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
         {
             ViewBag.employeeId = id;
             await InitializeViewBags();
+
             var model = new EmployeeCreateViewModel();
 
-            if (id.HasValue && id.Value != 0)
+            if (!id.HasValue || id.Value == 0)
             {
-                var data = await _mediator.Send(new GetEmployeeByIdQuery(id.Value));
-                var employee = data?.Data;
-
-                if (employee != null && employee.EmployeePersonalDetail != null)
-                {
-                    var employeePersonalDetail = employee.EmployeePersonalDetail;
-                    var employeeFamily = employee.EmployeeFamily;
-
-                    var permanentAddress = employee.EmployeeAddresses?.FirstOrDefault(a => a.AddressTypeId == 1);
-                    var residentialAddress = employee.EmployeeAddresses?.FirstOrDefault(a => a.AddressTypeId == 2);
-                    var emergencyContact = employee.EmergencyContact?.FirstOrDefault();
-                    var bankDetails = employee.BankDetails?.FirstOrDefault();
-                    var spouse = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse");
-
-                    // Initialize location variables
-                    Location residentialCity = null;
-                    Location residentialState = null;
-                    Location residentialCountry = null;
-
-                    if (residentialAddress?.LocationId != null)
-                    {
-                        residentialCity = await _loctionRepository.Entities
-                            .Include(x => x.Parent)
-                            .FirstOrDefaultAsync(x => x.Id == residentialAddress.LocationId);
-
-                        if (residentialCity?.Parent != null)
-                        {
-                            residentialState = await _loctionRepository.Entities
-                                .Include(x => x.Parent)
-                                .FirstOrDefaultAsync(x => x.Id == residentialCity.ParentId);
-
-                            if (residentialState?.Parent != null)
-                            {
-                                residentialCountry = await _loctionRepository.Entities
-                                    .FirstOrDefaultAsync(x => x.Id == residentialState.ParentId);
-                            }
-                        }
-                    }
-
-                    model.EmployeePersonalDetail = new CreateEmployeePersonalDetailDto
-                    {
-                        Id = employee.EmployeePersonalDetail?.EmployeeId ?? 0,
-
-                        BloodGroup = employee.EmployeePersonalDetail.BloodGroup,
-                        DOB = employee.EmployeePersonalDetail.DOB,
-                        Gender = employee.EmployeePersonalDetail.Gender,
-                        FatherName = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Father")?.Name,
-                        FatherDOB = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Father")?.DOB,
-                        MotherName = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.Name,
-                        MotherDOB = employee.EmployeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.DOB,
-                        MarriedStatus = employee.EmployeePersonalDetail.MarriedStatus,
-                        SpouseName = spouse?.Name,
-                        SpouseDOB = spouse?.DOB,
-                        SpouseGender = spouse?.Gender,
-                        DateOfWedding = employee.EmployeePersonalDetail?.DateOfWedding,
-
-                        Emergency = emergencyContact != null ? new EmergencyContact
-                        {
-                            Name = emergencyContact.Name,
-                            Email = emergencyContact.Email,
-                            MobileNumber = emergencyContact.MobileNumber,
-                            WhatsAppNumber = emergencyContact.WhatsAppNumber,
-                            RelationTypeId = emergencyContact.RelationTypeId
-                        } : null,
-
-                        PermanentAddress = permanentAddress != null ? new CreateEmployeeAddressCommand
-                        {
-                            Address1 = permanentAddress.Address1,
-                            Address2 = permanentAddress.Address2,
-                            Address3 = permanentAddress.Address3,
-                            CityId = permanentAddress.CityId,
-                            StateId = permanentAddress.StateId,
-                           
-                            LocationId = permanentAddress.LocationId,
-                            PinCode = permanentAddress.PinCode,
-                            IsActive = permanentAddress.IsActive,
-                            Nationality = permanentAddress.Nationality,
-                            AddressTypeId = permanentAddress.AddressTypeId,
-                            EmployeeId = permanentAddress.EmployeeId
-                        } : null,
-
-                        ResidentialAddress = residentialAddress != null ? new CreateEmployeeAddressCommand
-                        {
-                            Address1 = residentialAddress.Address1,
-                            Address2 = residentialAddress.Address2,
-                            Address3 = residentialAddress.Address3,
-                            CityId = residentialCity?.Id,
-                            StateId = residentialState?.Id,
-                            LocationId = residentialCity?.Id,
-                            PinCode = residentialAddress.PinCode,
-                            CountryId = residentialCountry?.Id,
-                            IsActive = residentialAddress.IsActive,
-                            Nationality = residentialAddress.Nationality,
-                            AddressTypeId = residentialAddress.AddressTypeId,
-                            EmployeeId = residentialAddress.EmployeeId
-                        } : null,
-
-                        CreateEmployeeBank = bankDetails != null ? new CreateEmployeeBankDetailCommand
-                        {
-                            Id = bankDetails.Id,
-                            AccountBranch = bankDetails.AccountBranch,
-                            AccountName = bankDetails.AccountName,
-                            AccountType = bankDetails.AccountType,
-                            BanAccountId = bankDetails.BanAccountId,
-                            BankId = bankDetails.BankId ?? default,
-                            IFCCode = bankDetails.IFCCode,
-                            IsBankAccountVerified = bankDetails.IsBankAccountVerified
-                        } : null,
-
-                        Religion = employee.EmployeePersonalDetail?.Religion,
-                        PlaceOfBirth = employee.EmployeePersonalDetail?.PlaceOfBirth,
-                    };
-                }
+                return View(model);
             }
+
+            var data = await _mediator.Send(new GetEmployeeByIdQuery(id.Value));
+            var employee = data?.Data;
+
+            if (employee?.EmployeePersonalDetail == null)
+            {
+                return View(model);
+            }
+
+            var employeePersonalDetail = employee.EmployeePersonalDetail;
+            var employeeFamily = employee.EmployeeFamily;
+
+            var permanentAddress = employee.EmployeeAddresses?.FirstOrDefault(a => a.AddressTypeId == 1);
+            var residentialAddress = employee.EmployeeAddresses?.FirstOrDefault(a => a.AddressTypeId == 2);
+            var emergencyContact = employee.EmergencyContact?.FirstOrDefault();
+            var bankDetails = employee.BankDetails?.FirstOrDefault();
+            var spouse = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Spouse");
+
+            var residentialCity = await GetLocationWithParentsAsync(residentialAddress?.LocationId);
+            var permanentCity = await GetLocationWithParentsAsync(permanentAddress?.LocationId);
+
+            model.EmployeePersonalDetail = new CreateEmployeePersonalDetailDto
+            {
+                Id = employeePersonalDetail.EmployeeId,
+
+                BloodGroup = employeePersonalDetail.BloodGroup,
+                DOB = employeePersonalDetail.DOB,
+                Gender = employeePersonalDetail.Gender,
+                FatherName = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Father")?.Name,
+                FatherDOB = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Father")?.DOB,
+                MotherName = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.Name,
+                MotherDOB = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.DOB,
+                MarriedStatus = employeePersonalDetail.MarriedStatus,
+                SpouseName = spouse?.Name,
+                SpouseDOB = spouse?.DOB,
+                SpouseGender = spouse?.Gender,
+                DateOfWedding = employeePersonalDetail?.DateOfWedding,
+
+                Emergency = emergencyContact != null ? new EmergencyContact
+                {
+                    Name = emergencyContact.Name,
+                    Email = emergencyContact.Email,
+                    MobileNumber = emergencyContact.MobileNumber,
+                    WhatsAppNumber = emergencyContact.WhatsAppNumber,
+                    RelationTypeId = emergencyContact.RelationTypeId
+                } : null,
+
+                PermanentAddress = permanentAddress != null ? new CreateEmployeeAddressCommand
+                {
+                    Address1 = permanentAddress.Address1,
+                    Address2 = permanentAddress.Address2,
+                    Address3 = permanentAddress.Address3,
+                    CityId = permanentCity?.Id,
+                    StateId = permanentCity?.ParentId,
+                    CountryId=permanentCity?.Parent?.ParentId,
+                    LocationId = permanentAddress.LocationId,
+                    PinCode = permanentAddress.PinCode,
+                    IsActive = permanentAddress.IsActive,
+                    Nationality = permanentAddress.Nationality,
+                    AddressTypeId = permanentAddress.AddressTypeId,
+                    EmployeeId = permanentAddress.EmployeeId
+                } : null,
+
+                ResidentialAddress = residentialAddress != null ? new CreateEmployeeAddressCommand
+                {
+                    Address1 = residentialAddress.Address1,
+                    Address2 = residentialAddress.Address2,
+                    Address3 = residentialAddress.Address3,
+                    CityId = residentialCity?.Id,
+                    StateId = residentialCity?.ParentId,
+                    LocationId = residentialCity?.Id,
+                    PinCode = residentialAddress.PinCode,
+                    CountryId = residentialCity?.Parent?.ParentId,
+                    IsActive = residentialAddress.IsActive,
+                    Nationality = residentialAddress.Nationality,
+                    AddressTypeId = residentialAddress.AddressTypeId,
+                    EmployeeId = residentialAddress.EmployeeId
+                } : null,
+
+                CreateEmployeeBank = bankDetails != null ? new CreateEmployeeBankDetailCommand
+                {
+                    Id = bankDetails.Id,
+                    AccountBranch = bankDetails.AccountBranch,
+                    AccountName = bankDetails.AccountName,
+                    AccountType = bankDetails.AccountType,
+                    BanAccountId = bankDetails.BanAccountId,
+                    BankId = bankDetails.BankId ?? default,
+                    IFCCode = bankDetails.IFCCode,
+                    IsBankAccountVerified = bankDetails.IsBankAccountVerified
+                } : null,
+
+                Religion = employeePersonalDetail?.Religion,
+                PlaceOfBirth = employeePersonalDetail?.PlaceOfBirth,
+            };
 
             return View(model);
         }
 
+  
 
-         
         [HttpPost]
         public async Task<IActionResult> CreateEmployeePersonal(int? employeeId, EmployeeCreateViewModel command)
         {
@@ -187,6 +170,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
             }
             ModelState.Remove("EmployeePersonalDetail.PermanentAddress.EmployeeId");
             ModelState.Remove("EmployeePersonalDetail.ResidentialAddress.EmployeeId");
+            ModelState.Remove("EmployeePersonalDetail.PermanentAddress.CountryId");
 
 
             if (ModelState.IsValid)
@@ -292,5 +276,42 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
         }
 
 
+
+
+        private async Task<Location> GetLocationWithParentsAsync(int? locationId)
+        {
+            if (!locationId.HasValue)
+            {
+                return null;
+            }
+
+            var city = await _locationRepository.Entities
+                .Include(x => x.Parent)
+                .FirstOrDefaultAsync(x => x.Id == locationId.Value);
+
+            if (city?.Parent == null)
+            {
+                return city;
+            }
+
+            var state = await _locationRepository.Entities
+                .Include(x => x.Parent)
+                .FirstOrDefaultAsync(x => x.Id == city.ParentId);
+
+            if (state?.Parent == null)
+            {
+                return city;
+            }
+
+            var country = await _locationRepository.Entities
+                .FirstOrDefaultAsync(x => x.Id == state.ParentId);
+
+            city.Parent.Parent = country;
+
+            return city;
+        }
+
     }
+
+
 }

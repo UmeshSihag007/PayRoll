@@ -1,4 +1,5 @@
 ﻿using ApwPayroll_Domain.common;
+using ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles;
 using ApwPayroll_Domain.Entities.Holidays.HolidayTypes;
 
 namespace ApwPayroll_Domain.Entities.Holidays;
@@ -13,4 +14,8 @@ public class Holiday : BaseAuditEntity
     public string Description { get; set; }
     public int HolidayTypeId { get; set; }
     public HolidayType HolidayType { get; set; }
+
+
+    public List<HolidayTypeRule> HolidayTypeRules { get; set;}=new List<HolidayTypeRule>();
+
 }

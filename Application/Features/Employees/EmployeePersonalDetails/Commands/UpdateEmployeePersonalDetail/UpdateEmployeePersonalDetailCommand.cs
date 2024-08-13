@@ -137,7 +137,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                     Nationality = request.CreateEmployeePersonals.PermanentAddress.Nationality,
                     IsActive = true,
 
-                    CityId = request.CreateEmployeePersonals.PermanentAddress.CityId,
+                    CityId = request.CreateEmployeePersonals.PermanentAddress.LocationId,
                     StateId = request.CreateEmployeePersonals.PermanentAddress.StateId,
                 };
                 await _unitOfWork.Repository<EmployeeAddress>().AddAsync(permanentAddress);
