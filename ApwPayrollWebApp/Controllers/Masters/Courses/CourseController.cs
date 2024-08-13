@@ -98,7 +98,7 @@ public class CourseController : BaseController
     }
 
 
-    #region UPDATE  LOGIN ACCESS   
+    #region UPDATE  STATUS   
     [HttpPost]
     public async Task<IActionResult> UpdateIsActive(int id, bool isActive)
     {

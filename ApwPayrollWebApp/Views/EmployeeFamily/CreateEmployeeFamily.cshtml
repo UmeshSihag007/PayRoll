@@ -45,6 +45,7 @@
                         <input asp-for="CreateEmployeeFamily.Id" class="form-control " hidden   />
                     <div class="col-3">
                         <label asp-for="CreateEmployeeFamily.Name"> Name </label>
+                        <span class="text-danger">*</span>
                         <div class="input-group">
 
                         <input asp-for="CreateEmployeeFamily.Name" class="form-control" />
@@ -54,6 +55,7 @@
                     </div>
                     <div class="col-3">
                         <label asp-for="CreateEmployeeFamily.Gender"> Gender </label>
+                        <span class="text-danger">*</span>
                         <div class="input-group">
 
                         <select asp-for="CreateEmployeeFamily.Gender" class="form-control form-control" required>

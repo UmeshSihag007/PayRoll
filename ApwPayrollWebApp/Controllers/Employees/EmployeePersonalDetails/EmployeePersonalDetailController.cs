@@ -79,7 +79,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
 
             var residentialCity = await GetLocationWithParentsAsync(residentialAddress?.LocationId);
             var permanentCity = await GetLocationWithParentsAsync(permanentAddress?.LocationId);
-
+ 
             model.EmployeePersonalDetail = new CreateEmployeePersonalDetailDto
             {
                 Id = employeePersonalDetail.EmployeeId,
@@ -153,6 +153,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                 Religion = employeePersonalDetail?.Religion,
                 PlaceOfBirth = employeePersonalDetail?.PlaceOfBirth,
             };
+ 
 
             return View(model);
         }
@@ -180,6 +181,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                 if (command.EmployeePersonalDetail.Id != null && command.EmployeePersonalDetail.Id != 0)
                 {
                     var updateData = await _mediator.Send(new UpdateEmployeePersonalDetailCommand(command.EmployeePersonalDetail.Id.Value, command.EmployeePersonalDetail));
+ 
                     if (HttpContext.Session.GetInt32("EmployeeId") != null)
                     {
 
