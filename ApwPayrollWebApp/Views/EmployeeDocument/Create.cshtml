@@ -26,20 +26,21 @@
                                 <div class="col-md-12">
                                     <div class="card-body">
                                         <label for="Documents_0">Upload Document</label>
-                                        <input asp-for="EmployeeDocument[0].Document" type="file" id="Documents_0" class="form-control-file" onchange="previewFile(this, 'imagePreview_0', 'filePreview_0');" />
+                                        <input asp-for="EmployeeDocument[0].Document" type="file" id="Documents_0" class="form-control-file" onchange="previewFile(this, 'imagePreview_0', 'filePreview_0', 'currentDocumentUrl_0', 'currentDocument_0');" />
 
-                                        <!-- Conditionally display current document if available -->
-                                        <div class="mt-2" id="currentDocument_0" style="display:none;">
+                                        <!-- Display current document if available -->
+                                        <div class="mt-2" id="currentDocument_0">
                                             <label>Current Document:</label><br />
                                             <a id="currentDocumentLink_0" href="#" target="_blank">
-                                                <img id="currentDocumentImage_0" src="#" alt="Current Document" class="img-fluid mt-2" style="max-width: 100%;" />
+                                                <img id="currentDocumentImage_0" src="#" alt="Current Document" class="img-fluid mt-2" style="max-width: 100%; display: none;" />
                                             </a>
+                                            <iframe id="currentDocumentIframe_0" class="mt-2" style="max-width: 100%; display: none;"></iframe>
                                         </div>
 
-                                        <!-- Image preview for image files -->
+                                        <!-- Image preview for new file -->
                                         <img id="imagePreview_0" src="#" alt="Preview" class="img-fluid mt-2" style="max-width: 100%; display: none;" />
 
-                                        <!-- Iframe preview for PDF and HTML files -->
+                                        <!-- Iframe preview for new file -->
                                         <iframe id="filePreview_0" class="mt-2" style="max-width: 100%; display: none;"></iframe>
 
                                         <span asp-validation-for="EmployeeDocument[0].Document" class="text-danger"></span>
@@ -65,12 +66,12 @@
                                     <div class="col-md-12">
                                         <div class="card-body">
                                             <label for="Documents_@(i)">Upload @ViewBag.EmployeeDocumentTypes[i].Name</label>
-                                            <input asp-for="EmployeeDocument[i].Document" type="file" id="Documents_@(i)" class="form-control-file" onchange="previewFile(this, 'imagePreview_@(i)', 'filePreview_@(i)');" />
+                                            <input asp-for="EmployeeDocument[i].Document" type="file" id="Documents_@(i)" class="form-control-file" onchange="previewFile(this, 'imagePreview_@(i)', 'filePreview_@(i)', null, null);" />
 
-                                            <!-- Image preview for image files -->
+                                            <!-- Image preview for new file -->
                                             <img id="imagePreview_@(i)" src="#" alt="Preview" class="img-fluid mt-2" style="max-width: 100%; display: none;" />
 
-                                            <!-- Iframe preview for PDF and HTML files -->
+                                            <!-- Iframe preview for new file -->
                                             <iframe id="filePreview_@(i)" class="mt-2" style="max-width: 100%; display: none;"></iframe>
 
                                             <span asp-validation-for="EmployeeDocument[i].Document" class="text-danger"></span>
@@ -101,14 +102,12 @@
 
 @section Scripts {
     <script>
-        function previewFile(input, imagePreviewId, filePreviewId) {
+        function previewFile(input, imagePreviewId, filePreviewId, currentDocumentUrlId, currentDocumentContainerId) {
             const file = input.files[0];
             const previewImage = document.getElementById(imagePreviewId);
             const previewFile = document.getElementById(filePreviewId);
-            const currentDocumentUrl = document.getElementById('currentDocumentUrl_0').value;
-            const currentDocument = document.getElementById('currentDocument_0');
-            const currentDocumentLink = document.getElementById('currentDocumentLink_0');
-            const currentDocumentImage = document.getElementById('currentDocumentImage_0');
+            const currentDocumentUrl = document.getElementById(currentDocumentUrlId)?.value;
+            const currentDocumentContainer = document.getElementById(currentDocumentContainerId);
 
             if (file) {
                 const reader = new FileReader();
@@ -116,9 +115,9 @@
                 reader.onloadend = function () {
                     const fileType = file.type;
 
-                    // Hide the current document preview
-                    if (currentDocument) {
-                        currentDocument.style.display = 'none';
+                    // Hide the current document preview if present
+                    if (currentDocumentContainer) {
+                        currentDocumentContainer.style.display = 'none';
                     }
 
                     // Display the new file preview based on the file type
@@ -139,16 +138,18 @@
                 reader.readAsDataURL(file);
             } else if (currentDocumentUrl) {
                 // If no new file is selected, show the current document
-                currentDocument.style.display = 'block';
-                currentDocumentLink.href = currentDocumentUrl;
+                if (currentDocumentContainer) {
+                    currentDocumentContainer.style.display = 'block';
+                }
+
                 if (currentDocumentUrl.endsWith('.pdf') || currentDocumentUrl.endsWith('.html')) {
-                    document.getElementById('filePreview_0').src = currentDocumentUrl;
-                    document.getElementById('filePreview_0').style.display = 'block';
-                    document.getElementById('imagePreview_0').style.display = 'none';
+                    document.getElementById('currentDocumentIframe_0').src = currentDocumentUrl;
+                    document.getElementById('currentDocumentIframe_0').style.display = 'block';
+                    document.getElementById('currentDocumentImage_0').style.display = 'none';
                 } else {
                     document.getElementById('currentDocumentImage_0').src = currentDocumentUrl;
-                    document.getElementById('imagePreview_0').style.display = 'none';
-                    document.getElementById('filePreview_0').style.display = 'none';
+                    document.getElementById('currentDocumentImage_0').style.display = 'block';
+                    document.getElementById('currentDocumentIframe_0').style.display = 'none';
                 }
             } else {
                 previewImage.style.display = 'none';
@@ -158,7 +159,12 @@
 
         // Call the preview function on page load to set current document if available
         $(document).ready(function () {
-            previewFile({ files: [] }, 'imagePreview_0', 'filePreview_0');
-        });
+        @if (Model?.documentCommand != null && Model.documentCommand.EmployeeId != 0)
+        {
+            <text>
+                        previewFile(document.getElementById('Documents_0'), 'imagePreview_0', 'filePreview_0', 'currentDocumentUrl_0', 'currentDocument_0');
+            </text>
+        }
+                });
     </script>
 }

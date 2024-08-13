@@ -86,7 +86,7 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
                 Email = request.EmailId
             };
 
-            var password = GeneratePassword(request.EmailId);
+            var password = GeneratePassword(request.FirstName);
       var result=  await _userManager.CreateAsync(user, password);
 
 
@@ -130,9 +130,9 @@ namespace ApwPayroll_Application.Features.Employees.Commands.CreateEmployee
             return Result<Employee>.Success(data, "Created Successfully");
         }
 
-        private string GeneratePassword(string email)
+        private string GeneratePassword(string firstname)
         {
-            string password = email +"ABC#$@123";
+            string password = firstname + "@123";
             return password;
         }
 

@@ -18,6 +18,7 @@ using ApwPayroll_Domain.common.Enums.MarriedStatus;
 using ApwPayroll_Domain.common.Enums.Religions;
 using ApwPayroll_Domain.common.Enums.Salutation;
 using ApwPayroll_Domain.Entities.Employees.EmergencyContacts;
+using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
 using ApwPayroll_Domain.Entities.Locations;
 using ApwPayroll_Domain.Entities.RelationTypes;
 using ApwPayrollWebApp.Controllers.Common;
@@ -172,6 +173,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
             ModelState.Remove("EmployeePersonalDetail.PermanentAddress.EmployeeId");
             ModelState.Remove("EmployeePersonalDetail.ResidentialAddress.EmployeeId");
             ModelState.Remove("EmployeePersonalDetail.PermanentAddress.CountryId");
+            ModelState.Remove("EmployeePersonalDetail.ResidentialAddress.CountryId");
 
 
             if (ModelState.IsValid)

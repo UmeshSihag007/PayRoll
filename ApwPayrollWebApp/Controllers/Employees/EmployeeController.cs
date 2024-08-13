@@ -29,8 +29,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApwPayrollWebApp.Controllers.Employees
-{ 
-    [Authorize(Roles ="Admin")]
+{
+    [Authorize(Roles = "Admin")]
     public class EmployeeController : BaseController
     {
         private readonly IMediator _mediator;
@@ -41,34 +41,34 @@ namespace ApwPayrollWebApp.Controllers.Employees
             _mediator = mediator;
             _relationRepository = relationRepository;
         }
- 
-        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 40,SearchEmployeeDto? searchEmployee=default)
+
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 40, SearchEmployeeDto? searchEmployee = default)
         {
             await InitializeViewBags();
             ModelState.Remove("searchEmployee.BranchId");
             if (ModelState.IsValid)
             {
-            var query = new GetAllEmployeeQuery(pageNumber, pageSize ,searchEmployee);
-            var result = await _mediator.Send(query);
+                var query = new GetAllEmployeeQuery(pageNumber, pageSize, searchEmployee);
+                var result = await _mediator.Send(query);
 
-            if (!result.succeeded)
-            {
-                return NotFound();
-            }
-
-            var viewModel = new EmployeeIndexViewModel
-            {
-                Employees = result.Data.Data,
-                Pagination = new PaginationViewModel
+                if (!result.succeeded)
                 {
-                    CurrentPage = result.Data.CurrentPage,
-                    TotalPages = result.Data.TotalPages,
-                    PageSize = result.Data.PageSize
-                },
-                SearchEmployee = searchEmployee
-            };
+                    return NotFound();
+                }
 
-            return View(viewModel);
+                var viewModel = new EmployeeIndexViewModel
+                {
+                    Employees = result.Data.Data,
+                    Pagination = new PaginationViewModel
+                    {
+                        CurrentPage = result.Data.CurrentPage,
+                        TotalPages = result.Data.TotalPages,
+                        PageSize = result.Data.PageSize
+                    },
+                    SearchEmployee = searchEmployee
+                };
+
+                return View(viewModel);
             }
             return View();
         }
@@ -81,9 +81,9 @@ namespace ApwPayrollWebApp.Controllers.Employees
             if (data.succeeded)
             {
 
-               ViewBag.employee = data.Data;
+                ViewBag.employee = data.Data;
             }
-             
+
             return View(model);
         }
 
@@ -114,20 +114,20 @@ namespace ApwPayrollWebApp.Controllers.Employees
 
             return View(model);
         }
-         
+
 
 
 
         public async Task<IActionResult> CreateEmployeeBasic(int? id)
-        { 
+        {
             await InitializeViewBags();
-                var model = new EmployeeCreateViewModel();
+            var model = new EmployeeCreateViewModel();
             if (id.HasValue)
             {
                 var employee = await _mediator.Send(new GetEmployeeByIdQuery(id.Value));
 
                 // Assuming 'employee' is an object of GetEmployeeDto type
-                 model.Employee = new CreateEmployeeCommand()
+                model.Employee = new CreateEmployeeCommand()
                 {
                     Id = employee.Data.Id,
                     FirstName = employee.Data.FirstName,
@@ -155,47 +155,54 @@ namespace ApwPayrollWebApp.Controllers.Employees
                     DepartmentId = employee.Data.EmployeeDepartments.FirstOrDefault()?.DepartmentId ?? 0
                 };
             }
-                return View(model);
-           
+            return View(model);
+
         }
         [HttpPost]
         public async Task<IActionResult> CreateEmployeeBasic(EmployeeCreateViewModel command)
         {
- 
+
 
             if (ModelState.IsValid)
             {
 
-                if(command.Employee?.Id!=0 && command.Employee?.Id != null)
+                if (command.Employee?.Id != 0 && command.Employee?.Id != null)
                 {
 
-                  var data=  await _mediator.Send(new UpdateEmployeeCommand(command.Employee.Id.Value, command.Employee));
+                    var data = await _mediator.Send(new UpdateEmployeeCommand(command.Employee.Id.Value, command.Employee));
 
                     if (data.succeeded)
                     {
 
-                    Notify( data.Messages, null, data.code);
+                        Notify(data.Messages, null, data.code);
                         return RedirectToAction("EmployeeCompleteDetails", new { id = command.Employee.Id });
                     }
                     else
                     {
-                    Notify( data.Messages, null, data.code);
+                        Notify(data.Messages, null, data.code);
                     }
 
                 }
                 else
                 {
 
-                var data = await _mediator.Send(command.Employee);
-                //TempData["EmployeeId"] = data.Data.Id;
+                    var data = await _mediator.Send(command.Employee);
+                    //TempData["EmployeeId"] = data.Data.Id;
 
-                if (data.code == 200)
-                {
-                    Notify(data.Messages, null, data.code);
-                }
+                    if (data.code == 200)
+                    {
+                        Notify(data.Messages, null, data.code);
+                    }
 
-                HttpContext.Session.SetInt32("EmployeeId", data.Data.Id);
-                return RedirectToAction("CreateEmployeePersonal", "EmployeePersonalDetail", new { employeeId = data.Data.Id });
+                    else
+                    {
+
+                        await InitializeViewBags();
+                        Notify(data.Messages, null, data.code);
+                        return View(command);
+                    }
+                    HttpContext.Session.SetInt32("EmployeeId", data.Data.Id);
+                    return RedirectToAction("CreateEmployeePersonal", "EmployeePersonalDetail", new { employeeId = data.Data.Id });
                 }
 
             }
@@ -208,7 +215,7 @@ namespace ApwPayrollWebApp.Controllers.Employees
 
 
 
- 
+
 
         [HttpGet]
         public IActionResult CreateEmployeePersonalDetail()
@@ -217,8 +224,8 @@ namespace ApwPayrollWebApp.Controllers.Employees
             ViewBag.EmployeeId = employeeId;
             return View();
         }
-        
-   
+
+
 
         #region UPDATE  LOGIN ACCESS   
         [HttpPost]

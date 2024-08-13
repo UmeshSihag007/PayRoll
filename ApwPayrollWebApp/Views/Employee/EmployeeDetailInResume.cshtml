@@ -1,0 +1,394 @@
+﻿
+
+@using ApwPayrollWebApp.Models
+@model EmployeeCreateViewModel
+@{
+    ViewData["Title"] = "EmployeeDetailInResume";
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<style>
+    .table-responsive {
+        margin-bottom: 20px;
+    }
+
+    .address-section {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .borderless-table {
+        border: none;
+    }
+
+        .borderless-table td, .borderless-table th {
+            border: none;
+            padding: 8px;
+        }
+
+    @@media print {
+        body {
+            font-size: 12pt;
+            color: #000;
+        }
+
+        .table-responsive {
+            margin-bottom: 0;
+        }
+
+        .no-print {
+            display: none;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <input hidden asp-for="EmployeePersonalDetail.Id" />
+        <input hidden asp-for="Experiences.Id" />
+        <input hidden asp-for="CreateEmployeeFamily.Id" />
+        <input hidden asp-for="ReferencesCommand.Id" />
+    </div>
+
+    <div class="card-body">
+        <div class="card ribbon-box">
+            <div class="card-header">
+                <header>
+                    <div class="row">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-4">
+                            <div style="text-align:center">
+                                <div>
+                                    <b>@(ViewBag.employee.FirstName.ToUpper() ?? "________") @(ViewBag.employee.LastName.ToUpper() ?? "_______")</b>
+                                </div>
+                                <div>
+                                    @(ViewBag.designation?.Name ?? "________") @(ViewBag.department?.Name ?? "________") @(ViewBag.employee.Branch.Name ?? "________")
+                                </div>
+                                <div>
+                                    @(ViewBag.residential?.Address1 ?? "____") @(ViewBag.residential?.Address2 ?? "____") @(ViewBag.residential?.Address3 ?? "____")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" style="text-align:center">
+                            @(ViewBag.employee.MobileNumber) <br />
+                            @(ViewBag.employee.EmailId)
+                        </div>
+                    </div>
+                    <hr />
+                </header>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div style="border-right:solid 1px">
+                            <div><b>Qualifications</b></div>
+                            @if (ViewBag.employee.EmployeeQualification.Count != 0)
+                            {
+                                <div class="table-responsive">
+                                    <table class="table borderless-table qualifications">
+                                        @foreach (var qualification in ViewBag.employee.EmployeeQualification)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <b>@(ViewBag.employee.EmployeeQualification.IndexOf(qualification) + 1)-</b>
+                                                    @qualification.Course.Name, @qualification.UniversityBoard, @qualification.FromDate - @qualification.ToDate
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                            }
+
+                            <div><b>Experience</b></div>
+                            @if (ViewBag.employee.EmployeeExperience.Count != 0)
+                            {
+                                <div class="table-responsive">
+                                    <table class="table borderless-table experience">
+                                        @foreach (var experience in ViewBag.employee.EmployeeExperience)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <b>@(ViewBag.employee.EmployeeExperience.IndexOf(experience) + 1)-</b>
+                                                    @experience.ComanyName, @experience.Designation, @experience.Industry, @experience.AnnualInCome,
+                                                    @experience.StartDate.ToString("dd MMM yyyy") - @experience.CompletedDate.ToString("dd MMM yyyy")
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                            }
+
+                            <div class="table-responsive">
+                                <table class="table borderless-table documents">
+                                    <tr>
+                                        <td>
+                                            <b>Aadhar :</b> @(ViewBag.employee.AadharNumber)
+                                            @foreach (var document in ViewBag.employee.EmployeeDocuments)
+                                            {
+                                                if (document.EmployeeDocumentType.Name == "Aadhar Card")
+                                                {
+                                                    <i class="bi bi-check-circle-fill" style="color:green"></i>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>PAN :</b> @(ViewBag.employee.PanNumber)
+                                            @foreach (var document in ViewBag.employee.EmployeeDocuments)
+                                            {
+                                                if (document.EmployeeDocumentType.Name == "Pan Card")
+                                                {
+                                                    <i class="bi bi-check-circle-fill" style="color:green"></i>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Ration :</b> @(ViewBag.employee.RationCardNumber)
+                                            @foreach (var document in ViewBag.employee.EmployeeDocuments)
+                                            {
+                                                if (document.EmployeeDocumentType.Name == "Ration Card")
+                                                {
+                                                    <i class="bi bi-check-circle-fill" style="color:green"></i>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Passport :</b> @(ViewBag.employee.PassportNumber)
+                                            @foreach (var document in ViewBag.employee.EmployeeDocuments)
+                                            {
+                                                if (document.EmployeeDocumentType.Name == "Passport")
+                                                {
+                                                    <i class="bi bi-check-circle-fill" style="color:green"></i>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Voter ID :</b> @(ViewBag.employee.VoterId)
+                                            @foreach (var document in ViewBag.employee.EmployeeDocuments)
+                                            {
+                                                if (document.EmployeeDocumentType.Name == "Voter Card")
+                                                {
+                                                    <i class="bi bi-check-circle-fill" style="color:green"></i>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Licence :</b> @(ViewBag.employee.LicenceNumber)
+                                            @foreach (var document in ViewBag.employee.EmployeeDocuments)
+                                            {
+                                                if (document.EmployeeDocumentType.Name == "Licence")
+                                                {
+                                                    <i class="bi bi-check-circle-fill" style="color:green"></i>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>UAN :</b> @(ViewBag.employee.UanNumber)
+                                            @foreach (var document in ViewBag.employee.EmployeeDocuments)
+                                            {
+                                                if (document.EmployeeDocumentType.Name == "UAN Card")
+                                                {
+                                                    <i class="bi bi-check-circle-fill" style="color:green"></i>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>ESI :</b> @(ViewBag.employee.ESINumber)
+                                            @foreach (var document in ViewBag.employee.EmployeeDocuments)
+                                            {
+                                                if (document.EmployeeDocumentType.Name == "ESI")
+                                                {
+                                                    <i class="bi bi-check-circle-fill" style="color:green"></i>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>PF Number :</b> @(ViewBag.employee.PfNumber)
+                                            @foreach (var document in ViewBag.employee.EmployeeDocuments)
+                                            {
+                                                if (document.EmployeeDocumentType.Name == "PF Card")
+                                                {
+                                                    <i class="bi bi-check-circle-fill" style="color:green"></i>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="ms-5">
+                            <div class="mb-4">
+                                <b class="me-4">Employee Code :</b> @(ViewBag.employee.EmployeeCode ?? "------")
+                            </div>
+                            <b>Residential Address</b>
+                            <p>
+                                @(ViewBag.residential?.Address1 ?? "____"),
+                                @(ViewBag.residential?.Address2 ?? "____"),
+                                @(ViewBag.residential?.Address3 ?? "____"),
+                                @(ViewBag.residential?.PinCode)
+                            </p>
+                            <b>Permanent Address</b>
+                            <p>
+                                @(ViewBag.permanent?.Address1 ?? "____"),
+                                @(ViewBag.permanent?.Address2 ?? "____"),
+                                @(ViewBag.permanent?.Address3 ?? "____"),
+                                @(ViewBag.permanent?.PinCode)
+                            </p>
+                            <div class="mb-4">
+                                <b>Date of Joining :</b> @(ViewBag.employee.DateOfJoining)
+                            </div>
+                            <div>
+                                <b class="fs-4">Family Detail</b>
+                                <div class="table-responsive">
+                                    <table class="table borderless-table text-center family">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Gender</th>
+                                                <th>Relation</th>
+                                                <th>DOB</th>
+                                            </tr>
+                                        </thead>
+                                        @foreach (var family in ViewBag.employee.EmployeeFamily)
+                                        {
+                                            <tr>
+                                                <td>@family.Name</td>
+                                                <td>@family.Gender</td>
+                                                <td>@family.RelationType.Name</td>
+                                                <td>@family.DOB.ToString("dd MMM yyyy")</td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+                                <b class="fs-4">Referral Detail</b>
+                                <div class="table-responsive">
+                                    <table class="table borderless-table text-center referral">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Designation</th>
+                                                <th>Organization</th>
+                                                <th>Mobile</th>
+                                                <th>Year Of Acquaintance</th>
+                                            </tr>
+                                        </thead>
+                                        @foreach (var referral in ViewBag.employee.ReferralDetail)
+                                        {
+                                            <tr>
+                                                <td>@referral.ReferenceName</td>
+                                                <td>@referral.Designation</td>
+                                                <td>@referral.OrganizationName</td>
+                                                <td>@referral.ContactNumber</td>
+                                                <td>@referral.YearsOfAcquaintance</td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="table-responsive">
+                                    <table class="table borderless-table text-center bank">
+                                        <thead>
+                                            <tr>
+                                                <th>Bank Name</th>
+                                                <th>Branch</th>
+                                                <th>Account Number</th>
+                                                <th>IFSC code</th>
+                                            </tr>
+                                        </thead>
+                                        @foreach (var bankDetail in ViewBag.employee.BankDetails)
+                                        {
+                                            <tr>
+                                                <td>@(bankDetail.AccountName ?? "_______")</td>
+                                                <td>@(bankDetail.AccountBranch ?? "_____")</td>
+                                                <td>@(bankDetail.BanAccountId ?? "______")</td>
+                                                <td>@(bankDetail.IFCCode ?? "_______")</td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button onclick="Print()" class="no-print">Print</button>
+        <button onclick="exportToExcel()" class="no-print">Export to Excel</button>
+    </div>
+</div>
+
+<script>
+    function Print() {
+        window.print();
+    }
+
+    function exportToExcel() {
+
+        var wb = XLSX.utils.book_new();
+
+
+        var qualificationsTable = document.querySelector('table.qualifications');
+        if (qualificationsTable) {
+            var qualificationsSheet = XLSX.utils.table_to_sheet(qualificationsTable);
+            XLSX.utils.book_append_sheet(wb, qualificationsSheet, 'Qualifications');
+        }
+
+
+        var experienceTable = document.querySelector('table.experience');
+        if (experienceTable) {
+            var experienceSheet = XLSX.utils.table_to_sheet(experienceTable);
+            XLSX.utils.book_append_sheet(wb, experienceSheet, 'Experience');
+        }
+
+
+        var documentsTable = document.querySelector('table.documents');
+        if (documentsTable) {
+            var documentsSheet = XLSX.utils.table_to_sheet(documentsTable);
+            XLSX.utils.book_append_sheet(wb, documentsSheet, 'Documents');
+        }
+
+        var familyTable = document.querySelector('table.family');
+        if (familyTable) {
+            var familySheet = XLSX.utils.table_to_sheet(familyTable);
+            XLSX.utils.book_append_sheet(wb, familySheet, 'Family Details');
+        }
+
+
+        var referralTable = document.querySelector('table.referral');
+        if (referralTable) {
+            var referralSheet = XLSX.utils.table_to_sheet(referralTable);
+            XLSX.utils.book_append_sheet(wb, referralSheet, 'Referral Details');
+        }
+
+
+        var bankTable = document.querySelector('table.bank');
+        if (bankTable) {
+            var bankSheet = XLSX.utils.table_to_sheet(bankTable);
+            XLSX.utils.book_append_sheet(wb, bankSheet, 'Bank Details');
+        }
+
+
+        XLSX.writeFile(wb, 'EmployeeDetails.xlsx');
+    }
+</script>
