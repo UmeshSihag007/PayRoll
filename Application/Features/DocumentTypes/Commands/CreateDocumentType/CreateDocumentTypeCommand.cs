@@ -8,6 +8,7 @@ namespace ApwPayroll_Application.Features.DocumentTypes.Commands.CreateDocumentT
 {
     public class CreateDocumentTypeCommand : IRequest<Result<DocumentType>>
     {
+        public int? Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }

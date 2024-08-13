@@ -8,22 +8,22 @@ using ApwPayroll_Domain.Entities.Employees.EmergencyContacts;
 using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
 using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
-using ApwPayroll_Domain.Entities.RelationTypes;
 using ApwPayroll_Shared;
 using AutoMapper;
-using Couchbase.Core.Retry;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+ 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+ 
 
 namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Commands.UpdateEmployeePersonalDetail
 {
-    public class UpdateEmployeePersonalDetailCommand:IRequest<Result<EmployeePersonalDetail>>
+    public class UpdateEmployeePersonalDetailCommand : IRequest<Result<EmployeePersonalDetail>>
     {
         public UpdateEmployeePersonalDetailCommand(int id, CreateEmployeePersonalDetailDto createEmployeePersonals)
         {
@@ -31,13 +31,13 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             CreateEmployeePersonals = createEmployeePersonals;
         }
 
-        public int Id { get; set;}
+        public int Id { get; set; }
         public CreateEmployeePersonalDetailDto CreateEmployeePersonals { get; set; }
     }
     internal class UpdateEmployeePersonalDetailCommandHandler : IRequestHandler<UpdateEmployeePersonalDetailCommand, Result<EmployeePersonalDetail>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private     readonly IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public UpdateEmployeePersonalDetailCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -47,7 +47,9 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
 
         public async Task<Result<EmployeePersonalDetail>> Handle(UpdateEmployeePersonalDetailCommand request, CancellationToken cancellationToken)
         {
+ 
             var data = await _unitOfWork.Repository<EmployeePersonalDetail>().Entities.Where(x => x.EmployeeId == request.Id && x.IsDeleted == false).FirstOrDefaultAsync();
+ 
             if (data == null)
             {
                 return Result<EmployeePersonalDetail>.NotFound();
@@ -69,7 +71,8 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                     IFCCode = request.CreateEmployeePersonals.CreateEmployeeBank.IFCCode,
                     AccountName = request.CreateEmployeePersonals.CreateEmployeeBank.AccountName,
                     AccountBranch = request.CreateEmployeePersonals.CreateEmployeeBank.AccountBranch,
-                    BanAccountId = 122,
+                    BanAccountId = request.CreateEmployeePersonals.CreateEmployeeBank.BanAccountId,
+                    AccountType = request.CreateEmployeePersonals.CreateEmployeeBank.AccountType,
                     EmployeeId = data.EmployeeId,
 
 
@@ -91,8 +94,10 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                     mapData.LocationId = request.CreateEmployeePersonals.ResidentialAddress.LocationId;
                     await _unitOfWork.Repository<EmployeeAddress>().UpdateAsync(mapData);
                 await _unitOfWork.Save(cancellationToken);
+ 
                 }
             }
+ 
             else
             {
                 var residentialAddress = new EmployeeAddress
@@ -145,10 +150,12 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                 //    await _unitOfWork.Repository<EmployeeAddress>().AddAsync(request.CreateEmployeePersonals.PermanentAddress);
 
             }
+ 
 
             //Emergency Contact Working
 
             if (request.CreateEmployeePersonals.Emergency.Id != null && request.CreateEmployeePersonals.Emergency.Id!=0)
+ 
             {
                 var emergency = await _unitOfWork.Repository<EmergencyContact>().GetByIdAsync(request.CreateEmployeePersonals.Emergency.Id);
                 await _unitOfWork.Repository<EmergencyContact>().UpdateAsync(emergency);
@@ -157,9 +164,10 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             else
             {
                 await _unitOfWork.Repository<EmergencyContact>().AddAsync(request.CreateEmployeePersonals.Emergency);
-                 await _unitOfWork.Save(cancellationToken);
+                await _unitOfWork.Save(cancellationToken);
             }
 
+ 
             ///  Family Detail
 
           //father details
@@ -226,8 +234,9 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             };
 
               await _unitOfWork.Repository<EmployeePersonalDetail>().UpdateAsync(employeePersonalDetail);
+ 
             await _unitOfWork.Save(cancellationToken);
-            return Result<EmployeePersonalDetail>.Success(data);
+            return Result<EmployeePersonalDetail>.Success(data, "Updated Successfully");
         }
     }
 }

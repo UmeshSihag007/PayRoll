@@ -6,7 +6,6 @@ using ApwPayroll_Persistence.Data;
 using ApwPayroll_Persistence.Repositories;
 using ApwPayroll_Persistence.Repositories.EmployeeDocuments;
 using Certificate_Persistence.Repositories.Documents;
-using Couchbase.Management.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

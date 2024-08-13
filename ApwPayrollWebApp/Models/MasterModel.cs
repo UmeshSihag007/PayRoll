@@ -3,6 +3,8 @@ using ApwPayroll_Application.Features.Branches.Commands.CreateBranchCommands;
 using ApwPayroll_Application.Features.Courses.Commands.CreateCourses;
 using ApwPayroll_Application.Features.Departments.Commands.CreateDepartment;
 using ApwPayroll_Application.Features.Designations.Commands.CreateDesignation;
+using ApwPayroll_Application.Features.DocumentTypes.Commands.CreateDocumentType;
+using ApwPayroll_Application.Features.Employees.EmployeeDocuments.EmployeeDocumentTypes.Commands.CreateEmployeeDocumentTypes;
 using ApwPayroll_Application.Features.Holidays.HollidayTypes.Commands.CreateHolidayTypes;
 using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.CreateLeaveTypes;
 using ApwPayroll_Application.Features.Locations.Commands.CreateLocations;
@@ -20,4 +22,5 @@ public class MasterModel
     public CreateCoursesCommand createCourses { get; set; }
     public CreateDepartmentCommand createDepartment { get; set; }
     public CreateDesignationCommand createDesignation { get; set; }
+    public CreateEmployeeDocumentTypeCommand documentType { get; set; }
 }
