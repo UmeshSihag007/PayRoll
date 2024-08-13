@@ -142,9 +142,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                             AccountName = bankDetails.AccountName,
                             AccountType = bankDetails.AccountType,
                             BanAccountId = bankDetails.BanAccountId,
-
                             BankId = bankDetails.BankId ?? default,
-
                             IFCCode = bankDetails.IFCCode,
                             IsBankAccountVerified = bankDetails.IsBankAccountVerified
                         } : null,
@@ -180,7 +178,8 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
 
                 if(command.EmployeePersonalDetail.Id != null && command.EmployeePersonalDetail.Id!=0)
                 {
-                   var updateData=    await _mediator.Send(new UpdateEmployeePersonalDetailCommand(command.EmployeePersonalDetail.Id.Value, command.EmployeePersonalDetail));
+                    var updateData = await _mediator.Send(new UpdateEmployeePersonalDetailCommand(command.EmployeePersonalDetail.Id.Value, command.EmployeePersonalDetail));
+                    /*var updateData=    await _mediator.Send(new UpdateEmployeePersonalDetailCommand(command.EmployeePersonalDetail.Id.Value, command.EmployeePersonalDetail));*/
                     if (HttpContext.Session.GetInt32("EmployeeId") != null)
                     {
 

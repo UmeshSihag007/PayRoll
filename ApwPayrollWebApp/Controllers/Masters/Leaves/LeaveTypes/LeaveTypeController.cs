@@ -78,7 +78,7 @@ public class LeaveTypeController : BaseController
 
     }
 
-    #region UPDATE  LOGIN ACCESS   
+    #region UPDATE  STATUS   
     [HttpPost]
     public async Task<IActionResult> UpdateIsActive(int id, bool isActive)
     {

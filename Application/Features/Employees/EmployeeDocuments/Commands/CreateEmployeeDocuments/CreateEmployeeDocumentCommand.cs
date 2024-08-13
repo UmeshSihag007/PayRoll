@@ -111,7 +111,7 @@ internal class CreateEmployeeDocumentCommandHandler : IRequestHandler<CreateEmpl
         catch (Exception ex)
         {
 
-            return Result<int >.BadRequest(ex.Message);
+            return Result<int>.BadRequest(ex.Message);
         }
  
         //for(int i = 0; i<= request.EmployeeDocumentTypeIds.Count; i++)

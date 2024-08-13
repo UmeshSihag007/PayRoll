@@ -2,29 +2,29 @@
 @model MasterModel
 
 @{
-    ViewData["Title"] = "CourseView";
+    ViewData["Title"] = "CreateEmployeeDocumentType";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
 <div class="tab-contant">
     <div class="tab-pane">
-        <form asp-action="CreateCourse" method="post">
+        <form asp-action="CreateEmployeeDocumentType" method="post">
             <div class="row ">
                 <div class="col-auto">
-                    <input asp-for="createCourses.Id" hidden />
-                    <label asp-for="createCourses .Name" class="form-label ms-5">Name</label>
+                    <input asp-for="documentType.Id" hidden />
+                    <label asp-for="documentType .Name" class="form-label ms-5">Name</label>
                 </div>
                 <div class="col-auto">
-                    <input asp-for="createCourses.Name" type="text" class=" form-control form-control-sm"></>
-                    <span asp-validation-for="createCourses.Name" class="text-danger"></span>
+                    <input asp-for="documentType.Name" type="text" class=" form-control form-control-sm"></>
+                    <span asp-validation-for="documentType.Name" class="text-danger"></span>
                 </div>
                 <div class="col-auto">
                     <label class="form-label ms-5 ">Is Active</label>
                 </div>
                 <div class="col-auto">
                     <div class="form-check form-switch">
-                        <input asp-for="createLeaveType.IsActive" type="checkbox" class="form-check-input" id="isActiveToggle" />
+                        <input asp-for="documentType.IsActive" type="checkbox" class="form-check-input" id="isActiveToggle" />
                         <label class="form-check-label" for="isActiveToggle">Active</label>
                     </div>
 
@@ -32,14 +32,14 @@
                 <div class="col-2 ms-5">
 
                     <button type="submit" class="btn btn-secondary btn-sm" id="addBtn">
-                        @(Model.createCourses != null && Model.createCourses.Id.HasValue && Model.createCourses.Id.Value != 0 ? "Update" : "Add")
+                        @(Model.documentType != null && Model.documentType.Id.HasValue && Model.documentType.Id.Value != 0 ? "Update" : "Add")
                     </button>
                 </div>
             </div>
 
 
         </form>
-        @if (ViewBag.Course != null)
+        @if (ViewBag.EmployeeDocumentType != null)
         {
             <table class="table">
                 <thead>
@@ -51,10 +51,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in ViewBag.Course)
+                    @foreach (var item in ViewBag.EmployeeDocumentType)
                     {
                         <tr>
-                            <td>@(ViewBag.Course.IndexOf(item) + 1)</td>
+                            <td>@(ViewBag.EmployeeDocumentType.IndexOf(item) + 1)</td>
                             <td>@item.Name</td>
                             <td>
                                 <div class="form-check form-switch">
@@ -64,11 +64,11 @@
                             </td>
 
                             <td>
-                                <a asp-action="CourseView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
+                                <a asp-action="EmployeeDocumentTypeView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
 
-                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id','course' ,'@Url.Action("Delete", "Course")') ">
+                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id','employeeDocumentType' ,'@Url.Action("Delete", "EmployeeDocumentType")') ">
                                     <i class="bi bi-trash-fill"></i>
                                 </a>
                             </td>
@@ -104,7 +104,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-   
+
 
 
 
@@ -122,17 +122,17 @@
                 let url;
 
 
-                url = '@Url.Action("Delete", "Course")/' + id;
+                url = '@Url.Action("Delete", "EmployeeDocumentType")/' + id;
             }
             window.location.href = url;
         }
-                            })
-                        };
+                                })
+                            };
 
 
 
 
-   
+
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -146,7 +146,7 @@
             $checkbox.prop('disabled', true);
 
             $.ajax({
-                url: '@Url.Action("UpdateIsActive", "Course")',
+                url: '@Url.Action("UpdateIsActive", "EmployeeDocumentType")',
                 type: 'POST',
                 data: {
                     id: itemId,
@@ -169,6 +169,7 @@
         });
     });
 </script>
+
 
 
 
