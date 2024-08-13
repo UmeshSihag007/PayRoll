@@ -12,12 +12,14 @@ namespace ApwPayroll_Application.Features.Leaves.Commands.UpdateLeaves;
 
 public class UpdateLeaveCommand : IRequest<Result<Leave>>
 {
-    public UpdateLeaveCommand(int id, CreateLeaveCommand command)
+    public UpdateLeaveCommand(int id, CreateLeaveCommand command, int? leaveTypeRoleId)
     {
         Id = id;
         this.command = command;
+        LeaveTypeRoleId = leaveTypeRoleId;
     }
     public int Id { get; set; }
+    public int? LeaveTypeRoleId { get;set; }
     public CreateLeaveCommand command { get; set; }
 }
 internal class UpdateLeaveCommandHandler : IRequestHandler<UpdateLeaveCommand, Result<Leave>>
@@ -49,7 +51,7 @@ internal class UpdateLeaveCommandHandler : IRequestHandler<UpdateLeaveCommand, R
         await _unitOfWork.Repository<Leave>().UpdateAsync(mapData);
         await _unitOfWork.Save(cancellationToken);
         var exitsLeaveRule = await _unitOfWork.Repository<LeaveTypeRule>().Entities
-                .Where(x => x.LeaveTypeId == data.LeaveTypeId)
+                .Where(x => x.Id == request.LeaveTypeRoleId)
                 .FirstOrDefaultAsync(cancellationToken);
         if (exitsLeaveRule != null)
         {
@@ -57,7 +59,15 @@ internal class UpdateLeaveCommandHandler : IRequestHandler<UpdateLeaveCommand, R
             {
                 exitsLeaveRule.LeaveTypeId = data.LeaveTypeId;
             }
+            else
+            {
+                exitsLeaveRule.LeaveTypeId = data.LeaveTypeId;
+            }
             if (exitsLeaveRule.Gender != null)
+            {
+                exitsLeaveRule.Gender = request.command.LeaveTypeRole.Gender;
+            }
+            else
             {
                 exitsLeaveRule.Gender = request.command.LeaveTypeRole.Gender;
             }
@@ -65,7 +75,15 @@ internal class UpdateLeaveCommandHandler : IRequestHandler<UpdateLeaveCommand, R
             {
                 exitsLeaveRule.DesignationId = request.command.LeaveTypeRole.DesignationId;
             }
+            else
+            {
+                exitsLeaveRule.DesignationId = request.command.LeaveTypeRole.DesignationId;
+            }
             if (exitsLeaveRule.BranchId != null)
+            {
+                exitsLeaveRule.BranchId = request.command.LeaveTypeRole.BranchId;
+            }
+            else
             {
                 exitsLeaveRule.BranchId = request.command.LeaveTypeRole.BranchId;
             }

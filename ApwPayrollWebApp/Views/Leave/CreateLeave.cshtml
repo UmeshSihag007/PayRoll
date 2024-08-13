@@ -1,6 +1,7 @@
 ﻿@model ApwPayroll_Application.Features.Leaves.Commands.CreateLeaves.CreateLeaveCommand
+
 @{
-    ViewData["Title"] = "CreateLeave";
+    ViewData["Title"] = "Create Leave";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,75 +11,80 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <div class="row mb-3 g-3">
-                    <div class="col-md-4">
-                        <label asp-for="Reason" class="form-label">Reason</label>
+                    <div class="col-md-6">
+                        <label asp-for="LeaveTypeId" class="form-label">Leave Type</label>
+                        <select asp-for="LeaveTypeId" class="form-control" asp-items="@(new SelectList(ViewBag.LeaveTypeList, "Value", "Text"))" required>
+                            <option value="" disabled selected>Select Leave Type</option>
+                        </select>
+                        <span asp-validation-for="LeaveTypeId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Reason" class="form-label">Reason For Leave</label>
                         <input asp-for="Reason" type="text" class="form-control" />
                         <span asp-validation-for="Reason" class="text-danger"></span>
                     </div>
-                    <div class="col-md-4">
-                        <label asp-for="ContactNumber" class="form-label">Contact Number</label>
-                        <input asp-for="ContactNumber" type="text" class="form-control" />
-                        <span asp-validation-for="ContactNumber" class="text-danger"></span>
+
+
+                    <div class="col-md-6">
+                       <div class="form-group">
+                        <label class="form-label">From-To</label>
+                        <div class="input-group">
+                            <input asp-for="FromDate" type="date" class="form-control" />
+                            <span asp-validation-for="FromDate" class="text-danger"></span>
+                            <input asp-for="ToDate" type="date" class="form-control" />
+                            <span asp-validation-for="ToDate" class="text-danger"></span>
+                        </div>
+                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <label asp-for="ToDate" class="form-label">To Date</label>
-                        <input asp-for="ToDate" type="date" class="form-control" />
-                        <span asp-validation-for="ToDate" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-4">
-                        <label asp-for="FromDate" class="form-label">From Date</label>
-                        <input asp-for="FromDate" type="date" class="form-control" />
-                        <span asp-validation-for="FromDate" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-4">
+
+                    <div class="col-md-3 d-flex align-items-center">
                         <div class="form-check">
                             <input asp-for="IsPaid" type="checkbox" class="form-check-input" />
                             <label asp-for="IsPaid" class="form-check-label">Is Paid</label>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3 d-flex align-items-center">
                         <div class="form-check">
                             <input asp-for="IsHalfDay" type="checkbox" class="form-check-input" />
                             <label asp-for="IsHalfDay" class="form-check-label">Is Half Day</label>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <label asp-for="LeaveTypeId" class="form-label">Leave Type</label>
-                        <select asp-for="LeaveTypeId" class="form-control" asp-items="@(new SelectList(ViewBag.LeaveTypeList, "Value", "Text"))"></select>
-                        <span asp-validation-for="LeaveTypeId" class="text-danger"></span>
+                .
+                    <div class="col-md-8">
+                        <label asp-for="ContactNumber" class="form-label text-nowarp"> AlterNet Contact Number on Leave Time </label>
+                        <input asp-for="ContactNumber" type="text" class="form-control" />
+                        <span asp-validation-for="ContactNumber" class="text-danger"></span>
                     </div>
+                    
+                 
                 </div>
             </div>
-
             <div class="col-md-6">
                 <div class="row mb-3 g-3">
                     <div class="col-md-6">
                         <label asp-for="LeaveTypeRole.Gender" class="form-label">Gender</label>
                         <select asp-for="LeaveTypeRole.Gender" class="form-control" asp-items="@(new SelectList(Enum.GetValues(typeof(ApwPayroll_Domain.common.Enums.Gender.GenderEnum))))">
-                            <option value="" disabled selected>Select Gender</option>
+                            <option value="">Select Gender</option>
                         </select>
                         <span asp-validation-for="LeaveTypeRole.Gender" class="text-danger"></span>
                     </div>
-
                     <div class="col-md-6">
                         <label asp-for="LeaveTypeRole.BranchId" class="form-label">Branch</label>
                         <select asp-for="LeaveTypeRole.BranchId" class="form-control" asp-items="@(new SelectList(ViewBag.BranchList, "Value", "Text"))">
-                            <option value="" disabled selected>Select Branch</option>
+                            <option value="">Select Branch</option>
                         </select>
                         <span asp-validation-for="LeaveTypeRole.BranchId" class="text-danger"></span>
                     </div>
-
                     <div class="col-md-6">
                         <label asp-for="LeaveTypeRole.DesignationId" class="form-label">Designation</label>
                         <select asp-for="LeaveTypeRole.DesignationId" class="form-control" asp-items="@(new SelectList(ViewBag.DesignationList, "Value", "Text"))">
-                            <option value="" disabled selected>Select Designation</option>
+                            <option value="">Select Designation</option>
                         </select>
                         <span asp-validation-for="LeaveTypeRole.DesignationId" class="text-danger"></span>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="row mb-3">
             <div class="col-md-12">
                 <button type="submit" class="btn btn-secondary">
