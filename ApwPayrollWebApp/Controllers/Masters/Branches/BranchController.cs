@@ -1,102 +1,80 @@
 ﻿using ApwPayroll_Application.Features.Branches.Commands.CreateBranchCommands;
 using ApwPayroll_Application.Features.Branches.Commands.DeleteBranchCommands;
 using ApwPayroll_Application.Features.Branches.Commands.UpdateBranchCommands;
+using ApwPayroll_Application.Features.Branches.Commands.UpdateBranchStatusCommands;
 using ApwPayroll_Application.Features.Branches.Queries.GetAllBranches;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ApwPayrollWebApp.Controllers.Masters.Branches;
-
-public class BranchController : BaseController
+namespace ApwPayrollWebApp.Controllers.Masters.Branches
 {
-
-    private readonly IMediator _mediator;
-
-    public BranchController(IMediator mediator)
+    public class BranchController : BaseController
     {
-        _mediator = mediator;
-    }
+        private readonly IMediator _mediator;
 
-
-    public async Task<IActionResult> BranchView(int? id)
-    {
-        await IntializeViewBag();
-        var model = new MasterModel();
-        if (id.HasValue && id != 0)
+        public BranchController(IMediator mediator)
         {
-            var branchData = await _mediator.Send(new GetAllBranchQuery());
-            var branch = branchData.Data.FirstOrDefault(x => x.Id == id.Value);
-            if (branch != null)
+            _mediator = mediator;
+        }
+
+        public async Task<IActionResult> BranchView(int? id)
+        {
+            await InitializeViewBag();
+            var model = new MasterModel();
+            if (id.HasValue && id != 0)
             {
-                model.createBranch = new CreateBranchCommand
+                var branchData = await _mediator.Send(new GetAllBranchQuery());
+                var branch = branchData.Data.FirstOrDefault(x => x.Id == id.Value);
+                if (branch != null)
                 {
-                    Id = branch.Id,
-                    Name = branch.Name,
-                    IsActive = branch.IsActive,
-                };
+                    model.createBranch = new CreateBranchCommand
+                    {
+                        Id = branch.Id,
+                        Name = branch.Name,
+                        IsActive = branch.IsActive,
+                    };
+                }
             }
+            return View(model);
         }
-        return View(model);
-    }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateBranch(MasterModel employeeProfile)
-    {
-
-        if (employeeProfile.createBranch.Id == 0 || employeeProfile.createBranch.Id == null)
+        [HttpPost]
+        public async Task<IActionResult> CreateBranch(MasterModel model)
         {
-          var data=  await _mediator.Send(employeeProfile.createBranch);
-            if (data.succeeded)
+            if (model.createBranch.Id == 0 || model.createBranch.Id == null)
             {
+                var data = await _mediator.Send(model.createBranch);
                 Notify(data.Messages, null, data.code);
             }
             else
             {
+                var data = await _mediator.Send(new UpdateBranchCommand((int)model.createBranch.Id, model.createBranch));
                 Notify(data.Messages, null, data.code);
             }
-        }
-        else
-        {
-        var data=    await _mediator.Send(new UpdateBranchCommand((int)employeeProfile.createBranch.Id, employeeProfile.createBranch));
-            if (data.succeeded)
-            {
-                Notify(data.Messages, null, data.code);
-            }
-            else
-            {
-                Notify(data.Messages, null, data.code);
-            }
+            return RedirectToAction("BranchView");
         }
 
-        return RedirectToAction("BranchView");
-
-    }
-    public async Task<IActionResult> Delete(int id)
-    {
-        var data = await _mediator.Send(new DeleteBranchCommand(id));
-        if (data.succeeded)
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(int id, bool isActive)
         {
+            var data = await _mediator.Send(new UpdateBranchStatusCommand(id, isActive));
             Notify(data.Messages, null, data.code);
+            return RedirectToAction("BranchView");
         }
-        else
+
+        public async Task<IActionResult> Delete(int id)
         {
+            var data = await _mediator.Send(new DeleteBranchCommand(id));
             Notify(data.Messages, null, data.code);
+            return RedirectToAction("BranchView");
         }
 
-        return RedirectToAction("BranchView");
-    }
-
-    private async Task IntializeViewBag()
-    {
-        var branchList = await _mediator.Send(new GetAllBranchQuery());
-
-
-        if (branchList.Data != null && branchList.Data.Count != 0)
+        private async Task InitializeViewBag()
         {
-            var employeeCourse = branchList.Data.ToList();
-            ViewBag.Branch = employeeCourse;
+            var branchList = await _mediator.Send(new GetAllBranchQuery());
+            ViewBag.Branch = branchList?.Data?.ToList();
         }
     }
 }

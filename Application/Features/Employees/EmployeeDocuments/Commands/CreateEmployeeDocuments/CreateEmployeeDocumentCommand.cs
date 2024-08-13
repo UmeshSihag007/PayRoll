@@ -49,11 +49,12 @@
 //}
 using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Application.Interfaces.Repositories.Documents;
+using ApwPayroll_Application.Interfaces.Repositories.EmployeeDocuments;
 using ApwPayroll_Domain.Entities.Employees;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDocumentTypes;
 using ApwPayroll_Shared;
-using Google.Rpc;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApwPayroll_Application.Features.Employees.EmployeeDocuments.Commands.CreateEmployeeDocuments;
 
@@ -69,18 +70,20 @@ public class CreateEmployeeDocumentCommand : IRequest<Result<int>>
     }
     public CreateEmployeeDocumentCommand()
     {
-            
+
     }
 }
 internal class CreateEmployeeDocumentCommandHandler : IRequestHandler<CreateEmployeeDocumentCommand, Result<int>>
 {
     private readonly IDocumentRepository _documentRepository;
+    private readonly IEmployeeDocumentRepository _employeeDocumentRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateEmployeeDocumentCommandHandler(IDocumentRepository documentRepository, IUnitOfWork unitOfWork)
+    public CreateEmployeeDocumentCommandHandler(IDocumentRepository documentRepository, IUnitOfWork unitOfWork, IEmployeeDocumentRepository employeeDocumentRepository)
     {
         _documentRepository = documentRepository;
         _unitOfWork = unitOfWork;
+        _employeeDocumentRepository = employeeDocumentRepository;
     }
 
     public async Task<Result<int>> Handle(CreateEmployeeDocumentCommand request, CancellationToken cancellationToken)
@@ -88,32 +91,48 @@ internal class CreateEmployeeDocumentCommandHandler : IRequestHandler<CreateEmpl
         try
         {
 
-        var employee = await _unitOfWork.Repository<Employee>().GetByIdAsync(request.EmployeeId);
-        if (employee == null)
-        {
-            return Result<int>.BadRequest();
-        }
-
-        foreach (var item in request.EmployeeDocuments)
-        {
-            var employeeDocument = await _unitOfWork.Repository<EmployeeDocumentType>().GetByIdAsync(item.EmployeeDocumentTypeId);
-            if (employeeDocument == null)
+            var employee = await _unitOfWork.Repository<Employee>().Entities.Where(x => x.Id == request.EmployeeId && x.IsDeleted == false).Include(x => x.EmployeeDocuments).FirstOrDefaultAsync();
+            if (employee == null)
             {
-                return Result<int>.BadRequest($"Invalid EmployeeDocumentId:{item.EmployeeDocumentTypeId}");
+                return Result<int>.BadRequest();
             }
 
-            var createdDocument = await _documentRepository.CreateDocument(item.Document, null, 1);
-            employee.AddDocument(createdDocument.Id, item.EmployeeDocumentTypeId, item.Code);
+            foreach (var item in request.EmployeeDocuments)
+            {
+                var employeeDocument = await _unitOfWork.Repository<EmployeeDocumentType>().GetByIdAsync(item.EmployeeDocumentTypeId);
 
-            await _unitOfWork.Save(cancellationToken);
-        }
+                if (employeeDocument == null)
+                {
+                    return Result<int>.BadRequest($"Invalid EmployeeDocumentId:{item.EmployeeDocumentTypeId}");
+                }
+                var existingDocument = employee.EmployeeDocuments.Where(x=>x.EmployeeDocumentTypeId== item.EmployeeDocumentTypeId)
+                     .FirstOrDefault();
+
+                if (existingDocument != null)
+                {
+                    var updatedDocument = await _documentRepository.updateDocument(existingDocument.DocumentId, item.Document);
+                    //// Update existing document
+                    //employee.AddIfDocumentNotExists([updatedDocument.Id], item.EmployeeDocumentTypeId,item.Code);
+
+                    await _employeeDocumentRepository.updateDocumentType(request.EmployeeId, updatedDocument.Id, item.Code);
+                    await _unitOfWork.Save(cancellationToken);
+
+                      
+                }
+                else
+                {
+                    var createdDocument = await _documentRepository.CreateDocument(item.Document, null, 1);
+                    employee.AddDocument(createdDocument.Id, item.EmployeeDocumentTypeId, item.Code);
+                    await _unitOfWork.Save(cancellationToken);
+                }
+            }
         }
         catch (Exception ex)
         {
 
             return Result<int>.BadRequest(ex.Message);
         }
- 
+
         //for(int i = 0; i<= request.EmployeeDocumentTypeIds.Count; i++)
         //{
         //    var document = request.Documents[i];

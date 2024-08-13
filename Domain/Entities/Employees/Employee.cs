@@ -123,13 +123,13 @@ namespace ApwPayroll_Domain.Entities.Employees
             EmployeeDocuments.Add(new EmployeeDocument(documentId, Id, true, typeId, Code));
         }
 
-        public void AddIfDocumentNotExists(List<int> documentId, int typeId)
+        public void AddIfDocumentNotExists(List<int> documentId, int typeId ,string?code)
         {
             foreach (var document in documentId)
             {
                 if (EmployeeDocuments.All(pu => pu.DocumentId != document))
                 {
-                    EmployeeDocuments.Add(new EmployeeDocument(document, Id, true, typeId, null));
+                    EmployeeDocuments.Add(new EmployeeDocument(document, Id, true, typeId, code));
                 }
                 RemoveDocumentExists(documentId);
 

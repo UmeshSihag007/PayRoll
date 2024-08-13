@@ -26,36 +26,39 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
         public async Task<IActionResult> Create(int? employeeId, int? id)
         {
             ViewBag.EmployeeId = employeeId;
-
             await InitializeViewBags();
+
             var model = new EmployeeCreateViewModel();
+
             if (id.HasValue)
             {
                 var employee = HttpContext.Session.GetInt32("EmployeeId") ?? employeeId.Value;
+
+             
                 if (employee == default)
                 {
                     return NotFound();
                 }
-                var document = await _mediator.Send(new GetDocumentByDocumentIdQuery(employee, id.Value));
 
+                var document = await _mediator.Send(new GetDocumentByDocumentIdQuery(employee, id.Value));
+                ViewBag.document = document.Data.Document.Url;
+                ViewBag.EmployeeDocumentType = document.Data.EmployeeDocumentType.Name;
+                ViewBag.EmployeeDocumentTypeId = document.Data.EmployeeDocumentType.Id;
                 if (document != null)
                 {
                     var employeeDocument = new CreateEmployeeDocumentDto
                     {
                         Code = document.Data.Code,
-                        Document = (IFormFile)document.Data.Document,
-                        EmployeeDocumentTypeId = document.Data.EmployeeDocumentTypeId,
+                        EmployeeDocumentTypeId = document.Data.EmployeeDocumentTypeId
                     };
                     model.documentCommand = new CreateEmployeeDocumentCommand
                     {
                         EmployeeId = document.Data.EmployeeId,
                         EmployeeDocuments = new List<CreateEmployeeDocumentDto> { employeeDocument }
                     };
+
                 }
-
             }
-
-
 
             return View(model);
         }
@@ -99,7 +102,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
 
 
         public async Task<IActionResult> DownloadFile(string url)
-            {
+        {
             using (var httpClient = new HttpClient())
             {
                 var response = await httpClient.GetAsync(url);
