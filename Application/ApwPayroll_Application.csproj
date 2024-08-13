@@ -23,9 +23,20 @@
     <Folder Include="Features\Employees\EmployeeAddresses\Queries\" />
     <Folder Include="Features\Employees\EmployeeBankDetails\Queries\" />
     <Folder Include="Features\Employees\EmployeeContact\Queries\" />
+    <Folder Include="Features\Employees\EmployeeDocuments\Commands\UpdateEmployeeDocuments\" />
     <Folder Include="Features\Employees\EmployeeDocuments\EmployeeDocumentTypes\Commands\" />
     <Folder Include="Features\Employees\EmployeeLanguages\Queries\" />
+ 
     <Folder Include="Features\Employees\EmployeePersonalDetails\Queries\" />
+ 
+    <Folder Include="Features\Holidays\Commands\CreateHolidays\" />
+    <Folder Include="Features\Holidays\Commands\DeleteHolidays\" />
+    <Folder Include="Features\Holidays\Commands\UpdateHolidays\" />
+    <Folder Include="Features\Holidays\Queries\GetAllHolidays\" />
+    <Folder Include="Features\Leaves\Commands\DeleteLeaves\" />
+    <Folder Include="Features\Leaves\Commands\UpdateLeaves\" />
+    <Folder Include="Features\Leaves\Commands\CreateLeaves\" />
+ 
     <Folder Include="Features\Leaves\LeaveResponseStatues\Commands\CreateLeaveResponseStatues\" />
     <Folder Include="Features\Leaves\LeaveResponseStatues\Commands\DeleteLeaveResponseStatues\" />
     <Folder Include="Features\Leaves\LeaveResponseStatues\Commands\UpdateLeaveResponseStatues\" />
@@ -41,6 +52,7 @@
     <Folder Include="Features\Menus\MenuTypes\Queries\GetMenuTypeById\" />
     <Folder Include="Features\Menus\Queries\GetMenus\" />
     <Folder Include="Features\Menus\Queries\GetMenuById\" />
+    <Folder Include="Features\RelationTypes\Commands\" />
     <Folder Include="Features\Users\Queries\" />
     <Folder Include="Interfaces\Repositories\NewFolder\" />
   </ItemGroup>

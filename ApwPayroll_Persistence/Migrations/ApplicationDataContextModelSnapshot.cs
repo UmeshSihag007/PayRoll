@@ -74,7 +74,6 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -219,18 +218,16 @@ namespace ApwPayroll_Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AccountBranch")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AccountName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AccountType")
                         .HasColumnType("int");
 
-                    b.Property<int>("BanAccountId")
-                        .HasColumnType("int");
+                    b.Property<long>("BanAccountId")
+                        .HasColumnType("bigint");
 
                     b.Property<int?>("BankId")
                         .HasColumnType("int");
@@ -925,7 +922,7 @@ namespace ApwPayroll_Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RelationTypeId")
+                    b.Property<int?>("RelationTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -1008,7 +1005,6 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LicenceNumber")
@@ -1263,7 +1259,7 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IActive")
+                    b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
@@ -1385,11 +1381,10 @@ namespace ApwPayroll_Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("AnnualInCome")
+                    b.Property<decimal?>("AnnualInCome")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ComanyAddress")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ComanyName")
@@ -1413,18 +1408,15 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmployeeCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Industry")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InsuranceNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -1464,16 +1456,17 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DOB")
+                    b.Property<DateTime?>("DOB")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeId")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("Gender")
+                    b.Property<int?>("Gender")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -1486,7 +1479,8 @@ namespace ApwPayroll_Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RelationTypeId")
+                    b.Property<int?>("RelationTypeId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
@@ -1620,7 +1614,7 @@ namespace ApwPayroll_Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BloodGroup")
+                    b.Property<int?>("BloodGroup")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
@@ -1656,8 +1650,8 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Property<string>("PlaceOfBirth")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Religion")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Religion")
+                        .HasColumnType("int");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(450)");
@@ -2992,9 +2986,19 @@ namespace ApwPayroll_Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "98051011-3a3a-4ef3-a0cd-8287dbb165b7",
+ 
+ 
+                            Id = "b5e1cda7-479d-43b0-a62f-51f087cc4d75",
+ 
+ 
                             Name = "Admin",
                             NormalizedName = "Admin"
+                        },
+                        new
+                        {
+                            Id = "42cafe42-d21f-48b6-bd1d-2034b0402330",
+                            Name = "Employee",
+                            NormalizedName = "Employee"
                         });
                 });
 
@@ -3161,7 +3165,7 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasForeignKey("CreatedBy");
 
                     b.HasOne("ApwPayroll_Domain.Entities.Employees.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("BankDetails")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3448,14 +3452,12 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasForeignKey("CreatedBy");
 
                     b.HasOne("ApwPayroll_Domain.Entities.Employees.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("EmergencyContact")
                         .HasForeignKey("EmployeeId");
 
                     b.HasOne("ApwPayroll_Domain.Entities.RelationTypes.RelationType", "RelationType")
                         .WithMany()
-                        .HasForeignKey("RelationTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RelationTypeId");
 
                     b.HasOne("ApwPayroll_Domain.Entities.AspUsers.AspUser", "UpdatedByUser")
                         .WithMany()
@@ -3510,7 +3512,7 @@ namespace ApwPayroll_Persistence.Migrations
                         .HasForeignKey("CreatedBy");
 
                     b.HasOne("ApwPayroll_Domain.Entities.Employees.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("EmployeeAddresses")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -4479,6 +4481,12 @@ namespace ApwPayroll_Persistence.Migrations
 
             modelBuilder.Entity("ApwPayroll_Domain.Entities.Employees.Employee", b =>
                 {
+                    b.Navigation("BankDetails");
+
+                    b.Navigation("EmergencyContact");
+
+                    b.Navigation("EmployeeAddresses");
+
                     b.Navigation("EmployeeDepartments");
 
                     b.Navigation("EmployeeDesignations");

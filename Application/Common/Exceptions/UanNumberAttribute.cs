@@ -15,31 +15,8 @@ namespace ApwPayroll_Application.Common.Exceptions
             if (!regex.IsMatch(uan))
             {
                 return new ValidationResult("Invalid UAN format. It should be a 12-digit number.");
-            }
-
-            // Additional validation: Check for duplicate digits (some systems have this rule)
-            if (HasDuplicateDigits(uan))
-            {
-                return new ValidationResult("Invalid UAN. It should not have duplicate digits.");
-            }
-
+            } 
             return ValidationResult.Success;
-        }
-
-        private bool HasDuplicateDigits(string input)
-        {
-            var digits = input.ToCharArray();
-            for (int i = 0; i < digits.Length; i++)
-            {
-                for (int j = i + 1; j < digits.Length; j++)
-                {
-                    if (digits[i] == digits[j])
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
     }
 }

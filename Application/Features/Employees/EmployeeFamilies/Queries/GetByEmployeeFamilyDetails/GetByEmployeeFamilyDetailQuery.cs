@@ -4,6 +4,7 @@ using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Shared;
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApwPayroll_Application.Features.Employees.EmployeeFamilies.Queries.GetByEmployeeFamilyDetails
 {
@@ -29,8 +30,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeFamilies.Queries.Get
 
         public async Task<Result<GetEmployeeFamilyDetailDto>> Handle(GetByEmployeeFamilyDetailQuery request, CancellationToken cancellationToken)
         {
-            var data = await _unitOfWork.Repository<EmployeeFamily>().GetByIdAsync(request.Id);
-            if (data == null)
+            var data = await _unitOfWork.Repository<EmployeeFamily>().Entities.Where(x => x.IsDeleted == false && x.Id == request.Id).Include(x => x.RelationType).FirstOrDefaultAsync();            if (data == null)
             {
                 return Result<GetEmployeeFamilyDetailDto>.BadRequest();
             }

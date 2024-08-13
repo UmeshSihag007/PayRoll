@@ -25,7 +25,7 @@ namespace ApwPayroll_Domain.Entities.Employees.EmployeeDepartments
                   .WithMany(d => d.EmployeeDepartments)
                    .HasForeignKey(bd => bd.DepartmentId);
 
-            builder.Property(x=>x.IActive).HasDefaultValue(true);
+            builder.Property(x=>x.IsActive).HasDefaultValue(true);
 
             builder.HasIndex(x => new { x.DepartmentId, x.EmployeeId });
         }

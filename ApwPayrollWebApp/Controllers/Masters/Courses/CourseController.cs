@@ -1,8 +1,9 @@
-﻿using ApwPayroll_Application.Features.Courses.Commands.CreateCourses;
+using ApwPayroll_Application.Features.Courses.Commands.CreateCourses;
 using ApwPayroll_Application.Features.Courses.Commands.DeleteCourses;
 using ApwPayroll_Application.Features.Courses.Commands.UpdateCourses;
 using ApwPayroll_Application.Features.Courses.Commands.UpdateStatus;
 using ApwPayroll_Application.Features.Courses.Queries.GetAllCourses;
+using ApwPayroll_Application.Features.Leaves.LeaveTypes.Commands.UpdateLeaveTypesActive;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.Models;
 using MediatR;
@@ -78,29 +79,6 @@ public class CourseController : BaseController
 
     }
     
-    [HttpPost]
-    public async Task<IActionResult> UpdateStatus(int id, bool isActive)
-    {
-        try
-        {
-            var data = await _mediator.Send(new UpdateCourseStatusCommand(id, isActive));
-            if (data.succeeded)
-            {
-                Notify(data.Messages, null, data.code);
-            }
-            else
-            {
-                Notify(data.Messages, null, data.code);
-            }
-
-            return RedirectToAction("CourseView");
-        }
-        catch (Exception ex)
-        {
-            Notify(new List<string> { "Error: " + ex.Message }, null, 400);
-            return RedirectToAction("CourseView");
-        }
-    }
 
 
     public async Task<IActionResult> Delete(int id)
@@ -118,6 +96,26 @@ public class CourseController : BaseController
 
         return RedirectToAction("CourseView");
     }
+
+
+    #region UPDATE  LOGIN ACCESS   
+    [HttpPost]
+    public async Task<IActionResult> UpdateIsActive(int id, bool isActive)
+    {
+        var data = await _mediator.Send(new UpdateCourseStatusCommand(id, isActive));
+        if (data.code == 200)
+        {
+            Notify(data.Messages, null, data.code);
+        }
+        else
+        {
+            Notify(data.Messages, null, data.code);
+        }
+
+        return Json(new { success = true });
+    }
+    #endregion
+
 
     private async Task IntializeViewBag()
     {

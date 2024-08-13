@@ -1,8 +1,10 @@
 ﻿using ApwPayroll_Domain.common;
-using ApwPayroll_Domain.common.Enums.Gender;
 using ApwPayroll_Domain.common.Enums.Salutation;
 using ApwPayroll_Domain.Entities.AspUsers;
+using ApwPayroll_Domain.Entities.Banks.BankDetails;
 using ApwPayroll_Domain.Entities.Banks.Branches;
+using ApwPayroll_Domain.Entities.Employees.EmergencyContacts;
+using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDepartments;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDesignations;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDocuments;
@@ -11,20 +13,19 @@ using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
 using ApwPayroll_Domain.Entities.Employees.EmployeeQualifications;
 using ApwPayroll_Domain.Entities.ReferralDetails;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApwPayroll_Domain.Entities.Employees
 {
     public class Employee : BaseAuditEntity
     {
         public string FirstName { get; set; }
-        public string LastName { get; set; }
- 
+        public string? LastName { get; set; }
+
         public string? ESINumber { get; set; }
         public string? PfNumber { get; set; }
- 
+
         public DateTime DateOfJoining { get; set; }
-        public int InsuranceNumber { get; set; } 
+        public int InsuranceNumber { get; set; }
         public Int64 MobileNumber { get; set; }
         public string EmailId { get; set; }
         public string? EmployeeCode { get; set; }
@@ -43,16 +44,21 @@ namespace ApwPayroll_Domain.Entities.Employees
         public string? VoterId { get; set; }
         public string? LicenceNumber { get; set; }
         public string? UanNumber { get; set; }
-        public List<EmployeeDesignation> EmployeeDesignations { get; set; } = new List<EmployeeDesignation>();
-        public List<EmployeeDepartment> EmployeeDepartments { get; set; } = new List<EmployeeDepartment>();
+        public List<EmployeeDesignation>? EmployeeDesignations { get; set; } = new List<EmployeeDesignation>();
+        public List<EmployeeDepartment>? EmployeeDepartments { get; set; } = new List<EmployeeDepartment>();
 
-        public List<EmployeeDocument> EmployeeDocuments { get; set; } = new List<EmployeeDocument>();
+        public List<BankDetail> BankDetails { get; set; }
+        public List<EmployeeDocument>? EmployeeDocuments { get; set; } = new List<EmployeeDocument>();
 
-       public  EmployeePersonalDetail EmployeePersonalDetail { get; set; }
+        public EmployeePersonalDetail EmployeePersonalDetail { get; set; }
+
         public List<EmployeeFamily> EmployeeFamily { get; set; } = new List<EmployeeFamily>();
-        public List<EmployeeExperience> EmployeeExperience { get; set; } = new List<EmployeeExperience>();
+
+        public List<EmployeeExperience>? EmployeeExperience { get; set; } = new List<EmployeeExperience>();
         public List<EmployeeQualification> EmployeeQualification { get; set; } = new List<EmployeeQualification>();
         public List<ReferralDetail> ReferralDetail { get; set; } = new List<ReferralDetail>();
+        public List<EmergencyContact>? EmergencyContact { get; set; } = new List<EmergencyContact>();
+        public List<EmployeeAddress>? EmployeeAddresses { get; set; } = new List<EmployeeAddress>();
 
         // degisnation working
         public void AddDesignation(int designationId)
@@ -86,44 +92,44 @@ namespace ApwPayroll_Domain.Entities.Employees
         {
             EmployeeDepartments.Add(new EmployeeDepartment(departmentId, Id, true));
         }
-        public void AddIfNotDepartmentExists(List<int> departmentId)
+        public void AddIfNotDepartmentExists(List<int> departmentIds)
         {
-            foreach (var department in departmentId)
+            // Add or reactivate departments in the new list
+            foreach (var departmentId in departmentIds)
             {
-                if (EmployeeDepartments.All(pu => pu.DepartmentId != department))
+                var existingDepartment = EmployeeDepartments.FirstOrDefault(pu => pu.DepartmentId == departmentId && pu.EmployeeId == Id);
+                if (existingDepartment == null)
                 {
-                    EmployeeDepartments.Add(new EmployeeDepartment(department, Id, true));
+                    EmployeeDepartments.Add(new EmployeeDepartment(departmentId, Id, true));
+                }
+                else
+                {
+                    existingDepartment.IsActive = true;
                 }
             }
-            RemoveDepartmentExists(departmentId);
-        }
-        private void RemoveDepartmentExists(List<int> departmentId)
-        {
+
+            // Deactivate departments not in the new list
             foreach (var department in EmployeeDepartments)
             {
-                if (!departmentId.Contains(department.DepartmentId))
+                if (!departmentIds.Contains(department.DepartmentId))
                 {
-                    department.IActive = false;
+                    department.IsActive = false;
                 }
             }
         }
-
-
-
-
         // Document working
         public void AddDocument(int documentId, int typeId, string? Code)
         {
-            EmployeeDocuments.Add(new EmployeeDocument(documentId, Id, true, typeId,Code));
+            EmployeeDocuments.Add(new EmployeeDocument(documentId, Id, true, typeId, Code));
         }
 
-        public void AddIfDocumentNotExists(List<int> documentId, int typeId)
+        public void AddIfDocumentNotExists(List<int> documentId, int typeId ,string?code)
         {
             foreach (var document in documentId)
             {
                 if (EmployeeDocuments.All(pu => pu.DocumentId != document))
                 {
-                    EmployeeDocuments.Add(new EmployeeDocument(document, Id, true, typeId,null));
+                    EmployeeDocuments.Add(new EmployeeDocument(document, Id, true, typeId, code));
                 }
                 RemoveDocumentExists(documentId);
 

@@ -40,6 +40,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
                     model.CreateEmployeeFamily = new CreateEmployeeFamilyCommand
                     {
                         DOB = family.Data.DOB,
+                        EmployeeId =family.Data.EmployeeId,
                         Gender = family.Data.Gender,
                         Name = family.Data.Name,
                         Id = family.Data.Id
@@ -60,7 +61,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
                 model.CreateEmployeeFamily.EmployeeId = employeeId.Value;
             }
             await InitializeViewBags();
-            if (ModelState.IsValid && model.CreateEmployeeFamily.EmployeeId!=null)
+            if (ModelState.IsValid )
             {
                 if (model.CreateEmployeeFamily.Id != 0 && model.CreateEmployeeFamily.Id!=null)
                 {
@@ -73,6 +74,15 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
                     {
                         Notify(updateData.Messages, null, updateData.code);
                     }
+
+                    if (HttpContext.Session.GetInt32("EmployeeId") != null)
+                    {
+                        return View(model);
+                    }
+
+
+                    return RedirectToAction("EmployeeCompleteDetails", "Employee", new { id = updateData.Data.EmployeeId });
+
                 }
                 else
                 {
@@ -88,8 +98,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
                     Notify(data.Messages, null, data.code);
                 }
                 }
-
-                return RedirectToAction("CreateEmployeeFamily");
+                
             }
 
             return RedirectToAction("CreateEmployeeFamily");
@@ -111,7 +120,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
         public async Task<IActionResult>DeleteEmployeeFamily(int id)
         {
             var data = await _mediator.Send(new DeleteEmployeeFamilyCommand(id));
-            if (data.code == 200)
+            if (data.succeeded)
             {
                   Notify(data.Messages,null, data.code);
             }
@@ -135,7 +144,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
             
             ViewBag.EmployeeFamilyData = employeeFamilyData.Data;
  
-            var employeeChildData = employeeFamilyData.Data.Where(x => x.RelationTypeId == 4).ToList();
+            var employeeChildData = employeeFamilyData.Data.Where(x => x.RelationTypeId == 3).ToList();
             ViewBag.EmployeeChildData = employeeChildData;
             }
  

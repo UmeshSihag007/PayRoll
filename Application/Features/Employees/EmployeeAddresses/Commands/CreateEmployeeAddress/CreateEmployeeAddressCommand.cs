@@ -22,7 +22,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeAddresses.Commands.C
         public int? LocationId { get; set; }
         public int? PinCode { get; set; }
         public bool IsActive { get; set; }
-        public string Nationality { get; set; }
+        public string? Nationality { get; set; }
 
     }
 }

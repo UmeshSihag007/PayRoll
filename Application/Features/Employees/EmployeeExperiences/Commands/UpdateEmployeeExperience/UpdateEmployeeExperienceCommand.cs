@@ -1,4 +1,5 @@
 ﻿using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.CreateEmployeeExperiences;
+using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Queries.GetEmployeeExperiences;
 using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Domain.Entities.Employees.EmployeeExperiences;
 using ApwPayroll_Shared;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.UpdateEmployeeExperience
 {
-    public class UpdateEmployeeExperienceCommand : IRequest<Result<int>>
+    public class UpdateEmployeeExperienceCommand : IRequest<Result<EmployeeExperience>>
     {
 
 
@@ -19,7 +20,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands
             this.command = command;
         }
     }
-    internal class UpdateEmployeeExperienceCommandHandler : IRequestHandler<UpdateEmployeeExperienceCommand, Result<int>>
+    internal class UpdateEmployeeExperienceCommandHandler : IRequestHandler<UpdateEmployeeExperienceCommand, Result<EmployeeExperience>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -30,18 +31,20 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> Handle(UpdateEmployeeExperienceCommand request, CancellationToken cancellationToken)
+        public async Task<Result<EmployeeExperience>> Handle(UpdateEmployeeExperienceCommand request, CancellationToken cancellationToken)
         {
-            var data = await _unitOfWork.Repository<EmployeeExperience>().GetByIdAsync(request.Id);         
+            var data = await _unitOfWork.Repository<EmployeeExperience>().GetByIdAsync(request.Id);     
+            
+             request.command.EmployeeId= data.EmployeeId;
             if (data == null)
             {
-                return Result<int>.BadRequest();
+                return Result<EmployeeExperience>.BadRequest();
             }
-            var mapData = _mapper.Map(request.command, data);
+              var mapData=   _mapper.Map(request.command, data);
        
-            await _unitOfWork.Repository<EmployeeExperience>().UpdateAsync(mapData);
+            await _unitOfWork.Repository<EmployeeExperience>().UpdateAsync(data);
             await _unitOfWork.Save(cancellationToken);
-            return Result<int>.Success();
+            return Result<EmployeeExperience>.Success(data, "Updated EmployeeExperience.");
         }
     }
 }
