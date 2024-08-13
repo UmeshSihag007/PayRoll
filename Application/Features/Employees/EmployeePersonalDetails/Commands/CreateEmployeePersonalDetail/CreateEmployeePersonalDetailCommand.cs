@@ -163,6 +163,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                     AccountName = request.CreateEmployeePersonals.CreateEmployeeBank.AccountName,
                     AccountBranch = request.CreateEmployeePersonals.CreateEmployeeBank.AccountBranch,
                     BanAccountId = request.CreateEmployeePersonals.CreateEmployeeBank.BanAccountId,
+                    AccountType=request.CreateEmployeePersonals.CreateEmployeeBank.AccountType,
                     EmployeeId = request.EmployeeId,
 
 

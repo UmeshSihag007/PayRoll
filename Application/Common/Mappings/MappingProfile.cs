@@ -5,8 +5,12 @@ using ApwPayroll_Application.Features.Departments.Commands.CreateDepartment;
 using ApwPayroll_Application.Features.Designations.Commands.CreateDesignation;
 using ApwPayroll_Application.Features.DocumentTypes.Commands.CreateDocumentType;
 using ApwPayroll_Application.Features.Employees.Commands.CreateEmployee;
+ 
+using ApwPayroll_Application.Features.Employees.EmployeeDocuments.EmployeeDocumentTypes.Commands.CreateEmployeeDocumentTypes;
+ 
 using ApwPayroll_Application.Features.Employees.EmployeeAddresses.Commands.CreateEmployeeAddress;
 using ApwPayroll_Application.Features.Employees.EmployeeBankDetails.Commands.CreateEmployeeBankDetails;
+ 
 using ApwPayroll_Application.Features.Employees.EmployeeEducations.Commands.CreateEmployeeEducation;
 using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.CreateEmployeeExperiences;
 using ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.CreateEmployeeFamily;
@@ -28,7 +32,11 @@ using ApwPayroll_Domain.Entities.Designations;
 using ApwPayroll_Domain.Entities.Documents.DocumentTypes;
 using ApwPayroll_Domain.Entities.Employees;
 using ApwPayroll_Domain.Entities.Employees.Courses;
+ 
+using ApwPayroll_Domain.Entities.Employees.EmployeeDocumentTypes;
+ 
 using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
+ 
 using ApwPayroll_Domain.Entities.Employees.EmployeeExperiences;
 using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
 using ApwPayroll_Domain.Entities.Employees.EmployeePersonalDetails;
@@ -65,16 +73,14 @@ namespace ApwPayroll_Application.Common.Mappings
             CreateMap<CreateDesignationCommand, Designation>();
 
             CreateMap<CreateLocationCommand, Location>();
-            CreateMap<CreateBranchCommand, Branch>();
-            CreateMap<CreateHolidayTypeCommand, HolidayType>();
-            CreateMap<CreateBankCommand, Bank>();
-            CreateMap<CreateLeaveTypeCommand, LeaveType>();
-            CreateMap<CreateEmployeePersonalDetailDto, EmployeePersonalDetail>();
-            CreateMap<CreateEmployeeBankDetailCommand, BankDetail>();
-            CreateMap<CreateEmployeeAddressCommand, EmployeeAddress>();
-            CreateMap<CreateHolidayCommand, Holiday>();
-            CreateMap<CreateLeaveCommand, Leave>();
-
+ 
+            CreateMap<CreateBranchCommand,Branch>();
+            CreateMap<CreateHolidayTypeCommand,HolidayType>();
+            CreateMap<CreateBankCommand,Bank>();
+            CreateMap<CreateLeaveTypeCommand,LeaveType>();
+            CreateMap< CreateEmployeePersonalDetailDto,EmployeePersonalDetail>();
+            CreateMap<CreateEmployeeDocumentTypeCommand, EmployeeDocumentType>();
+ 
 
 
 
