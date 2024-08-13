@@ -14,5 +14,6 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeDocuments.Commands.C
         public string? Code { get; set; }
         public IFormFile Document { get; set; }
         public int EmployeeDocumentTypeId { get; set; }
+       
     }
 }

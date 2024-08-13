@@ -49,6 +49,7 @@
 //}
 using ApwPayroll_Application.Interfaces.Repositories;
 using ApwPayroll_Application.Interfaces.Repositories.Documents;
+using ApwPayroll_Application.Interfaces.Repositories.EmployeeDocuments;
 using ApwPayroll_Domain.Entities.Employees;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDocumentTypes;
 using ApwPayroll_Shared;
@@ -75,12 +76,14 @@ public class CreateEmployeeDocumentCommand : IRequest<Result<int>>
 internal class CreateEmployeeDocumentCommandHandler : IRequestHandler<CreateEmployeeDocumentCommand, Result<int>>
 {
     private readonly IDocumentRepository _documentRepository;
+    private readonly IEmployeeDocumentRepository _employeeDocumentRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateEmployeeDocumentCommandHandler(IDocumentRepository documentRepository, IUnitOfWork unitOfWork)
+    public CreateEmployeeDocumentCommandHandler(IDocumentRepository documentRepository, IUnitOfWork unitOfWork, IEmployeeDocumentRepository employeeDocumentRepository)
     {
         _documentRepository = documentRepository;
         _unitOfWork = unitOfWork;
+        _employeeDocumentRepository = employeeDocumentRepository;
     }
 
     public async Task<Result<int>> Handle(CreateEmployeeDocumentCommand request, CancellationToken cancellationToken)
@@ -107,19 +110,21 @@ internal class CreateEmployeeDocumentCommandHandler : IRequestHandler<CreateEmpl
 
                 if (existingDocument != null)
                 {
-                    var uodatedDocument = await _documentRepository.updateDocument(existingDocument.DocumentId, item.Document);
-                    // Update existing document
-                    employee.AddIfDocumentNotExists([uodatedDocument.Id], item.EmployeeDocumentTypeId,item.Code);
+                    var updatedDocument = await _documentRepository.updateDocument(existingDocument.DocumentId, item.Document);
+                    //// Update existing document
+                    //employee.AddIfDocumentNotExists([updatedDocument.Id], item.EmployeeDocumentTypeId,item.Code);
+
+                    await _employeeDocumentRepository.updateDocumentType(request.EmployeeId, updatedDocument.Id, item.Code);
+                    await _unitOfWork.Save(cancellationToken);
+
+                      
                 }
                 else
                 {
                     var createdDocument = await _documentRepository.CreateDocument(item.Document, null, 1);
                     employee.AddDocument(createdDocument.Id, item.EmployeeDocumentTypeId, item.Code);
-
+                    await _unitOfWork.Save(cancellationToken);
                 }
-
-
-                await _unitOfWork.Save(cancellationToken);
             }
         }
         catch (Exception ex)
