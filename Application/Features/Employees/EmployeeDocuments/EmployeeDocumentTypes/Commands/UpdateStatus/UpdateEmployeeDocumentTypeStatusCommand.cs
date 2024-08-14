@@ -14,14 +14,18 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeDocuments.EmployeeDo
      
     public class UpdateEmployeeDocumentTypeStatusCommand : IRequest<Result<int>>
     {
-        public UpdateEmployeeDocumentTypeStatusCommand(int id, bool isActive)
+        public UpdateEmployeeDocumentTypeStatusCommand(int id, bool? isActive, bool? isCodeRequired, bool? isDocumentRequired)
         {
             Id = id;
             IsActive = isActive;
+            IsCodeRequired = isCodeRequired;
+            IsDocumentRequired = isDocumentRequired;
         }
 
         public int Id { get; set; }
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
+        public bool? IsCodeRequired { get; set; }
+        public bool? IsDocumentRequired { get; set; }
     }
 
     internal class UpdateEmployeeDocumentTypeStatusCommandHandler : IRequestHandler<UpdateEmployeeDocumentTypeStatusCommand, Result<int>>
@@ -41,7 +45,15 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeDocuments.EmployeeDo
             {
                 return Result<int>.BadRequest();
             }
-            data.IsActive = request.IsActive;
+           
+
+            data.IsActive = request.IsActive.Value;
+            
+                data.IsCodeRequired = request.IsCodeRequired.Value;
+
+           
+                data.IsDocumentRequired = request.IsDocumentRequired.Value;
+          
             await _unitOfWork.Repository<EmployeeDocumentType>().UpdateAsync(data);
             await _unitOfWork.Save(cancellationToken);
             return Result<int>.Success(data.Id, " Status Updated Successfully .");

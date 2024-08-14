@@ -19,6 +19,9 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeDocuments.EmployeeDo
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public string Heading { get; set; } = ",";
+        public bool IsCodeRequired { get; set; }=false;
+
+        public bool IsDocumentRequired { get; set; }=false ;
     }
     internal class CreateEmployeeDocumentTypeCommandHandler : IRequestHandler<CreateEmployeeDocumentTypeCommand, Result<EmployeeDocumentType>>
     {

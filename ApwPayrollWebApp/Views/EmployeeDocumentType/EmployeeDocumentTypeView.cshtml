@@ -1,159 +1,193 @@
-﻿ @using ApwPayrollWebApp.Models
+﻿@using ApwPayrollWebApp.Models
 @model MasterModel
 
 @{
-    ViewData["Title"] = "CreateEmployeeDocumentType";
+    ViewData["Title"] = "Create Employee Document Type";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    /* Custom styles for the toggle switches */
+    .form-switch .form-check-input {
+        width: 55px;
+        height: 26px;
+        background-size: 26px 26px;
+        border-radius: 34px;
+        margin-left: -40px;
+        transition: all 0.3s ease-in-out;
+    }
 
+        .form-switch .form-check-input:checked {
+            background-position: right;
+        }
 
-<div class="tab-contant">
-    <div class="tab-pane">
-        <form asp-action="CreateEmployeeDocumentType" method="post">
-            <div class="row ">
-                <div class="col-auto">
-                    <input asp-for="documentType.Id" hidden />
-                    <label asp-for="documentType .Name" class="form-label ms-5">Name</label>
-                </div>
-                <div class="col-auto">
-                    <input asp-for="documentType.Name" type="text" class=" form-control form-control-sm"></>
+        .form-switch .form-check-input::before {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            transform: translateX(2px);
+        }
+
+        .form-switch .form-check-input:checked::before {
+            transform: translateX(26px);
+        }
+</style>
+<div class="container mt-4">
+    <!-- Card for Creating Employee Document Type -->
+    <div class="card shadow-sm">
+        <div class="card-header  text-white">
+            <h2 class="mb-0"> Employee Document Type</h2>
+        </div>
+        <div class="card-body">
+            <form asp-action="CreateEmployeeDocumentType" method="post">
+                <input asp-for="documentType.Id" hidden />
+
+                <!-- Name Field -->
+                <div class="mb-3">
+                    <label asp-for="documentType.Name" class="form-label">Document Type Name</label>
+                    <input asp-for="documentType.Name" type="text" class="form-control" placeholder="Enter document type name" />
                     <span asp-validation-for="documentType.Name" class="text-danger"></span>
                 </div>
-                <div class="col-auto">
-                    <label class="form-label ms-5 ">Is Active</label>
-                </div>
-                <div class="col-auto">
-                    <div class="form-check form-switch">
-                        <input asp-for="documentType.IsActive" type="checkbox" class="form-check-input" id="isActiveToggle" />
-                        <label class="form-check-label" for="isActiveToggle">Active</label>
+
+                <!-- Switches -->
+                <div class="row">
+                    <!-- Is Active Switch -->
+                    <div class="col-md-4 mb-3">
+                        <div class="form-check form-switch">
+
+                            <label class="form-check-label mt-2 mx-3" for="isActiveToggle">Is Active</label>
+                            <input asp-for="documentType.IsActive" type="checkbox" class="form-check-input" id="isActiveToggle" />
+                        </div>
                     </div>
 
-                </div>
-                <div class="col-2 ms-5">
+                    <!-- Is Code Required Switch -->
+                    <div class="col-md-4 mb-3">
+                        <div class="form-check form-switch">
+                            <input asp-for="documentType.IsCodeRequired" type="checkbox" class="form-check-input" id="isCodeRequiredToggle" />
+                            <label class="form-check-label   mt-2 mx-3" for="isCodeRequiredToggle">Code Required</label>
+                        </div>
+                    </div>
 
-                    <button type="submit" class="btn btn-secondary btn-sm" id="addBtn">
+                    <!-- Is Document Required Switch -->
+                    <div class="col-md-4 mb-3">
+                        <div class="form-check form-switch">
+                            <input asp-for="documentType.IsDocumentRequired" type="checkbox" class="form-check-input" id="isDocumentRequiredToggle" />
+                            <label class="form-check-label  mt-2 mx-3" for="isDocumentRequiredToggle">Document Required</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success">
                         @(Model.documentType != null && Model.documentType.Id.HasValue && Model.documentType.Id.Value != 0 ? "Update" : "Add")
                     </button>
                 </div>
-            </div>
+            </form>
+        </div>
+    </div>
 
-
-        </form>
-        @if (ViewBag.EmployeeDocumentType != null)
-        {
-            <table class="table">
-                <thead>
+    @if (ViewBag.EmployeeDocumentType != null)
+    {
+        <div class="mt-4">
+            <table class="table table-striped table-hover shadow-sm">
+                <thead class="table-secondary">
                     <tr>
-                        <th> Sr.No </th>
-                        <th>Name </th>
-                        <th>Is Active </th>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Is Document Required</th>
+                        <th>Is Code Required</th>
+                        <th>Is Active</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in ViewBag.EmployeeDocumentType)
-                    {
-                        <tr>
-                            <td>@(ViewBag.EmployeeDocumentType.IndexOf(item) + 1)</td>
-                            <td>@item.Name</td>
-                            <td>
-                                <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input togglebtn" id="isActiveToggle_@item.Id" @(item.IsActive ? "checked" : "") />
-                                    <label class="form-check-label" for="isActiveToggle_@item.Id">Active</label>
-                                </div>
-                            </td>
-
-                            <td>
-                                <a asp-action="EmployeeDocumentTypeView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-
-                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id','employeeDocumentType' ,'@Url.Action("Delete", "EmployeeDocumentType")') ">
-                                    <i class="bi bi-trash-fill"></i>
-                                </a>
-                            </td>
-                        </tr>
-
-                    }
-                </tbody>
+       <tbody>
+    @foreach (var item in ViewBag.EmployeeDocumentType)
+    {
+        <tr>
+            <td>@(ViewBag.EmployeeDocumentType.IndexOf(item) + 1)</td>
+            <td>@item.Name</td>
+            <td>
+                <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input togglebtn" id="isDocumentRequiredToggle_@item.Id" @(item.IsDocumentRequired ? "checked" : "") />
+                    <label class="form-check-label" for="isDocumentRequiredToggle_@item.Id"></label>
+                </div>
+            </td>
+            <td>
+                <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input togglebtn" id="isCodeRequiredToggle_@item.Id" @(item.IsCodeRequired ? "checked" : "") />
+                    <label class="form-check-label" for="isCodeRequiredToggle_@item.Id"></label>
+                </div>
+            </td>
+            <td>
+                <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input togglebtn" id="isActiveToggle_@item.Id" @(item.IsActive ? "checked" : "") />
+                    <label class="form-check-label" for="isActiveToggle_@item.Id"></label>
+                </div>
+            </td>
+            <td>
+                <a asp-action="EmployeeDocumentTypeView" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id')">
+                    <i class="bi bi-trash-fill"></i>
+                </a>
+            </td>
+        </tr>
+    }
+</tbody>
+     </tbody>
             </table>
-        }
-    </div>
+        </div>
+    }
 </div>
 
-
-@section scripts {
-    <!-- dropzone min -->
-    <script src="~/assets/libs/dropzone/dropzone-min.js"></script>
-
-    <!--crypto-kyc init-->
-    <script src="~/assets/js/pages/crypto-kyc.init.js"></script>
-
-    <!-- App js -->
-    <script src="~/assets/js/app.js"></script>
-
+@section Scripts {
+    <!-- jQuery is already included earlier, so no need to include again -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <partial name="_ValidationScriptsPartial" />
 
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let url = '@Url.Action("Delete", "EmployeeDocumentType")/' + id;
+                    window.location.href = url;
+                }
+            });
+        };
 
+      $(document).ready(function () {
+    $('.togglebtn').on('change', function () {
+        var $checkbox = $(this);
+        var itemId = $checkbox.attr('id').split('_')[1];
+        var isActive = $('#isActiveToggle_' + itemId).is(':checked');
+        var isCodeRequired = $('#isCodeRequiredToggle_' + itemId).is(':checked');
+        var isDocumentRequired = $('#isDocumentRequiredToggle_' + itemId).is(':checked');
 
+        // Disable the checkboxes to prevent multiple requests
+        $checkbox.prop('disabled', true);
 
-}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-@Html.Partial("_DeleteConfirmation")
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-
-
-
-
-    function confirmDelete(id) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let url;
-
-
-                url = '@Url.Action("Delete", "EmployeeDocumentType")/' + id;
-            }
-            window.location.href = url;
-        }
-                                })
-                            };
-
-
-
-
-
-</script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('.togglebtn').on('change', function () {
-            var $checkbox = $(this);
-            var itemId = $checkbox.attr('id').split('_')[1];
-            var isActive = $checkbox.is(':checked');
-
-            // Disable the checkbox
-            $checkbox.prop('disabled', true);
-
-            $.ajax({
-                url: '@Url.Action("UpdateIsActive", "EmployeeDocumentType")',
-                type: 'POST',
-                data: {
-                    id: itemId,
-                    isActive: isActive
-                },
-                success: function (response) {
-                    // Handle success
+        $.ajax({
+            url: '@Url.Action("UpdateEmployeeDocumentTypeStatus", "EmployeeDocumentType")',
+            type: 'POST',
+            data: {
+                id: itemId,
+                isActive: isActive,
+                isCodeRequired: isCodeRequired,
+                isDocumentRequired: isDocumentRequired
+            },
+            success: function (response) {
+              
+                // Handle success
                     // Re-enable the checkbox
                     window.location.reload(true);
                     $checkbox.prop('disabled', false);
@@ -165,11 +199,9 @@
                     // Re-enable the checkbox
                     $checkbox.prop('disabled', false);
                 }
-            });
         });
     });
-</script>
+});
 
-
-
-
+    </script>
+}

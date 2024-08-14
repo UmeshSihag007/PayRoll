@@ -49,7 +49,10 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
                     var employeeDocument = new CreateEmployeeDocumentDto
                     {
                         Code = document.Data.Code,
-                        EmployeeDocumentTypeId = document.Data.EmployeeDocumentTypeId
+                        EmployeeDocumentTypeId = document.Data.EmployeeDocumentTypeId,
+                        IsCodeRequired=document.Data.EmployeeDocumentType.IsCodeRequired,
+                        IsDocumentRequired=document.Data.EmployeeDocumentType.IsDocumentRequired,
+
                     };
                     model.documentCommand = new CreateEmployeeDocumentCommand
                     {
@@ -83,6 +86,9 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
                 else
                 {
                     Notify(data.Messages, null, data.code);
+                    await InitializeViewBags();
+
+                    return View( );
                 }
                 if (HttpContext.Session.GetInt32("EmployeeId") != null)
                 {
@@ -118,13 +124,12 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
             }
         }
 
-
-
         private async Task InitializeViewBags()
         {
             var employeeDocumentTypes = await _mediator.Send(new GetAllEmployeeDocumentTypesQuery());
+               
 
-            ViewBag.EmployeeDocumentTypes = employeeDocumentTypes.Data;
+            ViewBag.EmployeeDocumentTypes = employeeDocumentTypes.Data.Where(x=>x.IsActive==true).ToList();
         }
 
     }

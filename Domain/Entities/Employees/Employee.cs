@@ -118,7 +118,7 @@ namespace ApwPayroll_Domain.Entities.Employees
             }
         }
         // Document working
-        public void AddDocument(int documentId, int typeId, string? Code)
+        public void AddDocument(int? documentId, int typeId, string? Code)
         {
             EmployeeDocuments.Add(new EmployeeDocument(documentId, Id, true, typeId, Code));
         }
@@ -132,23 +132,19 @@ namespace ApwPayroll_Domain.Entities.Employees
                     EmployeeDocuments.Add(new EmployeeDocument(document, Id, true, typeId, code));
                 }
                 RemoveDocumentExists(documentId);
-
             }
         }
 
-        private void RemoveDocumentExists(List<int> documentId)
+        private void RemoveDocumentExists(List<int>? documentId)
         {
             foreach (var document in EmployeeDocuments)
             {
-                if (!documentId.Contains(document.DocumentId))
+                if (!documentId.Contains(document.DocumentId.Value))
                 {
                     document.IsActive = false;
                 }
             }
         }
-
-
-
 
     }
 }

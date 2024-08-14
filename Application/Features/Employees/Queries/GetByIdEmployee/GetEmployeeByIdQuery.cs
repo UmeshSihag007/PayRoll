@@ -32,27 +32,29 @@ namespace ApwPayroll_Application.Features.Employees.Queries.GetByIdEmployee
             try
             {
                 var data = await _repository.Entities
-                  .Include(x => x.AspUser)
-                   .Include(x => x.EmployeePersonalDetail)
-                  .Include(x => x.EmployeeDocuments).ThenInclude(x => x.EmployeeDocumentType)
-                  .Include(x => x.EmployeeDocuments).ThenInclude(x => x.Document)
-                    .Include(x => x.EmployeeQualification).ThenInclude(x => x.Course)
-                 .Include(x => x.EmployeeExperience)
-                 .Include(x => x.Branch)
-                  .Include(x => x.EmployeeFamily).ThenInclude(x => x.RelationType)
-            .Include(x => x.ReferralDetail)
- 
- 
-         .Include(x=>x.EmployeeDesignations).ThenInclude(x=>x.Designation)
-         .Include(x=>x.EmployeeDepartments).ThenInclude(x=>x.Department)
-          .Include(x=>x.EmergencyContact)
-          .Include(x=>x.BankDetails)
-          .Include(X=>X.EmployeeAddresses).ThenInclude(X=>X.AddressType)
-        
-         .Include(x=>x.EmployeeDepartments)
- 
- 
-                .FirstOrDefaultAsync(e => e.Id == request.EmployeeId && e.IsDeleted == false, cancellationToken: cancellationToken);
+    .Include(x => x.AspUser)
+    .Include(x => x.EmployeePersonalDetail)
+    .Include(x => x.EmployeeDocuments.Where(ed => ed.EmployeeDocumentType.IsActive))
+        .ThenInclude(ed => ed.EmployeeDocumentType)
+    .Include(x => x.EmployeeDocuments)
+        .ThenInclude(ed => ed.Document)
+    .Include(x => x.EmployeeQualification)
+        .ThenInclude(eq => eq.Course)
+    .Include(x => x.EmployeeExperience)
+    .Include(x => x.Branch)
+    .Include(x => x.EmployeeFamily)
+        .ThenInclude(ef => ef.RelationType)
+    .Include(x => x.ReferralDetail)
+    .Include(x => x.EmployeeDesignations)
+        .ThenInclude(ed => ed.Designation)
+    .Include(x => x.EmployeeDepartments)
+        .ThenInclude(ed => ed.Department)
+    .Include(x => x.EmergencyContact)
+    .Include(x => x.BankDetails)
+    .Include(x => x.EmployeeAddresses)
+        .ThenInclude(ea => ea.AddressType)
+    .FirstOrDefaultAsync(e => e.Id == request.EmployeeId && e.IsDeleted == false, cancellationToken);
+
 
                 if (data == null)
                 {

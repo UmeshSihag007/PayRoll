@@ -25,8 +25,17 @@
                             <div class="row g-0">
                                 <div class="col-md-12">
                                     <div class="card-body">
-                                        <label for="Documents_0">Upload Document</label>
-                                        <input asp-for="EmployeeDocument[0].Document" type="file" id="Documents_0" class="form-control-file" onchange="previewFile(this, 'imagePreview_0', 'filePreview_0', 'currentDocumentUrl_0', 'currentDocument_0');" />
+                                        <label for="Documents_0">Upload Document
+                                            @if (Model?. documentCommand.EmployeeDocuments[0]?.IsDocumentRequired!=null)
+                                            {
+                                                            <span style="color:red">*</span>                                                
+                                            }
+
+                                        </label>
+                                       
+                                     
+                                            <input asp-for="EmployeeDocument[0].Document" type="file" id="Documents_0" class="form-control-file"   onchange="previewFile(this, 'imagePreview_0', 'filePreview_0', 'currentDocumentUrl_0', 'currentDocument_0');" />
+                                     
 
                                         <!-- Display current document if available -->
                                         <div class="mt-2" id="currentDocument_0">
@@ -48,8 +57,29 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <label for="Codes_0">@ViewBag.EmployeeDocumentType Number</label>
-                                <input asp-for="EmployeeDocument[0].Code" type="text" id="Codes_0" class="form-control" />
+                                <label for="Codes_0">@ViewBag.EmployeeDocumentType Number
+                                    @if (Model?.documentCommand.EmployeeDocuments[0]?.IsCodeRequired != null)
+
+                                    {
+                                        
+                                                            <span style="color:red">*</span>                                             
+                                    }
+
+                                </label>
+                                @if (Model?.documentCommand.EmployeeDocuments[0]?.IsCodeRequired != null)
+
+                                {
+                                    <input asp-for="EmployeeDocument[0].Code" type="text" id="Codes_0" required class="form-control" />
+
+                                    <span asp-validation-for="EmployeeDocument[0].Code" class="text-danger"></span>
+
+                                }
+
+                                else
+                                {
+                                    
+                                <input asp-for="EmployeeDocument[0] .Code" type="text" id="Codes_0" class="form-control" />
+                                }     
                             </div>
                         </div>
                     </div>
@@ -65,22 +95,54 @@
                                 <div class="row g-0">
                                     <div class="col-md-12">
                                         <div class="card-body">
-                                            <label for="Documents_@(i)">Upload @ViewBag.EmployeeDocumentTypes[i].Name</label>
-                                            <input asp-for="EmployeeDocument[i].Document" type="file" id="Documents_@(i)" class="form-control-file" onchange="previewFile(this, 'imagePreview_@(i)', 'filePreview_@(i)', null, null);" />
+                                            <label for="Documents_@(i)">
+                                                Upload @ViewBag.EmployeeDocumentTypes[i].Name
+                                                @if (ViewBag.EmployeeDocumentTypes[i].IsDocumentRequired)
+                                                {
+                                                    <span style="color:red">*</span>
+                                                }
+                                            </label>
+
+                                         
+                                                <input asp-for="EmployeeDocument[i].Document"
+                                                       type="file"
+                                                       id="Documents_@(i)"
+                                                       class="form-control-file"
+                                                       onchange="previewFile(this, 'imagePreview_@(i)', 'filePreview_@(i)', null, null);" />
+                                         
 
                                             <!-- Image preview for new file -->
                                             <img id="imagePreview_@(i)" src="#" alt="Preview" class="img-fluid mt-2" style="max-width: 100%; display: none;" />
 
                                             <!-- Iframe preview for new file -->
                                             <iframe id="filePreview_@(i)" class="mt-2" style="max-width: 100%; display: none;"></iframe>
-
-                                            <span asp-validation-for="EmployeeDocument[i].Document" class="text-danger"></span>
+                                            <br/>
+                                            <!-- Validation message displayed at the bottom -->
+                                            <span asp-validation-for="EmployeeDocument[i].Document" class="text-danger mt-2"></span>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <label for="Codes_@(i)">@ViewBag.EmployeeDocumentTypes[i].Name Number</label>
-                                    <input asp-for="EmployeeDocument[i].Code" type="text" id="Codes_@(i)" class="form-control" />
+                                    <label for="Codes_@(i)">@ViewBag.EmployeeDocumentTypes[i].Name Number
+
+                                        @if (ViewBag.EmployeeDocumentTypes[i].IsCodeRequired)
+                                        {
+                                            <span style="color:red">*</span>
+                                        }
+                                       
+                               
+                                    </label>
+                                    @if (ViewBag.EmployeeDocumentTypes[i].IsCodeRequired)
+                                    {
+                                        <input asp-for="EmployeeDocument[i].Code" type="text" id="Codes_@(i)" class="form-control" required />
+
+                                        <span asp-validation-for="EmployeeDocument[i].Code" class="text-danger mt-2"></span>
+                                    }
+                                    else
+                                    {
+                                        <input asp-for="EmployeeDocument[i].Code" type="text" id="Codes_@(i)" class="form-control" />
+                                    }
                                 </div>
                             </div>
                         </div>

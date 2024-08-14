@@ -4,6 +4,7 @@ using ApwPayroll_Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApwPayroll_Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDataContext))]
-    partial class ApplicationDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240813114239_addIsDocumentRequired_employeeDocumentType")]
+    partial class addIsDocumentRequired_employeeDocumentType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1315,16 +1318,10 @@ namespace ApwPayroll_Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsCodeRequired")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsCodeShow")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDocumentRequired")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -1367,6 +1364,12 @@ namespace ApwPayroll_Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
+
+                    b.Property<bool>("IsCodeRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDocumentRequired")
+                        .HasColumnType("bit");
 
                     b.HasKey("EmployeeId", "DocumentId");
 
@@ -2992,13 +2995,13 @@ namespace ApwPayroll_Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a33ddae9-b551-4a5f-af15-0a293fdcebb7",
+                            Id = "7160d13d-c9d1-477b-b324-afb8061885b7",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "31b4d0e8-e5f4-4a10-9bc1-9c4e01727b94",
+                            Id = "e9a7a55b-a0c4-4969-b1d4-7bbcf5f120e6",
                             Name = "Employee",
                             NormalizedName = "Employee"
                         });

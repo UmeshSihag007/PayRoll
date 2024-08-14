@@ -40,6 +40,8 @@ namespace ApwPayrollWebApp.Controllers.Masters.DocumentTypes
                         Id = documentType.Id,
                         Name = documentType.Name,
                         IsActive=documentType.IsActive,
+                        IsCodeRequired=documentType.IsCodeRequired,
+                        IsDocumentRequired=documentType.IsDocumentRequired, 
                     };
                 }
             }
@@ -79,9 +81,9 @@ namespace ApwPayrollWebApp.Controllers.Masters.DocumentTypes
 
         #region UPDATE  STATUS   
         [HttpPost]
-        public async Task<IActionResult> UpdateIsActive(int id, bool isActive)
+        public async Task<IActionResult> UpdateEmployeeDocumentTypeStatus(int id, bool? isActive,bool? isCodeRequired, bool? isDocumentRequired)
         {
-            var data = await _mediator.Send(new UpdateEmployeeDocumentTypeStatusCommand(id, isActive));
+            var data = await _mediator.Send(new UpdateEmployeeDocumentTypeStatusCommand(id, isActive,isCodeRequired,isDocumentRequired));
             if (data.code == 200)
             {
                 Notify(data.Messages, null, data.code);

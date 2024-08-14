@@ -10,6 +10,6 @@ namespace ApwPayroll_Application.Interfaces.Repositories.EmployeeDocuments
     public interface IEmployeeDocumentRepository
     {
         Task<EmployeeDocument>GetEmployeeDocument(int employeeId, int documentId );
-        Task<EmployeeDocument>updateDocumentType(int employeeId, int documentId, string?code );
+        Task<EmployeeDocument>updateDocumentType(int employeeId, int? documentTypeId, string? code);
     }
 }

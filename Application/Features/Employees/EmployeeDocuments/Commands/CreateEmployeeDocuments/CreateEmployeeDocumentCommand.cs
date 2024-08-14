@@ -105,25 +105,41 @@ internal class CreateEmployeeDocumentCommandHandler : IRequestHandler<CreateEmpl
                 {
                     return Result<int>.BadRequest($"Invalid EmployeeDocumentId:{item.EmployeeDocumentTypeId}");
                 }
-                var existingDocument = employee.EmployeeDocuments.Where(x=>x.EmployeeDocumentTypeId== item.EmployeeDocumentTypeId)
+                if (item.Document == null  && employeeDocument.IsDocumentRequired == true)
+                {
+                    return Result<int>.BadRequest($"{employeeDocument.Name} Document filed is required ");
+                }
+                var existingDocument = employee.EmployeeDocuments.Where(x => x.EmployeeDocumentTypeId == item.EmployeeDocumentTypeId)
                      .FirstOrDefault();
 
                 if (existingDocument != null)
                 {
-                    var updatedDocument = await _documentRepository.updateDocument(existingDocument.DocumentId, item.Document);
-                    //// Update existing document
-                    //employee.AddIfDocumentNotExists([updatedDocument.Id], item.EmployeeDocumentTypeId,item.Code);
 
-                    await _employeeDocumentRepository.updateDocumentType(request.EmployeeId, updatedDocument.Id, item.Code);
+                    if (existingDocument.DocumentId != null && item.Document != null)
+                    {
+
+                        var updatedDocument = await _documentRepository.updateDocument(existingDocument.DocumentId.Value, item.Document);
+                    }
+
+                    await _employeeDocumentRepository.updateDocumentType(request.EmployeeId, item.EmployeeDocumentTypeId, item.Code);
                     await _unitOfWork.Save(cancellationToken);
-
-                      
                 }
                 else
                 {
-                    var createdDocument = await _documentRepository.CreateDocument(item.Document, null, 1);
-                    employee.AddDocument(createdDocument.Id, item.EmployeeDocumentTypeId, item.Code);
-                    await _unitOfWork.Save(cancellationToken);
+                    if (item.Document != null)
+                    {
+
+                        var createdDocument = await _documentRepository.CreateDocument(item.Document, null, 1);
+                        employee.AddDocument(createdDocument.Id, item.EmployeeDocumentTypeId, item.Code);
+                        await _unitOfWork.Save(cancellationToken);
+                    }
+                    else
+                    {
+
+                        employee.AddDocument(null, item.EmployeeDocumentTypeId, item.Code);
+                        await _unitOfWork.Save(cancellationToken);
+                    }
+
                 }
             }
         }
