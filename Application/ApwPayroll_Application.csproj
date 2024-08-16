@@ -33,13 +33,8 @@
     <Folder Include="Features\Holidays\Commands\DeleteHolidays\" />
     <Folder Include="Features\Holidays\Commands\UpdateHolidays\" />
     <Folder Include="Features\Holidays\Queries\GetAllHolidays\" />
-    <Folder Include="Features\Leaves\Commands\DeleteLeaves\" />
-    <Folder Include="Features\Leaves\Commands\UpdateLeaves\" />
     <Folder Include="Features\Leaves\Commands\CreateLeaves\" />
- 
-    <Folder Include="Features\Leaves\LeaveResponseStatues\Commands\CreateLeaveResponseStatues\" />
     <Folder Include="Features\Leaves\LeaveResponseStatues\Commands\DeleteLeaveResponseStatues\" />
-    <Folder Include="Features\Leaves\LeaveResponseStatues\Commands\UpdateLeaveResponseStatues\" />
     <Folder Include="Features\Leaves\LeaveResponseStatues\Queries\GetAllLeaveResponseStatuses\" />
     <Folder Include="Features\Leaves\LeaveTypeRoles\Commands\CreateLeaveTypeRoles\" />
     <Folder Include="Features\Leaves\LeaveTypeRoles\Commands\DeleteLeaveTypeRoles\" />

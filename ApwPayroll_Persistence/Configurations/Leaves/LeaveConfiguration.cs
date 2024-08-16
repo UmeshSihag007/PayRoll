@@ -12,5 +12,6 @@ public class LeaveConfiguration : IEntityTypeConfiguration<Leave>
         builder.HasOne(x => x.LeaveType).WithMany().
             HasForeignKey(x => x.LeaveTypeId).IsRequired();
 
+
     }
 }
