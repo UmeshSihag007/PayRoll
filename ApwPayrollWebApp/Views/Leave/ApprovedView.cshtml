@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "ApprovedView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container mt-4">
+    <div class="row align-items-center mb-4">
+        <div class="col-md-7">
+            <h2 class="text-left">ApprovedView</h2>
+        </div>
+        <div class="col-md-5 text-md-end">
+            <a class="btn btn-success" asp-action="CreateLeave">Add Leave</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Sr.No</th>
+                    <th>Name</th>
+                    <th>Designation</th>
+                    <th>ContactNumber</th>
+                    <th>From To</th>
+                    <th>Reason</th>
+                    <th>LeaveStatus</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+             <tbody>
+                @if (Model != null && Model.Data != null)
+                {
+                    var leaveList = Model.Data;
+                    @foreach (var item in leaveList)
+                    {
+                        <tr>
+                            <td>@(leaveList.IndexOf(item) + 1)</td>
+                            <td>@item.LeaveType</td>
+                            <td>@item.Designation</td>
+                            <td>@item.Mobile</td>
+                            <td>@item.From To</td>
+                            <td>@item.Reason</td>
+                            <td>@item.LeaveStatus</td>
+                            <td class="text-center">
+                            <td class="text-center">
+                                <a asp-route-id="@item.Id" asp-action="CreateLeaveStatus" style="padding: 0; font-size: 24px; color: #007bff;" title="View Details">
+                                    <i class="bi bi-eye-fill"></i>
+                                </a>
+                              @*   <a asp-route-id="@item.Id" asp-action="EmployeeDetailInResume" style="padding:2;font-size:20px;" title="View Resume Format">
+                                    <i class="bi bi-arrow-down-circle-fill"></i>
+                                </a> *@
+                            </td>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

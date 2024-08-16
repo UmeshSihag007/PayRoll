@@ -1,0 +1,63 @@
+﻿@using ApwPayroll_Application.Features.Leaves.LeaveResponseStatues.Commands.CreateLeaveResponseStatues
+
+@model CreateLeaveResponeStatusCommand
+@{
+    ViewData["Title"] = "Create Leave Status";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="container">
+    <form asp-action="CreateLeaveStatus" method="post">
+
+        @* Leave Status Dropdown *@
+        <div class="mb-3">
+            <label asp-for="LeaveStatus" class="form-label">Leave Status</label>
+            <select asp-for="LeaveStatus" class="form-select">
+                <option value="">Select Status</option>
+                @foreach (var status in ViewBag.LeaveStatusList)
+                {
+                    <option value="@status.Value">@status.Text</option>
+                }
+            </select>
+            <span asp-validation-for="LeaveStatus" class="text-danger"></span>
+        </div>
+
+        @* Remark Input *@
+        <div class="mb-3">
+            <label asp-for="ResponseRemark" class="form-label">Remark</label>
+            <textarea asp-for="ResponseRemark" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="ResponseRemark" class="text-danger"></span>
+        </div>
+
+        @* Response By Dropdown *@
+        <div class="mb-3">
+            <label asp-for="ResponseById" class="form-label">Response By</label>
+            <select asp-for="ResponseById" class="form-select">
+                <option value="">Select Employee</option>
+                @foreach (var employee in ViewBag.EmployeeList)
+                {
+                    <option value="@employee.Value">@employee.Text</option>
+                }
+            </select>
+            <span asp-validation-for="ResponseById" class="text-danger"></span>
+        </div>
+
+        @* Forward To Dropdown *@
+        <div class="mb-3">
+            <label asp-for="ForwordId" class="form-label">Forward To</label>
+            <select asp-for="ForwordId" class="form-select">
+                <option value="">Select Employee</option>
+                @foreach (var employee in ViewBag.EmployeeList)
+                {
+                    <option value="@employee.Value">@employee.Text</option>
+                }
+            </select>
+            <span asp-validation-for="ForwordId" class="text-danger"></span>
+        </div>
+
+        @* Submit Button *@
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

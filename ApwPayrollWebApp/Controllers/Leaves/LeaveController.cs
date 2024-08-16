@@ -5,6 +5,7 @@ using ApwPayroll_Application.Features.Leaves.Commands.UpdateLeaves;
 using ApwPayroll_Application.Features.Leaves.LeaveTypes.Queries.GetAllLeaveTypes;
 using ApwPayroll_Application.Features.Leaves.Queries.GetAllLeaves;
 using ApwPayroll_Application.Features.Leaves.Queries.GetLeaveByIds;
+using ApwPayroll_Application.Features.Leaves.tQueries.GetLeaveDetails;
 using ApwPayroll_Domain.common.Enums.Gender;
 using ApwPayroll_Domain.common.Enums.LeaveStatuses;
 using ApwPayroll_Domain.Entities.Leaves;
@@ -27,6 +28,12 @@ public class LeaveController : BaseController
         _mediator = mediator;
     }
 
+    public async Task<IActionResult> ApprovedView()
+    {
+        var leaveDetail = await _mediator.Send(new GetLeaveDetailQuery());
+        await InitializeViewBags();
+        return View(leaveDetail);
+    }
     public async Task<IActionResult> Index()
     {
         var data = await _mediator.Send(new GetAllLeaveQuery());
