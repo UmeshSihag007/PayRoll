@@ -4,50 +4,53 @@
 @model MasterModel
 
 @{
-    ViewData["Title"] = "BankView";
+    ViewData["Title"] = "Bank";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="tab-content">
-
-    <div class="tab-pane active" id="basicDetails" role="tabpanel">
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title fw-normal">Add Branch</span>
+        </div>
+        <div class="card-body">
         <form asp-action="CreateBank" asp-controller="Bank" method="post">
             <input type="hidden" asp-for="createBank.Id" />
             <div class="container">
                 <div class="row g-3 align-items-center">
-                    <div class="col-sm-3">
+                    <div class="col-md-3">
                         <label class="form-label">Name</label>
-                        <input asp-for="createBank.Name" class="form-control form-control-sm" />
+                        <input asp-for="createBank.Name" class="form-control " />
                         <span asp-validation-for="createBank.Name" class="text-danger"></span>
                     </div>
 
                     <div class="col-sm-3">
                         <label class="form-label">Employee ID</label>
-                        <input asp-for="createBank.EmployeeId" type="number" class="form-control form-control-sm" />
+                        <input asp-for="createBank.EmployeeId" type="number" class="form-control " />
                         <span asp-validation-for="createBank.EmployeeId" class="text-danger"></span>
                     </div>
 
                     <div class="col-sm-3">
                         <label class="form-label">Account Number</label>
-                        <input asp-for="createBank.AccountNumber" type="number" class="form-control form-control-sm" />
+                        <input asp-for="createBank.AccountNumber" type="number" class="form-control  />
                         <span asp-validation-for="createBank.AccountNumber" class="text-danger"></span>
                     </div>
 
                     <div class="col-sm-3">
                         <label class="form-label">IFSC Code</label>
-                        <input asp-for="createBank.IFCCode" class="form-control form-control-sm" />
+                        <input asp-for="createBank.IFCCode" class="form-control " />
                         <span asp-validation-for="createBank.IFCCode" class="text-danger"></span>
                     </div>
 
                     <div class="col-sm-3">
                         <label class="form-label">Account Name</label>
-                        <input asp-for="createBank.AccountName" class="form-control form-control-sm" />
+                        <input asp-for="createBank.AccountName" class="form-control " />
                         <span asp-validation-for="createBank.AccountName" class="text-danger"></span>
                     </div>
 
                     <div class="col-sm-3">
                         <label class="form-label">Account Type</label>
-                        <select asp-for="createBank.AccountType" class="form-control form-control-sm">
+                        <select asp-for="createBank.AccountType" class="form-control ">
                             <option value="" selected disabled>Select an account type</option>
                             @foreach(var item in ViewBag.AccountType)
                             {
@@ -59,7 +62,7 @@
 
                     <div class="col-sm-3">
                         <label class="form-label">Branch</label>
-                        <select asp-for="createBank.BranchId" class="form-control form-control-sm">
+                        <select asp-for="createBank.BranchId" class="form-control ">
                             <option value="" selected disabled>Select a branch</option>
                             @if (ViewBag.BranchList != null)
                             {
@@ -77,9 +80,9 @@
                     </div>
 
                     <div class="col-sm-3">
-                        <div class="form-check form-switch mt-md-4">
+                            <div class="form-check form-switch form-control-lg mt-md-4">
                             <input asp-for="createBank.IsBankAccountVerified" type="checkbox" class="form-check-input" id="isVerifiedToggle" />
-                            <label class="form-check-label" for="isVerifiedToggle">Verified</label>
+                            <label class="form-check-label fs-6" for="isVerifiedToggle">Verified</label>
                         </div>
 
 
@@ -89,23 +92,27 @@
 
                     <div class="">
                         <div class="d-flex justify-content-end" >
-                            <button type="submit" class="btn btn-secondary btn-sm" id="addBtn">
+                            <button type="submit" class="btn btn-success" id="addBtn">
                                 @(Model.createBank != null && Model.createBank.Id != null && Model.createBank.Id.HasValue && Model.createBank.Id.Value != 0 ? "Update" : "Add")
                             </button>
-
                         </div>
                     </div>
                 </div>
             </div>
         </form>
     </div>
+    </div>
 
-    <div class="tab-pane active" id="bankList" role="tabpanel">
+    <div class="card mt-4">
+        <div class="card-header">
+            <span class="card-title fw-normal">Branch List</span>
+        </div>
+        <div class="card-body">
         <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr>
-                    <th>S.No</th>
+                    <th>Sr.No</th>
                     <th>Name</th>
                     <th class="text-nowrap">Employee ID</th>
                         <th class="text-nowrap">Account Number</th>
@@ -134,11 +141,11 @@
                             <td>
                                 @if (item.IsBankAccountVerified)
                                 {
-                                    <i class="bi bi-check-circle fs-5 fw-bold text-success"></i>
+                                    <i class="bi bi-check-circle fs-4 fw-bold text-success"></i>
                                 }
                                 else
                                 {
-                                        <i class="bi bi-x-circle fs-5 fw-bold text-danger"></i>
+                                        <i class="bi bi-x-circle fs-4 fw-bold text-danger"></i>
                                 }
                             </td>
                             <td>
@@ -163,6 +170,7 @@
                 }
             </tbody>
         </table>
+        </div>
         </div>
     </div>
 </div>

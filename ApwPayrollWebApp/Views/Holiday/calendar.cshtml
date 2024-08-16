@@ -93,14 +93,14 @@
         {
             @foreach (var holiday in Model.Data)
             {
-                <text>
+                <text >
                             {
                                 title: '@holiday.Name - @holiday.HolidayType.Name',
                                 start: '@holiday.FromDate.ToString("yyyy-MM-dd")',
                                 end: '@holiday.ToDate.ToString("yyyy-MM-dd")',
                                 description: '@holiday.Description',
-                                backgroundColor: '#3a77af',
-                                borderColor: '#3a77af'
+                                backgroundColor: '#bc0000',
+                                borderColor: '#ffffff'
                             },
                 </text>
             }

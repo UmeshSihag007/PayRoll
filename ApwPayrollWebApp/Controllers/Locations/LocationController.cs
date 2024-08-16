@@ -14,6 +14,7 @@ namespace ApwPayrollWebApp.Controllers.Locations
     public class LocationController : BaseController
     {
         private readonly IMediator _mediator;
+  
 
         public LocationController(IMediator mediator)
         {
@@ -92,6 +93,27 @@ namespace ApwPayrollWebApp.Controllers.Locations
             return RedirectToAction("LocationView");
         }
 
+
+        public async Task<IActionResult> GetStatesByCountry( )
+        {
+            var locations = await _mediator.Send(new GetAllLocationQuery());
+            var states = locations.Data
+                .Where(x => x.LocationType == LocationTypeEnum.State && x.ParentId == 1)
+
+                .ToList();
+            return Json(states);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCitiesByState()
+        {
+            var locations = await _mediator.Send(new GetAllLocationQuery());
+            var cities = locations.Data
+                .Where(x => x.LocationType == LocationTypeEnum.City && x.ParentId == 2)
+
+                .ToList();
+            return Json(cities);
+        }
         private async Task InitializeViewBag()
         {
             var locationResult = await _mediator.Send(new GetAllLocationQuery());

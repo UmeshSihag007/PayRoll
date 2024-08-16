@@ -1,61 +1,69 @@
 ﻿@using ApwPayrollWebApp.Models
 @model MasterModel
 @{
-    ViewData["Title"] = "HolidayTypeView";
+    ViewData["Title"] = "Holiday Type";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="tab-contant">
-    <div class="tab-pane">
+<div class="container ">
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title fw-normal">Add Holiday Type</span>
+        </div>
+        <div class="card-body">
+
         <form asp-action="CreateHolidayType" method="post">
-            <div class="row">
-                <div class="col-auto">
                     <input asp-for="createHolidayType.Id" hidden />
-                    <label asp-for="createHolidayType.Name" class="form-label">Name</label>
-                </div>
-                <div class="col-auto">
-                    <input asp-for="createHolidayType.Name" type="text" class="form-control form-control-sm" />
-                    <span asp-validation-for="createHolidayType.Name" class="text-danger"></span>
-                </div>
-                <div class="col-auto ms-4">
-                    <label class="form-label">Is Active</label>
-                </div>
-                <div class="col-auto">
-                    <div class="form-check form-switch">
-                        <input asp-for="createHolidayType.IsActive" type="checkbox" class="form-check-input" id="isActiveToggle" style="width: 3rem; height: 1.5rem;" />
-                        <label class="form-check-label ms-3" for="isActiveToggle">Active</label>
+            <div class="row g-3">
+                    <div class="col-md-4">
+                        <label asp-for="createHolidayType.Name" class="form-label">Name</label>
+                        <input asp-for="createHolidayType.Name" type="text" class="form-control " placeholder="Enter holiday type name" />
+                        <span asp-validation-for="createHolidayType.Name" class="text-danger"></span>
                     </div>
-                </div>
+
+                <div class="col-md-2">
+                        <div class="form-check form-switch form-control-lg mt-md-3">
+                            <input asp-for="createHolidayType.IsActive" type="checkbox" class="form-check-input " id="isActiveToggle" />
+                            <label class="form-check-label fs-6 " for="isActiveToggle">Is Active</label>
+                        </div>
+                    </div>
                  
-                    <div class="col-2 ms-5">
-                        <button type="submit" class="btn btn-secondary btn-sm" id="addBtn">
+<div class="col-md-2 mt-md-5">
+                        <button type="submit" class="btn btn-success" id="addBtn">
                         @(Model.createHolidayType != null && Model.createHolidayType.Id.HasValue && Model.createHolidayType.Id.Value != 0 ? "Update" : "Add")
                     </button>
                 </div>
             </div>
         </form>
-
+       </div>
+       </div>
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title fw-normal">Add Holiday Type</span>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-success">
+                        <tr>
+                            <th class="rounded-start">Sr. No</th>
+                            <th>Name</th>
+                            <th>Is Active</th>
+                            <th class="rounded-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
         @if (ViewBag.HolidayType != null)
         {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Sr. No</th>
-                        <th>Name</th>
-                        <th>Is Active</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
+
                     @foreach (var item in ViewBag.HolidayType)
                     {
                         <tr>
                             <td>@(ViewBag.HolidayType.IndexOf(item) + 1)</td>
                             <td>@item.Name</td>
                             <td>
-                                <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input" id="isActiveToggle_@item.Id" style="width: 3rem; height: 1.5rem;" @(item.IsActive ? "checked" : "") />
-                                    <label class="form-check-label" for="isActiveToggle_@item.Id">Active</label>
+                                        <div class="form-check form-switch form-control-lg m-0 p-0">
+                                    <input type="checkbox" class="form-check-input" id="isActiveToggle_@item.Id"  @(item.IsActive ? "checked" : "") />
                                 </div>
                             </td>
                             <td>
@@ -68,9 +76,12 @@
                             </td>
                         </tr>
                     }
-                </tbody>
-            </table>
+              
         }
+                    </tbody>
+                </table>
+    </div>
+    </div>
     </div>
 </div>
 

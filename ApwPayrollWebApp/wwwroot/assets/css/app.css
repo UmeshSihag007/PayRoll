@@ -4925,9 +4925,13 @@ a {
   --vz-btn-active-border-color: transparent;
 }
 
+.btn-orange {
+
+}
+
 .btn-label {
-  position: relative;
-  padding-left: 44px;
+    position: relative;
+    padding-left: 44px;
 }
 .btn-label .label-icon {
   position: absolute;
