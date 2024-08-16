@@ -15,14 +15,14 @@ public class LeaveResponseStatusConfiguration : IEntityTypeConfiguration<LeaveRe
     {
         builder.Property(x => x.LeaveId).IsRequired();
         builder.HasOne(x => x.Leave)
-            .WithMany()
+            .WithMany(x=>x.LeaveResponseStatus)
             .HasForeignKey(x => x.LeaveId)
             .IsRequired();
-        builder.Property(x => x.ResponseById).IsRequired();
+        builder.Property(x => x.ResponseById).IsRequired(false);
         builder.HasOne(x => x.Employee)
             .WithMany()
             .HasForeignKey(x => x.ResponseById)
-            .IsRequired();
+            .IsRequired(false);
 
         builder.Property(x => x.ForwordId).IsRequired(false);
         builder.HasOne(x => x.Forword)

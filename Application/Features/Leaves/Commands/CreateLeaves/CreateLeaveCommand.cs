@@ -5,6 +5,7 @@ using ApwPayroll_Domain.Entities.Banks.Branches;
 using ApwPayroll_Domain.Entities.Designations;
 using ApwPayroll_Domain.Entities.Holidays.HolidayTypeRoles;
 using ApwPayroll_Domain.Entities.Leaves;
+using ApwPayroll_Domain.Entities.Leaves.LeaveResponseStatues;
 using ApwPayroll_Domain.Entities.Leaves.LeaveTypeRoles;
 using ApwPayroll_Domain.Entities.Leaves.LeaveTypes;
 using ApwPayroll_Shared;
@@ -59,12 +60,25 @@ internal class CreateLeaveCommandHandler : IRequestHandler<CreateLeaveCommand, R
             {
                 LeaveTypeId = data.LeaveTypeId,
                 DesignationId = request.LeaveTypeRole.DesignationId ?? null,
-                Gender = request.LeaveTypeRole.Gender ??  null,
+                Gender = request.LeaveTypeRole.Gender ?? null,
                 BranchId = request.LeaveTypeRole.BranchId ?? null
             };
             await _unitOfWork.Repository<LeaveTypeRule>().AddAsync(leaveTypeRule);
             await _unitOfWork.Save(cancellationToken);
         }
+
+        var leaveResponseStatus = new LeaveResponseStatus
+        {
+            LeaveId = data.Id,
+            LeaveStatus = request.LeaveStatus,
+            ResponseById = null,
+            ResponseRemark = null,
+            ResponseDate = null,
+            ForwordId = null
+        };
+
+        await _unitOfWork.Repository<LeaveResponseStatus>().AddAsync(leaveResponseStatus);
+        await _unitOfWork.Save(cancellationToken);
         return Result<Leave>.Success(data, "Create Successfully");
     }
 }

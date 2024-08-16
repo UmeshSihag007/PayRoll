@@ -1,5 +1,6 @@
 ﻿using ApwPayroll_Domain.common;
 using ApwPayroll_Domain.common.Enums.LeaveStatuses;
+using ApwPayroll_Domain.Entities.Leaves.LeaveResponseStatues;
 using ApwPayroll_Domain.Entities.Leaves.LeaveTypeRoles;
 using ApwPayroll_Domain.Entities.Leaves.LeaveTypes;
 
@@ -19,5 +20,5 @@ public class Leave : BaseAuditEntity
     public bool IsHalfDay { get; set; }
 
 
-
+    public List<LeaveResponseStatus> LeaveResponseStatus { get; set; }=new List<LeaveResponseStatus>();
 }
