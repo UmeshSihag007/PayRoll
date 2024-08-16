@@ -3,59 +3,69 @@
 @model MasterModel
 
 @{
-    ViewData["Title"] = "LeaveTypeView";
+    ViewData["Title"] = "Leave Type";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-    <div class="tab-pane">
+
+<div class="container ">
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title fw-normal">Add Leave Type</span>
+        </div>
+        <div class="card-body">
         <form asp-action="CreateLeaveType" method="post">
-            <div class="row">
-                <div class="col-auto">
-                    <input asp-for="createLeaveType.Id" hidden />
-                    <label asp-for="createLeaveType.Name" class="form-label">Name</label>
-                </div>
-                <div class="col-auto">
-                    <input asp-for="createLeaveType.Name" type="text" class="form-control form-control-sm" />
-                    <span asp-validation-for="createLeaveType.Name" class="text-danger"></span>
-                </div>
-                <div class="col-auto">
-                    <label class="form-label">Is Active</label>
-                </div>
-                <div class="col-auto">
-                    <div class="form-check form-switch">
-                        <input asp-for="createLeaveType.IsActive" type="checkbox" class="form-check-input" id="isActiveToggle" />
-                        <label class="form-check-label" for="isActiveToggle">Active</label>
+            <div class="row g-3">
+                    <div class="col-md-4">
+                        <label asp-for="createLeaveType.Name" class="form-label">Name</label>
+                        <input asp-for="createLeaveType.Name" type="text" class="form-control " placeholder="Enter leavetype name" />
+                        <span asp-validation-for="createLeaveType.Name" class="text-danger"></span>
                     </div>
-            </div>
-            <div class="col-2 ms-5">
-                    <button type="submit" class="btn btn-secondary btn-sm" id="addBtn">
+                    <!-- Is Active Switch -->
+                    <div class="col-md-2">
+                        <div class="form-check form-switch form-control-lg mt-md-3">
+                            <input asp-for="createLeaveType.IsActive" type="checkbox" class="form-check-input " id="isActiveToggle" />
+                            <label class="form-check-label fs-6 " for="isActiveToggle">Is Active</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 mt-md-5">
+                    <button type="submit" class="btn btn-success" id="addBtn">
                         @(Model.createLeaveType != null && Model.createLeaveType.Id.HasValue && Model.createLeaveType.Id.Value != 0 ? "Update" : "Add")
                     </button>
                     </div>
                 
             </div>
         </form>
+            </div>
+    </div>
 
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title fw-normal">Add Courses</span>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table  table-hover">
+                    <thead class="table-success">
+                        <tr>
+                            <th class="rounded-start"> Sr.No </th>
+                            <th>Name </th>
+                            <th>Is Active </th>
+                            <th class="rounded-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
         @if (ViewBag.LeaveType != null)
         {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Sr.No</th>
-                        <th>Name</th>
-                        <th>Is Active</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
+            
                     @foreach (var item in ViewBag.LeaveType)
                     {
                         <tr>
                             <td>@(ViewBag.LeaveType.IndexOf(item) + 1)</td>
                             <td>@item.Name</td>
                             <td>
-                                <div class="form-check form-switch">
+                                        <div class="form-check form-switch form-control-lg m-0 p-0">
                                 <input type="checkbox" class="form-check-input togglebtn" id="isActiveToggle_@item.Id" @(item.IsActive ? "checked" : "") />
-                                    <label class="form-check-label" for="isActiveToggle_@item.Id">Active</label>
                                 </div>
                             </td>
                             <td>
@@ -68,10 +78,14 @@
                             </td>
                         </tr>
                     }
-                </tbody>
-            </table>
+                
         }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+</div>
 
 
 @section Scripts {

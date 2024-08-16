@@ -1,9 +1,6 @@
 ﻿@{
     ViewData["Title"] = "calendar";
 }
-@{
-    ViewData["Title"] = "calendar";
-}
 <!DOCTYPE html>
 <html>
 <head>
@@ -92,74 +89,49 @@
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 events: [
-                    {
-                        title: 'Holiday',
-                        start: currentYear + '-12-25',
-                        description: 'Christmas Day',
-                        backgroundColor: '#FF0000',
-                        borderColor: '#FF0000'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: currentYear + '-08-20',
-                        description: 'Project meeting',
-                        backgroundColor: '#00FF00',
-                        borderColor: '#00FF00'
-                    }
-                ]
+        @if (Model != null && Model.Data != null)
+        {
+            @foreach (var holiday in Model.Data)
+            {
+                <text >
+                            {
+                                title: '@holiday.Name - @holiday.HolidayType.Name',
+                                start: '@holiday.FromDate.ToString("yyyy-MM-dd")',
+                                end: '@holiday.ToDate.ToString("yyyy-MM-dd")',
+                                description: '@holiday.Description',
+                                backgroundColor: '#bc0000',
+                                borderColor: '#ffffff'
+                            },
+                </text>
+            }
+        }
+                        ]
             });
 
             calendar.render();
             updateNavigation();
-
-            // Populate month dropdown
-            function populateMonthDropdown() {
-                var monthSelect = $("#month-select");
-                var months = [
-                    'January', 'February', 'March', 'April', 'May', 'June',
-                    'July', 'August', 'September', 'October', 'November', 'December'
-                ];
-
-                monthSelect.empty();
-                months.forEach(function (month, index) {
-                    var option = $('<option>')
-                        .val(index)
-                        .text(month)
-                        .prop('selected', index === currentMonth);
-                    monthSelect.append(option);
-                });
-            }
 
             // Update year and month navigation UI
             function updateNavigation() {
                 $("#current-year").text(currentYear);
                 $("#prev-year-text").text(currentYear - 1);
                 $("#next-year-text").text(currentYear + 1);
-
                 $("#current-month").text(new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' }));
-
-                // Determine previous and next month
-                var prevMonthDate = new Date(currentYear, currentMonth - 1);
-                var nextMonthDate = new Date(currentYear, currentMonth + 1);
-
-                $("#prev-month-text").text(prevMonthDate.toLocaleString('default', { month: 'short' }));
-                $("#next-month-text").text(nextMonthDate.toLocaleString('default', { month: 'short' }));
             }
-            // Handle click on previous year
+
+            // Handle click events for year and month navigation
             $("#prev-year").on("click", function () {
                 currentYear--;
                 calendar.gotoDate(new Date(currentYear, currentMonth, 1));
                 updateNavigation();
             });
 
-            // Handle click on next year
             $("#next-year").on("click", function () {
                 currentYear++;
                 calendar.gotoDate(new Date(currentYear, currentMonth, 1));
                 updateNavigation();
             });
 
-            // Handle click on previous month
             $("#prev-month").on("click", function () {
                 if (currentMonth === 0) {
                     currentMonth = 11;
@@ -171,7 +143,6 @@
                 updateNavigation();
             });
 
-            // Handle click on next month
             $("#next-month").on("click", function () {
                 if (currentMonth === 11) {
                     currentMonth = 0;
@@ -183,24 +154,6 @@
                 updateNavigation();
             });
 
-            // Handle month selection change
-            $("#month-select").on("change", function () {
-                var selectedMonth = parseInt($(this).val());
-                if (selectedMonth < currentMonth) {
-                    if (selectedMonth === 11) {
-                        currentYear--;
-                    }
-                } else if (selectedMonth > currentMonth) {
-                    if (selectedMonth === 0) {
-                        currentYear++;
-                    }
-                }
-                currentMonth = selectedMonth;
-                calendar.gotoDate(new Date(currentYear, currentMonth, 1));
-                updateNavigation();
-            });
-
-            // Handle click on "Today" button
             $("#today-button").on("click", function () {
                 currentDate = new Date();
                 currentYear = currentDate.getFullYear();
@@ -208,8 +161,6 @@
                 calendar.gotoDate(currentDate);
                 updateNavigation();
             });
-
-            populateMonthDropdown();
         });
     </script>
 </body>

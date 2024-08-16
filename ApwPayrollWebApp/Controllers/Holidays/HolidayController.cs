@@ -34,9 +34,11 @@ public class HolidayController : BaseController
         return View(data);
     }
 
-    public ActionResult calendar()
+    public async Task<IActionResult> calendar()
     {
-        return View();
+        var data = await _mediator.Send(new GetAllHolidayQuery());
+        await InitializeViewBags();
+        return View(data);
     }
 
     public async Task<IActionResult> CreateHoliday(int? id)

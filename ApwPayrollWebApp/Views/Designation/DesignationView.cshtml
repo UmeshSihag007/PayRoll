@@ -1,87 +1,82 @@
-﻿
- @using ApwPayrollWebApp.Models
-@model MasterModel 
+﻿@using ApwPayrollWebApp.Models
+@model MasterModel
 @{
-    ViewData["Title"] = "CreateDesignation";
+    ViewData["Title"] = "Designation";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>CreateDesignation</h1>
-
-
- 
-
-<div class="tab-contant">
-    <div class="tab-pane">
-        <form asp-action="CreateDesignation" method="post">
-            <div class="row">
-                <div class="col-2">
-                    <input asp-for="createDesignation.Id" hidden />
-                    <label asp-for="createDesignation.Name" class="form-label">Name</label>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title fw-normal">Add Designation</span>
+        </div>    
+        <div class="card-body">
+            <form asp-action="CreateDesignation" method="post">
+                <input asp-for="createDesignation.Id" hidden />
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label asp-for="createDesignation.Name" class="form-label">Name</label>
+                        <input asp-for="createDesignation.Name" type="text" class="form-control" placeholder="Enter designation name" />
+                        <span asp-validation-for="createDesignation.Name" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="createDesignation.Description" class="form-label">Description</label>
+                        <input asp-for="createDesignation.Description" type="text" class="form-control" placeholder="Enter description" />
+                        <span asp-validation-for="createDesignation.Description" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success ">
+                            @(Model.createDesignation != null && Model.createDesignation.Id.HasValue && Model.createDesignation.Id.Value != 0 ? "Update" : "Add")
+                        </button>
+                    </div>
+                    </div>
                 </div>
-                <div class="col-2">
-                    <input asp-for="createDesignation.Name" type="text" class="form-control form-control-sm" />
+            </form>
+        </div>
+    </div>
 
-                </div>
-
-
-                <div class="col-2">
-                    <label class="form-label">Description</label>
-                </div>
-
-                <div class="col-2">
-                    <input asp-for="createDesignation.Description" type="text" class="form-control form-control-sm" />
-                </div>
-
-
-                <div class=" col-2">
-                  
-                    
-                        
-                    <button   type="submit" class="btn btn-secondary btn-sm" Id="addBtn">  
-                        @(Model.createDesignation!=null && Model.createDesignation.Id.HasValue && Model.createDesignation.Id.Value!=0?" Update":"Add")
-                    </button>
-                    
-                      
-                </div>
-
-            </div>
-        </form>
-        @if (ViewBag.Designation != null)
-        {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th> Sr.No </th>
-                        <th>Name </th>
-                        <th>Description </th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in ViewBag.Designation)
-                    {
+    <div class="card mt-4">
+        <div class="card-header">
+            <span class="card-title fw-normal">Designation List</span>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-success">
                         <tr>
-                            <td>@(ViewBag.Designation.IndexOf(item) + 1)</td>
-                            <td>@item.Name</td>
-                            <td>@item.Description</td>
-                            <td>
-                                <a asp-action="DesignationView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'refernece', '@Url.Action("Delete", "Designation")') ">
-                                    <i class="bi bi-trash-fill"></i>
-                                </a>
-                            </td>
+                            <th class="rounded-start">Sr.No</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th class="rounded-end">Action</th>
                         </tr>
-
-                    }
-                </tbody>
-            </table>
-        }
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.Designation != null)
+                        {
+                            @foreach (var item in ViewBag.Designation)
+                            {
+                                <tr>
+                                    <td>@(ViewBag.Designation.IndexOf(item) + 1)</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Description</td>
+                                    <td>
+                                        <a asp-action="DesignationView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'refernece', '@Url.Action("Delete", "Designation")')">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-
 
 @section scripts {
     <!-- dropzone min -->
@@ -94,11 +89,8 @@
     <script src="~/assets/js/app.js"></script>
 
     <partial name="_ValidationScriptsPartial" />
-     
-
-
-
 }
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @Html.Partial("_DeleteConfirmation")
 
@@ -114,20 +106,9 @@
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                let url;
-
-
-                url = '@Url.Action("Delete", "Designation")/' + id;
+                let url = '@Url.Action("Delete", "Designation")/' + id;
+                window.location.href = url;
             }
-            window.location.href = url;
-        }
-                        })
-                    }
+        });
+    }
 </script>
-
-
-
-
-
-
-

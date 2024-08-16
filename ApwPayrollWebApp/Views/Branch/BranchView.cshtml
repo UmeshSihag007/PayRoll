@@ -1,87 +1,87 @@
-﻿ @using ApwPayrollWebApp.Models
+﻿@using ApwPayrollWebApp.Models
 @model MasterModel
 @{
-    ViewData["Title"] = "BranchView";
+    ViewData["Title"] = "Branch";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-
-<div class="tab-contant">
-    <div class="tab-pane">
-        <form asp-action="CreateBranch" method="post">
-            <div class="row">
-                <div class="col-auto">
-                    <input asp-for="createBranch.Id" hidden />
-                    <label asp-for="createBranch .Name" class="form-label">Name</label>
-                </div>
-                <div class="col-auto">
-                    <input asp-for="createBranch.Name" type="text" class=" form-control form-control-sm"></>
-                    <span asp-validation-for="createBranch.Name" class="text-danger"></span>
-                </div>
-                <div class="col-auto ms-3">
-                    <label class="form-label">Is Active</label>
-                </div>
-                <div class="col-auto ">
-                    <div class="form-check form-switch">
-                        <input asp-for="createBranch.IsActive" type="checkbox" class="form-check-input"
-                               id="isActiveToggle" style="width: 3rem; height: 1.5rem;   " />
-                        <label class="form-check-label ms-3" for="isActiveToggle">Active</label>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title fw-normal">Add Branch</span>
+        </div>
+        <div class="card-body">
+            <form asp-action="CreateBranch" method="post">
+                        <input asp-for="createBranch.Id" hidden />
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label asp-for="createBranch.Name" class="form-label">Name</label>
+                        <input asp-for="createBranch.Name" type="text" class="form-control " placeholder="Enter branch name" />
+                        <span asp-validation-for="createBranch.Name" class="text-danger"></span>
                     </div>
-
-                </div>
-                <div class="col-2 ms-5">
-                    <button type="submit" class="btn btn-secondary btn-sm" id="addBtn">
-                        @(Model.createBranch != null && Model.createBranch.Id.HasValue && Model.createBranch.Id.Value != 0 ? "Update" : "Add")
-                    </button>
+                    <!-- Is Active Switch -->
+                    <div class="col-md-2">
+                        <div class="form-check form-switch form-control-lg mt-md-3">
+                            <input asp-for="createBranch.IsActive" type="checkbox" class="form-check-input " id="isActiveToggle" />
+                            <label class="form-check-label fs-6 " for="isActiveToggle">Is Active</label>
+                        </div>
                     </div>
-            </div>
+                    <div class="col-md-2 mt-md-5">
+                        <button type="submit" class="btn btn-success" id="addBtn">
+                            @(Model.createBranch != null && Model.createBranch.Id.HasValue && Model.createBranch.Id.Value != 0 ? "Update" : "Add")
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-
-        </form>
-        @if (ViewBag.Branch != null)
-        {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th> Sr.No </th>
-                        <th>Name </th>
-                        <th>Is Active </th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in ViewBag.Branch)
-                    {
+    <div class="card mt-4">
+        <div class="card-header">
+            <span class="card-title fw-normal">Branch List</span>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-success">
                         <tr>
-                            <td>@(ViewBag.Branch.IndexOf(item) + 1)</td>
-                            <td>@item.Name</td>
-                            <td>
-                                <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input" id="isActiveToggle_@item.Id" style="width: 3rem; height: 1.5rem;"
-                                    @(item.IsActive ? "checked" : "") />
-                                    <label class="form-check-label" for="isActiveToggle_@item.Id">Active</label>
-                                </div>
-                            </td>
-
-                            <td>
-                                <a asp-action="BranchView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-
-                                <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id','branch' ,'@Url.Action("Delete", "Branch")') ">
-                                    <i class="bi bi-trash-fill"></i>
-                                </a>
-                            </td>
+                            <th class="rounded-start">Sr.No</th>
+                            <th>Name</th>
+                            <th>Is Active</th>
+                            <th class="rounded-end">Action</th>
                         </tr>
-
-                    }
-                </tbody>
-            </table>
-        }
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.Branch != null)
+                        {
+                            @foreach (var item in ViewBag.Branch)
+                            {
+                                <tr>
+                                    <td>@(ViewBag.Branch.IndexOf(item) + 1)</td>
+                                    <td>@item.Name</td>
+                                    <td>
+                                        <div class="form-check form-switch form-control-lg m-0 p-0">
+                                            <input type="checkbox" class="form-check-input" id="isActiveToggle_@item.Id"  @(item.IsActive ? "checked" : "") />
+                                            @* <label class="form-check-label" for="isActiveToggle_@item.Id">Active</label> *@
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a asp-action="BranchView" asp-route-id="@item.Id" class="btn btn-sm btn-info editBtn">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a class="btn btn-sm btn-danger" onclick="confirmDelete('@item.Id', 'branch', '@Url.Action("Delete", "Branch")')">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-
 
 @section scripts {
     <!-- dropzone min -->
@@ -94,14 +94,10 @@
     <script src="~/assets/js/app.js"></script>
 
     <partial name="_ValidationScriptsPartial" />
-
-
-
-
 }
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @Html.Partial("_DeleteConfirmation")
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -115,8 +111,7 @@
                 data: {
                     id: itemId,
                     isActive: isActive
-                },
-
+                }
             });
         });
     });
