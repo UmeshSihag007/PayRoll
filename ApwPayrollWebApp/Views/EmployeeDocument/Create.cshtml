@@ -25,17 +25,22 @@
                             <div class="row g-0">
                                 <div class="col-md-12">
                                     <div class="card-body">
-                                        <label for="Documents_0">Upload Document
-                                            @if (Model?. documentCommand.EmployeeDocuments[0]?.IsDocumentRequired!=null)
+                                        <label for="Documents_0">
+                                            Upload Document
+                                            @if (Model?.documentCommand.EmployeeDocuments[0]?.IsDocumentRequired ==true)
                                             {
-                                                            <span style="color:red">*</span>                                                
+                                                <span style="color:red">*</span>
                                             }
 
                                         </label>
-                                       
-                                     
-                                            <input asp-for="EmployeeDocument[0].Document" type="file" id="Documents_0" class="form-control-file"   onchange="previewFile(this, 'imagePreview_0', 'filePreview_0', 'currentDocumentUrl_0', 'currentDocument_0');" />
-                                     
+
+
+                                        <input asp-for="EmployeeDocument[0].Document"
+                                               type="file"
+                                               id="Documents_0"
+                                               class="form-control-file"
+                                               onchange="previewFile(this, 'imagePreview_0', 'filePreview_0', 'currentDocumentUrl_0', 'currentDocument_0');" />
+
 
                                         <!-- Display current document if available -->
                                         <div class="mt-2" id="currentDocument_0">
@@ -57,16 +62,17 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <label for="Codes_0">@ViewBag.EmployeeDocumentType Number
-                                    @if (Model?.documentCommand.EmployeeDocuments[0]?.IsCodeRequired != null)
+                                <label for="Codes_0">
+                                    @ViewBag.EmployeeDocumentType Number
+                                    @if (Model?.documentCommand.EmployeeDocuments[0]?.IsCodeRequired ==true)
 
                                     {
-                                        
-                                                            <span style="color:red">*</span>                                             
+
+                                        <span style="color:red">*</span>
                                     }
 
                                 </label>
-                                @if (Model?.documentCommand.EmployeeDocuments[0]?.IsCodeRequired != null)
+                                @if (Model?.documentCommand.EmployeeDocuments[0]?.IsCodeRequired ==true)
 
                                 {
                                     <input asp-for="EmployeeDocument[0].Code" type="text" id="Codes_0" required class="form-control" />
@@ -77,9 +83,9 @@
 
                                 else
                                 {
-                                    
-                                <input asp-for="EmployeeDocument[0] .Code" type="text" id="Codes_0" class="form-control" />
-                                }     
+
+                                    <input asp-for="EmployeeDocument[0] .Code" type="text" id="Codes_0" class="form-control" />
+                                }
                             </div>
                         </div>
                     </div>
@@ -103,20 +109,20 @@
                                                 }
                                             </label>
 
-                                         
-                                                <input asp-for="EmployeeDocument[i].Document"
-                                                       type="file"
-                                                       id="Documents_@(i)"
-                                                       class="form-control-file"
-                                                       onchange="previewFile(this, 'imagePreview_@(i)', 'filePreview_@(i)', null, null);" />
-                                         
+
+                                            <input asp-for="EmployeeDocument[i].Document"
+                                                   type="file"
+                                                   id="Documents_@(i)"
+                                                   class="form-control-file"
+                                                   onchange="previewFile(this, 'imagePreview_@(i)', 'filePreview_@(i)', null, null);" />
+
 
                                             <!-- Image preview for new file -->
                                             <img id="imagePreview_@(i)" src="#" alt="Preview" class="img-fluid mt-2" style="max-width: 100%; display: none;" />
 
                                             <!-- Iframe preview for new file -->
                                             <iframe id="filePreview_@(i)" class="mt-2" style="max-width: 100%; display: none;"></iframe>
-                                            <br/>
+                                            <br />
                                             <!-- Validation message displayed at the bottom -->
                                             <span asp-validation-for="EmployeeDocument[i].Document" class="text-danger mt-2"></span>
                                         </div>
@@ -124,14 +130,15 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <label for="Codes_@(i)">@ViewBag.EmployeeDocumentTypes[i].Name Number
+                                    <label for="Codes_@(i)">
+                                        @ViewBag.EmployeeDocumentTypes[i].Name Number
 
                                         @if (ViewBag.EmployeeDocumentTypes[i].IsCodeRequired)
                                         {
                                             <span style="color:red">*</span>
                                         }
-                                       
-                               
+
+
                                     </label>
                                     @if (ViewBag.EmployeeDocumentTypes[i].IsCodeRequired)
                                     {
@@ -163,70 +170,77 @@
 </div>
 
 @section Scripts {
-    <script>
-        function previewFile(input, imagePreviewId, filePreviewId, currentDocumentUrlId, currentDocumentContainerId) {
-            const file = input.files[0];
-            const previewImage = document.getElementById(imagePreviewId);
-            const previewFile = document.getElementById(filePreviewId);
-            const currentDocumentUrl = document.getElementById(currentDocumentUrlId)?.value;
-            const currentDocumentContainer = document.getElementById(currentDocumentContainerId);
+   
+  <script>  
+ function previewFile(input, imagePreviewId, filePreviewId, currentDocumentUrlId, currentDocumentContainerId) {
+    const file = input.files[0];
+    const previewImage = document.getElementById(imagePreviewId);
+    const previewFile = document.getElementById(filePreviewId);
+    const currentDocumentUrl = document.getElementById(currentDocumentUrlId)?.value;
+    const currentDocumentContainer = document.getElementById(currentDocumentContainerId);
 
-            if (file) {
-                const reader = new FileReader();
+    if (file) {
+        const reader = new FileReader();
 
-                reader.onloadend = function () {
-                    const fileType = file.type;
+        reader.onloadend = function () {
+            const fileType = file.type;
 
-                    // Hide the current document preview if present
-                    if (currentDocumentContainer) {
-                        currentDocumentContainer.style.display = 'none';
-                    }
+            // Hide the current document preview if present
+            if (currentDocumentContainer) {
+                currentDocumentContainer.style.display = 'none';
+            }
 
-                    // Display the new file preview based on the file type
-                    if (fileType.startsWith("image/")) {
-                        previewImage.src = reader.result;
-                        previewImage.style.display = 'block';
-                        previewFile.style.display = 'none';
-                    } else if (fileType === "application/pdf" || fileType === "text/html") {
-                        previewFile.src = reader.result;
-                        previewFile.style.display = 'block';
-                        previewImage.style.display = 'none';
-                    } else {
-                        previewImage.style.display = 'none';
-                        previewFile.style.display = 'none';
-                    }
-                };
-
-                reader.readAsDataURL(file);
-            } else if (currentDocumentUrl) {
-                // If no new file is selected, show the current document
-                if (currentDocumentContainer) {
-                    currentDocumentContainer.style.display = 'block';
-                }
-
-                if (currentDocumentUrl.endsWith('.pdf') || currentDocumentUrl.endsWith('.html')) {
-                    document.getElementById('currentDocumentIframe_0').src = currentDocumentUrl;
-                    document.getElementById('currentDocumentIframe_0').style.display = 'block';
-                    document.getElementById('currentDocumentImage_0').style.display = 'none';
-                } else {
-                    document.getElementById('currentDocumentImage_0').src = currentDocumentUrl;
-                    document.getElementById('currentDocumentImage_0').style.display = 'block';
-                    document.getElementById('currentDocumentIframe_0').style.display = 'none';
-                }
+            // Display the new file preview based on the file type
+            if (fileType.startsWith("image/")) {
+                previewImage.src = reader.result;
+                previewImage.style.display = 'block';
+                previewFile.style.display = 'none';
+            } else if (fileType === "application/pdf" || fileType === "text/html") {
+                previewFile.src = reader.result;
+                previewFile.style.display = 'block';
+                previewImage.style.display = 'none';
             } else {
                 previewImage.style.display = 'none';
                 previewFile.style.display = 'none';
             }
+        };
+
+        reader.readAsDataURL(file);
+    } else if (currentDocumentUrl) {
+        // If no new file is selected, show the current document
+        if (currentDocumentContainer) {
+            currentDocumentContainer.style.display = 'block';
         }
 
-        // Call the preview function on page load to set current document if available
-        $(document).ready(function () {
-        @if (Model?.documentCommand != null && Model.documentCommand.EmployeeId != 0)
-        {
-            <text>
-                        previewFile(document.getElementById('Documents_0'), 'imagePreview_0', 'filePreview_0', 'currentDocumentUrl_0', 'currentDocument_0');
-            </text>
+        if (currentDocumentUrl.endsWith('.pdf') || currentDocumentUrl.endsWith('.html')) {
+            document.getElementById('currentDocumentIframe_0').src = currentDocumentUrl;
+            document.getElementById('currentDocumentIframe_0').style.display = 'block';
+            document.getElementById('currentDocumentImage_0').style.display = 'none';
+        } else {
+            document.getElementById('currentDocumentImage_0').src = currentDocumentUrl;
+            document.getElementById('currentDocumentImage_0').style.display = 'block';
+            document.getElementById('currentDocumentIframe_0').style.display = 'none';
         }
-                });
-    </script>
+    } else {
+        // No file selected and no current document URL, hide both previews
+        previewImage.style.display = 'none';
+        previewFile.style.display = 'none';
+
+        if (currentDocumentContainer) {
+            currentDocumentContainer.style.display = 'none';
+        }
+    }
+}
+
+// Call the preview function on page load to set current document if available
+$(document).ready(function () {
+    @if (Model?.documentCommand != null && Model.documentCommand.EmployeeId != 0)
+    {
+        <text>
+            previewFile(document.getElementById('Documents_0'), 'imagePreview_0', 'filePreview_0', 'currentDocumentUrl_0', 'currentDocument_0');
+        </text>
+    }
+});
+
+      </script>
 }

@@ -35,7 +35,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeFamilies.Commands.Cr
         
           await _unitOfWork.Repository<EmployeeFamily>().AddAsync(mapData);
             await _unitOfWork.Save(cancellationToken);
-            return Result<int>.Success();
+            return Result<int>.Success(mapData.Id);
         }
     }
 }

@@ -8,8 +8,7 @@ namespace ApwPayroll_Domain.Entities.Employees.EmployeeDocuments
     public class EmployeeDocumentConfiguration : IEntityTypeConfiguration<EmployeeDocument>
     {
         public void Configure(EntityTypeBuilder<EmployeeDocument> builder)
-        {
-            builder.HasKey(bd => new { bd.EmployeeId, bd.DocumentId });
+        { 
              
             builder.HasOne(bd => bd.Employee)
                    .WithMany(e => e.EmployeeDocuments)  
@@ -25,7 +24,7 @@ namespace ApwPayroll_Domain.Entities.Employees.EmployeeDocuments
 
             builder.Property(bd => bd.IsActive).HasDefaultValue(true);
 
-            builder.HasIndex(x => new { x.EmployeeId, x.DocumentId });
+        
         }
     }
 }

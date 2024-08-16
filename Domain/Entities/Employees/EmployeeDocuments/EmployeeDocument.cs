@@ -1,10 +1,12 @@
-﻿using ApwPayroll_Domain.Entities.Documents;
+﻿using ApwPayroll_Domain.common;
+using ApwPayroll_Domain.Entities.Documents;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDocumentTypes;
 
 namespace ApwPayroll_Domain.Entities.Employees.EmployeeDocuments
 {
-    public class EmployeeDocument
+    public class EmployeeDocument:BaseAuditEntity
     {
+
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
         public int? DocumentId { get; set; }
@@ -21,6 +23,14 @@ namespace ApwPayroll_Domain.Entities.Employees.EmployeeDocuments
             IsActive = isActive;
             EmployeeDocumentTypeId = employeeDocumentTypeId;
             Code = code;
-        }
+          
+        }
+
+        public EmployeeDocument()
+        {
+            
+        }
+
+
     }
 }

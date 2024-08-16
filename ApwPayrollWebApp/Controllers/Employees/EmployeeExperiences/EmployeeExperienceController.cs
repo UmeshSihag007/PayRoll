@@ -1,6 +1,7 @@
 ﻿using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.DeleteEmployeeExperience;
 using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.UpdateEmployeeExperience;
 using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Queries.GetEmployeeExperiences;
+using ApwPayroll_Domain.Entities.Employees;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.Models;
 using MediatR;
@@ -40,6 +41,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeExperiences
                     if (data.code == 200)
                     {
                         Notify(data.Messages, null, data.code);
+                     
                     }
                     else
                     {
