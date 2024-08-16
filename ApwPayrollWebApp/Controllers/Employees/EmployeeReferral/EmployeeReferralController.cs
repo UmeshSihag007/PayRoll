@@ -23,11 +23,13 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeReferral
             ViewBag.employeeId = employeeId;
             await IntializeViewBag();
             var model = new EmployeeCreateViewModel();
-            if (id.HasValue)
+
+            var sessionReferenceId = HttpContext.Session.GetInt32("EmployeeReference");
+            if (id.HasValue || sessionReferenceId != null)
             {
                 var employee = HttpContext.Session.GetInt32("EmployeeId") ?? employeeId.Value;
                 var referalData = await _mediator.Send(new GetEmployeeReferalQuery(employee));
-                var refer = referalData.Data.FirstOrDefault(x => x.Id == id.Value);
+                var refer = referalData.Data.FirstOrDefault(x => x.Id == (id ?? sessionReferenceId));
                 if (refer != null)
                 {
                     model.ReferencesCommand = new CreateEmployeeReferencesCommand
@@ -81,6 +83,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeReferral
                 if (data.code == 200)
                 {
                     Notify(data.Messages, null, data.code);
+                    HttpContext.Session.SetInt32("EmployeeReference", data.Data.Id);
                 }
                 else
                 {

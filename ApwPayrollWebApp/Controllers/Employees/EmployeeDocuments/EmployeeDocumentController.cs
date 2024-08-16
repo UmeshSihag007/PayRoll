@@ -29,19 +29,20 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
             await InitializeViewBags();
 
             var model = new EmployeeCreateViewModel();
-
-            if (id.HasValue)
+            if (id!=null&&employeeId!=null)
             {
                 var employee = HttpContext.Session.GetInt32("EmployeeId") ?? employeeId.Value;
-
-             
                 if (employee == default)
                 {
                     return NotFound();
                 }
 
                 var document = await _mediator.Send(new GetDocumentByDocumentIdQuery(employee, id.Value));
-                ViewBag.document = document.Data.Document.Url;
+                if(document.Data.Document!=null)
+                {
+
+                ViewBag.document = document.Data?.Document.Url;
+                }                
                 ViewBag.EmployeeDocumentType = document.Data.EmployeeDocumentType.Name;
                 ViewBag.EmployeeDocumentTypeId = document.Data.EmployeeDocumentType.Id;
                 if (document != null)
@@ -60,6 +61,11 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
                         EmployeeDocuments = new List<CreateEmployeeDocumentDto> { employeeDocument }
                     };
 
+
+                    model.EmployeeDocument = new List<CreateEmployeeDocumentDto>
+                    {
+                        employeeDocument
+                    };
                 }
             }
 
@@ -88,7 +94,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
                     Notify(data.Messages, null, data.code);
                     await InitializeViewBags();
 
-                    return View( );
+                    return View(model);
                 }
                 if (HttpContext.Session.GetInt32("EmployeeId") != null)
                 {

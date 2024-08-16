@@ -5,6 +5,7 @@ using ApwPayroll_Application.Features.Employees.EmployeeEducations.Quories.GetAl
 using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.CreateEmployeeExperiences;
 using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Queries.GetEmployeeExperiences;
 using ApwPayroll_Application.Features.Employees.EmployeeQualifications.Commands.UpdateEmployeeQualification;
+using ApwPayroll_Domain.Entities.Employees;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.Models;
 using MediatR;
@@ -32,8 +33,13 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
             await InitializeViewBags();
  
             var model = new EmployeeCreateViewModel();
- 
-            if (id.HasValue)
+
+          var sessionEducationId=  HttpContext.Session.GetInt32("EmployeeEducation");
+            var sessionExperienceId = HttpContext.Session.GetInt32("EmployeeExperience");
+
+
+
+            if (id.HasValue || sessionEducationId != null|| sessionExperienceId!=null)
             { 
 
                 var employee = HttpContext.Session.GetInt32("EmployeeId") ?? employeeId.Value;
@@ -46,10 +52,10 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                  
                 var employeeEducationData = await _mediator.Send(new GetEmployeeQualificationQuery(employee));
                 var employeeExperienceData = await _mediator.Send(new GetEmployeeExperienceQuery(employee));
- 
-                var qualification = employeeEducationData.Data.FirstOrDefault(x => x.Id == id.Value);
-                var experience = employeeExperienceData.Data.FirstOrDefault(x => x.Id == id.Value);
- 
+
+                var qualification = employeeEducationData.Data.FirstOrDefault(x => x.Id == (id ?? sessionEducationId));
+                var experience = employeeExperienceData.Data.FirstOrDefault(x => x.Id == (id ?? sessionExperienceId));
+
                 if (qualification != null)
                 {
                     model.Qualification = new CreateEmployeeEducationCommand
@@ -113,6 +119,8 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeEducations
                     if (data.code == 200)
                     {
                         Notify(data.Messages, null, data.code);
+
+                        HttpContext.Session.SetInt32("EmployeeEducation", data.Data.Id);
                     }
                     else
                     {

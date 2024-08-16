@@ -1,4 +1,3 @@
-using Amazon.Runtime.Internal.Util;
 using ApwPayroll_Application.Features.Banks.Queries.GetAllBanks;
 using ApwPayroll_Application.Features.Branches.Queries.GetAllBranches;
 using ApwPayroll_Application.Features.Courses.Queries.GetAllCourses;
@@ -7,7 +6,6 @@ using ApwPayroll_Application.Features.Designations.Queries.GetAllDesignation;
 using ApwPayroll_Application.Features.Employees.Commands.CreateEmployee;
 using ApwPayroll_Application.Features.Employees.Commands.UpdateEmployee;
 using ApwPayroll_Application.Features.Employees.Commands.UpdateIsLoginAccess;
-using ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Commands.CreateEmployeePersonalDetail;
 using ApwPayroll_Application.Features.Employees.Queries.GetAllEmployees;
 using ApwPayroll_Application.Features.Employees.Queries.GetByIdEmployee;
 using ApwPayroll_Application.Features.Employees.Queries.SearchEmployee;
@@ -19,11 +17,12 @@ using ApwPayroll_Domain.common.Enums.Gender;
 using ApwPayroll_Domain.common.Enums.LocationTypes;
 using ApwPayroll_Domain.common.Enums.MarriedStatus;
 using ApwPayroll_Domain.common.Enums.Salutation;
+using ApwPayroll_Domain.Entities.Employees;
 using ApwPayroll_Domain.Entities.RelationTypes;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.EnumHelpers;
 using ApwPayrollWebApp.Models;
-using Google.Rpc;
+using ApwPayrollWebApp.SessionManagement;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -115,12 +114,10 @@ namespace ApwPayrollWebApp.Controllers.Employees
             return View(model);
         }
 
-
-
-
         public async Task<IActionResult> CreateEmployeeBasic(int? id)
         {
             await InitializeViewBags();
+
             var model = new EmployeeCreateViewModel();
             if (id.HasValue)
             {
@@ -154,6 +151,17 @@ namespace ApwPayrollWebApp.Controllers.Employees
                     DesignationId = employee.Data.EmployeeDesignations.FirstOrDefault()?.DesignationId ?? 0,
                     DepartmentId = employee.Data.EmployeeDepartments.FirstOrDefault()?.DepartmentId ?? 0
                 };
+            }
+
+            var employeedarta = HttpContext.Session.GetObject<CreateEmployeeCommand>("Employee");
+            if (employeedarta != null)
+            {
+            var employee = HttpContext.Session.GetObject<Employee>("Employee");
+                model.Employee = employeedarta;
+                model.Employee.DesignationId = employee.EmployeeDesignations.FirstOrDefault()?.DesignationId ?? 0;
+                model.Employee.DepartmentId = employee.EmployeeDepartments.FirstOrDefault()?.DepartmentId ?? 0;
+
+ 
             }
             return View(model);
 
@@ -201,6 +209,8 @@ namespace ApwPayrollWebApp.Controllers.Employees
                         Notify(data.Messages, null, data.code);
                         return View(command);
                     }
+                    HttpContext.Session.SetObject("Employee", data.Data);
+
                     HttpContext.Session.SetInt32("EmployeeId", data.Data.Id);
                     return RedirectToAction("CreateEmployeePersonal", "EmployeePersonalDetail", new { employeeId = data.Data.Id });
                 }

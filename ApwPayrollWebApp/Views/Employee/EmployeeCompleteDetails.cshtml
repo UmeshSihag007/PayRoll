@@ -583,47 +583,52 @@
                                 <div class="col-md-4 mb-3">
                                     <div class="card shadow-sm border-primary">
                                         <div class="card-body">
-                                            @{
-                                                bool isPdf = document.Document.Url.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
-                                            }
-
-                                            <!-- Document Type Heading -->
-                                            <h5 class="card-title text-center mb-3">@document.EmployeeDocumentType.Name</h5>
-
-                                            <!-- Document Image -->
-                                            @if (!string.IsNullOrEmpty(document.Document.Url))
+                                            @* Check if the document exists only when needed *@
+                                            @if (document?.Document != null && !string.IsNullOrEmpty(document.Document.Url))
                                             {
+                                                bool isPdf = document.Document.Url.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
+
+                                                <!-- Document Type Heading -->
+                                                <h5 class="card-title text-center mb-3">@document.EmployeeDocumentType?.Name</h5>
+
+                                                <!-- Document Image -->
                                                 <div class="text-center mb-3">
                                                     @if (isPdf)
                                                     {
-                                                        <iframe onclick="showImageModal('@document.Document.Url', '@document.EmployeeDocumentType.Name')"
+                                                        <iframe onclick="showImageModal('@document.Document.Url', '@document.EmployeeDocumentType?.Name')"
                                                                 src="@document.Document.Url" style="width: 100%; height: 200px; object-fit: cover;"></iframe>
                                                     }
                                                     else
                                                     {
-                                                        <img onclick="showImageModal('@document.Document.Url', '@document.EmployeeDocumentType.Name')"
+                                                        <img onclick="showImageModal('@document.Document.Url', '@document.EmployeeDocumentType?.Name')"
                                                              src="@document.Document.Url" alt="Document Image"
                                                              style="width: 100%; height: 200px; object-fit: cover;">
                                                     }
                                                 </div>
                                             }
+                                            else
+                                            {
+                                                <!-- Show a placeholder if no document is available -->
+                                                <i class="bi bi-file-earmark-text" style="font-size: 100px; color: #cccccc;"></i>
+                                            }
 
-                                            <!-- Document Code -->
+                                            <!-- Document Code (always displayed) -->
                                             <p class="card-text text-center font-weight-bold">
                                                 <b>Code:</b> @document.Code
                                             </p>
                                         </div>
 
-
                                         <div class="d-flex flex-row-reverse m-2">
-                                            <a asp-action="Create" asp-controller="EmployeeDocument" type="post" asp-all-route asp-route-id="@document.Document.Id" asp-route-employeeid="@document.EmployeeId" class="btn btn-sm btn-info" id="editBtn">
+                                            <a asp-action="Create" asp-controller="EmployeeDocument" type="post" asp-all-route asp-route-id="@document.EmployeeDocumentTypeId" asp-route-employeeid="@document.EmployeeId" class="btn btn-sm btn-info" id="editBtn">
                                                 <i class="bi bi-pencil-square"> Edit</i>
                                             </a>
                                         </div>
-                                        <a href="/EmployeeDocument/DownloadFile?url=@document.Document.Url" class="btn btn-sm btn-primary mr-2">
-                                            <i class="bi bi-download"></i> Download
-                                        </a>
-
+                                        @if (document?.Document != null && !string.IsNullOrEmpty(document.Document.Url))
+                                        {
+                                            <a href="/EmployeeDocument/DownloadFile?url=@document.Document.Url" class="btn btn-sm btn-primary mr-2">
+                                                <i class="bi bi-download"></i> Download
+                                            </a>
+                                        }
                                     </div>
                                 </div>
                             }
