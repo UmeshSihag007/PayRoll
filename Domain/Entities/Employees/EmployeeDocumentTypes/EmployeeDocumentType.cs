@@ -14,5 +14,8 @@ namespace ApwPayroll_Domain.Entities.Employees.EmployeeDocumentTypes
         public string Heading { get; set; }
         public bool IsCodeShow { get; set; }
         public  int OrderNo { get; set; }
+
+        public bool IsCodeRequired { get; set; }
+        public bool IsDocumentRequired { get; set; }
     }
 }

@@ -31,12 +31,23 @@ namespace ApwPayroll_Persistence.Repositories.EmployeeDocuments
 
         public async Task<EmployeeDocument> GetEmployeeDocument(int employeeId, int documentId)
         {
-            var data= await _applicationDataContext.EmployeeDocuments.Where(x=>x.EmployeeId==employeeId &&x.DocumentId==documentId).Include(x=>x.Document)
+            var data= await _applicationDataContext.EmployeeDocuments.Where(x=>x.EmployeeId==employeeId &&x.DocumentId==documentId).Include(x=>x.Document).Include(x=>x.EmployeeDocumentType)
                 .FirstOrDefaultAsync();
             if(data!= null)
             {
                 return data;
             }
+            return data;
+        }
+
+        public async Task<EmployeeDocument> updateDocumentType(int employeeId, int? documentTypeId, string? code)
+        {
+            var data = await _applicationDataContext.EmployeeDocuments.Where(x => x.EmployeeId == employeeId  && x.EmployeeDocumentTypeId==documentTypeId).Include(x => x.Document).Include(x => x.EmployeeDocumentType)
+                 .FirstOrDefaultAsync();
+            data.Code = code;
+             _applicationDataContext.EmployeeDocuments.Update(data);
+            await _applicationDataContext.SaveChangesAsync();
+
             return data;
         }
     }

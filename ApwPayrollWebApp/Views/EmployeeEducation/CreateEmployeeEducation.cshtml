@@ -161,6 +161,7 @@
                 <div class="row mt-1 mb-2">
                     <div class="col-lg-4">
                         <label asp-for="Experiences.ComanyName" class="form-label">Company Name</label>
+                        <span class="text-danger">*</span>
                         <div class=" input-group">
                             <input asp-for="Experiences.ComanyName" type="text" class="form-control form-control " placeholder="Enter company name" required />
                         </div>
@@ -175,6 +176,7 @@
                     </div>
                     <div class="col-lg-4">
                         <label asp-for="Experiences.Designation" class="form-label">Designation</label>
+                        <span class="text-danger">*</span>
                         <div class=" input-group">
                             <input asp-for="Experiences.Designation" type="text" class="form-control form-control " placeholder="Enter designation name" required />
                         </div>
@@ -214,6 +216,7 @@
                     </div>
                     <div class="col-lg-4">
                         <label asp-for="Experiences.StartDate" data-provider="flatpickr" class="form-label">Start Date</label>
+                        <span class="text-danger">*</span>
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="ri-calendar-event-fill"></i>
@@ -224,6 +227,7 @@
                     </div>
                     <div class="col-lg-4">
                         <label asp-for="Experiences.CompletedDate" class="form-label">Completed Date</label>
+                        <span class="text-danger">*</span>
                         <div class="input-group">
                             <span class="input-group-text">
                                 <i class="ri-calendar-event-fill"></i>

@@ -1,5 +1,4 @@
 ﻿
-using ApwPayroll_Application.Features.Banks.Commands.DeleteBankCommands;
 using ApwPayroll_Application.Features.Branches.Queries.GetAllBranches;
 using ApwPayroll_Application.Features.Holidays.Commands.CreateHolidays;
 using ApwPayroll_Application.Features.Holidays.Commands.DeleteHolidays;
@@ -35,6 +34,11 @@ public class HolidayController : BaseController
         return View(data);
     }
 
+    public ActionResult calendar()
+    {
+        return View();
+    }
+
     public async Task<IActionResult> CreateHoliday(int? id)
     {
         var model = new CreateHolidayCommand();
@@ -57,10 +61,10 @@ public class HolidayController : BaseController
                     IsResetToLeaveRequest = data.Data.IsResetToLeaveRequest,
                     HolidayRuleDto = new GetHolidayRuleDto
                     {
-                        Gender = rule?.Gender, 
-                        BranchId = rule?.BranchId ?? 0, 
+                        Gender = rule?.Gender,
+                        BranchId = rule?.BranchId ?? 0,
                         LocationId = data.Data.HolidayTypeRules
-                                     .SelectMany(r => r.HolidayTypeRuleLocations) 
+                                     .SelectMany(r => r.HolidayTypeRuleLocations)
                                      .Select(loc => loc.LocationId)
                                      .ToList()
                     }
@@ -94,10 +98,10 @@ public class HolidayController : BaseController
                 return RedirectToAction("Index");
             }
         }
-        Notify(["Please Add the Rule mast"], null,400);
+        Notify(["Please Add the Rule mast"], null, 400);
         await InitializeViewBags();
         return View(command);
-        }
+    }
 
     public async Task<IActionResult> Delete(int id)
     {

@@ -12,7 +12,10 @@ namespace ApwPayroll_Application.Features.Employees.EmployeeDocuments.Commands.C
     public class CreateEmployeeDocumentDto : IMapFrom<EmployeeDocument>
     {
         public string? Code { get; set; }
-        public IFormFile Document { get; set; }
+        public IFormFile? Document { get; set; }
         public int EmployeeDocumentTypeId { get; set; }
+        public bool IsCodeRequired { get; set; }
+        public bool IsDocumentRequired { get; set; }
+
     }
 }

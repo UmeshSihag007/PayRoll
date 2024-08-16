@@ -58,7 +58,7 @@
                             <td>@item.Name</td>
                             <td>
                                 <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input" id="isActiveToggle_@item.Id" @(item.IsActive ? "checked" : "") />
+                                    <input type="checkbox" class="form-check-input togglebtn" id="isActiveToggle_@item.Id" @(item.IsActive ? "checked" : "") />
                                     <label class="form-check-label" for="isActiveToggle_@item.Id">Active</label>
                                 </div>
                             </td>
@@ -137,7 +137,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('.form-check-input').on('change', function () {
+        $('.togglebtn').on('change', function () {
             var $checkbox = $(this);
             var itemId = $checkbox.attr('id').split('_')[1];
             var isActive = $checkbox.is(':checked');

@@ -11,7 +11,7 @@ using MediatR;
 
 namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Commands.CreateEmployeePersonalDetail
 {
-    public class CreateEmployeePersonalDetailCommand : IRequest<Result<int>>
+    public class CreateEmployeePersonalDetailCommand : IRequest<Result<CreateEmployeePersonalDetailDto>>
     {
         public CreateEmployeePersonalDetailCommand(int employeeId, CreateEmployeePersonalDetailDto createEmployeePersonals)
         {
@@ -24,14 +24,14 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
      
 
     }
-    internal class CreateEmployeePersonalDetailCommandHandler : IRequestHandler<CreateEmployeePersonalDetailCommand, Result<int>>
+    internal class CreateEmployeePersonalDetailCommandHandler : IRequestHandler<CreateEmployeePersonalDetailCommand, Result<CreateEmployeePersonalDetailDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         public CreateEmployeePersonalDetailCommandHandler(IUnitOfWork unitOfWork = null)
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<Result<int>> Handle(CreateEmployeePersonalDetailCommand request, CancellationToken cancellationToken)
+        public async Task<Result<CreateEmployeePersonalDetailDto>> Handle(CreateEmployeePersonalDetailCommand request, CancellationToken cancellationToken)
         {
             var personalData = new EmployeePersonalDetail
             {
@@ -163,6 +163,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                     AccountName = request.CreateEmployeePersonals.CreateEmployeeBank.AccountName,
                     AccountBranch = request.CreateEmployeePersonals.CreateEmployeeBank.AccountBranch,
                     BanAccountId = request.CreateEmployeePersonals.CreateEmployeeBank.BanAccountId,
+                    AccountType=request.CreateEmployeePersonals.CreateEmployeeBank.AccountType,
                     EmployeeId = request.EmployeeId,
 
 
@@ -172,7 +173,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
             }
 
 
-            return Result<int>.Success();
+            return Result<CreateEmployeePersonalDetailDto>.Success();
 
         }
         

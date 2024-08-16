@@ -31,7 +31,20 @@ namespace ApwPayroll_Persistence.Extensions
                options.UseSqlServer(connectionString,
                    builder => builder.MigrationsAssembly(typeof(ApplicationDataContext).Assembly.FullName)));
 
-            services.AddIdentity<AspUser, IdentityRole>()
+            services.AddIdentity<AspUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 0;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+                options.User.RequireUniqueEmail = false;
+            })
          .AddEntityFrameworkStores<ApplicationDataContext>()
          .AddDefaultTokenProviders()
      .AddSignInManager<SignInManager<AspUser>>();

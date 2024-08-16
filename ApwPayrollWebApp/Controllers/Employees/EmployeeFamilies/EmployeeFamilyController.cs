@@ -32,10 +32,16 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
 
             await InitializeViewBags();
             var model = new EmployeeCreateViewModel();
-            if (id.HasValue)
+
+         var sessionFamilyId =  HttpContext.Session.GetInt32("EmployeeFamily");
+            if (id.HasValue|| sessionFamilyId!=null)
             {
-                var family = await _mediator.Send(new GetByEmployeeFamilyDetailQuery(id.Value));
-                if(family != null)
+
+                var familyId = id ?? sessionFamilyId;
+              
+                    var family = await _mediator.Send(new GetByEmployeeFamilyDetailQuery(familyId.Value));
+              
+                if (family != null)
                 {
                     model.CreateEmployeeFamily = new CreateEmployeeFamilyCommand
                     {
@@ -92,7 +98,8 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeeFamilies
                 if (data.code == 200)
                 {
                     Notify(data.Messages, null, data.code);
-                }
+                        HttpContext.Session.SetInt32("EmployeeFamily", data.Data);
+                    }
                 else
                 {
                     Notify(data.Messages, null, data.code);
