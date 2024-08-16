@@ -27,6 +27,10 @@ internal class GetLeaveDetailQueryHandler : IRequestHandler<GetLeaveDetailQuery,
         var data = await _unitOfWork.Repository<Leave>().Entities
             .Include(x => x.LeaveType)
                 .ThenInclude(x => x.LeaveTypeRole) // Include LeaveTypeRole
+      .ThenInclude(x => x.Designation)
+ 
+            .Include(x => x.LeaveType)
+                .ThenInclude(x => x.LeaveTypeRole) // Include LeaveTypeRole
             .Include(x => x.LeaveResponseStatus)
                 .ThenInclude(r => r.Employee)  // Include Employee in LeaveResponseStatus
             .Include(x => x.LeaveResponseStatus)

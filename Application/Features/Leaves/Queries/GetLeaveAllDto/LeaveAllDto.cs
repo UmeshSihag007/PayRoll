@@ -1,13 +1,18 @@
 ﻿using ApwPayroll_Domain.common.Enums.Gender;
 using ApwPayroll_Domain.common.Enums.LeaveStatuses;
+using ApwPayroll_Domain.Entities.Designations;
+using ApwPayroll_Domain.Entities.Leaves.LeaveTypes;
 
 namespace ApwPayroll_Application.Features.Leaves.Queries.GetLeaveAllDto;
 
 public class LeaveAllDto
 {
+    public  int  Id { get; set; }
     public int LeaveTypeId { get; set; }
+    public LeaveType LeaveType { get; set; }
     public string Reason { get; set; }
     public long ContactNumber { get; set; }
+    public Designation? Designation { get; set; }
     public DateTime ToDate { get; set; }
     public DateTime FromDate { get; set; }
     public bool IsPaid { get; set; }

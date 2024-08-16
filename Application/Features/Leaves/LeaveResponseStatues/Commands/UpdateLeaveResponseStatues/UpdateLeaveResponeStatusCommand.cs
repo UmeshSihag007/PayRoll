@@ -39,7 +39,7 @@ internal class UpdateLeaveResponeStatusCommandHandler : IRequestHandler<UpdateLe
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (existingLeaveResponseStatus == null)
-        {
+        { 
             return Result<LeaveResponseStatus>.BadRequest("Leave Response Status not found.");
         }
 

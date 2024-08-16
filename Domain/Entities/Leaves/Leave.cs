@@ -21,4 +21,5 @@ public class Leave : BaseAuditEntity
 
 
     public List<LeaveResponseStatus> LeaveResponseStatus { get; set; }=new List<LeaveResponseStatus>();
+ 
 }

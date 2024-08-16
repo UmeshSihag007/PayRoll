@@ -5,8 +5,6 @@ using ApwPayroll_Application.Features.Leaves.LeaveResponseStatues.Queries.GetLea
 using ApwPayroll_Application.Features.Leaves.Queries.GetAllLeaves;
 using ApwPayroll_Application.Features.Leaves.Queries.GetLeaveByIds;
 using ApwPayroll_Domain.common.Enums.LeaveStatuses;
-using ApwPayroll_Domain.Entities.Leaves.LeaveResponseStatues;
-using ApwPayroll_Shared;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.EnumHelpers;
 using MediatR;
@@ -68,24 +66,23 @@ public class LeaveResponseStatusController : BaseController
 
         if (ModelState.IsValid)
         {
-            Result<LeaveResponseStatus> result;
-            if (command.Id == 0 || command.Id == null)
-            {
-                command.LeaveStatus = LeaveStatusEnum.Pending;
-                result = await _mediator.Send(command);
-            }
-            else
-            {
+
+            
+             
                 var LeaveId = HttpContext.Session.GetInt32("LeaveId");
                 var updateCommand = new UpdateLeaveResponeStatusCommand(command.Id.Value, command, LeaveId);
-                result = await _mediator.Send(updateCommand);
-            }
+                var data = await _mediator.Send(updateCommand);
 
-            if (result.succeeded)
-            {
-                Notify(result.Messages, null, result.code);
-                return RedirectToAction(nameof(Index));
-            }
+                if (data.succeeded)
+                {
+
+                    Notify(data.Messages, null, data.code);
+                }
+ 
+
+
+            return RedirectToAction(nameof(Index));
+
         }
 
         return View(command);
