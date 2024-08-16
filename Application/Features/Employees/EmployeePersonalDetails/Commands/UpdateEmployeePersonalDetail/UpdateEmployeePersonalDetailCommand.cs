@@ -148,9 +148,7 @@ namespace ApwPayroll_Application.Features.Employees.EmployeePersonalDetails.Comm
                 await _unitOfWork.Repository<EmployeeAddress>().AddAsync(permanentAddress);
                 await _unitOfWork.Save(cancellationToken);
                 //    await _unitOfWork.Repository<EmployeeAddress>().AddAsync(request.CreateEmployeePersonals.PermanentAddress);
-
             }
- 
 
             //Emergency Contact Working
 

@@ -5,6 +5,8 @@ using ApwPayroll_Application.Features.Departments.Commands.CreateDepartment;
 using ApwPayroll_Application.Features.Designations.Commands.CreateDesignation;
 using ApwPayroll_Application.Features.DocumentTypes.Commands.CreateDocumentType;
 using ApwPayroll_Application.Features.Employees.Commands.CreateEmployee;
+using ApwPayroll_Application.Features.Employees.EmployeeAddresses.Commands.CreateEmployeeAddress;
+using ApwPayroll_Application.Features.Employees.EmployeeBankDetails.Commands.CreateEmployeeBankDetails;
 using ApwPayroll_Application.Features.Employees.EmployeeDocuments.EmployeeDocumentTypes.Commands.CreateEmployeeDocumentTypes;
 using ApwPayroll_Application.Features.Employees.EmployeeEducations.Commands.CreateEmployeeEducation;
 using ApwPayroll_Application.Features.Employees.EmployeeExperiences.Commands.CreateEmployeeExperiences;
@@ -20,12 +22,15 @@ using ApwPayroll_Application.Features.Menus.MenuTypes.Commands.CreateMenuType;
 using ApwPayroll_Application.Features.Users.Commands.RegisterUsers;
 using ApwPayroll_Domain.Entities.AspUsers;
 using ApwPayroll_Domain.Entities.Banks;
+using ApwPayroll_Domain.Entities.Banks.BankDetails;
 using ApwPayroll_Domain.Entities.Banks.Branches;
 using ApwPayroll_Domain.Entities.Departments;
 using ApwPayroll_Domain.Entities.Designations;
 using ApwPayroll_Domain.Entities.Documents.DocumentTypes;
 using ApwPayroll_Domain.Entities.Employees;
 using ApwPayroll_Domain.Entities.Employees.Courses;
+using ApwPayroll_Domain.Entities.Employees.EmergencyContacts;
+using ApwPayroll_Domain.Entities.Employees.EmployeeAddresses;
 using ApwPayroll_Domain.Entities.Employees.EmployeeDocumentTypes;
 using ApwPayroll_Domain.Entities.Employees.EmployeeExperiences;
 using ApwPayroll_Domain.Entities.Employees.EmployeeFamiles;
@@ -71,8 +76,10 @@ namespace ApwPayroll_Application.Common.Mappings
             CreateMap<CreateEmployeePersonalDetailDto, EmployeePersonalDetail>();
             CreateMap<CreateLeaveCommand, Leave>();
             CreateMap<CreateHolidayCommand, Holiday>();
-            CreateMap< CreateEmployeeDocumentTypeCommand,EmployeeDocumentType > ();
-
+            CreateMap<CreateEmployeeDocumentTypeCommand, EmployeeDocumentType>();
+            CreateMap<CreateEmployeeBankDetailCommand, BankDetail>();
+            CreateMap< CreateEmployeeAddressCommand,EmployeeAddress > ();
+ 
 
 
 

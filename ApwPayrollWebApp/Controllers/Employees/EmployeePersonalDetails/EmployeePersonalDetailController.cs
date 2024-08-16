@@ -101,6 +101,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                     MotherDOB = employeeFamily?.FirstOrDefault(f => f.RelationType.Name == "Mother")?.DOB,
                     MarriedStatus = employeePersonalDetail.MarriedStatus,
                     SpouseName = spouse?.Name,
+                    
                     SpouseDOB = spouse?.DOB,
                     SpouseGender = spouse?.Gender,
                     DateOfWedding = employeePersonalDetail?.DateOfWedding,
@@ -110,6 +111,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                         Name = emergencyContact.Name,
                         Email = emergencyContact.Email,
                         MobileNumber = emergencyContact.MobileNumber,
+                        RelationType= emergencyContact.RelationType,
                         WhatsAppNumber = emergencyContact.WhatsAppNumber,
                         RelationTypeId = emergencyContact.RelationTypeId
                     } : null,
@@ -153,6 +155,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
                         AccountName = bankDetails.AccountName,
                         AccountType = bankDetails.AccountType,
                         BanAccountId = bankDetails.BanAccountId,
+                       
                         BankId = bankDetails.BankId ?? default,
                         IFCCode = bankDetails.IFCCode,
                         IsBankAccountVerified = bankDetails.IsBankAccountVerified
@@ -160,6 +163,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.EmployeePersonalDetails
 
                     Religion = employeePersonalDetail?.Religion,
                     PlaceOfBirth = employeePersonalDetail?.PlaceOfBirth,
+                    
                 };
             }
           

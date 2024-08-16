@@ -1,9 +1,11 @@
+using ApwPayroll_Application.Features.Employees.Commands.CreateEmployee;
 using ApwPayroll_Application.Features.Employees.EmployeeDocuments.Commands.CreateEmployeeDocuments;
 using ApwPayroll_Application.Features.Employees.EmployeeDocuments.EmployeeDocumentTypes.Queries.GetAllEmployeeDocumentTypes;
 using ApwPayroll_Application.Features.Employees.EmployeeDocuments.Queries.GetDocumentById;
 using ApwPayroll_Persistence.Data;
 using ApwPayrollWebApp.Controllers.Common;
 using ApwPayrollWebApp.Models;
+using ApwPayrollWebApp.SessionManagement;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,8 +30,9 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
             ViewBag.EmployeeId = employeeId;
             await InitializeViewBags();
 
+
             var model = new EmployeeCreateViewModel();
-            if (id!=null&&employeeId!=null)
+            if (id != null && employeeId != null)
             {
                 var employee = HttpContext.Session.GetInt32("EmployeeId") ?? employeeId.Value;
                 if (employee == default)
@@ -38,11 +41,11 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
                 }
 
                 var document = await _mediator.Send(new GetDocumentByDocumentIdQuery(employee, id.Value));
-                if(document.Data.Document!=null)
+                if (document.Data.Document != null)
                 {
 
-                ViewBag.document = document.Data?.Document.Url;
-                }                
+                    ViewBag.document = document.Data?.Document.Url;
+                }
                 ViewBag.EmployeeDocumentType = document.Data.EmployeeDocumentType.Name;
                 ViewBag.EmployeeDocumentTypeId = document.Data.EmployeeDocumentType.Id;
                 if (document != null)
@@ -51,8 +54,8 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
                     {
                         Code = document.Data.Code,
                         EmployeeDocumentTypeId = document.Data.EmployeeDocumentTypeId,
-                        IsCodeRequired=document.Data.EmployeeDocumentType.IsCodeRequired,
-                        IsDocumentRequired=document.Data.EmployeeDocumentType.IsDocumentRequired,
+                        IsCodeRequired = document.Data.EmployeeDocumentType.IsCodeRequired,
+                        IsDocumentRequired = document.Data.EmployeeDocumentType.IsDocumentRequired,
 
                     };
                     model.documentCommand = new CreateEmployeeDocumentCommand
@@ -68,7 +71,7 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
                     };
                 }
             }
-
+        
             return View(model);
         }
 
@@ -133,9 +136,9 @@ namespace ApwPayrollWebApp.Controllers.Employees.employee.EmployeeDocuments
         private async Task InitializeViewBags()
         {
             var employeeDocumentTypes = await _mediator.Send(new GetAllEmployeeDocumentTypesQuery());
-               
 
-            ViewBag.EmployeeDocumentTypes = employeeDocumentTypes.Data.Where(x=>x.IsActive==true).ToList();
+
+            ViewBag.EmployeeDocumentTypes = employeeDocumentTypes.Data.Where(x => x.IsActive == true).ToList();
         }
 
     }
